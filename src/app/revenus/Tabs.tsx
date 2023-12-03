@@ -9,10 +9,10 @@ export const Tabs = () => {
   return (
     <nav>
       <ul className="flex justify-center">
-        <TabLink href="revenus/total">Total</TabLink>
-        <TabLink href="revenus/abonnements">Abonnements</TabLink>
-        <TabLink href="revenus/dons">Dons</TabLink>
-        <TabLink href="revenus/ventes">Vente</TabLink>
+        <TabLink href="/revenus/total">Total</TabLink>
+        <TabLink href="/revenus/abonnements">Abonnements</TabLink>
+        <TabLink href="/revenus/dons">Dons</TabLink>
+        <TabLink href="/revenus/ventes">Vente</TabLink>
       </ul>
     </nav>
   );
@@ -28,8 +28,8 @@ const TabLink = ({ children, href }: { children: React.ReactNode; href: string }
         className={classNames({
           "bg-black": href === currentUrl,
           "text-frustration-yellow": href === currentUrl,
-          "text-black": href !== currentUrl,
-          [`py-1 px-6 text-xl font-bold rounded-full  ${poppins.className} hover:bg-gray-900 hover:bg-opacity-10`]: true
+          "text-black hover:bg-gray-900 hover:bg-opacity-10": href !== currentUrl,
+          [`py-1 px-6 text-xl font-bold rounded-full  ${poppins.className} `]: true
         })}
       >
         {children}

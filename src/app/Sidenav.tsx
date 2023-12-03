@@ -8,7 +8,7 @@ export const Sidenav = () => {
     <aside className="bg-black w-60">
       <ul className="text-frustration-yellow px-3">
         <li>
-          <LinkSidenav href="revenus">
+          <LinkSidenav href="/revenus">
             <FaCreditCard />
             Revenus
           </LinkSidenav>
