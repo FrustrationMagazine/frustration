@@ -24,7 +24,9 @@ export default async function RootLayout({ children }: { readonly children: Reac
             <main className="flex grow">{children}</main>
           </article>
         ) : (
-          <Link href="/api/auth/signin">Se connecter</Link>
+          <Link href="/api/auth/signin">
+            <span>Se connecter</span>
+          </Link>
         )}
       </body>
     </html>

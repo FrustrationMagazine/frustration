@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { FaCreditCard } from "react-icons/fa";
 import { poppins } from "@frustration/utils/fonts";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 export const Sidenav = async () => {
   return (
@@ -17,9 +18,10 @@ export const Sidenav = async () => {
       <Link href="/api/auth/signout?callbackUrl/">
         <button
           type="button"
-          className="text-black bg-frustration-yellow px-4 py-2 font-bold rounded-md"
+          className="text-black bg-frustration-yellow px-4 py-2 font-bold rounded-md flex items-center gap-2"
         >
-          Se déconnecter
+          <RiLogoutBoxLine />
+          <span>Se déconnecter</span>
         </button>
       </Link>
     </aside>
