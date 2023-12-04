@@ -18,16 +18,14 @@ export default async function RootLayout({ children }: { readonly children: Reac
     <html lang="fr">
       <body className="flex flex-col min-h-screen">
         <Header />
-        <main className="flex grow main-background">
-          {session ? (
-            <>
-              <Sidenav />
-              {children}
-            </>
-          ) : (
-            <Link href="/api/auth/signin">Se connecter</Link>
-          )}
-        </main>
+        {session ? (
+          <article className="flex flex-grow">
+            <Sidenav />
+            <main className="flex grow">{children}</main>
+          </article>
+        ) : (
+          <Link href="/api/auth/signin">Se connecter</Link>
+        )}
       </body>
     </html>
   );
