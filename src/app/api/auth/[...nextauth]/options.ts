@@ -1,32 +1,24 @@
 import type { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@frustration/libs/prisma";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
+import EmailProvider from "next-auth/providers/email";
 
 export const options: NextAuthOptions = {
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string
-    }),
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials, req): Promise<any> {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: 1, name: "User", email: "user@example.com" };
-
-        if (user) {
-          return user;
-        } else {
-          return null;
+    EmailProvider({
+      server: {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD
         }
-      }
+      },
+      from: process.env.EMAIL_FROM
     })
   ],
-  adapter: PrismaAdapter(prisma)
+  adapter: PrismaAdapter(prisma),
+  theme: {
+    colorScheme: "light"
+  }
 };

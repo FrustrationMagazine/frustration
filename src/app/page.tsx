@@ -1,4 +1,3 @@
-import { get } from "http";
 import { options } from "./api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 
