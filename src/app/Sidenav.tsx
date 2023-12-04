@@ -3,10 +3,10 @@ import Link from "next/link";
 import { FaCreditCard } from "react-icons/fa";
 import { poppins } from "@frustration/utils/fonts";
 
-export const Sidenav = () => {
+export const Sidenav = async () => {
   return (
-    <aside className="bg-black w-60">
-      <ul className="text-frustration-yellow px-3">
+    <aside className="bg-black w-60 flex flex-col items-center justify-between pb-4">
+      <ul className="text-frustration-yellow px-3 w-full">
         <li>
           <LinkSidenav href="/revenus">
             <FaCreditCard />
@@ -14,6 +14,14 @@ export const Sidenav = () => {
           </LinkSidenav>
         </li>
       </ul>
+      <Link href="/api/auth/signout?callbackUrl/">
+        <button
+          type="button"
+          className="text-black bg-frustration-yellow px-4 py-2 font-bold rounded-md"
+        >
+          Se déconnecter
+        </button>
+      </Link>
     </aside>
   );
 };
