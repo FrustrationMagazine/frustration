@@ -1,7 +1,7 @@
 import React from "react";
 
-const Abonnements = () => {
-  return <div>Abonnements</div>;
+const Dons = () => {
+  return <div>Dons</div>;
 };
 
-export default Abonnements;
+export default Dons;

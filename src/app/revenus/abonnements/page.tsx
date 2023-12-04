@@ -1,7 +1,7 @@
 import React from "react";
 
-const Ventes = () => {
-  return <div>Ventes</div>;
+const Abonnements = () => {
+  return <div>Abonnements</div>;
 };
 
-export default Ventes;
+export default Abonnements;
