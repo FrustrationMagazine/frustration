@@ -1,5 +1,5 @@
 import React from "react";
-import { bebasNeue } from "@frustration/utils/fonts";
+import { bebasNeue } from "../utils/fonts";
 import Link from "next/link";
 
 export const Header = () => {

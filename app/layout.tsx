@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "./Header";
-import { Sidenav } from "./Sidenav";
-import { getServerSession } from "next-auth";
-import { options } from "./api/auth/[...nextauth]/options";
+import { Header } from "@/components/Header";
+import { Sidenav } from "@/components/Sidenav";
 import Link from "next/link";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Frustration Dahsboard",
@@ -12,13 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
-  const session = await getServerSession(options);
+  const session = await auth();
 
   return (
     <html lang="fr">
       <body className="flex flex-col min-h-screen">
         <Header />
-        {session ? (
+        {!session ? (
           <article className="flex flex-grow">
             <Sidenav />
             <main className="flex grow">{children}</main>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { poppins } from "@frustration/utils/fonts";
+import { poppins } from "../../utils/fonts";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
 export const Tabs = () => {

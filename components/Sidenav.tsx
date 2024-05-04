@@ -1,8 +1,9 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { FaCreditCard } from "react-icons/fa";
-import { poppins } from "@frustration/utils/fonts";
+import { poppins } from "../utils/fonts";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 export const Sidenav = async () => {
   return (

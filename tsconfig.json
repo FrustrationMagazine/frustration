@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@frustration/*": ["./src/*"]
+      "@/components/*": ["./components/*"],
+      "@/auth": ["./auth.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
