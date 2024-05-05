@@ -1,10 +1,8 @@
 const { HELLOASSO_CLIENT_ID, HELLOASSO_CLIENT_SECRET, HELLOASSO_API_ENDPOINT, HELLOASSO_ORGANIZATION_SLUG } = require("../config/constants");
-const { saveFile, readFile } = require("../utils");
-const fs = require("fs");
-const fetch = require("node-fetch");
+const { saveFile } = require("../utils");
 
 // Get token
-async function getHelloAssoAccessToken({ endpoint_access_token }) {
+async function getToken({ endpoint_access_token }: { endpoint_access_token: string }): Promise<string | null> {
   process.stdout.write("🔁 Récupération d'un token HelloAsso  \r\n");
   let accessToken = null;
 
@@ -32,10 +30,10 @@ async function getHelloAssoAccessToken({ endpoint_access_token }) {
 }
 
 // Get page of payments and continuation token
-async function getPaymentsAndContinuationToken(endpoint_payments) {
-  const access_token = await getHelloAssoAccessToken({ endpoint_access_token: HELLOASSO_API_ENDPOINT });
+async function getPaymentsAndContinuationToken(endpoint_payments: string): Promise<{ payments: any[]; nextToken: string | null }> {
+  const access_token = await getToken({ endpoint_access_token: HELLOASSO_API_ENDPOINT });
 
-  let payments = [];
+  let payments: any[] = [];
   let nextToken = null;
 
   process.stdout.write("🔁 Récupération d'une page de paiements \r\n");
@@ -60,8 +58,8 @@ async function getPaymentsAndContinuationToken(endpoint_payments) {
 }
 
 // Concatenate all payments
-async function getHelloAssoPayments(from = "2024-04-01T00:00:00Z") {
-  const PAGE_SIZE = 100;
+async function getPayments(from = "2024-04-01T00:00:00Z"): Promise<any[]> {
+  const PAGE_SIZE = "100";
   let ENDPOINT_PAYMENTS;
 
   const payments = [];
@@ -72,7 +70,7 @@ async function getHelloAssoPayments(from = "2024-04-01T00:00:00Z") {
   let endingDate = new Date(from);
   endingDate.setMonth(startingDate.getMonth() + 1, 0);
 
-  const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+  const options: Intl.DateTimeFormatOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
   process.stdout.write(`Récupération des données entre le ${startingDate.toLocaleDateString("fr-FR", options)} et le ${endingDate.toLocaleDateString("fr-FR", options)}  \r\n`);
 
   const params = new URLSearchParams({
@@ -97,29 +95,51 @@ async function getHelloAssoPayments(from = "2024-04-01T00:00:00Z") {
     }
   }
 
-  saveFile(payments, `./logs/helloasso/payments-${startingDate.toLocaleString("fr-FR", { month: "long" })}-${startingDate.getFullYear()}.json`);
-  return payments;
+  const formattedPayments: FormattedPayment[] = payments.map(formatPayment);
+  saveFile(formattedPayments, `./logs/helloasso/formattedPayments-${startingDate.toLocaleString("fr-FR", { month: "long" })}-${startingDate.getFullYear()}.json`);
+  return formattedPayments;
 }
 
 // Convert
 
-const SUPABASE_TYPES = {
+const TRANSACTION_TYPES = {
   SUBSCRIPTION: "subscription",
   DONATION: "donation",
   OTHER: "other"
 };
 
-function getSupabaseType(helloassoType) {
-  if (helloassoType === "MonthlyDonation") return SUPABASE_TYPES.SUBSCRIPTION;
-  if (helloassoType === "Donation") return SUPABASE_TYPES.DONATION;
-  return SUPABASE_TYPES.OTHER;
+function getTransactionType(helloassoType: string): string {
+  if (helloassoType === "MonthlyDonation") return TRANSACTION_TYPES.SUBSCRIPTION;
+  if (helloassoType === "Donation") return TRANSACTION_TYPES.DONATION;
+  return TRANSACTION_TYPES.OTHER;
 }
 
-function mapHelloAssoToSupabase({ id, date, amount, items, state }) {
-  const type = items[0]?.type;
-  const supabaseType = getSupabaseType(type);
+/****************** PAYMENTS *************************/
 
-  if (supabaseType === SUPABASE_TYPES.OTHER) {
+interface Payment {
+  id: string;
+  date: string;
+  amount: number;
+  items: { type: string }[];
+  state: string;
+}
+
+interface FormattedPayment {
+  id: string;
+  created: Date;
+  available: Date;
+  amount: number;
+  net: number;
+  source: string;
+  type: string;
+  status: string;
+}
+
+function formatPayment({ id, date, amount, items, state }: Payment): FormattedPayment {
+  const type = items[0]?.type;
+  const transactionType = getTransactionType(type);
+
+  if (transactionType === TRANSACTION_TYPES.OTHER) {
     process.stdout.write(`Unknown type: ${type}\n`);
   }
 
@@ -130,16 +150,11 @@ function mapHelloAssoToSupabase({ id, date, amount, items, state }) {
     amount: amount / 100,
     net: amount / 100,
     source: "helloasso",
-    type: supabaseType,
+    type: transactionType,
     status: state
   };
 }
 
-function convertHelloAssoPaymentsToSupabase(payments) {
-  return payments.map(mapHelloAssoToSupabase);
-}
-
 module.exports = {
-  getHelloAssoPayments,
-  convertHelloAssoPaymentsToSupabase
+  getPayments
 };

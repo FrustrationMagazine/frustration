@@ -18,6 +18,7 @@
     "tidyjs": "^1.0.22"
   },
   "devDependencies": {
+    "@types/node": "^20.12.8",
     "typescript": "^5.4.5"
   }
 }
