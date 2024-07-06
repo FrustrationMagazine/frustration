@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss";
 
+const YELLOW_FRUSTRATION = "#FFF200";
+const YELLOW_HOVER_FRUSTRATION = "#191a00";
+
 const config: Config = {
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
@@ -13,8 +16,9 @@ const config: Config = {
     extend: {
       backgroundImage: {},
       colors: {
-        "frustration-yellow": "#FFF200",
-        "frustration-yellow-hover": "#191a00",
+        "frustration-yellow": YELLOW_FRUSTRATION,
+        "frustration-yellow-hover": YELLOW_HOVER_FRUSTRATION,
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -1,0 +1,20 @@
+{
+  "name": "@frustration/ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "esbuild src/*.js src/*.jsx --outdir=dist --target=chrome95",
+    "dev": "esbuild src/*.js src/*.jsx --outdir=dist --target=chrome95 --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Thibaut Izard <thibaut.izard@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.20.2"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

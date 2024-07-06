@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/components/Header";
-import { Sidenav } from "@/components/Sidenav";
-import Link from "next/link";
+import Header from "../components/Header";
+import Sidenav from "../components/Sidenav";
+import { inter } from "@/fonts";
+import SignIn from "./signin/SignIn";
 import { auth } from "@/auth";
 
 export const metadata: Metadata = {
@@ -11,22 +12,22 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
-  const session = null;
+  const session = await auth();
+
+  let Main = <SignIn />;
+  if (session?.user)
+    Main = (
+      <article className="flex flex-grow">
+        <Sidenav />
+        <main className="flex grow">{children}</main>
+      </article>
+    );
 
   return (
     <html lang="fr">
-      <body className="flex flex-col min-h-screen">
+      <body className={`${inter.className} flex flex-col min-h-screen antialiased`}>
         <Header />
-        {!session ? (
-          <article className="flex flex-grow">
-            <Sidenav />
-            <main className="flex grow">{children}</main>
-          </article>
-        ) : (
-          <Link href="/api/auth/signin">
-            <span>Se connecter</span>
-          </Link>
-        )}
+        {Main}
       </body>
     </html>
   );
