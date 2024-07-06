@@ -1,7 +1,8 @@
 'use server';
 
-import { signIn } from '@/auth';
+import { signIn, signOut } from '@/auth';
 import { PrismaClient } from '@prisma/client';
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
@@ -20,15 +21,26 @@ export const sendMagicLink = async (
   );
   if (isAuthorizedEmail) {
     try {
-      signIn('resend', formData);
+      await signIn('resend', formData);
+    } catch (errorMessage) {
+      return { errorMessage };
+    } finally {
       return {
         successMessage:
           'Un lien de connexion a été envoyé à votre adresse email',
       };
-    } catch (errorMessage) {
-      return { errorMessage };
     }
   } else {
     return { errorMessage: 'Email non autorisé' };
+  }
+};
+
+export const signOutDashboard = async () => {
+  try {
+    await signOut({ redirect: false });
+  } catch (error) {
+    console.log('error:', error);
+  } finally {
+    redirect('/');
   }
 };
