@@ -1,5 +1,5 @@
 import React from 'react';
-import { signOutDashboard } from '@/actions';
+import { signOutDashboard } from '../_actions/signOut';
 import { RiLogoutBoxLine } from 'react-icons/ri';
 
 const SignOut = () => {

@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -22,7 +23,8 @@
       "@/components/*": ["./components/*"],
       "@/fonts": ["./utils/fonts.ts"],
       "@/auth": ["./auth.ts"],
-      "@/actions": ["./actions.ts"]
+      "@/actions": ["./actions.ts"],
+      "@/schemas": ["./schemas.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
