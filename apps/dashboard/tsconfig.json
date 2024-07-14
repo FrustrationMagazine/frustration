@@ -20,11 +20,12 @@
       }
     ],
     "paths": {
-      "@/components/*": ["./components/*"],
       "@/fonts": ["./utils/fonts.ts"],
+      "@/stripe": ["./libs/stripe.ts"],
       "@/auth": ["./auth.ts"],
-      "@/actions": ["./actions.ts"],
-      "@/schemas": ["./schemas.ts"]
+      "@/models/*": ["./models/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/libs/*": ["./libs/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

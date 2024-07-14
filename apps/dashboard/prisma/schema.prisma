@@ -76,3 +76,22 @@ model Authenticator {
 
   @@id([userId, credentialID])
 }
+
+model BalanceTransactions {
+  id        String   @id
+  created   DateTime
+  available DateTime
+  amount    Float
+  net       Float
+  source    String
+  type      String
+  status    String
+  updatedAt DateTime @default(now())
+}
+
+model Balance {
+  available Float
+  pending   Float
+  date      DateTime @id
+  createdAt DateTime @default(now())
+}
