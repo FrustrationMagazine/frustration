@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { FaCreditCard } from 'react-icons/fa';
+import { MdUpdate } from 'react-icons/md';
 import { poppins } from '@/fonts';
 import SignOut from './SignOut';
 
@@ -8,7 +9,12 @@ const SIDENAV_ELEMENTS = [
   {
     label: 'Revenus',
     icon: <FaCreditCard />,
-    href: '/revenus',
+    href: '/dashboard/income',
+  },
+  {
+    label: 'Mises à jour',
+    icon: <MdUpdate />,
+    href: '/dashboard/update',
   },
 ];
 
