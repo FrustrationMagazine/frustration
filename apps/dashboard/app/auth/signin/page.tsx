@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import clsx from 'clsx';
-import { sendMagicLinkAction } from './_actions/sendMagicLink';
-import { SignInFormSchema } from './_schemas/signIn';
-import { bebasNeue } from '@/fonts';
-import { BiMailSend } from 'react-icons/bi';
-import { useFormState } from 'react-dom';
-import { useRef, useEffect } from 'react';
-import { Button } from '@/ui/components/button';
-import { Input } from '@/ui/components/input';
-import { useToast } from '@/ui/components/use-toast';
+import clsx from "clsx";
+import { sendMagicLinkAction } from "./_actions/sendMagicLink";
+import { SignInFormSchema } from "./_schemas/signIn";
+import { bebasNeue } from "@/fonts";
+import { BiMailSend } from "react-icons/bi";
+import { useFormState } from "react-dom";
+import { useRef, useEffect } from "react";
+import { Button } from "@/ui/components/button";
+import { Input } from "@/ui/components/input";
+import { useToast } from "@/ui/components/use-toast";
 import {
   Form,
   FormControl,
@@ -17,10 +17,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/components/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+} from "@/ui/components/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 /* Header */
 /**********/
@@ -44,8 +44,8 @@ const EmailInput = ({ field }: { field: any }) => (
 
 export default function SignIn() {
   const [formState, formAction] = useFormState(sendMagicLinkAction, {
-    successMessage: '',
-    errorMessage: '',
+    successMessage: "",
+    errorMessage: "",
   });
 
   const { toast } = useToast();
@@ -54,7 +54,7 @@ export default function SignIn() {
   const form = useForm<z.infer<typeof SignInFormSchema>>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
-      email: '',
+      email: "",
     },
   });
 
@@ -65,7 +65,7 @@ export default function SignIn() {
       if (formState?.successMessage) {
         setTimeout(() => {
           toast({
-            title: '✅ Succès',
+            title: "✅ Succès",
             description: formState?.successMessage,
           });
         }, 0);
@@ -76,12 +76,12 @@ export default function SignIn() {
           toast({
             title: "Une erreur s'est produite",
             description: formState?.errorMessage,
-            variant: 'destructive',
+            variant: "destructive",
           });
         }, 0);
       }
     },
-    [formState, toast]
+    [formState, toast],
   );
 
   /******************/
