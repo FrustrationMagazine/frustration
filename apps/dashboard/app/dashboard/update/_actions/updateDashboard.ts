@@ -2,15 +2,25 @@
 
 import { getBalanceTransactions, getBalance } from "@/stripe";
 import { prisma } from "@/libs/prisma";
+import {
+  UpdateDashboardResponse,
+  SUCCESS,
+  ERROR_GET_LAST_RECORD,
+  ERROR_UPSERT_PAYMENTS,
+  ERROR_GET_BALANCE,
+  ERROR_UNKNOWN,
+  ERROR_UPDATE_BALANCE,
+} from "../_models/formState";
 
 export const updateDashboard = async () => {
-  updateBalanceTransactions();
-  updateBalance();
-
-  return { success: true, message: "Dashboard updated successfully" };
+  let result = null;
+  result = await updateBalance();
+  if (result.errorMessage) return result;
+  result = await updateBalanceTransactions();
+  return result;
 };
 
-async function updateBalanceTransactions() {
+async function updateBalanceTransactions(): Promise<UpdateDashboardResponse> {
   let lastDatabaseUpdate;
   try {
     const result = await prisma.balanceTransactions.findFirst({
@@ -20,8 +30,8 @@ async function updateBalanceTransactions() {
     });
     lastDatabaseUpdate = result?.updatedAt;
   } catch (error) {
-    console.error("Couldn't get last database update date...");
-    return;
+    console.error(error);
+    return ERROR_GET_LAST_RECORD;
   }
 
   let stripeBalanceTransactions = [];
@@ -45,29 +55,39 @@ async function updateBalanceTransactions() {
     console.log(`${result.count} balance transaction(s) inserted.`);
   } catch (error) {
     console.error("Failed to insert records:", error);
+    return ERROR_UPSERT_PAYMENTS;
   }
+  return SUCCESS;
 }
 
-async function updateBalance() {
+async function updateBalance(): Promise<UpdateDashboardResponse> {
   const stripeBalance = await getBalance();
-
-  const lastBalanceRow = await prisma.balance.findFirst({});
-
-  if (lastBalanceRow) {
-    try {
-      const result = await prisma.balance.deleteMany({});
-      console.log(`${result.count} records deleted.`);
-    } catch (error) {
-      if (typeof error === "string") return new Error(error);
+  try {
+    const lastBalanceRow = await prisma.balance.findFirst({});
+    if (lastBalanceRow) {
+      await prisma.balance.deleteMany({});
     }
+  } catch (error) {
+    if (typeof error === "string") {
+      console.error(error);
+      return ERROR_GET_BALANCE;
+    }
+    console.error(error);
+    return ERROR_UNKNOWN;
   }
 
   try {
     await prisma.balance.create({
       data: stripeBalance,
     });
-    console.log(`New balance information inserted`);
   } catch (error) {
-    if (typeof error === "string") return new Error(error);
+    if (typeof error === "string") {
+      console.error(error);
+      return ERROR_UPDATE_BALANCE;
+    }
+    console.error(error);
+    return ERROR_UNKNOWN;
   }
+
+  return SUCCESS;
 }

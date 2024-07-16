@@ -1,26 +1,18 @@
-import React from "react";
 import { Button } from "@/ui/components/button";
 import { updateDashboard } from "./_actions/updateDashboard";
 import { getLastDashboardUpdatedDate } from "@/stripe";
-
+import UpdateForm from "./_components/UpdateForm";
+import LastUpdate from "./_components/LastUpdate";
 const Update = async () => {
-  const lastDashboardUpdatedDate = await getLastDashboardUpdatedDate();
-  console.log("lastDashboardUpdatedDate", lastDashboardUpdatedDate);
+  /******************/
+  /*     RENDER     */
+  /******************/
 
   return (
-    <>
-      {lastDashboardUpdatedDate ? (
-        <p>
-          Date de dernière mise à jour :{" "}
-          <span className='capitalize'>{lastDashboardUpdatedDate}</span>
-        </p>
-      ) : null}
-      <form action={updateDashboard}>
-        <Button className='font-bold' variant='default' type='submit'>
-          Mettre à jour le dashboard
-        </Button>
-      </form>
-    </>
+    <div className='m-auto flex min-w-[500px] flex-col items-center gap-5 rounded-md bg-white px-12 py-6 shadow-md'>
+      <LastUpdate />
+      <UpdateForm />
+    </div>
   );
 };
 

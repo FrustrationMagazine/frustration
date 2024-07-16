@@ -11,18 +11,21 @@ export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
 });
 
-export async function getLastDashboardUpdatedDate() {
+export async function getLastDashboardUpdatedDate(): Promise<[Date, string] | [null, null]> {
   const lastBalanceRow = await prisma.balance.findFirst({});
   if (lastBalanceRow?.createdAt) {
-    const formattedDate = new Date(lastBalanceRow.createdAt).toLocaleDateString("fr-FR", {
+    const date = new Date(lastBalanceRow.createdAt);
+    const formattedDate = date.toLocaleDateString("fr-FR", {
       weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
     });
-    return formattedDate;
+    return [date, formattedDate];
   }
-  return null;
+  return [null, null];
 }
 
 /****************** BALANCE TRANSACTIONS *************************/
