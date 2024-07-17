@@ -9,7 +9,7 @@ export enum TRANSACTION_TYPES {
   OTHER = "other",
 }
 
-export interface BalanceTransaction {
+export interface StripeTransaction {
   id: string;
   amount: number;
   available_on: number;
@@ -19,7 +19,15 @@ export interface BalanceTransaction {
   status: string;
 }
 
-export interface FormattedBalanceTransaction {
+export interface HelloAssoTransaction {
+  id: string;
+  date: string;
+  amount: number;
+  items: { type: string }[];
+  state: string;
+}
+
+export interface FormattedTransaction {
   id: string;
   created: Date;
   available: Date;

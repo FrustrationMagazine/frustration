@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/fonts": ["./utils/fonts.ts"],
-      "@/stripe": ["./libs/stripe.ts"],
+      "@/stripe": ["libs/transactions/stripe.ts"],
       "@/auth": ["./auth.ts"],
       "@/models/*": ["./models/*"],
       "@/utils/*": ["./utils/*"],

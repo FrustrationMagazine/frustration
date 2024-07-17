@@ -86,12 +86,10 @@ model BalanceTransactions {
   source    String
   type      String
   status    String
-  updatedAt DateTime @default(now())
 }
 
 model Balance {
   available Float
   pending   Float
-  date      DateTime @id
-  createdAt DateTime @default(now())
+  updatedAt DateTime @id @default(now())
 }

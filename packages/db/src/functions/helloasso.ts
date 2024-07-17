@@ -3,7 +3,7 @@ const { saveFile } = require("../utils");
 
 // Get token
 async function getToken({ endpoint_access_token }: { endpoint_access_token: string }): Promise<string | null> {
-  process.stdout.write("🔁 Récupération d'un token HelloAsso  \r\n");
+  process.stdout.write("🔁 Récupération d'un token HelloAsso");
   let accessToken = null;
 
   const params = new URLSearchParams({
@@ -95,9 +95,9 @@ async function getPayments(from = "2024-04-01T00:00:00Z"): Promise<any[]> {
     }
   }
 
-  const formattedPayments: FormattedPayment[] = payments.map(formatPayment);
-  saveFile(formattedPayments, `./logs/helloasso/formattedPayments-${startingDate.toLocaleString("fr-FR", { month: "long" })}-${startingDate.getFullYear()}.json`);
-  return formattedPayments;
+  const formattedTransactions: FormattedPayment[] = payments.map(formatPayment);
+  saveFile(formattedTransactions, `./logs/helloasso/formattedTransactions-${startingDate.toLocaleString("fr-FR", { month: "long" })}-${startingDate.getFullYear()}.json`);
+  return formattedTransactions;
 }
 
 // Convert

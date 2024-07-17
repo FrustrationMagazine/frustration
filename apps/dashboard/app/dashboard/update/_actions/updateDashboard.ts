@@ -1,40 +1,40 @@
 "use server";
 
-import { getBalanceTransactions, getBalance } from "@/stripe";
+import { fetchStripeTransactions, fetchStripeBalance } from "@/libs/transactions/stripe";
+import { fetchHelloAssoTransactions } from "@/libs/transactions/helloasso";
 import { prisma } from "@/libs/prisma";
 import {
   UpdateDashboardResponse,
   SUCCESS,
-  ERROR_GET_LAST_RECORD,
   ERROR_UPSERT_PAYMENTS,
   ERROR_GET_BALANCE,
   ERROR_UNKNOWN,
   ERROR_UPDATE_BALANCE,
 } from "../_models/formState";
 
+/****************** EXPORTS *************************/
+
 export const updateDashboard = async () => {
   let result = null;
-  result = await updateBalance();
+  result = await updateStripeBalance();
   if (result.errorMessage) return result;
-  result = await updateBalanceTransactions();
+  result = await updateStripeTransactions();
   return result;
 };
 
-async function updateBalanceTransactions(): Promise<UpdateDashboardResponse> {
+/****************** EXPORTS *************************/
+
+async function updateStripeTransactions(): Promise<UpdateDashboardResponse> {
   let lastDatabaseUpdate;
   try {
-    const result = await prisma.balanceTransactions.findFirst({
-      orderBy: {
-        updatedAt: "desc",
-      },
-    });
+    const result = await prisma.balance.findFirst();
     lastDatabaseUpdate = result?.updatedAt;
   } catch (error) {
     console.error(error);
-    return ERROR_GET_LAST_RECORD;
   }
 
-  let stripeBalanceTransactions = [];
+  let stripeTransactions = [];
+  let helloassoTransactions = [];
 
   if (lastDatabaseUpdate) {
     const lastUpdateDate = new Date(lastDatabaseUpdate);
@@ -43,16 +43,35 @@ async function updateBalanceTransactions(): Promise<UpdateDashboardResponse> {
     const oneMonthBeforeDate = new Date(lastDatabaseUpdate);
     oneMonthBeforeDate.setMonth(lastUpdateDate.getMonth() - 1);
     const unixTimestamp = Math.floor(oneMonthBeforeDate.getTime() / 1000);
-    stripeBalanceTransactions = await getBalanceTransactions({ afterTimestamp: unixTimestamp });
+    stripeTransactions = await fetchStripeTransactions({ afterTimestamp: unixTimestamp });
+    helloassoTransactions = await fetchHelloAssoTransactions({
+      from: oneMonthBeforeDate.toISOString(),
+    });
   } else {
-    stripeBalanceTransactions = await getBalanceTransactions();
+    stripeTransactions = await fetchStripeTransactions();
   }
   try {
-    const result = await prisma.balanceTransactions.createMany({
-      data: stripeBalanceTransactions,
+    const allTransactions = [...stripeTransactions, ...helloassoTransactions];
+    const newTransactions = await prisma.balanceTransactions.createManyAndReturn({
+      data: allTransactions,
       skipDuplicates: true,
     });
-    console.log(`${result.count} balance transaction(s) inserted.`);
+    console.log(`${newTransactions.length} transaction(s) inserted.`);
+    const transactionsToUpdate = allTransactions.filter(
+      (transaction) =>
+        !newTransactions.some((newTransaction) => newTransaction.id === transaction.id),
+    );
+    transactionsToUpdate.forEach(async (transaction) => {
+      await prisma.balanceTransactions.update({
+        where: {
+          id: transaction.id,
+        },
+        data: {
+          status: transaction.status,
+        },
+      });
+    });
+    console.log(`${transactionsToUpdate.length} transaction(s) updated.`);
   } catch (error) {
     console.error("Failed to insert records:", error);
     return ERROR_UPSERT_PAYMENTS;
@@ -60,8 +79,8 @@ async function updateBalanceTransactions(): Promise<UpdateDashboardResponse> {
   return SUCCESS;
 }
 
-async function updateBalance(): Promise<UpdateDashboardResponse> {
-  const stripeBalance = await getBalance();
+async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
+  const stripeBalance = await fetchStripeBalance();
   try {
     const lastBalanceRow = await prisma.balance.findFirst({});
     if (lastBalanceRow) {

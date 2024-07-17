@@ -2,7 +2,7 @@ const stripe = require("../config/stripe.config.js");
 const { convertDateUTC, saveFile } = require("../utils/index");
 const { TRANSACTION_TYPES } = require("../config/constants");
 
-async function getStripeData(operation: string, lastUpdateDate = 0): Promise<any[]> {
+async function fetchStripeData(operation: string, lastUpdateDate = 0): Promise<any[]> {
   const PAGE_SIZE = 100;
   let data = [];
   let hasMore = true;
@@ -58,7 +58,7 @@ interface BalanceTransaction {
   status: string;
 }
 
-interface FormattedBalanceTransaction {
+interface FormattedTransaction {
   id: string;
   created: Date;
   available: Date;
@@ -68,7 +68,7 @@ interface FormattedBalanceTransaction {
   type: string;
   status: string;
 }
-const formatBalanceTransactions = ({ id, description, amount, net, available_on, created, status }: BalanceTransaction): FormattedBalanceTransaction => {
+const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): FormattedTransaction => {
   const transactionType = getTransactionType(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
     process.stdout.write(`Unknown type: ${description}\n`);
@@ -85,11 +85,11 @@ const formatBalanceTransactions = ({ id, description, amount, net, available_on,
   };
 };
 
-async function getBalanceTransactions(filepath = "./logs/stripe/balance_transactions.json", lastUpdateDate = 0) {
-  let balanceTransactions: BalanceTransaction[] = [];
-  balanceTransactions = await getStripeData("balanceTransactions", lastUpdateDate);
+async function fetchStripeTransactions(filepath = "./logs/stripe/balance_transactions.json", lastUpdateDate = 0) {
+  let balanceTransactions: StripeTransaction[] = [];
+  balanceTransactions = await fetchStripeData("balanceTransactions", lastUpdateDate);
 
-  const formattedBalanceTransactions: FormattedBalanceTransaction[] = balanceTransactions.map(formatBalanceTransactions);
+  const formattedBalanceTransactions: FormattedTransaction[] = balanceTransactions.map(formatStripeTransactions);
 
   process.stdout.write(`💾 Save data to ${filepath} \r\n`);
   saveFile(formattedBalanceTransactions, filepath);
@@ -140,6 +140,6 @@ export async function getStripeBalance(): Promise<FormattedBalance> {
 }
 
 module.exports = {
-  getStripeData,
-  getBalanceTransactions
+  fetchStripeData,
+  fetchStripeTransactions
 };

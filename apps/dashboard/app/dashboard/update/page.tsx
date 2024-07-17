@@ -1,6 +1,6 @@
 import { Button } from "@/ui/components/button";
 import { updateDashboard } from "./_actions/updateDashboard";
-import { getLastDashboardUpdatedDate } from "@/stripe";
+import { fetchLastDashboardUpdatedDate } from "@/stripe";
 import UpdateForm from "./_components/UpdateForm";
 import LastUpdate from "./_components/LastUpdate";
 const Update = async () => {

@@ -1,8 +1,8 @@
 import React from "react";
-import { getLastDashboardUpdatedDate } from "@/stripe";
+import { fetchLastDashboardUpdatedDate } from "@/stripe";
 
 const LastUpdate = async () => {
-  const [lastUpdate, formattedLastUpdate] = await getLastDashboardUpdatedDate();
+  const [lastUpdate, formattedLastUpdate] = await fetchLastDashboardUpdatedDate();
 
   if (!lastUpdate) return null;
 

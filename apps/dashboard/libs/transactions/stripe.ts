@@ -1,44 +1,36 @@
 import Stripe from "stripe";
 import { prisma } from "@/libs/prisma";
-import {
-  TRANSACTION_TYPES,
-  BalanceTransaction,
-  FormattedBalanceTransaction,
-} from "@/models/transactions";
+import { TRANSACTION_TYPES, StripeTransaction, FormattedTransaction } from "@/models/transactions";
 import { convertDateUTC } from "@/utils/dates";
 
 export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
 });
 
-export async function getLastDashboardUpdatedDate(): Promise<[Date, string] | [null, null]> {
-  const lastBalanceRow = await prisma.balance.findFirst({});
-  if (lastBalanceRow?.createdAt) {
-    const date = new Date(lastBalanceRow.createdAt);
-    const formattedDate = date.toLocaleDateString("fr-FR", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    });
-    return [date, formattedDate];
-  }
-  return [null, null];
-}
+/****************** EXPORTS *************************/
 
-/****************** BALANCE TRANSACTIONS *************************/
+export async function fetchStripeTransactions({ afterTimestamp } = { afterTimestamp: 0 }) {
+  let balanceTransactions: StripeTransaction[] = [];
+  balanceTransactions = await fetchStripeData({ afterTimestamp });
 
-export async function getBalanceTransactions({ afterTimestamp } = { afterTimestamp: 0 }) {
-  let balanceTransactions: BalanceTransaction[] = [];
-  balanceTransactions = await getStripeData({ afterTimestamp });
-
-  const formattedBalanceTransactions: FormattedBalanceTransaction[] =
-    balanceTransactions.map(formatBalanceTransactions);
+  const formattedBalanceTransactions: FormattedTransaction[] =
+    balanceTransactions.map(formatStripeTransactions);
 
   return formattedBalanceTransactions;
 }
+
+export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
+  const balance = await stripe.balance.retrieve();
+  let date = new Date();
+  date.setHours(0, 0, 0, 0);
+  const formattedBalance = {
+    available: balance.available[0].amount / 100,
+    pending: balance.pending[0].amount / 100,
+  };
+  return formattedBalance;
+}
+
+/****************** EXPORTS *************************/
 
 function getTransactionType(description: string): string {
   if (/(Subscription creation)|(Subscription update)/.test(description))
@@ -53,7 +45,7 @@ function getTransactionType(description: string): string {
   else return TRANSACTION_TYPES.OTHER;
 }
 
-const formatBalanceTransactions = ({
+const formatStripeTransactions = ({
   id,
   description,
   amount,
@@ -61,7 +53,7 @@ const formatBalanceTransactions = ({
   available_on,
   created,
   status,
-}: BalanceTransaction): FormattedBalanceTransaction => {
+}: StripeTransaction): FormattedTransaction => {
   const transactionType = getTransactionType(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
     console.log(`Unknown type: ${description}\n`);
@@ -87,7 +79,30 @@ const formatBalanceTransactions = ({
   };
 };
 
-async function getStripeData({ afterTimestamp } = { afterTimestamp: 0 }): Promise<any[]> {
+export async function fetchLastDashboardUpdatedDate(): Promise<[Date, string] | [null, null]> {
+  try {
+    const lastBalanceRow = await prisma.balance.findFirst({});
+    if (lastBalanceRow?.updatedAt) {
+      const date = new Date(lastBalanceRow.updatedAt);
+      console.log("date", date);
+      const formattedDate = date.toLocaleDateString("fr-FR", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return [date, formattedDate];
+    }
+  } catch (error) {
+    console.error(error);
+    return [null, null];
+  }
+  return [null, null];
+}
+
+async function fetchStripeData({ afterTimestamp } = { afterTimestamp: 0 }): Promise<any[]> {
   const PAGE_SIZE = 100;
   let data = [];
   let hasMore = true;
@@ -124,14 +139,14 @@ async function getStripeData({ afterTimestamp } = { afterTimestamp: 0 }): Promis
 
 /****************** BALANCE *************************/
 
-interface Balance {
+interface StripeBalance {
   object: "balance";
-  available: BalanceAmount[];
-  pending: BalanceAmount[];
+  available: StripeBalanceAmount[];
+  pending: StripeBalanceAmount[];
   livemode: boolean;
 }
 
-interface BalanceAmount {
+interface StripeBalanceAmount {
   amount: number;
   currency: string;
   source_types: {
@@ -140,20 +155,7 @@ interface BalanceAmount {
   };
 }
 
-interface FormattedBalance {
-  date: Date;
+interface StripeFormattedBalance {
   available: number;
   pending: number;
-}
-
-export async function getBalance(): Promise<FormattedBalance> {
-  const balance = await stripe.balance.retrieve();
-  let date = new Date();
-  date.setHours(0, 0, 0, 0);
-  const formattedBalance = {
-    date,
-    available: balance.available[0].amount / 100,
-    pending: balance.pending[0].amount / 100,
-  };
-  return formattedBalance;
 }

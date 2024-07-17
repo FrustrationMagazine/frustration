@@ -74,7 +74,7 @@ export default function UpdateForm() {
         })}
       >
         <Button disabled={loading} className='font-bold' variant='default' type='submit'>
-          {loading ? <TfiReload className='mr-2 animate-spin' /> : null}
+          {loading ? <TfiReload className='mr-2 animate-spin direction-reverse' /> : null}
           <span>Mettre à jour le dashboard</span>
         </Button>
       </form>
