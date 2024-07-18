@@ -2,7 +2,7 @@
 
 import { signIn, getAuthorizedEmails } from "../../../../auth/auth";
 
-import { SignInFormSchema } from "../_schemas/signIn";
+import { SignInFormSchema } from "../models/signIn";
 
 export type FormState = {
   successMessage: string | null;

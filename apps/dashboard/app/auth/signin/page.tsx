@@ -1,12 +1,11 @@
 "use client";
 
-import clsx from "clsx";
 import { sendMagicLinkAction } from "./_actions/sendMagicLink";
-import { SignInFormSchema } from "./_schemas/signIn";
+import { SignInFormSchema } from "./models/signIn";
 import { bebasNeue } from "@dashboard/utils/fonts";
 import { BiMailSend } from "react-icons/bi";
 import { useFormState } from "react-dom";
-import { useRef, useEffect, startTransition } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/ui/components/button";
 import { Input } from "@/ui/components/input";
 import { useToast } from "@/ui/components/use-toast";
@@ -51,6 +50,12 @@ export default function SignIn() {
     successMessage: "",
     errorMessage: "",
   });
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (formState?.successMessage || formState?.errorMessage) setLoading(false);
+  }, [formState]);
 
   const { toast } = useToast();
 
@@ -99,12 +104,14 @@ export default function SignIn() {
           className='group flex flex-col gap-[20px] bg-white p-5'
           onSubmit={form.handleSubmit((data) => {
             const formData = new FormData();
-            Object.keys(data).forEach((key) => formData.append(key, data[key]));
+            const fields = Object.keys(data) as (keyof z.infer<typeof SignInFormSchema>)[];
+            fields.forEach((field) => formData.append(field, data[field]));
             formAction(formData);
+            setLoading(true);
           })}
         >
           <FormField control={form.control} name='email' render={EmailInput} />
-          <Button className='mx-auto w-fit' type='submit'>
+          <Button disabled={loading} className='mx-auto w-fit' type='submit'>
             <BiMailSend size={17} className='mr-2' />
             Recevoir un lien de connexion
           </Button>

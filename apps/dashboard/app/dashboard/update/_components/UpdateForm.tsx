@@ -74,7 +74,8 @@ export default function UpdateForm() {
         className='flex flex-col items-center gap-5'
         onSubmit={form.handleSubmit((data) => {
           const formData = new FormData();
-          Object.keys(data).forEach((key) => formData.append(key, data[key]));
+          const fields = Object.keys(data) as (keyof z.infer<typeof UpdateFormSchema>)[];
+          fields.forEach((field) => formData.append(field, data[field]));
           formAction(formData);
           setLoading(true);
         })}
@@ -112,15 +113,15 @@ export default function UpdateForm() {
                     <div className='space-y-3'>
                       <p>
                         La <b>mise à jour intelligente</b> se base sur la{" "}
-                        <b>date de la dernière transaction enregistrée en base</b> et récupère
-                        toutes les transactions effectuées depuis.{" "}
+                        <b>la dernière transaction enregistrée</b> et ajoute toutes les transactions
+                        effectuées depuis.{" "}
                       </p>
                       <p>
-                        Elle met également à jour le statut des{" "}
-                        <b>transactions déjà enregistrées datant de moins d&apos;un mois</b> (une
-                        transaction Stripe typiquement peut avoir un statut &apos;pending&apos; qui
-                        évolue vers &apos;available&apos; une fois son montant disponible pour
-                        transfert vers un compte).
+                        Elle met également à jour les{" "}
+                        <b>transactions déjà enregistrées mais datant de moins d&apos;un mois</b>{" "}
+                        dont le statut a pu évoluer (une transaction Stripe typiquement peut avoir
+                        un statut &apos;pending&apos; passer &apos;available&apos; une fois son
+                        montant rendu disponible pour transfert vers un compte).
                       </p>
                       <p>
                         La <b>mise à jour brute</b> réécrit intégralement la table des transactions
