@@ -4,27 +4,43 @@ import { fetchStripeTransactions, fetchStripeBalance } from "@/libs/transactions
 import { fetchHelloAssoTransactions } from "@/libs/transactions/helloasso";
 import { prisma } from "@/libs/prisma";
 import {
+  UpdateFormSchema,
   UpdateDashboardResponse,
   SUCCESS,
+  ERROR,
   ERROR_UPSERT_PAYMENTS,
   ERROR_GET_BALANCE,
   ERROR_UNKNOWN,
   ERROR_UPDATE_BALANCE,
-} from "../_models/formState";
+} from "../_models/updateDashboard";
 
 /****************** EXPORTS *************************/
 
-export const updateDashboard = async () => {
+export async function updateDashboard(
+  prevState: UpdateDashboardResponse,
+  data: FormData,
+): Promise<UpdateDashboardResponse> {
+  const formData = Object.fromEntries(data);
+  const parsed = UpdateFormSchema.safeParse(formData);
+
+  if (!parsed.success) return ERROR;
+
   let result = null;
   result = await updateStripeBalance();
   if (result.errorMessage) return result;
-  result = await updateStripeTransactions();
+  result = await updateTransactions({ updateMethod: parsed.data.method });
   return result;
-};
+}
 
 /****************** EXPORTS *************************/
 
-async function updateStripeTransactions(): Promise<UpdateDashboardResponse> {
+async function updateTransactions(
+  {
+    updateMethod,
+  }: {
+    updateMethod: string;
+  } = { updateMethod: "smart" },
+): Promise<UpdateDashboardResponse> {
   let lastDatabaseUpdate;
   try {
     const result = await prisma.balance.findFirst();
@@ -36,7 +52,7 @@ async function updateStripeTransactions(): Promise<UpdateDashboardResponse> {
   let stripeTransactions = [];
   let helloassoTransactions = [];
 
-  if (lastDatabaseUpdate) {
+  if (lastDatabaseUpdate && updateMethod === "smart") {
     const lastUpdateDate = new Date(lastDatabaseUpdate);
     // We want to update information relating to transactions fetched less than a month ago because their status
     // may have changed since
@@ -49,6 +65,7 @@ async function updateStripeTransactions(): Promise<UpdateDashboardResponse> {
     });
   } else {
     stripeTransactions = await fetchStripeTransactions();
+    helloassoTransactions = await fetchHelloAssoTransactions();
   }
   try {
     const allTransactions = [...stripeTransactions, ...helloassoTransactions];

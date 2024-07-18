@@ -84,7 +84,6 @@ export async function fetchLastDashboardUpdatedDate(): Promise<[Date, string] | 
     const lastBalanceRow = await prisma.balance.findFirst({});
     if (lastBalanceRow?.updatedAt) {
       const date = new Date(lastBalanceRow.updatedAt);
-      console.log("date", date);
       const formattedDate = date.toLocaleDateString("fr-FR", {
         weekday: "long",
         month: "long",
