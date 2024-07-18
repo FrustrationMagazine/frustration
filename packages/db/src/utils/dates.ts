@@ -1,5 +1,5 @@
 // Convert date from UTC
-function convertDateUTC(dateUTC: number): Date {
+function convertUTCtoDate(dateUTC: number): Date {
   return new Date(+dateUTC * 1000);
 }
 
@@ -15,7 +15,7 @@ function setUTCTimezone(dateString: string, timezone = "Europe/Paris"): string {
 }
 
 module.exports = {
-  convertDateUTC,
+  convertUTCtoDate,
   simplifyDate,
   setUTCTimezone
 };

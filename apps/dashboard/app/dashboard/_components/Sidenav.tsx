@@ -1,34 +1,26 @@
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
-import { FaCreditCard } from 'react-icons/fa';
-import { MdUpdate } from 'react-icons/md';
-import { poppins } from '@/fonts';
-import SignOut from './SignOut';
+import React, { ReactNode } from "react";
+import Link from "next/link";
+import { FaCreditCard } from "react-icons/fa";
+import { MdUpdate } from "react-icons/md";
+import { poppins } from "@/utils/fonts";
+import SignOut from "./SignOut";
 
 const SIDENAV_ELEMENTS = [
   {
-    label: 'Revenus',
+    label: "Revenus",
     icon: <FaCreditCard />,
-    href: '/dashboard/income',
+    href: "/dashboard/income",
   },
   {
-    label: 'Mises à jour',
+    label: "Mises à jour",
     icon: <MdUpdate />,
-    href: '/dashboard/update',
+    href: "/dashboard/update",
   },
 ];
 
 const MenuDivider = <hr className='border-3 border-frustration-yellow-hover' />;
 
-const Menu = ({
-  label,
-  icon,
-  href,
-}: {
-  label: string;
-  icon: ReactNode;
-  href: string;
-}) => {
+const Menu = ({ label, icon, href }: { label: string; icon: ReactNode; href: string }) => {
   return (
     <li key={label.toLowerCase()}>
       <Link
@@ -42,11 +34,7 @@ const Menu = ({
   );
 };
 
-const Menus = (
-  <ul className='w-full px-3 text-frustration-yellow'>
-    {SIDENAV_ELEMENTS.map(Menu)}
-  </ul>
-);
+const Menus = <ul className='w-full px-3 text-frustration-yellow'>{SIDENAV_ELEMENTS.map(Menu)}</ul>;
 
 /*********************************/
 /*           EXPORT              */

@@ -1,7 +1,7 @@
 import Stripe from "stripe";
-import { prisma } from "@/libs/prisma";
-import { TRANSACTION_TYPES, StripeTransaction, FormattedTransaction } from "@/models/transactions";
-import { convertDateUTC } from "@/utils/dates";
+import { prisma } from "@dashboard/prisma";
+import { TRANSACTION_TYPES, StripeTransaction, FormattedTransaction } from "./models/transactions";
+import { convertUTCtoDate } from "@dashboard/utils/dates";
 
 export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
@@ -69,8 +69,8 @@ const formatStripeTransactions = ({
   }
   return {
     id,
-    created: convertDateUTC(created),
-    available: convertDateUTC(available_on),
+    created: convertUTCtoDate(created),
+    available: convertUTCtoDate(available_on),
     amount: amount / 100,
     net: net / 100,
     source: "stripe",

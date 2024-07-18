@@ -2,7 +2,7 @@ import {
   TRANSACTION_TYPES,
   HelloAssoTransaction,
   FormattedTransaction,
-} from "@/models/transactions";
+} from "./models/transactions";
 
 /****************** EXPORTS *************************/
 export async function fetchHelloAssoTransactions(

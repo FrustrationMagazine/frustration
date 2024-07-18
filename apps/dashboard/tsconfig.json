@@ -20,12 +20,16 @@
       }
     ],
     "paths": {
-      "@/fonts": ["./utils/fonts.ts"],
-      "@/stripe": ["libs/transactions/stripe.ts"],
-      "@/auth": ["./auth.ts"],
-      "@/models/*": ["./models/*"],
-      "@/utils/*": ["./utils/*"],
-      "@/libs/*": ["./libs/*"]
+      "@dashboard/auth": ["./auth/auth.ts"],
+
+      "@dashboard/prisma": ["./prisma/prisma.ts"],
+
+      "@dashboard/libs/*": ["./libs/*"],
+      "@dashboard/stripe": ["./libs/transactions/stripe.ts"],
+      "@dashboard/helloasso": ["./libs/transactions/helloasso.ts"],
+
+      "@dashboard/utils/*": ["./utils/*"],
+      "@dashboard/fonts": ["./utils/fonts.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

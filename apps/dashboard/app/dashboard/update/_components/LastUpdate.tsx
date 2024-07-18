@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchLastDashboardUpdatedDate } from "@/stripe";
+import { fetchLastDashboardUpdatedDate } from "@dashboard/stripe";
 
 const LastUpdate = async () => {
   const [lastUpdate, formattedLastUpdate] = await fetchLastDashboardUpdatedDate();

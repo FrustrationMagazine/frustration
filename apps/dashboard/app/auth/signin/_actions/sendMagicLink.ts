@@ -1,7 +1,6 @@
 "use server";
 
-import { signIn, signOut, getAuthorizedEmails } from "@/auth";
-import { PrismaClient } from "@prisma/client";
+import { signIn, getAuthorizedEmails } from "../../../../auth/auth";
 
 import { SignInFormSchema } from "../_schemas/signIn";
 

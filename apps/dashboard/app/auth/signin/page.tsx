@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { sendMagicLinkAction } from "./_actions/sendMagicLink";
 import { SignInFormSchema } from "./_schemas/signIn";
-import { bebasNeue } from "@/fonts";
+import { bebasNeue } from "@dashboard/utils/fonts";
 import { BiMailSend } from "react-icons/bi";
 import { useFormState } from "react-dom";
 import { useRef, useEffect } from "react";

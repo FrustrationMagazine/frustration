@@ -1,8 +1,8 @@
 "use server";
 
-import { fetchStripeTransactions, fetchStripeBalance } from "@/libs/transactions/stripe";
-import { fetchHelloAssoTransactions } from "@/libs/transactions/helloasso";
-import { prisma } from "@/libs/prisma";
+import { fetchStripeTransactions, fetchStripeBalance } from "@dashboard/libs/transactions/stripe";
+import { fetchHelloAssoTransactions } from "@dashboard/helloasso";
+import { prisma } from "@dashboard/prisma";
 import {
   UpdateFormSchema,
   UpdateDashboardResponse,

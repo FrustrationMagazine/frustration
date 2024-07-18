@@ -1,5 +1,5 @@
 const stripe = require("../config/stripe.config.js");
-const { convertDateUTC, saveFile } = require("../utils/index");
+const { convertUTCtoDate, saveFile } = require("../utils/index");
 const { TRANSACTION_TYPES } = require("../config/constants");
 
 async function fetchStripeData(operation: string, lastUpdateDate = 0): Promise<any[]> {
@@ -75,8 +75,8 @@ const formatStripeTransactions = ({ id, description, amount, net, available_on, 
   }
   return {
     id,
-    created: convertDateUTC(created),
-    available: convertDateUTC(available_on),
+    created: convertUTCtoDate(created),
+    available: convertUTCtoDate(available_on),
     amount: amount / 100,
     net: net / 100,
     source: "stripe",
