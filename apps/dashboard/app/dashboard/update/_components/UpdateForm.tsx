@@ -35,8 +35,6 @@ export default function UpdateForm() {
 
   const { toast } = useToast();
 
-  const formRef = useRef<HTMLFormElement>(null);
-
   const form = useForm<z.infer<typeof UpdateFormSchema>>({
     resolver: zodResolver(UpdateFormSchema),
     defaultValues: {
@@ -74,10 +72,10 @@ export default function UpdateForm() {
     <Form {...form}>
       <form
         className='flex flex-col items-center gap-5'
-        ref={formRef}
-        action={formAction}
-        onSubmit={form.handleSubmit(() => {
-          formRef.current?.submit();
+        onSubmit={form.handleSubmit((data) => {
+          const formData = new FormData();
+          Object.keys(data).forEach((key) => formData.append(key, data[key]));
+          formAction(formData);
           setLoading(true);
         })}
       >

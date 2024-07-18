@@ -6,7 +6,7 @@ import { SignInFormSchema } from "./_schemas/signIn";
 import { bebasNeue } from "@dashboard/utils/fonts";
 import { BiMailSend } from "react-icons/bi";
 import { useFormState } from "react-dom";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, startTransition } from "react";
 import { Button } from "@/ui/components/button";
 import { Input } from "@/ui/components/input";
 import { useToast } from "@/ui/components/use-toast";
@@ -42,6 +42,10 @@ const EmailInput = ({ field }: { field: any }) => (
   </FormItem>
 );
 
+/* *****************************/
+/*           Sign In           */
+/*******************************/
+
 export default function SignIn() {
   const [formState, formAction] = useFormState(sendMagicLinkAction, {
     successMessage: "",
@@ -49,7 +53,6 @@ export default function SignIn() {
   });
 
   const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
 
   const form = useForm<z.infer<typeof SignInFormSchema>>({
     resolver: zodResolver(SignInFormSchema),
@@ -93,10 +96,12 @@ export default function SignIn() {
       {AUTHENTIFICATION}
       <Form {...form}>
         <form
-          ref={formRef}
           className='group flex flex-col gap-[20px] bg-white p-5'
-          action={formAction}
-          onSubmit={form.handleSubmit(() => formRef.current?.submit())}
+          onSubmit={form.handleSubmit((data) => {
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => formData.append(key, data[key]));
+            formAction(formData);
+          })}
         >
           <FormField control={form.control} name='email' render={EmailInput} />
           <Button className='mx-auto w-fit' type='submit'>
