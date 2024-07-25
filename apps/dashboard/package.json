@@ -14,7 +14,7 @@
     "prisma-studio": "dotenv -e ../../.env.local -- pnpx prisma studio",
     "prisma-push": "dotenv -e ../../.env.local -- prisma db push",
     "prisma-prod": "prisma generate && dotenv -e .env.prod -- prisma db pull",
-    "vercel-build": "prisma-prod && next build"
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@/ui": "workspace:*",
@@ -33,6 +33,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",
     "react-icons": "^5.2.1",
+    "recharts": "^2.12.7",
     "stripe": "^11.6.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
