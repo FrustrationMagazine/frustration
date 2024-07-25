@@ -1,5 +1,8 @@
 import UpdateForm from "./_components/UpdateForm";
 import LastUpdate from "./_components/LastUpdate";
+
+export const maxDuration = 60;
+
 const Update = async () => {
   /******************/
   /*     RENDER     */
