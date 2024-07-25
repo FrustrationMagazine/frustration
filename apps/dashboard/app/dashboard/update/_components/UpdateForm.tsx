@@ -119,13 +119,14 @@ export default function UpdateForm() {
                       <p>
                         Elle met également à jour les{" "}
                         <b>transactions déjà enregistrées mais datant de moins d&apos;un mois</b>{" "}
-                        dont le statut a pu évoluer (une transaction Stripe typiquement peut avoir
-                        un statut &apos;pending&apos; passer &apos;available&apos; une fois son
-                        montant rendu disponible pour transfert vers un compte).
+                        car leur statut a pu évoluer entre temps (par exemple, une transaction
+                        Stripe peut voir son statut passer de &apos;pending&apos; à
+                        &apos;available&apos; une fois son montant disponible pour tout transfert
+                        vers un compte).
                       </p>
                       <p>
                         La <b>mise à jour brute</b> réécrit intégralement la table des transactions
-                        partant de la date la plus éloignée possible.
+                        en partant de la date la plus éloignée possible.
                       </p>
                     </div>
                   </TooltipContent>
