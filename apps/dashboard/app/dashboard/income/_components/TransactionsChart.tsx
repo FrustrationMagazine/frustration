@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { Monitor } from "lucide-react";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from "@/ui/components/chart";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, YAxis } from "recharts";
 
 const chartConfig = {
   stripe: {
@@ -24,9 +21,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const TransactionsChart = ({ chartData }) => {
+const TransactionsChart = ({ chartData }: { chartData: any }) => {
   const modifiedChartData = chartData
-    .map(({ month, stripe, helloasso, total }) => ({
+    .map(({ month, stripe, helloasso, total }: any) => ({
       month: month.toISOString(),
       stripe: Math.round(stripe),
       helloasso: Math.round(helloasso),
