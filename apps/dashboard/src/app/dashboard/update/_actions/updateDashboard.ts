@@ -2,7 +2,7 @@
 
 import { fetchStripeTransactions, fetchStripeBalance } from "@dashboard/libs/transactions/stripe";
 import { fetchHelloAssoTransactions } from "../../../../libs/transactions/helloasso";
-import { prisma } from "@dashboard/prisma";
+import { prisma } from "../../../../../prisma/prisma";
 import {
   UpdateFormSchema,
   UpdateDashboardResponse,

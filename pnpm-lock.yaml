@@ -15,7 +15,7 @@ importers:
         version: link:../../packages/ui
       '@auth/prisma-adapter':
         specifier: ^2.4.1
-        version: 2.4.1(@prisma/client@5.16.1)
+        version: 2.4.1(@prisma/client@5.17.0)
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.1)
@@ -23,8 +23,8 @@ importers:
         specifier: ^14.2.4
         version: 14.2.5
       '@prisma/client':
-        specifier: 5.16.1
-        version: 5.16.1(prisma@5.17.0)
+        specifier: 5.17.0
+        version: 5.17.0(prisma@5.17.0)
       '@radix-ui/react-tabs':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -297,13 +297,13 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: false
 
-  /@auth/prisma-adapter@2.4.1(@prisma/client@5.16.1):
+  /@auth/prisma-adapter@2.4.1(@prisma/client@5.17.0):
     resolution: {integrity: sha512-VF5IOTHEWHX6WHUxIbsbc12m34cp5T82fzJfi7DmzwBZb89UsoROejV8l0B1dCTZ+pDIS0d4zN9dSa2gIKywNQ==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
     dependencies:
       '@auth/core': 0.34.1
-      '@prisma/client': 5.16.1(prisma@5.17.0)
+      '@prisma/client': 5.17.0(prisma@5.17.0)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
       - '@simplewebauthn/server'
@@ -867,8 +867,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@prisma/client@5.16.1(prisma@5.17.0):
-    resolution: {integrity: sha512-wM9SKQjF0qLxdnOZIVAIMKiz6Hu7vDt4FFAih85K1dk/Rr2mdahy6d3QP41K62N9O0DJJA//gUDA3Mp49xsKIg==}
+  /@prisma/client@5.17.0(prisma@5.17.0):
+    resolution: {integrity: sha512-N2tnyKayT0Zf7mHjwEyE8iG7FwTmXDHFZ1GnNhQp0pJUObsuel4ZZ1XwfuAYkq5mRIiC/Kot0kt0tGCfLJ70Jw==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:

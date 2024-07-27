@@ -1,7 +1,7 @@
 import React from "react";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@/ui/components/tabs";
 import TransactionsChart from "./_components/TransactionsChart";
-import { prisma } from "@dashboard/prisma";
+import { prisma } from "../../../../prisma/prisma";
 const Income = async () => {
   const transactions = await prisma.$queryRaw`
      SELECT

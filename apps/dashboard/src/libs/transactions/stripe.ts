@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { prisma } from "@dashboard/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { TRANSACTION_TYPES, StripeTransaction, FormattedTransaction } from "./models/transactions";
 import { convertUTCtoDate } from "../../utils/dates";
 
