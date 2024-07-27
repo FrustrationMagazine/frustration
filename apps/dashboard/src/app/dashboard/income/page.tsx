@@ -13,7 +13,7 @@ import {
 } from "@/ui/components/card";
 import { getTransactionsByMonth } from "./_actions/getTransactionsByMonth";
 import type { TransactionsByMonth } from "./_models/transactionsByMonth";
-import { inEuros, diffInPercent, groupByMonthAndSum, getTotalMonthAndEvolution } from "./_utils";
+import { inEuros, groupByMonthAndSum, getTotalMonthAndEvolution } from "./_utils";
 import { cn } from "@dashboard/libs/utils";
 import { Separator } from "@/ui/components/separator";
 
@@ -21,6 +21,8 @@ type Tab = {
   name: string;
   types: string[];
 };
+
+export const dynamic = "force-dynamic";
 
 const Income = () => {
   const [transactions, setTransactions] = useState<TransactionsByMonth[]>([]);
@@ -34,14 +36,12 @@ const Income = () => {
   //   total: 200
   // }
 
+  const [hoveredMonth, setHoveredMonth] = useState<number>(-1);
+
   useEffect(() => {
     async function fetchTransactionsByMonth() {
       const result = await getTransactionsByMonth();
-      if (result) {
-        setTransactions(result);
-        // const lastMonth = result.at(-1)?.month;
-        // if (lastMonth) setMonth(lastMonth);
-      }
+      if (result) setTransactions(result);
     }
     fetchTransactionsByMonth();
   }, []);
@@ -53,8 +53,8 @@ const Income = () => {
   ];
 
   return (
-    <TabGroup className='w-full px-4 pt-14'>
-      <TabList className='mx-auto mb-16 flex w-fit justify-center gap-4 rounded-full bg-black p-2 shadow-lg backdrop-blur-md'>
+    <TabGroup className='w-full p-8'>
+      <TabList className='mx-auto mb-10 flex w-fit justify-center gap-4 rounded-full bg-black/90 p-2 shadow-lg backdrop-blur-md'>
         {tabs.map(({ name }) => (
           <Tab
             key={name}
@@ -64,7 +64,7 @@ const Income = () => {
           </Tab>
         ))}
       </TabList>
-      <TabPanels className='mx-auto w-[80%]'>
+      <TabPanels className='mx-auto w-full'>
         {tabs.map(({ name, types }) => {
           let chartData = transactions.filter(({ type }) => types.includes(type));
           if (types.length > 1) chartData = groupByMonthAndSum(chartData);
@@ -73,31 +73,38 @@ const Income = () => {
 
           return (
             <TabPanel key={name} className='flex gap-6'>
-              <Card className='max-h-[1000px] min-w-[350px] overflow-scroll border-none bg-black/90 text-white backdrop-blur-md'>
+              <Card className='h-[70vh] min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md'>
                 <CardHeader className='text-3xl font-semibold'>
                   <CardTitle>{name}</CardTitle>
                   <CardDescription>Par mois</CardDescription>
                 </CardHeader>
-                <CardContent className='space-y-4'>
+                <CardContent className='space-y-1 px-4'>
                   {allMonths.map((month, index) => {
                     const isNewYear =
                       index === 0 || month.getFullYear() !== allMonths[index - 1].getFullYear();
 
                     const YearSeparator = isNewYear ? (
-                      <p className={cn(index > 0 && "!mt-8")}>
+                      <p className={cn("w-[40%] px-2", index > 0 && "!mt-8")}>
                         <Separator className='mb-1.5 bg-white/30' />
                         <span className='text-white/70'> {month.getFullYear()}</span>
                       </p>
                     ) : null;
 
+                    const monthName = month.toLocaleDateString("fr-FR", { month: "long" });
                     const { totalMonth, evolution } = getTotalMonthAndEvolution(month, chartData);
 
                     return month && totalMonth && typeof totalMonth === "number" ? (
                       <>
                         {YearSeparator}
-                        <div key={String(month)}>
+                        <div
+                          key={String(month)}
+                          className={cn(
+                            "rounded-md p-2",
+                            index === hoveredMonth && "bg-white text-black",
+                          )}
+                        >
                           <h3 className='text-xl font-semibold capitalize'>
-                            {month.toLocaleDateString("fr-FR", { month: "long" })}{" "}
+                            {monthName}{" "}
                             {index === 0 ? (
                               <span className='text-sm lowercase italic text-muted-foreground'>
                                 {" "}
@@ -117,7 +124,11 @@ const Income = () => {
                   })}
                 </CardContent>
               </Card>
-              <TransactionsChart name={name} chartData={chartData} />
+              <TransactionsChart
+                name={name}
+                setHoveredMonth={setHoveredMonth}
+                chartData={chartData}
+              />
             </TabPanel>
           );
         })}
