@@ -2,7 +2,7 @@
 
 import { sendMagicLinkAction } from "./_actions/sendMagicLink";
 import { SignInFormSchema } from "./models/signIn";
-import { bebasNeue } from "@dashboard/utils/fonts";
+import { bebasNeue } from "../../../utils/fonts";
 import { BiMailSend } from "react-icons/bi";
 import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";

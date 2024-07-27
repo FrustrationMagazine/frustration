@@ -1,6 +1,7 @@
 import React from "react";
 import { fetchLastDashboardUpdatedDate } from "@dashboard/stripe";
 
+export const dynamic = "force-dynamic";
 const LastUpdate = async () => {
   const [lastUpdate, formattedLastUpdate] = await fetchLastDashboardUpdatedDate();
 

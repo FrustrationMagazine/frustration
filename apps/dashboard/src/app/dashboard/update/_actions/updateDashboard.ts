@@ -1,7 +1,7 @@
 "use server";
 
 import { fetchStripeTransactions, fetchStripeBalance } from "@dashboard/libs/transactions/stripe";
-import { fetchHelloAssoTransactions } from "@dashboard/helloasso";
+import { fetchHelloAssoTransactions } from "../../../../libs/transactions/helloasso";
 import { prisma } from "@dashboard/prisma";
 import {
   UpdateFormSchema,
@@ -76,7 +76,7 @@ async function updateTransactions(
     console.log(`${newTransactions.length} transaction(s) inserted.`);
     const transactionsToUpdate = allTransactions.filter(
       (transaction) =>
-        !newTransactions.some((newTransaction) => newTransaction.id === transaction.id),
+        !newTransactions.some((newTransaction: any) => newTransaction.id === transaction.id),
     );
     transactionsToUpdate.forEach(async (transaction) => {
       await prisma.balanceTransactions.update({

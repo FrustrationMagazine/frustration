@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { FaCreditCard } from "react-icons/fa";
 import { MdUpdate } from "react-icons/md";
-import { poppins } from "@dashboard/fonts";
+import { poppins } from "../../../utils/fonts";
 import SignOut from "./SignOut";
 import { Separator } from "@/ui/components/separator";
 

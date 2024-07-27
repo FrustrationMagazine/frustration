@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "./auth/auth";
+import { auth } from "@dashboard/auth";
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {

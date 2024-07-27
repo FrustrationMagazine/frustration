@@ -5,7 +5,7 @@ const YELLOW_HOVER_FRUSTRATION = "#191a00";
 
 const config: Config = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "../../packages/ui/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],

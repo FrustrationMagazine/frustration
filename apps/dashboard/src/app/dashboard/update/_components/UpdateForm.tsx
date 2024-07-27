@@ -14,7 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { UpdateFormSchema } from "../_models/updateDashboard";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
 import { updateDashboard } from "../_actions/updateDashboard";
 import { TfiReload } from "react-icons/tfi";
@@ -27,6 +28,7 @@ export default function UpdateForm() {
     errorMessage: null,
   });
 
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -46,7 +48,9 @@ export default function UpdateForm() {
   /* ---------------------------------------------------- */
   useEffect(
     function displayToaster() {
+      // ✅ Success
       if (formState?.successMessage) {
+        router.forward();
         setTimeout(() => {
           toast({
             title: "✅ Succès",
@@ -55,6 +59,7 @@ export default function UpdateForm() {
         }, 0);
       }
 
+      // ❌ Error
       if (formState?.errorMessage) {
         setTimeout(() => {
           toast({

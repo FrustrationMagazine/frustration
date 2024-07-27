@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { prisma } from "@dashboard/prisma";
 import { TRANSACTION_TYPES, StripeTransaction, FormattedTransaction } from "./models/transactions";
-import { convertUTCtoDate } from "@dashboard/utils/dates";
+import { convertUTCtoDate } from "../../utils/dates";
 
 export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
