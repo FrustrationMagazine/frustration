@@ -21,7 +21,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const TransactionsChart = ({ chartData }: { chartData: any }) => {
+const TransactionsChart = ({ name, chartData }: { name: string; chartData: any }) => {
   const modifiedChartData = chartData
     .map(({ month, stripe, helloasso, total }: any) => ({
       month: month.toISOString(),
@@ -31,11 +31,11 @@ const TransactionsChart = ({ chartData }: { chartData: any }) => {
     }))
     .slice(-24);
 
-  console.log("modifiedChartData", modifiedChartData);
+  if (name === "total") console.log("chartData", chartData.slice(-6));
   return (
     <ChartContainer
       config={chartConfig}
-      className='min-h-[400px] w-full min-w-[1200px] [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-medium [&_.recharts-cartesian-axis-tick_text]:opacity-70'
+      className='w-full rounded-md bg-transparent p-10 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-medium [&_.recharts-cartesian-axis-tick_text]:opacity-70'
     >
       <AreaChart accessibilityLayer data={modifiedChartData}>
         {/* <CartesianGrid strokeDasharray='2 2' vertical={false} stroke='#1e293b' /> */}
