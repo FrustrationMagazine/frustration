@@ -1,39 +1,55 @@
+"use client";
+
 import React from "react";
-import { fetchLastDashboardUpdatedDate } from "@dashboard/stripe";
+import { getLastUpdateDate } from "../_actions/getLastUpdateDate";
+import type { LastUpdateDate } from "../_models/lastUpdateDate";
+import type { UpdateDashboardResponse } from "../_models/updateDashboard";
+import { DEFAULT_LAST_UPDATE_DATE } from "../_models/lastUpdateDate";
 
-export const dynamic = "force-dynamic";
-const LastUpdate = async () => {
-  const [lastUpdate, formattedLastUpdate] = await fetchLastDashboardUpdatedDate();
+const LastUpdate = ({ formState }: { formState: UpdateDashboardResponse }) => {
+  const [dates, setDates] = React.useState<LastUpdateDate>(DEFAULT_LAST_UPDATE_DATE);
 
-  if (!lastUpdate) return null;
+  React.useEffect(() => {
+    const retrieveLastUpdate = async () => {
+      const { date, time, elapsedDays } = await getLastUpdateDate();
 
-  const [lastUpdateFormattedDate, lastUpdateFormattedTime] =
-    typeof formattedLastUpdate === "string" ? formattedLastUpdate.split(/\s(?=à)/) : [];
+      setDates({ date, time, elapsedDays });
+    };
+    retrieveLastUpdate();
+  }, [formState.successMessage]);
 
-  const SECONDS_IN_DAY = 1000 * 3600 * 24;
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  lastUpdate.setHours(0, 0, 0, 0);
+  const { date, time, elapsedDays } = dates;
 
-  const elapsedDays =
-    lastUpdate instanceof Date
-      ? Math.floor((new Date().getTime() - lastUpdate.getTime()) / SECONDS_IN_DAY)
-      : null;
+  const today = elapsedDays && +elapsedDays === 0;
+  const yesterday = elapsedDays && +elapsedDays === 1;
+  const dayBeforeYesterday = elapsedDays && +elapsedDays === 2;
+  const longTimeAgo = elapsedDays && +elapsedDays > 2;
+
+  const ElapsedDays = elapsedDays ? (
+    <>
+      {today ? <span>Aujourd&rsquo;hui</span> : null}
+      {yesterday ? <span>Hier</span> : null}
+      {dayBeforeYesterday ? <span>Avant-hier</span> : null}
+      {longTimeAgo ? <span> Il y a {elapsedDays} jours</span> : null}
+    </>
+  ) : null;
+
+  const Icon = <span className='text-2xl'>🕰️</span>;
+  const LastUpdate = <span className='text-lg font-bold'>Dernière mise à jour</span>;
+
+  const LastDate = date ? <span className='text-xs capitalize'>{date}</span> : null;
+  const LastTime = time ? <span className='text-xs'> {time}</span> : null;
 
   return (
     <p className='text-center'>
-      <span className='text-2xl'>🕰️</span> <br />
-      <span className='text-lg font-bold'>Dernière mise à jour</span> <br />
-      {elapsedDays ? (
-        <span>
-          Il y a {elapsedDays} jour{elapsedDays > 1 && "s"}
-        </span>
-      ) : (
-        <span>Aujourd&rsquo;hui</span>
-      )}{" "}
+      {Icon}
       <br />
-      <span className='text-xs capitalize'>{lastUpdateFormattedDate}</span>{" "}
-      <span className='text-xs'>{lastUpdateFormattedTime}</span>
+      {LastUpdate}
+      <br />
+      {ElapsedDays}
+      <br />
+      {LastDate}
+      {LastTime}
     </p>
   );
 };

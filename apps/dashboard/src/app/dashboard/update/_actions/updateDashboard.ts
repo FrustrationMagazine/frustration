@@ -69,26 +69,32 @@ async function updateTransactions(
   }
   try {
     const allTransactions = [...stripeTransactions, ...helloassoTransactions];
-    const newTransactions = await prisma.balanceTransactions.createManyAndReturn({
+
+    // 1️⃣ Insert new transactions between the last update and now
+    /* --------------------------------------------------------- */
+    // @ts-ignore
+    const newTransactions: Array<any> = await prisma.balanceTransactions.createManyAndReturn({
       data: allTransactions,
       skipDuplicates: true,
     });
     console.log(`${newTransactions.length} transaction(s) inserted.`);
-    const transactionsToUpdate = allTransactions.filter(
+
+    // 2️⃣ Get transactions recorded < 1 month
+    /* ------------------------------------------------------ */
+    const transactionsAlreadyRegistered = allTransactions.filter(
       (transaction) =>
         !newTransactions.some((newTransaction: any) => newTransaction.id === transaction.id),
     );
-    transactionsToUpdate.forEach(async (transaction) => {
+
+    // 3️⃣ Update transactions recorded < 1 month
+    /* ------------------------------------------------------ */
+    transactionsAlreadyRegistered.forEach(async ({ id, status}) => {
       await prisma.balanceTransactions.update({
-        where: {
-          id: transaction.id,
-        },
-        data: {
-          status: transaction.status,
-        },
+        where: { id },
+        data: { status},
       });
     });
-    console.log(`${transactionsToUpdate.length} transaction(s) updated.`);
+    console.log(`${transactionsAlreadyRegistered.length} transaction(s) updated.`);
   } catch (error) {
     console.error("Failed to insert records:", error);
     return ERROR_UPSERT_PAYMENTS;
