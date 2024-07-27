@@ -52,6 +52,9 @@
     "./components/*": [
       "./components/*.ts",
       "./components/*.tsx"
+    ],
+    "./lib/*": [
+      "./lib/*.ts"
     ]
   }
 }
