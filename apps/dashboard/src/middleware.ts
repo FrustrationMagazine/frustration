@@ -2,23 +2,24 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { auth } from "@dashboard/auth";
 
+const SIGN_IN_URL = "/auth/signin";
+const DASHBOARD_URL = "/dashboard";
+
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const isDashboardPage = request.nextUrl.pathname.startsWith("/dashboard");
+  const atAuth = request.nextUrl.pathname.startsWith("/auth");
+  const atDashboard = request.nextUrl.pathname.startsWith("/dashboard");
   const session = await auth();
-  const isSignedIn = !!session?.user;
+  const logged = !!session?.user;
 
-  const shouldRedirectToSignInPage = !isSignedIn && !isAuthPage;
-  if (shouldRedirectToSignInPage) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
-  }
-  if (isSignedIn && !isDashboardPage) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
+  const redirectLogin = !logged && !atAuth;
+  const redirectDashboard = logged && !atDashboard;
+
+  if (redirectLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
+  if (redirectDashboard) return NextResponse.redirect(new URL(DASHBOARD_URL, request.url));
 }
 
 export const config = {

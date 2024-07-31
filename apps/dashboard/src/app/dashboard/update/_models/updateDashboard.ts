@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UpdateFormSchema = z.object({
   method: z.string({
-    required_error: "Choisisez une méthode de mise à jour.",
+    required_error: "Choisissez une méthode de mise à jour.",
   }),
 });
 export type UpdateDashboardResponse = {

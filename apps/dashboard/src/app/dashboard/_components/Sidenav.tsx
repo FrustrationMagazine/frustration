@@ -4,6 +4,7 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import { FaCreditCard } from "react-icons/fa";
 import { MdUpdate } from "react-icons/md";
+import { IoIosPeople } from "react-icons/io";
 import { poppins } from "../../../utils/fonts";
 import SignOut from "./SignOut";
 import { Separator } from "@/ui/components/separator";
@@ -23,6 +24,12 @@ const SIDENAV_ELEMENTS: SidenavElement[] = [
     icon: <FaCreditCard />,
     href: "/dashboard/income",
     key: "income",
+  },
+  {
+    label: "Abonnés",
+    icon: <IoIosPeople size={18} />,
+    href: "/dashboard/subscribers",
+    key: "subscribers",
   },
   {
     label: "Mises à jour",
