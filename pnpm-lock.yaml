@@ -187,7 +187,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       date-fns:
-        specifier: ^2.29.3
+        specifier: ^2.30.0
         version: 2.30.0
       react:
         specifier: ^18.2.0

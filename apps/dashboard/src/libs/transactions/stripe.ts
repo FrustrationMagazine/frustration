@@ -5,18 +5,72 @@ import { convertUTCtoDate } from "../../utils/dates";
 
 export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
+  telemetry: false,
 });
 
 /****************** EXPORTS *************************/
 
 export async function fetchStripeTransactions({ afterTimestamp } = { afterTimestamp: 0 }) {
   let balanceTransactions: StripeTransaction[] = [];
-  balanceTransactions = await fetchStripeData({ afterTimestamp });
+  balanceTransactions = await fetchStripeData({ getAll: true, afterTimestamp });
 
   const formattedBalanceTransactions: FormattedTransaction[] =
     balanceTransactions.map(formatStripeTransactions);
 
   return formattedBalanceTransactions;
+}
+export async function fetchStripeCustomers(
+  { begin, end } = {
+    begin: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    end: new Date(),
+  },
+) {
+  const beginTimestamp = Math.floor(begin.getTime() / 1000);
+  const endTimestamp = Math.floor(end.getTime() / 1000);
+
+  let hasMore;
+  let subscriptions: any[] = [];
+  let customersId: any[] = [];
+
+  do {
+    const { data, has_more } = await stripe.subscriptions.list({
+      created: {
+        gte: beginTimestamp,
+        lte: endTimestamp,
+      },
+      limit: 100,
+      starting_after: subscriptions.at(-1)?.id,
+    });
+
+    hasMore = has_more;
+    subscriptions = [...subscriptions, ...data];
+    customersId = [...customersId, ...data.map((sub) => sub.customer)];
+  } while (hasMore);
+
+  if (Array.isArray(customersId)) {
+    let customers: any[] = [];
+
+    for (let i = 0; customersId?.[i]; i += 100) {
+      const sliceCustomersId = customersId.slice(i, i + 99);
+      const temp_customers = await Promise.all(
+        sliceCustomersId.map((customerId: any) => stripe.customers.retrieve(customerId)),
+      );
+      customers = [...customers, ...temp_customers];
+    }
+
+    const formattedCustomers = customers.map(({ id, created, name, email }, index) => ({
+      id,
+      created: new Date(created * 1000),
+      name,
+      email,
+      adresse: subscriptions[index].metadata.adresse,
+      code_postal: subscriptions[index].metadata.code_postal,
+      ville: subscriptions[index].metadata.ville,
+      amount: subscriptions[index].items.data[0].price.unit_amount,
+    }));
+    return formattedCustomers;
+  }
+  return [];
 }
 
 export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
@@ -101,16 +155,32 @@ export async function fetchLastDashboardUpdatedDate(): Promise<[Date, string] | 
   return [null, null];
 }
 
-async function fetchStripeData({ afterTimestamp } = { afterTimestamp: 0 }): Promise<any[]> {
+async function fetchStripeData(
+  { getAll, afterTimestamp } = { getAll: false, afterTimestamp: 0 },
+): Promise<any[]> {
   const PAGE_SIZE = 100;
   let data = [];
   let hasMore = true;
   let starting_after;
   let page = 0;
 
-  while (hasMore) {
+  console.log(`📄 [STRIPE] Récupération des données...`);
+
+  do {
     try {
-      console.log(`📄 [STRIPE] Page de paiements : ${page + 1}`);
+      console.log(`📄 [STRIPE] Page de résultats : ${page + 1}`);
+      let listOptions: any = {
+        limit: PAGE_SIZE,
+        starting_after,
+      };
+
+      // List options
+      if (afterTimestamp) {
+        listOptions = {
+          ...listOptions,
+          created: { gt: afterTimestamp },
+        };
+      }
       const { data: stripeData, has_more } = await stripe.balanceTransactions.list({
         limit: PAGE_SIZE,
         starting_after,
@@ -131,7 +201,7 @@ async function fetchStripeData({ afterTimestamp } = { afterTimestamp: 0 }): Prom
         console.log("Unexpected error:", error);
       }
     }
-  }
+  } while (getAll && hasMore);
 
   return data;
 }
