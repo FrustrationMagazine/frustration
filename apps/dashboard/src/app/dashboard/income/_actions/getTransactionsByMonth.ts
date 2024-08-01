@@ -3,9 +3,8 @@
 import { prisma } from "@dashboard/prisma";
 import type { TransactionsByMonth } from "../_models/transactionsByMonth";
 
-
-export async function getTransactionsByMonth (): Promise<TransactionsByMonth[]> {
- const transactions: TransactionsByMonth[] = await prisma.$queryRaw`
+export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {
+  const transactions: TransactionsByMonth[] = await prisma.$queryRaw`
      SELECT
       DATE_TRUNC('month', created) as month,
       type,
@@ -14,6 +13,8 @@ export async function getTransactionsByMonth (): Promise<TransactionsByMonth[]> 
       SUM(net) as total
     FROM
       "BalanceTransactions"
+    WHERE
+      DATE_TRUNC('month', created) <> DATE_TRUNC('month', CURRENT_DATE)
     GROUP BY
       month,
       type

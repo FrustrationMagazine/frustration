@@ -105,16 +105,16 @@ const Income = () => {
                         >
                           <h3 className='text-xl font-semibold capitalize'>
                             {monthName}{" "}
-                            {index === 0 ? (
+                            {/* {index === 0 ? (
                               <span className='text-sm lowercase italic text-muted-foreground'>
                                 {" "}
                                 (en cours)
                               </span>
-                            ) : null}
+                            ) : null} */}
                           </h3>
                           <p className='flex justify-between'>
                             <span>{inEuros(totalMonth)}</span>
-                            {evolution ? (
+                            {evolution /* && index !== 0*/ ? (
                               <span className='ml-3 text-muted-foreground'>{evolution}</span>
                             ) : null}
                           </p>

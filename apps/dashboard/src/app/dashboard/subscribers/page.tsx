@@ -35,12 +35,17 @@ const downloadCSV = (data: any, headers: any) => {
   document.body.removeChild(link);
 };
 
+const currentDate = new Date();
+const previousMonth = currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1;
+const previousMonthYear =
+  currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
+
 const SubscribersForm = () => {
   const [loading, setLoading] = React.useState(false);
   const [subscribers, setSubscribers] = React.useState<any[]>([]);
 
   const [date, setDate] = React.useState({
-    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    from: new Date(previousMonthYear, previousMonth, 1),
     to: new Date(),
   });
 
