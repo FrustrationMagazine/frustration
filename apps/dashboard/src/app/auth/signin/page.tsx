@@ -1,11 +1,12 @@
 "use client";
 
-import { sendMagicLinkAction } from "./_actions/sendMagicLink";
-import { SignInFormSchema } from "./models/signIn";
-import { bebasNeue } from "../../../utils/fonts";
-import { BiMailSend } from "react-icons/bi";
-import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";
+
+// Assets
+import { bebasNeue } from "@dashboard/fonts";
+import { BiMailSend } from "react-icons/bi";
+
+// Components
 import { Button } from "@/ui/components/button";
 import { Input } from "@/ui/components/input";
 import { useToast } from "@/ui/components/use-toast";
@@ -17,9 +18,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/ui/components/form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+// Form
 import { useForm } from "react-hook-form";
+import { sendMagicLinkAction } from "./_actions";
+import { useFormState } from "react-dom";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInFormSchema } from "./_models";
 
 /* Header */
 /**********/
