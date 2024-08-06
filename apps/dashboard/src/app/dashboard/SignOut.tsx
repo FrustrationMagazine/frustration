@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/ui/components/button";
-import { signOutDashboard } from "../_actions/signOut";
+import { signOutDashboard } from "./_actions";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import {
   AlertDialog,

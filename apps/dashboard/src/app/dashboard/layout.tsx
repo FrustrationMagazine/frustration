@@ -1,5 +1,5 @@
-import React from 'react';
-import Sidenav from './_components/Sidenav';
+import React from "react";
+import Sidenav from "./Sidenav";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
