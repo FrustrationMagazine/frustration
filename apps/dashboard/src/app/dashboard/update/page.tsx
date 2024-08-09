@@ -21,6 +21,7 @@ import { TfiReload } from "react-icons/tfi";
 import { useToast } from "@/ui/components/use-toast";
 import UpdateTooltip from "./_components/UpdateTooltip";
 
+// 🧰 Server action configuration
 export const maxDuration = 60;
 
 export default function UpdateForm() {
@@ -45,7 +46,7 @@ export default function UpdateForm() {
   });
 
   /* -------------------------- */
-  /*          FORM              */
+  /*         🗒️ FORM            */
   /* ---------------------------*/
 
   /* Display toaster with server error or success message */
@@ -53,7 +54,7 @@ export default function UpdateForm() {
   useEffect(
     function displayToaster() {
       // ✅ Success
-      if (formState?.successMessage) {
+      if (formState.successMessage) {
         setTimeout(() => {
           toast({
             title: "✅ Succès",
@@ -67,7 +68,7 @@ export default function UpdateForm() {
         setTimeout(() => {
           toast({
             title: "Une erreur s'est produite",
-            description: formState?.errorMessage,
+            description: formState.errorMessage,
             variant: "destructive",
           });
         }, 0);

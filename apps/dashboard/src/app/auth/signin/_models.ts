@@ -7,11 +7,6 @@ export const SignInFormSchema = z.object({
 
 // FORM STATUS
 
-export type FormSubmissionStatus = {
-  successMessage: string | null;
-  errorMessage: string | null;
-};
-
 export const INVALID_EMAIL = {
   successMessage: null,
   errorMessage: "Adresse e-mail invalide.",

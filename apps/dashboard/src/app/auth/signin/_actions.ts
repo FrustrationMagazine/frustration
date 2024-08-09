@@ -6,12 +6,13 @@ import { signIn, getAuthorizedEmails } from "@dashboard/auth";
 // 🖼️ Models
 import {
   SignInFormSchema,
-  FormSubmissionStatus,
   INVALID_EMAIL,
   UNAUTHORIZED_EMAIL,
   NO_AUTHORIZED_EMAIL,
   generateValidEmailMessage,
 } from "./_models";
+
+import { FormSubmissionStatus } from "@dashboard/models/form";
 
 export async function sendMagicLinkAction(
   prevState: FormSubmissionStatus,

@@ -2,14 +2,15 @@ const stripe = require("../config/stripe.config.js");
 const { convertUTCtoDate, saveFile } = require("../utils/index");
 const { TRANSACTION_TYPES } = require("../config/constants");
 
-async function fetchStripeData(operation: string, lastUpdateDate = 0): Promise<any[]> {
+async function fetchStripeData(operation: string, startingAfter = null, getAll = false, lastUpdateDate = 0): Promise<any[]> {
   const PAGE_SIZE = 100;
   let data = [];
   let hasMore = true;
-  let startingAfter;
   let page = 0;
 
-  while (hasMore) {
+  console.log(`📄 [STRIPE] Récupération des données ${operation}...`);
+
+  do {
     try {
       process.stdout.write(`\n\n📄 [STRIPE] Page de paiements : ${page + 1} \r\n`);
       const { data: stripeData, has_more } = await stripe[operation].list({
@@ -31,7 +32,7 @@ async function fetchStripeData(operation: string, lastUpdateDate = 0): Promise<a
         process.stdout.write("Unexpected error:", error);
       }
     }
-  }
+  } while (hasMore && getAll);
 
   return data;
 }

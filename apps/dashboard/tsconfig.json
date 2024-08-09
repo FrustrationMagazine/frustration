@@ -29,7 +29,10 @@
       "@dashboard/helloasso": ["./src/libs/transactions/helloasso.ts"],
 
       "@dashboard/utils/*": ["./src/utils/*"],
-      "@dashboard/fonts": ["./src/utils/fonts.ts"]
+      "@dashboard/fonts": ["./src/utils/fonts.ts"],
+
+      "@dashboard/hooks/*": ["./src/hooks/*"],
+      "@dashboard/models/*": ["./src/models/*"]
     }
   },
   "include": [

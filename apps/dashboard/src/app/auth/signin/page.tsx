@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 
-// Assets
+// 🖼️ Assets
 import { bebasNeue } from "@dashboard/fonts";
 import { BiMailSend } from "react-icons/bi";
 
-// Components
+// 🧱 Components
 import { Button } from "@/ui/components/button";
 import { Input } from "@/ui/components/input";
-import { useToast } from "@/ui/components/use-toast";
 import {
   Form,
   FormControl,
@@ -19,108 +18,94 @@ import {
   FormMessage,
 } from "@/ui/components/form";
 
-// Form
+// 🗒️ Form
 import { useForm } from "react-hook-form";
+import { convertDataToFormData } from "@dashboard/libs/form";
 import { sendMagicLinkAction } from "./_actions";
 import { useFormState } from "react-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormSchema } from "./_models";
 
-/* Header */
-/**********/
-const AUTHENTIFICATION = (
-  <header
-    className={`bg-black px-5 py-2 text-frustration-yellow ${bebasNeue.className} text-center text-3xl uppercase`}
-  >
-    Authentification
-  </header>
-);
-
-const EmailInput = ({ field }: { field: any }) => (
-  <FormItem>
-    <FormLabel>Email</FormLabel>
-    <FormControl>
-      <Input placeholder='' {...field} />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
-);
-
-/* *****************************/
-/*           Sign In           */
-/*******************************/
+// 🪝 Hooks
+import { useFormToast } from "@dashboard/hooks/useFormToast";
+import { useFormLoader } from "@dashboard/hooks/useFormLoader";
+import { useFormStateMessage } from "@dashboard/hooks/useFormStateMessage";
 
 export default function SignIn() {
-  const [formState, formAction] = useFormState(sendMagicLinkAction, {
-    successMessage: "",
-    errorMessage: "",
-  });
+  /* -------------- */
+  /*      FORM      */
+  /* -------------- */
 
-  const [loading, setLoading] = useState(false);
+  const [formState, formAction] = useFormStateMessage(sendMagicLinkAction);
 
-  useEffect(() => {
-    if (formState?.successMessage || formState?.errorMessage) setLoading(false);
-  }, [formState]);
+  type SignInFormType = z.infer<typeof SignInFormSchema>;
 
-  const { toast } = useToast();
+  const [loading, setLoading] = useFormLoader(formState);
+  useFormToast(formState);
 
-  const form = useForm<z.infer<typeof SignInFormSchema>>({
+  const form = useForm<SignInFormType>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  /* Display toaster with server error or success message */
-  /* ---------------------------------------------------- */
-  useEffect(
-    function displayToaster() {
-      if (formState?.successMessage) {
-        setTimeout(() => {
-          toast({
-            title: "✅ Succès",
-            description: formState?.successMessage,
-          });
-        }, 0);
-      }
+  const submit = (data: SignInFormType) => {
+    const formData = convertDataToFormData(data);
+    formAction(formData);
+    setLoading(true);
+  };
 
-      if (formState?.errorMessage) {
-        setTimeout(() => {
-          toast({
-            title: "Une erreur s'est produite",
-            description: formState?.errorMessage,
-            variant: "destructive",
-          });
-        }, 0);
-      }
-    },
-    [formState, toast],
+  /* -------------- */
+  /* SUB COMPONENTS */
+  /* -------------- */
+
+  const Header = (
+    <header
+      className={`bg-black px-5 py-2 text-frustration-yellow ${bebasNeue.className} text-center text-3xl uppercase`}
+    >
+      Authentification
+    </header>
   );
 
-  /******************/
-  /*     RENDER     */
-  /******************/
+  const EmailField = (
+    <FormField
+      control={form.control}
+      name='email'
+      render={(field) => (
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input placeholder='' {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+
+  const MagicLinkButton = (
+    <Button disabled={loading} className='mx-auto w-fit' type='submit'>
+      <BiMailSend size={17} className='mr-2' />
+      Recevoir un lien de connexion
+    </Button>
+  );
+
+  /* ---------- */
+  /*     UI     */
+  /* -----------*/
 
   return (
     <div className={`m-auto w-[90%] max-w-[500px] shadow-lg`}>
-      {AUTHENTIFICATION}
+      {Header}
       <Form {...form}>
         <form
           className='group flex flex-col gap-[20px] bg-white p-5'
-          onSubmit={form.handleSubmit((data) => {
-            const formData = new FormData();
-            const fields = Object.keys(data) as (keyof z.infer<typeof SignInFormSchema>)[];
-            fields.forEach((field) => formData.append(field, data[field]));
-            formAction(formData);
-            setLoading(true);
-          })}
+          onSubmit={form.handleSubmit(submit)}
         >
-          <FormField control={form.control} name='email' render={EmailInput} />
-          <Button disabled={loading} className='mx-auto w-fit' type='submit'>
-            <BiMailSend size={17} className='mr-2' />
-            Recevoir un lien de connexion
-          </Button>
+          {EmailField}
+          {MagicLinkButton}
         </form>
       </Form>
     </div>

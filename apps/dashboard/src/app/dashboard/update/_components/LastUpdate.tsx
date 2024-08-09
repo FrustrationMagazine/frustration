@@ -12,7 +12,6 @@ const LastUpdate = ({ formState }: { formState: UpdateDashboardResponse }) => {
   React.useEffect(() => {
     const retrieveLastUpdate = async () => {
       const { date, time, elapsedDays } = await getLastUpdateDate();
-
       setDates({ date, time, elapsedDays });
     };
     retrieveLastUpdate();
