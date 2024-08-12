@@ -24,7 +24,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // 🪝 Hooks
-import { useForm } from "react-hook-form";
+import { useForm, Control } from "react-hook-form";
 import { useFormToast } from "@dashboard/hooks/useFormToast";
 import { useFormLoader } from "@dashboard/hooks/useFormLoader";
 import { useFormStateMessage } from "@dashboard/hooks/useFormStateMessage";
@@ -64,7 +64,7 @@ export default function SignIn() {
 
   const EmailField = (
     <FormField
-      control={form.control}
+      control={form.control as unknown as Control<SignInFormType>}
       name='email'
       render={(field) => (
         <FormItem>
