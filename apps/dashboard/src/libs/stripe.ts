@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { prisma } from "../../prisma/prisma";
+import { prisma } from "@dashboard/prisma";
 import { TRANSACTION_TYPES, Transaction } from "./transactions";
 import { convertUTCtoDate } from "../utils/dates";
 
@@ -233,7 +233,6 @@ export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
 /* ------------------ */
 
 export async function fetchLastUpdate(): Promise<Date | null> {
-  console.log("dans fetch last update");
   try {
     const lastBalanceRow = await prisma.balance.findFirst({});
     if (lastBalanceRow?.updatedAt) {
