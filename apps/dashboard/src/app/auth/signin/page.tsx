@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
 // 🖼️ Assets
 import { bebasNeue } from "@dashboard/fonts";
 import { BiMailSend } from "react-icons/bi";
@@ -19,24 +17,19 @@ import {
 } from "@/ui/components/form";
 
 // 🗒️ Form
-import { useForm } from "react-hook-form";
-import { convertDataToFormData } from "@dashboard/libs/form";
 import { sendMagicLinkAction } from "./_actions";
-import { useFormState } from "react-dom";
+import { SignInFormSchema } from "./_models";
+import { convertDataToFormData } from "@dashboard/libs/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInFormSchema } from "./_models";
 
 // 🪝 Hooks
+import { useForm } from "react-hook-form";
 import { useFormToast } from "@dashboard/hooks/useFormToast";
 import { useFormLoader } from "@dashboard/hooks/useFormLoader";
 import { useFormStateMessage } from "@dashboard/hooks/useFormStateMessage";
 
 export default function SignIn() {
-  /* -------------- */
-  /*      FORM      */
-  /* -------------- */
-
   const [formState, formAction] = useFormStateMessage(sendMagicLinkAction);
 
   type SignInFormType = z.infer<typeof SignInFormSchema>;

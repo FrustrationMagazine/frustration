@@ -1,10 +1,21 @@
 "use server";
 
-import { fetchStripeTransactions, fetchStripeBalance } from "@dashboard/libs/transactions/stripe";
-import { fetchHelloAssoTransactions } from "../../../../libs/transactions/helloasso";
-import { prisma } from "../../../../../prisma/prisma";
+// 🐝 Fetch
 import {
-  UpdateFormSchema,
+  fetchLastUpdate,
+  fetchStripeTransactions,
+  fetchStripeBalance,
+} from "@dashboard/libs/stripe";
+import { fetchHelloAssoTransactions } from "@dashboard/libs/helloasso";
+
+// 🫙 Database
+import { prisma } from "@dashboard/prisma";
+
+// 🗿 Models
+import {
+  type LastUpdateType,
+  DEFAULT_LAST_UPDATE_DATE,
+  FormUpdateSchema,
   UpdateDashboardResponse,
   SUCCESS,
   ERROR,
@@ -12,16 +23,33 @@ import {
   ERROR_GET_BALANCE,
   ERROR_UNKNOWN,
   ERROR_UPDATE_BALANCE,
-} from "../_models/updateDashboard";
+} from "./_models";
 
-/****************** EXPORTS *************************/
+import { Transaction } from "@dashboard/libs/transactions";
 
+// 🔧 Utils
+import { getDateInformations } from "./_utils";
+
+/* *************** */
+/* Get last update */
+/* *************** */
+export async function getLastUpdate(): Promise<LastUpdateType> {
+  const lastUpdate = await fetchLastUpdate();
+
+  if (!lastUpdate) return DEFAULT_LAST_UPDATE_DATE;
+  const { day, time, elapsedDays } = getDateInformations(lastUpdate);
+  return { day, time, elapsedDays };
+}
+
+/* **************** */
+/* Update dashboard */
+/* **************** */
 export async function updateDashboard(
   prevState: UpdateDashboardResponse,
   data: FormData,
 ): Promise<UpdateDashboardResponse> {
   const formData = Object.fromEntries(data);
-  const parsed = UpdateFormSchema.safeParse(formData);
+  const parsed = FormUpdateSchema.safeParse(formData);
 
   if (!parsed.success) return ERROR;
 
@@ -32,41 +60,46 @@ export async function updateDashboard(
   return result;
 }
 
-/****************** EXPORTS *************************/
+/* ******************* */
+/* Update transactions */
+/* ******************* */
+const DEFAULT_UPDATE_TRANSACTION = { updateMethod: "smart" };
 
-async function updateTransactions(
-  {
-    updateMethod,
-  }: {
-    updateMethod: string;
-  } = { updateMethod: "smart" },
-): Promise<UpdateDashboardResponse> {
-  let lastDatabaseUpdate;
+async function updateTransactions({
+  updateMethod,
+}: {
+  updateMethod: string;
+} = DEFAULT_UPDATE_TRANSACTION): Promise<UpdateDashboardResponse> {
+  let lastUpdate;
   try {
     const result = await prisma.balance.findFirst();
-    lastDatabaseUpdate = result?.updatedAt;
+    lastUpdate = result?.updatedAt;
   } catch (error) {
     console.error(error);
   }
 
-  let stripeTransactions = [];
-  let helloassoTransactions = [];
+  let stripeTransactions: Transaction[] = [];
+  let helloassoTransactions: Transaction[] = [];
 
-  if (lastDatabaseUpdate && updateMethod === "smart") {
-    const lastUpdateDate = new Date(lastDatabaseUpdate);
+  if (lastUpdate && updateMethod === "smart") {
+    const lastUpdateDate = new Date(lastUpdate);
     // We want to update information relating to transactions fetched less than a month ago because their status
     // may have changed since
-    const oneMonthBeforeDate = new Date(lastDatabaseUpdate);
-    oneMonthBeforeDate.setMonth(lastUpdateDate.getMonth() - 1);
-    const unixTimestamp = Math.floor(oneMonthBeforeDate.getTime() / 1000);
+    const oneMonthBeforeLastUpdate = new Date(lastUpdate);
+    oneMonthBeforeLastUpdate.setMonth(lastUpdateDate.getMonth() - 1);
+    const unixTimestamp = Math.floor(oneMonthBeforeLastUpdate.getTime() / 1000);
+
     stripeTransactions = await fetchStripeTransactions({ afterTimestamp: unixTimestamp });
     helloassoTransactions = await fetchHelloAssoTransactions({
-      from: oneMonthBeforeDate.toISOString(),
+      from: oneMonthBeforeLastUpdate.toISOString(),
     });
-  } else {
+  }
+
+  if (!lastUpdate || updateMethod !== "smart") {
     stripeTransactions = await fetchStripeTransactions();
     helloassoTransactions = await fetchHelloAssoTransactions();
   }
+
   try {
     const allTransactions = [...stripeTransactions, ...helloassoTransactions];
 
@@ -88,10 +121,10 @@ async function updateTransactions(
 
     // 3️⃣ Update transactions recorded < 1 month
     /* ------------------------------------------------------ */
-    transactionsAlreadyRegistered.forEach(async ({ id, status}) => {
+    transactionsAlreadyRegistered.forEach(async ({ id, status }) => {
       await prisma.balanceTransactions.update({
         where: { id },
-        data: { status},
+        data: { status },
       });
     });
     console.log(`${transactionsAlreadyRegistered.length} transaction(s) updated.`);
@@ -101,6 +134,8 @@ async function updateTransactions(
   }
   return SUCCESS;
 }
+
+// Update Stripe Balance
 
 async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
   const stripeBalance = await fetchStripeBalance();

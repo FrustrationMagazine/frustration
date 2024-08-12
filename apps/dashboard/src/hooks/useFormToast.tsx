@@ -1,6 +1,6 @@
 import React from "react";
 import { useToast } from "@/ui/components/use-toast";
-import type { FormSubmissionStatus } from "@dashboard/models/form";
+import type { FormSubmissionStatus } from "@dashboard/libs/form";
 
 export const useFormToast = (formState: FormSubmissionStatus) => {
   const { toast } = useToast();

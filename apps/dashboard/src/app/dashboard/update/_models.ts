@@ -1,10 +1,30 @@
 import { z } from "zod";
 
-export const UpdateFormSchema = z.object({
+/* ------------- */
+/*  Last update  */
+/* ------------- */
+
+export type LastUpdateType = {
+  day: string | null;
+  time: string | null;
+  elapsedDays: string | null;
+};
+export const DEFAULT_LAST_UPDATE_DATE: LastUpdateType = {
+  day: null,
+  time: null,
+  elapsedDays: null,
+};
+
+/* ------------- */
+/*     Update    */
+/* ------------- */
+
+export const FormUpdateSchema = z.object({
   method: z.string({
     required_error: "Choisissez une méthode de mise à jour.",
   }),
 });
+
 export type UpdateDashboardResponse = {
   successMessage: string | null;
   errorMessage: string | null;

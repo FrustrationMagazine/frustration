@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/components/tooltip";
 import { TbInfoSquare } from "react-icons/tb";
 
-const UpdateTooltip = () => {
+const TooltipUpdate = () => {
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -34,4 +34,4 @@ const UpdateTooltip = () => {
   );
 };
 
-export default UpdateTooltip;
+export default TooltipUpdate;

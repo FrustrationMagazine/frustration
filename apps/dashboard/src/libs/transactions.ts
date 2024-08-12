@@ -9,25 +9,7 @@ export enum TRANSACTION_TYPES {
   OTHER = "other",
 }
 
-export interface StripeTransaction {
-  id: string;
-  amount: number;
-  available_on: number;
-  created: number;
-  description: string;
-  net: number;
-  status: string;
-}
-
-export interface HelloAssoTransaction {
-  id: string;
-  date: string;
-  amount: number;
-  items: { type: string }[];
-  state: string;
-}
-
-export interface FormattedTransaction {
+export interface Transaction {
   id: string;
   created: Date;
   available: Date;

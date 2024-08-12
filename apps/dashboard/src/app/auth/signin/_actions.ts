@@ -1,6 +1,6 @@
 "use server";
 
-// 🧰 Functions
+// 🔧 Functions
 import { signIn, getAuthorizedEmails } from "@dashboard/auth";
 
 // 🖼️ Models
@@ -12,7 +12,11 @@ import {
   generateValidEmailMessage,
 } from "./_models";
 
-import { FormSubmissionStatus } from "@dashboard/models/form";
+import { FormSubmissionStatus } from "@dashboard/libs/form";
+
+/* ---------------------- */
+/*    SEND MAGIC LINK     */
+/* ---------------------- */
 
 export async function sendMagicLinkAction(
   prevState: FormSubmissionStatus,

@@ -59,7 +59,7 @@ interface BalanceTransaction {
   status: string;
 }
 
-interface FormattedTransaction {
+interface Transaction {
   id: string;
   created: Date;
   available: Date;
@@ -69,7 +69,7 @@ interface FormattedTransaction {
   type: string;
   status: string;
 }
-const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): FormattedTransaction => {
+const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
     process.stdout.write(`Unknown type: ${description}\n`);
@@ -90,7 +90,7 @@ async function fetchStripeTransactions(filepath = "./logs/stripe/balance_transac
   let balanceTransactions: StripeTransaction[] = [];
   balanceTransactions = await fetchStripeData("balanceTransactions", lastUpdateDate);
 
-  const formattedBalanceTransactions: FormattedTransaction[] = balanceTransactions.map(formatStripeTransactions);
+  const formattedBalanceTransactions: Transaction[] = balanceTransactions.map(formatStripeTransactions);
 
   process.stdout.write(`💾 Save data to ${filepath} \r\n`);
   saveFile(formattedBalanceTransactions, filepath);
