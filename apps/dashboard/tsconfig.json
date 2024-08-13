@@ -20,6 +20,8 @@
       }
     ],
     "paths": {
+      "@dashboard/components/*": ["./src/app/_components/*"],
+
       "@dashboard/auth": ["./src/auth/auth.ts"],
 
       "@dashboard/prisma": ["./prisma/client.ts"],

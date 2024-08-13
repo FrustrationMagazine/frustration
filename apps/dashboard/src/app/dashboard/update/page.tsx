@@ -7,8 +7,9 @@ import { fetchLastUpdate } from "@dashboard/libs/stripe";
 
 // 🧰 Server action configuration
 export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
-export default async function UpdateForm() {
+export default async function () {
   const lastUpdate = await fetchLastUpdate();
 
   return (
