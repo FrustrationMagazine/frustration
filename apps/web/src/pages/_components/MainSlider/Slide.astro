@@ -1,0 +1,28 @@
+---
+import { formatTitleFromRawArticleData, formatSlugFromRawArticleData, formatImageFromRawArticleData, formatExcerptFromRawArticleData } from "src/data/wordpress";
+import { Image } from "astro:assets";
+import Button from "./Button.astro";
+import H3 from "./H3.astro";
+import Excerpt from "./Excerpt.astro";
+const { article } = Astro.props;
+const IMAGE_SIZE = 1200;
+---
+
+<li class="splide__slide relative">
+  <a href={`/${formatSlugFromRawArticleData(article)}`}>
+    <div class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
+      <H3>{formatTitleFromRawArticleData(article)}</H3>
+      <Excerpt content={formatExcerptFromRawArticleData(article)} />
+      <Button>Lire</Button>
+    </div>
+    <Image
+      class="h-full w-full object-cover"
+      src={formatImageFromRawArticleData(article).sourceUrl}
+      width={IMAGE_SIZE}
+      height={IMAGE_SIZE}
+      alt={formatTitleFromRawArticleData(article)}
+      title={formatTitleFromRawArticleData(article)}
+      loading="eager"
+    />
+  </a>
+</li>

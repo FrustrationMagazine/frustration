@@ -1,0 +1,36 @@
+---
+import { getInterviews } from "@/libs/data-access/wordpress";
+const interviews = await getInterviews();
+import Card from "./Card.astro";
+---
+
+<section
+  class="splide splide-interviews max-w-full"
+  aria-label="Carrousel avec les derniers entretiens de Frustration Magazine">
+  <div class="splide__track max-w-full py-12">
+    <ul class="splide__list max-w-full">
+      {
+        interviews.map(({ title, image, link }: { title: string; image: { title: string; sourceUrl: string; altText: string }; link: string }) => (
+          <li class="splide__slide group pb-8 transition-all hover:scale-105">
+            <Card
+              title={title}
+              image={image}
+              link={link}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+<style is:global>
+  .splide-interviews .blurred-edges {
+    mask-image: radial-gradient(circle, black 0%, rgba(0, 0, 0, 0) 50%);
+  }
+  .splide-interviews .splide__pagination {
+    bottom: -2rem !important;
+  }
+</style>
+<script>
+  import "./slider";
+</script>

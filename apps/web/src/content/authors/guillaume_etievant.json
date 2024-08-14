@@ -1,0 +1,10 @@
+{
+  "first_name": "Guillaume",
+  "last_name": "Étievant",
+  "full_name": "Guillaume Étievant",
+  "role": "Rédacteur en charge des questions économiques",
+  "picture": "./guillaume_etievant.png",
+  "punchline": "Rend l'économie aussi accessible qu'un compte en suisse pour un bourgeois",
+  "themes": ["Économie", "Lecture marxiste de Proust (et inversement)"],
+  "public": true
+}

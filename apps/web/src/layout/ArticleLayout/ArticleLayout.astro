@@ -1,0 +1,193 @@
+---
+import { Image } from "astro:assets";
+import H1 from "./components/Title.astro";
+import Metadata from "./components/Metadata.astro";
+import FOOTER from "./components/Footer.astro";
+import Footer from "../BaseLayout/Footer/Footer.astro";
+import ArticleSummary from "./components/ArticleSummary/ArticleSummary";
+const { title, author, date, categories, image } = Astro.props;
+---
+
+<div class="article-layout">
+  <div class="scroll-watcher sticky top-0 mb-6 h-[1.3vh] w-0 bg-yellow"></div>
+  <div class="lateral-left"></div>
+  <article class="post m-auto w-[75ch]">
+    <div class="mb-[50px]">
+      <H1>{title}</H1>
+      <Metadata
+        author={author}
+        date={date}
+        categories={categories}
+      />
+    </div>
+    <!-- Featured image -->
+    <Image
+      class="mb-[25px] w-full object-cover"
+      title={image.title}
+      src={image.sourceUrl}
+      alt={image.altText}
+      width="1000"
+      height="600"
+    />
+    <!-- Content -->
+    <div class="article-content">
+      <slot name="article-content" />
+    </div>
+    <!-- Footer -->
+    <FOOTER author={author} />
+  </article>
+  <div class="lateral-right">
+    <div class="lateral-right-content">
+      <ArticleSummary client:load />
+    </div>
+  </div>
+  <Footer transition:persist />
+</div>
+
+<style is:global>
+  .article-layout {
+    display: grid;
+    height: 100vh;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    grid-template-columns: 1fr minmax(200px, 75ch) 1fr;
+  }
+
+  .article-layout .scroll-watcher {
+    grid-column: 1 / -1;
+  }
+
+  .article-layout article {
+    grid-column: 2 / -2;
+  }
+
+  .article-layout .lateral-left {
+    grid-column: 1 / 2;
+    overflow: hidden;
+  }
+
+  .article-layout .lateral-right {
+    grid-column: 3 / 4;
+    overflow: auto;
+    container-type: inline-size;
+    height: fit-content;
+    position: sticky;
+    top: 30px;
+  }
+
+  .article-layout footer {
+    grid-column: 1 / -1;
+    margin-top: 50px;
+  }
+
+  @container (max-width: 250px) {
+    .article-layout .lateral-right .lateral-right-content {
+      display: none;
+    }
+  }
+
+  @keyframes scroll-watcher {
+    to {
+      width: 100%;
+    }
+  }
+
+  .scroll-watcher {
+    animation: scroll-watcher linear;
+    animation-timeline: scroll();
+  }
+
+  article.post .article-content iframe {
+    width: 100%;
+    height: 500px;
+  }
+
+  article.post .article-content h2 {
+    color: #fff200;
+    background: black;
+    font-size: 42px;
+    line-height: 120%;
+    width: fitarticle-content;
+    text-transform: uppercase;
+    font-family: "Bebas Neue";
+    padding: 12px 15px 10px 15px;
+    margin-top: 45px;
+    margin-bottom: 25px;
+  }
+
+  article.post .article-content p {
+    margin-bottom: 15px;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 300;
+  }
+
+  article.post .article-content blockquote {
+    border-left: 5px solid #fff200;
+    margin: 0 0 1.75em;
+    padding-left: 1em;
+  }
+
+  article.post .article-content blockquote p {
+    font-weight: 600;
+    font-size: 20px;
+  }
+  article.post .article-content strong {
+    font-weight: 900;
+  }
+
+  article.post .article-content figure {
+    margin: 30px 0;
+  }
+
+  article.post .article-content figure > * {
+    margin: auto;
+  }
+
+  article.post .article-content a img {
+    margin: auto;
+  }
+
+  article.post .article-content figcaption {
+    margin-top: 5px;
+    padding: 0 10ch;
+    font-weight: 100;
+    color: #4b5563;
+    font-size: 14px;
+  }
+
+  article.post .article-content br {
+    display: none;
+  }
+
+  article.post .article-content p:has(img) {
+    line-height: 110%;
+    font-weight: 900;
+    font-size: 14px;
+    margin: 40px 0;
+  }
+
+  article.post .article-content p img {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  article.post .article-content iframe:not([src^="https://www.youtube.com"])
+  {
+    display: none;
+  }
+
+  article.post .article-content .twitter-tweet {
+    margin: 20px auto;
+  }
+
+  /* Don't display old manually made articles footer */
+
+  /* article.post article-content hr {
+    display: none;
+  }
+  article.post .article-content hr ~ * {
+    display: none;
+  } */
+</style>

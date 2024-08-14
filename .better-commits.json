@@ -22,7 +22,7 @@
       },
       {
         "value": "style",
-        "label": "Style",
+        "label": "style",
         "hint": "Change UI/UX",
         "emoji": "🎨"
       },
@@ -63,6 +63,12 @@
         "emoji": "🤖"
       },
       {
+        "value": "config",
+        "label": "config",
+        "hint": "Modify configuration files",
+        "emoji": "🧰"
+      },
+      {
         "value": "chore",
         "label": "chore",
         "hint": "Other changes that do not modify src or test files",
@@ -81,6 +87,10 @@
     "max_items": "Infinity",
     "options": [
       {
+        "value": "web",
+        "label": "web"
+      },
+      {
         "value": "dashboard",
         "label": "dashboard"
       },
@@ -89,7 +99,7 @@
         "label": "ui"
       },
       {
-        "value": "",
+        "value": "*",
         "label": "none"
       }
     ]

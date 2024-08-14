@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import H5 from "./CardTitle.astro";
+const { link, image, title } = Astro.props;
+---
+
+<a
+  href={link}
+  target="_blank">
+  <Image
+    title={image.title}
+    src={image.sourceUrl}
+    alt={image.altText}
+    width="600"
+    height="300"
+    class="blurred-edges mb-2 h-[300px] w-auto object-cover contrast-125 saturate-0 lg:h-[400px] xl:h-[500px]"
+  />
+  <H5>{title}</H5>
+  <button
+    class="b-2 m-auto block w-fit border-2 border-white px-5 py-1 font-bebas text-2xl uppercase text-white transition-all hover:scale-125 hover:bg-white hover:text-black group-hover:scale-125 group-hover:bg-white group-hover:text-black">
+    Lire
+  </button>
+</a>

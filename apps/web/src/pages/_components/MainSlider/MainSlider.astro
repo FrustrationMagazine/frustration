@@ -1,0 +1,29 @@
+---
+import { fetchArticle } from "src/data/wordpress";
+import type { ArticleRaw } from "src/data/wordpress";
+import ArrowButtons from "./ArrowButtons.astro";
+import Slide from "./Slide.astro";
+
+const articles = (await fetchArticle({ first: 6 }, ["title", "author", "slug", "excerpt", "date", "categories", "image"])) as ArticleRaw[];
+---
+
+<div class="splide splide-main-carrousel bg-transparent h-screen">
+  <ArrowButtons />
+  <div class="splide__track h-full">
+    <ul class="splide__list">
+      {articles.map((article) => <Slide article={article} />)}
+    </ul>
+  </div>
+</div>
+<style is:global>
+  .splide-main-carrousel .splide__arrow {
+    background: #000;
+    width: 3.5em;
+    height: 3.5em;
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import "./slider";
+</script>

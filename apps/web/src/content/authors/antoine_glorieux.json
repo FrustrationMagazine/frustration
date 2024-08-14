@@ -1,0 +1,10 @@
+{
+  "first_name": "Antoine",
+  "last_name": "Glorieux",
+  "full_name": "Antoine Glorieux",
+  "role": "Responsable artistique et illustrateur",
+  "picture": "./antoine_glorieux.webp",
+  "punchline": "Met au chômage technique tous les graphistes de la CGT",
+  "themes": ["Design anticapitaliste"],
+  "public": true
+}

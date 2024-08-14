@@ -1,0 +1,12 @@
+---
+import AuthorPicture from "./AuthorPicture.astro";
+const { author } = Astro.props;
+---
+
+<footer>
+  <AuthorPicture
+    author={author}
+    size={175}
+  />
+  <p>{author}</p>
+</footer>

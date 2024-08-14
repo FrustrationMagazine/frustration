@@ -1,0 +1,32 @@
+---
+import SECTION from "./SECTION.astro";
+import WrapperTextContent from "./WrapperTextContent.astro";
+import H3 from "./H3.astro";
+import MailInput from "./MailInput.astro";
+import Button from "./Button.astro";
+import Thumbnail from "./Thumbnail.astro";
+import newsletter from "./assets/_newsletter.jpg";
+import newsletter2 from "./assets/_newsletter2.jpg";
+const THUMBNAIL_WIDTH = 350;
+---
+
+<SECTION>
+  <WrapperTextContent>
+    <H3>Newsletter</H3>
+    <p class="mb-6">🗞️ Recevez régulièrement nos dernières publications !</p>
+    <MailInput />
+    <Button>Recevoir la newsletter</Button>
+  </WrapperTextContent>
+  <div class="absolute right-[-300px] hidden -rotate-[10deg] scale-100 gap-8 opacity-30 lg:flex">
+    <Thumbnail
+      src={newsletter}
+      width={THUMBNAIL_WIDTH}
+      reverse={false}
+    />
+    <Thumbnail
+      src={newsletter2}
+      width={THUMBNAIL_WIDTH}
+      reverse={true}
+    />
+  </div>
+</SECTION>

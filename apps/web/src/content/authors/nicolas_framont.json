@@ -1,0 +1,10 @@
+{
+  "first_name": "Nicolas",
+  "last_name": "Framont",
+  "full_name": "Nicolas Framont",
+  "role": "Rédacteur chef",
+  "picture": "./nicolas_framont.png",
+  "punchline": "Frustré parmi les frustrés",
+  "themes": ["Sociologie du travail", "Macron bashing", "Régicides"],
+  "public": true
+}

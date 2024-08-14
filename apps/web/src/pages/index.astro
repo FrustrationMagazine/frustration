@@ -1,0 +1,32 @@
+---
+import BaseLayout from "@/layout/BaseLayout/BaseLayout.astro";
+import NosDernieresVideos from "./_components/NosDernieresVideos/NosDernieresVideos.astro";
+import MainSlider from "./_components/MainSlider/MainSlider.astro";
+import NewsletterBanner from "./_components/NewsletterBanner/NewsletterBanner.astro";
+import ALaUne from "./_components/ALaUne/ALaUne.astro";
+import SeparationWave from "./_components/Separators/Wave.astro";
+import SeparationSpades from "./_components/Separators/Spades.astro";
+import Interviews from "./_components/Interviews/Interviews.astro";
+import Footer from "../layout/BaseLayout/Footer/Footer.astro";
+
+const title = "Accueil";
+const description =
+  "Page d'accueil du magazine de critique sociale pour grand public Frustration Magazine sur lequel vous pourrez retrouver nos dernières vidéos et articles pour mieux comprendre l'actualité politique, économique et sociale ainsi que toutes nos analyses sur la guerre en cours que mène la bourgeoisie contre les travailleurs.";
+---
+
+<BaseLayout
+  title={title}
+  description={description}>
+  <section class="block w-full overflow-hidden bg-home-first-section">
+    <MainSlider />
+    <NosDernieresVideos />
+    <NewsletterBanner />
+    <ALaUne />
+    <SeparationWave />
+  </section>
+  <section class="relative block w-full bg-black pb-20 pt-7">
+    <Interviews />
+    <SeparationSpades />
+  </section>
+  <Footer transition:persist />
+</BaseLayout>

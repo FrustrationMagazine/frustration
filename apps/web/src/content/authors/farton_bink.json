@@ -1,0 +1,10 @@
+{
+  "first_name": "Farton",
+  "last_name": "Bink",
+  "full_name": "Farton Bink",
+  "role": "Photographe et monteuse vidéo",
+  "picture": "./farton_bink.png",
+  "punchline": "Photoshop tout ce qui bouge",
+  "themes": ["Les miniatures Youtube", "Cinéma anti-patriarcal"],
+  "public": true
+}

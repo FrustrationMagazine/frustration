@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets";
+import jukeboxImage from "./assets/jukebox.png";
+import note1 from "./assets/notes/note1.png";
+import note2 from "./assets/notes/note2.png";
+import note3 from "./assets/notes/note3.png";
+import note4 from "./assets/notes/note4.png";
+import note5 from "./assets/notes/note5.png";
+---
+
+<a
+  href="https://www.frustrationmagazine.fr/campagne-abonnements/"
+  id="banner"
+  class="relative z-10 flex items-center justify-center gap-6 bg-purple px-4 pt-2 md:pt-4">
+  <div class="jukebox-wrapper md:h-42 relative h-20 w-auto self-end sm:h-24 md:h-36">
+    <Image
+      src={jukeboxImage}
+      width="200"
+      alt="Un jukebox qui joue des notes de musique"
+      class="jukebox-image h-full w-auto"
+    />
+    <Image
+      src={note1}
+      width="14"
+      height="22"
+      alt="note de musique"
+      class="absolute left-[0px] top-[0px] w-[7px] md:w-[10px]"
+    />
+    <Image
+      src={note2}
+      width="14"
+      height="20"
+      alt="note de musique"
+      class="absolute left-[-10px] top-[10px] w-[7px] md:left-[-15px] md:top-[15px] md:w-[10px]"
+    />
+    <Image
+      src={note3}
+      width="14"
+      height="18"
+      alt="note de musique"
+      class="absolute left-[12px] top-[-8px] w-[7px] md:left-[18px] md:top-[-8px] md:w-[10px]"
+    />
+    <Image
+      src={note4}
+      width="14"
+      height="16"
+      alt="note de musique"
+      class="absolute right-[6px] top-[-8px] w-[7px] md:right-[18px] md:top-[-8px] md:w-[10px]"
+    />
+
+    <Image
+      src={note5}
+      width="14"
+      height="24"
+      alt="note de musique"
+      class="absolute right-[-5px] top-[3px] w-[7px] md:right-[-5px] md:top-[3px] md:w-[10px]"
+    />
+  </div>
+  <div class="content flex flex-col items-center justify-center self-center pb-2 text-center font-arca text-white">
+    <h3 class="objectif text-2xl md:text-5xl">OBJECTIF 1500</h3>
+    <p class="vous-aimez-frustration text-sm leading-none md:text-lg">
+      Vous aimez Frustration ? Aidez-nous à <span class="md:rounded-md md:bg-white md:px-2 md:py-1 md:text-sm md:uppercase md:text-purple">grandir</span> !
+    </p>
+    <div class="progress-bar-container mt-2 flex h-[20px] w-full max-w-[50vw] md:mt-4 md:h-[30px]">
+      <div class="progress-bar relative w-[66%] bg-white">
+        <span class="label absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] whitespace-nowrap text-[10px] font-light text-purple md:block md:text-xs">✊ Déjà 1000 abonnés</span>
+        <span class="percent absolute right-[10px] top-[50%] translate-y-[-50%] text-[12px] text-purple md:text-lg">🔥 <span class="relative top-[1px]">66%</span></span>
+      </div>
+      <div class="progress-bar-empty relative grid grow place-items-center bg-purple"></div>
+      <!-- TODO // add progress html element instead of a div -->
+      <style>
+        .progress-bar::after {
+          content: "";
+          height: 100%;
+          width: 50px;
+          position: absolute;
+          border-radius: 50%;
+          background: white;
+          filter: blur(20px);
+          animation: move 2s steps(40) infinite;
+        }
+        @keyframes move {
+          0% {
+            left: 0%;
+            opacity: 0.5;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            left: calc(100% - 50px);
+            opacity: 0;
+          }
+        }
+        .progress-bar-empty {
+          --progress-thickness-border: 2px;
+          border-top: var(--progress-thickness-border) dashed white;
+          border-right: var(--progress-thickness-border) dashed white;
+          border-bottom: var(--progress-thickness-border) dashed white;
+        }
+      </style>
+    </div>
+  </div>
+</a>

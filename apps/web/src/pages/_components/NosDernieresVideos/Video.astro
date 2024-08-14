@@ -1,0 +1,18 @@
+---
+import { Image } from "astro:assets";
+import { createVideoYoutubeUrl } from "@/libs/data-access/youtube";
+const { id, videoId, thumbnailUrl } = Astro.props;
+const youtubeUrl = createVideoYoutubeUrl(videoId);
+---
+
+<li
+  class="splide__slide"
+  data-id={id}
+  data-splide-youtube={youtubeUrl}>
+  <Image
+    src={thumbnailUrl}
+    alt=""
+    width="1280"
+    height="720"
+  />
+</li>

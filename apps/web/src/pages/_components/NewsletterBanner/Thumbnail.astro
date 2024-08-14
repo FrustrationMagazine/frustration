@@ -1,0 +1,20 @@
+---
+import { cn } from "@libs/utils/tailwind";
+import { Image } from "astro:assets";
+const { width, src, reverse } = Astro.props;
+---
+
+<a
+  href="https://www.frustrationmagazine.fr/?mailpoet_router&endpoint=view_in_browser&action=view&data=WzY4LCI1NWU3MmQ0MmVjNjQiLDAsMCwzNDY1LDFd"
+  class={cn("cursor-pointer hover:[animation-play-state:paused]", {
+    "animate-sliding": !reverse,
+    "animate-slidingReverse": reverse,
+  })}
+  target="_blank">
+  <Image
+    src={src}
+    alt="Exemple de newsletter"
+    width={width}
+    class="shadow-lg"
+  />
+</a>

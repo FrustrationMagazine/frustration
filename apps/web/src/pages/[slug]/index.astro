@@ -1,0 +1,38 @@
+---
+import BaseLayout from "@/layout/BaseLayout/BaseLayout.astro";
+import ArticleLayout from "@/layout/ArticleLayout/ArticleLayout.astro";
+import { getSlugs } from "@/libs/data-access/wordpress";
+import Footer from "@/layout/BaseLayout/Footer/Footer.astro";
+import {
+  fetchArticle,
+  formatTitleFromRawArticleData,
+  formatAuthorFromRawArticleData,
+  formatDateFromRawArticleData,
+  formatCategoriesFromRawArticleData,
+  formatImageFromRawArticleData,
+  formatContentFromRawArticleData,
+} from "src/data/wordpress";
+import type { ArticleRaw } from "src/data/wordpress";
+
+export const getStaticPaths = async () => {
+  const ARTICLES_TO_DISPLAY = 9;
+  const articles: ArticleRaw[] = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "slug", "author", "date", "categories", "image", "content"])) as ArticleRaw[];
+  const paths = articles.map((article: ArticleRaw) => ({ params: { slug: article.slug }, props: { article } }));
+  return paths;
+};
+const { article } = Astro.props as { article: ArticleRaw };
+---
+
+<BaseLayout title={formatTitleFromRawArticleData(article)}>
+  <ArticleLayout
+    title={formatTitleFromRawArticleData(article)}
+    author={formatAuthorFromRawArticleData(article)}
+    date={formatDateFromRawArticleData(article, { explicit: false })}
+    categories={formatCategoriesFromRawArticleData(article)}
+    image={formatImageFromRawArticleData(article)}>
+    <Fragment
+      slot="article-content"
+      set:html={formatContentFromRawArticleData(article)}
+    />
+  </ArticleLayout>
+</BaseLayout>

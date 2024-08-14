@@ -1,0 +1,10 @@
+---
+import MessageCircleIcon from "./icons/message-circle.svg?raw";
+---
+
+<a
+  href="/entretiens"
+  class="m-auto mt-12 flex w-fit items-center gap-4 bg-white px-6 pb-4 pt-5 font-bebas text-3xl leading-none text-black transition-transform hover:scale-110">
+  <Fragment set:html={MessageCircleIcon} />
+  <span><slot /></span>
+</a>

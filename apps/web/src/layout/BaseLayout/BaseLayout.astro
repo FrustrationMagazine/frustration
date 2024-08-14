@@ -1,0 +1,64 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { fade } from "astro:transitions";
+import Header from "./Header/Header.astro";
+import Footer from "./Footer/Footer.astro";
+
+import "@fontsource/bebas-neue";
+import "@fontsource/open-sans/300.css";
+import "@fontsource/open-sans/400.css";
+import "@fontsource/open-sans/700.css";
+import "@styles/reset.css";
+import "@styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const DEFAULT_IMAGE = "/img/default.png";
+const DEFAULT_DESCRIPTION = "Frustration Magazine est un média indépendant qui décrypte l'actualité politique et sociale.";
+
+const { title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/img/favicon_frustration.webp"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <meta
+      name="description"
+      content={description}
+    />
+    <meta
+      property="og:title"
+      content={`Frustration Magazine - ${title}`}
+    />
+    <meta
+      property="og:image"
+      content={image}
+    />
+    <title>Frustration Magazine - {title}</title>
+    <ViewTransitions />
+  </head>
+  <body class="flex min-h-screen w-screen flex-col">
+    <Header transition:persist />
+    <main class="w-full flex-grow">
+      <slot transition:animate={fade({ duration: "0.4s" })} />
+    </main>
+  </body>
+</html>
