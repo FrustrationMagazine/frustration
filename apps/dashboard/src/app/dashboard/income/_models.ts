@@ -7,7 +7,7 @@ export type Tab = {
 
 export type TransactionsByMonth = {
   month: Date;
-  transactionType: TransactionType;
+  type: TransactionType;
   stripe: number;
   helloasso: number;
   total: number;

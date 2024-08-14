@@ -33,12 +33,11 @@ export default async () => {
       <TabPanels className='mx-auto w-full'>
         {tabs.map(({ name, transactionsTypes }) => {
           const multipleTransactionsTypes = transactionsTypes.length > 1;
-          let filteredTransactionsByMonth = transactionsByMonth.filter(
-            ({ transactionType }): boolean => transactionsTypes.includes(transactionType),
+          let filteredTransactionsByMonth = transactionsByMonth.filter(({ type }) =>
+            transactionsTypes.includes(type),
           );
           if (multipleTransactionsTypes)
             filteredTransactionsByMonth = groupByMonthAndSum(filteredTransactionsByMonth);
-
           return (
             <TabPanel key={name} name={name} transactionsByMonth={filteredTransactionsByMonth} />
           );
