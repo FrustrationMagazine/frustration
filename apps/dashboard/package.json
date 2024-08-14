@@ -12,8 +12,8 @@
     "vercel-build": "next build"
   },
   "dependencies": {
-    "@/ui": "workspace:*",
     "@/data-access": "workspace:*",
+    "@/ui": "workspace:*",
     "@auth/prisma-adapter": "^2.4.2",
     "@hookform/resolvers": "^3.9.0",
     "@next/env": "^14.2.5",
@@ -36,6 +36,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "^5.18.0",
     "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
