@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import { getLastSubscribers } from "./_actions";
+
+// 🧱 Components
 import { DatePickerWithRange } from "@/ui/components/date-range-picker";
 import {
   Table,
@@ -11,6 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui/components/table";
+import SuperBallsLoader from "@dashboard/components/SuperBallsLoader/SuperBallsLoader";
+
 import { RiChatFollowUpFill } from "react-icons/ri";
 import { Button } from "@/ui/components/button";
 import { IoIosDownload } from "react-icons/io";
@@ -124,16 +128,20 @@ const SubscribersForm = () => {
 
   return (
     <div className='mx-auto flex max-h-[80vh] w-[90%] flex-col items-center justify-start gap-3 pt-12'>
-      <DatePickerWithRange date={date} setDate={setDate} />
       {!loading ? (
         <>
+          <DatePickerWithRange date={date} setDate={setDate} />
           {subscribers.length > 0 ? SubscribersTable : NoSubscribers}
           <div className='flex items-center justify-between self-stretch'>
             {NewSubscribers}
             {DownloadButton}
           </div>
         </>
-      ) : null}
+      ) : (
+        <div className='flex grow items-center'>
+          <SuperBallsLoader />
+        </div>
+      )}
     </div>
   );
 };
