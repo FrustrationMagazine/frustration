@@ -1,7 +1,3 @@
-import React from "react";
-
-const NotFound = () => {
-  return <div>Not Found</div>;
-};
-
-export default NotFound;
+export default () => (
+  <div className='m-auto text-3xl font-bold'>👀 Cette page n&apos;existe pas...</div>
+);
