@@ -3,14 +3,7 @@
 import { useState, useEffect } from "react";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@/ui/components/tabs";
 import TransactionsChart from "./_components/TransactionsChart";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/ui/components/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/components/card";
 import { getTransactionsByMonth } from "./_actions/getTransactionsByMonth";
 import type { TransactionsByMonth } from "./_models/transactionsByMonth";
 import { inEuros, groupByMonthAndSum, getTotalMonthAndEvolution } from "./_utils";
@@ -26,16 +19,6 @@ export const dynamic = "force-dynamic";
 
 const Income = () => {
   const [transactions, setTransactions] = useState<TransactionsByMonth[]>([]);
-  // const [month, setMonth] = useState<Date | null>(new Date());
-  // 👉 What it looks like
-  // {
-  //   month: 2020-05-20T00:00:00.000Z,
-  //   type: 'subscription',
-  //   stripe: 100,
-  //   helloasso: 100,
-  //   total: 200
-  // }
-
   const [hoveredMonth, setHoveredMonth] = useState<number>(-1);
 
   useEffect(() => {
@@ -72,8 +55,8 @@ const Income = () => {
           const allMonths = chartData.map(({ month }) => month).toReversed();
 
           return (
-            <TabPanel key={name} className='flex gap-6'>
-              <Card className='h-[70vh] min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md'>
+            <TabPanel key={name} className='flex h-[70vh] gap-6'>
+              <Card className='min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md'>
                 <CardHeader className='text-3xl font-semibold'>
                   <CardTitle>{name}</CardTitle>
                   <CardDescription>Par mois</CardDescription>
