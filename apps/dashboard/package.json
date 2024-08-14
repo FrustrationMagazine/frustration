@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -- prisma generate && next dev",
+    "dev": "dotenv -e ../../.env.local -- prisma generate && dotenv -e ../../.env.local -- next dev",
     "build": "dotenv -e ../../.env.local -- next build",
     "start": "dotenv -e ../../.env.local -- next start",
     "lint": "dotenv -e ../../.env.local -- next lint",
