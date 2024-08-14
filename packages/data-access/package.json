@@ -1,0 +1,24 @@
+{
+  "name": "@/data-access",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma-dev": "prisma generate && dotenv -e ../../.env.local -- prisma db pull",
+    "prisma-migrate": "dotenv -e ../../.env.local -- pnpx prisma migrate dev",
+    "prisma-generate": "dotenv -e ../../.env.local -- pnpx prisma generate",
+    "prisma-studio": "dotenv -e ../../.env.local -- pnpx prisma studio",
+    "prisma-push": "dotenv -e ../../.env.local -- prisma db push",
+    "prisma-prod": "dotenv -e ../../.env.local -- prisma generate && dotenv -e .env.prod -- prisma db pull"
+  },
+  "keywords": [],
+  "author": "Thibaut Izard <thibaut.izard@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@prisma/client": "5.18.0",
+    "prisma": "^5.18.0"
+  },
+  "exports": {
+    "./prisma": "./prisma/client.ts"
+  }
+}

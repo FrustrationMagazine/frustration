@@ -3,25 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -- prisma generate && dotenv -e ../../.env.local -- next dev",
+    "dev": "dotenv -e ../../.env.local -- next dev",
     "build": "dotenv -e ../../.env.local -- next build",
     "start": "dotenv -e ../../.env.local -- next start",
-    "lint": "dotenv -e ../../.env.local -- next lint",
+    "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
-    "prisma-dev": "prisma generate && dotenv -e ../../.env.local -- prisma db pull",
-    "prisma-migrate": "dotenv -e ../../.env.local -- pnpx prisma migrate dev",
-    "prisma-studio": "dotenv -e ../../.env.local -- pnpx prisma studio",
-    "prisma-push": "dotenv -e ../../.env.local -- prisma db push",
-    "prisma-prod": "prisma generate && dotenv -e .env.prod -- prisma db pull",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@/ui": "workspace:*",
+    "@/data-access": "workspace:*",
     "@auth/prisma-adapter": "^2.4.2",
     "@hookform/resolvers": "^3.9.0",
     "@next/env": "^14.2.5",
-    "@prisma/client": "5.18.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@stripe/stripe-js": "^4.2.0",
     "class-variance-authority": "^0.7.0",
@@ -51,7 +46,6 @@
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "prisma": "^5.18.0",
     "tailwindcss": "^3.4.9",
     "typescript": "^5.5.4"
   }

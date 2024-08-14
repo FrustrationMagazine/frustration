@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@dashboard/prisma";
+import { prisma } from "@/data-access/prisma";
 import type { TransactionsByMonth } from "../_models/transactionsByMonth";
 
 export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {

@@ -10,6 +10,9 @@ importers:
 
   apps/dashboard:
     dependencies:
+      '@/data-access':
+        specifier: workspace:*
+        version: link:../../packages/data-access
       '@/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -22,9 +25,6 @@ importers:
       '@next/env':
         specifier: ^14.2.5
         version: 14.2.5
-      '@prisma/client':
-        specifier: 5.18.0
-        version: 5.18.0(prisma@5.18.0)
       '@radix-ui/react-tabs':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -107,9 +107,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.6
         version: 0.6.6(prettier-plugin-astro@0.11.1)(prettier@3.3.3)
-      prisma:
-        specifier: ^5.18.0
-        version: 5.18.0
       tailwindcss:
         specifier: ^3.4.9
         version: 3.4.9
@@ -228,6 +225,15 @@ importers:
       typescript:
         specifier: ^5.4.4
         version: 5.5.4
+
+  packages/data-access:
+    devDependencies:
+      '@prisma/client':
+        specifier: 5.18.0
+        version: 5.18.0(prisma@5.18.0)
+      prisma:
+        specifier: ^5.18.0
+        version: 5.18.0
 
   packages/ui:
     dependencies:
