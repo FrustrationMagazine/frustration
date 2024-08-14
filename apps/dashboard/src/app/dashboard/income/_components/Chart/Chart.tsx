@@ -5,56 +5,55 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/ui/components/chart";
-import { Area, AreaChart, YAxis, XAxis, Legend, CartesianGrid } from "recharts";
-import { inEuros, formatExplicitMonth, debounce } from "../_utils";
+import { Area, AreaChart, XAxis, Legend } from "recharts";
+import { inEuros, formatExplicitMonth, debounce } from "../../_utils";
+import { TransactionsByMonth } from "../../_models";
+
 const chartConfig = {
   income: {
     label: "Revenus mensuels générés",
   },
-  stripe: {
-    label: "Stripe",
-    color: "#574af9",
-    // icon: Monitor,
-  },
-  helloasso: {
-    label: "HelloAsso",
-    color: "#2dce83",
-  },
 } satisfies ChartConfig;
 
 const TransactionsChart = ({
-  name,
-  chartData,
-  setHoveredMonth,
+  transactionsByMonth,
+  setHighlightedMonth,
 }: {
-  name: string;
-  chartData: any;
-  setHoveredMonth: any;
+  transactionsByMonth: TransactionsByMonth[];
+  setHighlightedMonth: any;
 }) => {
-  const modifiedChartData = chartData
-    .map(({ month, stripe, helloasso, total }: any) => ({
+  const NUMBER_OF_LAST_MONTHS_TO_DISPLAY = 12;
+
+  const chartData = transactionsByMonth
+    .map(({ month, stripe, helloasso, total }) => ({
       month: month.toISOString(),
       stripe: Math.round(stripe),
       helloasso: Math.round(helloasso),
       total: Math.round(total),
     }))
-    .slice(-12);
+    .slice(-NUMBER_OF_LAST_MONTHS_TO_DISPLAY);
 
   function handleMouseMove() {
-    const activeDot = document.querySelector(".recharts-active-dot circle");
+    const RECHARTS_ACTIVE_DOT_CIRCLE_SELECTOR = ".recharts-active-dot circle";
+    const RECHARTS_DOT_CIRCLE_SELECTOR = ".recharts-area-dots circle";
+
+    const activeDot = document.querySelector(RECHARTS_ACTIVE_DOT_CIRCLE_SELECTOR);
+    if (!activeDot) setHighlightedMonth(-1);
     if (activeDot) {
-      const activeDotX = activeDot?.getAttribute("cx");
-      if (activeDotX) {
+      const activeDotPositionX = activeDot?.getAttribute("cx");
+      if (activeDotPositionX) {
         const dots = Array.from(
-          document.querySelectorAll(".recharts-area-dots circle"),
+          document.querySelectorAll(RECHARTS_DOT_CIRCLE_SELECTOR),
         ).toReversed();
-        const dotsX = dots.map((dot) => dot.getAttribute("cx"));
-        const matchingIndex = dotsX.findIndex((dotX) => dotX === activeDotX);
-        setHoveredMonth(matchingIndex);
+        const dotsPositionX = dots.map((dot) => dot.getAttribute("cx"));
+        const indexMonth = dotsPositionX.findIndex((dotX) => dotX === activeDotPositionX);
+        setHighlightedMonth(indexMonth);
       }
-    } else {
-      setHoveredMonth(-1);
     }
+  }
+
+  function resetHighlightedMonth() {
+    setHighlightedMonth(-1);
   }
 
   return (
@@ -64,9 +63,9 @@ const TransactionsChart = ({
     >
       <AreaChart
         accessibilityLayer
-        data={modifiedChartData}
+        data={chartData}
         onMouseMove={debounce(handleMouseMove, 10)}
-        onMouseLeave={() => setHoveredMonth(-1)}
+        onMouseLeave={resetHighlightedMonth}
       >
         <defs>
           <linearGradient id='stripeGradient' x1='0' x2='0' y1='0' y2='1'>
@@ -89,19 +88,6 @@ const TransactionsChart = ({
           stroke='#0f172a'
           tickFormatter={(value) => formatExplicitMonth(value, "short")}
         />
-        {/* <YAxis
-          dataKey='stripe'
-          unit='€'
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-          fontSize={14}
-          interval='preserveEnd'
-          stroke='rgba(0,0,0,.5)'
-          fill='red'
-          padding={{ top: 0, bottom: 40 }}
-          tickFormatter={(value: number) => Intl.NumberFormat("fr-Fr").format(value)}
-        /> */}
         <ChartTooltip
           content={
             <ChartTooltipContent
@@ -118,6 +104,7 @@ const TransactionsChart = ({
           fill='url(#stripeGradient)'
           stroke='#625bf6'
           radius={4}
+          // Import to keep this dot property so dots are painted but invisible and we can check position of active dot within it whenever we want
           dot={{ fill: "transparent", strokeWidth: 0 }}
         />
         <Area

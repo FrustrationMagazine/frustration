@@ -1,7 +1,12 @@
-"use server";
-
+// 💽 Database
 import { prisma } from "@/data-access/prisma";
-import type { TransactionsByMonth } from "../_models/transactionsByMonth";
+
+// 🗿 Models
+import { type TransactionsByMonth } from "./_models";
+
+/* ---------------------------- */
+/*    Transactions by month     */
+/* ---------------------------- */
 
 export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {
   const transactions: TransactionsByMonth[] = await prisma.$queryRaw`
@@ -21,14 +26,6 @@ export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {
     ORDER BY
       month ASC
   `;
-  // 👉 What it looks like
-  // {
-  //   month: 2020-05-20T00:00:00.000Z,
-  //   type: 'subscription',
-  //   stripe: 100,
-  //   helloasso: 100,
-  //   total: 200
-  // }
 
   return transactions;
 }
