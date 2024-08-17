@@ -1,6 +1,3 @@
-// 🔩 Base
-import { useState, useEffect } from "react";
-
 // 💥 Fetch
 import { getTransactionsByMonth } from "./_actions";
 
@@ -32,12 +29,10 @@ export default async () => {
       <TabList tabs={tabs} />
       <TabPanels className='mx-auto w-full'>
         {tabs.map(({ name, transactionsTypes }) => {
-          const multipleTransactionsTypes = transactionsTypes.length > 1;
           let filteredTransactionsByMonth = transactionsByMonth.filter(({ type }) =>
             transactionsTypes.includes(type),
           );
-          if (multipleTransactionsTypes)
-            filteredTransactionsByMonth = groupByMonthAndSum(filteredTransactionsByMonth);
+          filteredTransactionsByMonth = groupByMonthAndSum(filteredTransactionsByMonth);
           return (
             <TabPanel key={name} name={name} transactionsByMonth={filteredTransactionsByMonth} />
           );
