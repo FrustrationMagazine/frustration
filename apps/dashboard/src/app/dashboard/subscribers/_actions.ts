@@ -1,8 +1,14 @@
 "use server";
 
-import { fetchStripeCustomers } from "@dashboard/libs/stripe";
+import { fetchStripeSubscribers, Customer } from "@dashboard/libs/stripe";
 
-export const getLastSubscribers = async ({ begin, end }: { begin: Date; end: Date }) => {
-  const customers = await fetchStripeCustomers({ begin, end });
-  return customers;
-};
+export async function fetchSubscribers({
+  from,
+  to,
+}: {
+  from: Date;
+  to: Date;
+}): Promise<Customer[]> {
+  const subscribers = await fetchStripeSubscribers({ from, to });
+  return subscribers;
+}

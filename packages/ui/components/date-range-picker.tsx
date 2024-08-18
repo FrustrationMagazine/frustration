@@ -2,6 +2,7 @@ import React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 import { cn } from "../lib/utils";
 import { Button } from "./button";
@@ -14,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 //   setDate: any;
 // };
 
-export const DatePickerWithRange: any = ({ className, date, setDate }: any) => {
+export const DatePickerWithRange: any = ({ className, date, setDate, footer }: any) => {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -28,13 +29,13 @@ export const DatePickerWithRange: any = ({ className, date, setDate }: any) => {
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                  {format(date.from, "LLL dd, y", { locale: fr })} - {format(date.to, "LLL dd, y", { locale: fr })}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                format(date.from, "LLL dd, y", { locale: fr })
               )
             ) : (
-              <span>Pick a date</span>
+              <span className="text-muted-foreground">Choisir des dates</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -53,6 +54,7 @@ export const DatePickerWithRange: any = ({ className, date, setDate }: any) => {
           />
         </PopoverContent>
       </Popover>
+      <span className="text-sm text-center text-accent-foreground">{footer}</span>
     </div>
   );
 };

@@ -138,14 +138,25 @@ export async function fetchStripeTransactions({ afterTimestamp } = { afterTimest
 /*    CUSTOMERS     */
 /* ---------------- */
 
-export async function fetchStripeCustomers(
-  { begin, end } = {
-    begin: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    end: new Date(),
+export interface Customer {
+  id: string;
+  created: Date;
+  name: string;
+  email: string;
+  adresse: string;
+  code_postal: string;
+  ville: string;
+  amount: number;
+}
+
+export async function fetchStripeSubscribers(
+  { from, to } = {
+    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    to: new Date(),
   },
 ) {
-  const beginTimestamp = Math.floor(begin.getTime() / 1000);
-  const endTimestamp = Math.floor(end.getTime() / 1000);
+  const beginTimestamp = Math.floor(from.getTime() / 1000);
+  const endTimestamp = Math.floor(to.getTime() / 1000);
 
   let hasMore;
   let subscriptions: any[] = [];
@@ -177,7 +188,7 @@ export async function fetchStripeCustomers(
       customers = [...customers, ...temp_customers];
     }
 
-    const formattedCustomers = customers.map(({ id, created, name, email }, index) => ({
+    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email }, index) => ({
       id,
       created: new Date(created * 1000),
       name,
