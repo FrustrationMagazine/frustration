@@ -14,7 +14,7 @@ import { type Tab as TabType, TransactionType } from "./_models";
 
 // 📦 Data
 const tabs: TabType[] = [
-  { name: "Tout", transactionsTypes: ["subscription", "donation"] },
+  { name: "Global", transactionsTypes: ["subscription", "donation"] },
   { name: "Abonnements", transactionsTypes: ["subscription"] },
   { name: "Dons", transactionsTypes: ["donation"] },
 ];

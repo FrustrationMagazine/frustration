@@ -3,23 +3,24 @@ import type { NextRequest } from "next/server";
 import { auth } from "@dashboard/auth";
 
 const SIGN_IN_URL = "/auth/signin";
+
 const DASHBOARD_URL = "/dashboard";
+const DASHBOARD_INCOME_URL = `${DASHBOARD_URL}/income`;
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard/income", request.url));
   }
 
+  const isSignedIn = !!(await auth())?.user;
   const atAuth = request.nextUrl.pathname.startsWith("/auth");
-  const atDashboard = request.nextUrl.pathname.startsWith("/dashboard");
-  const session = await auth();
-  const logged = !!session?.user;
+  const shouldRedirectToLogin = !isSignedIn && !atAuth;
+  if (shouldRedirectToLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
 
-  const redirectLogin = !logged && !atAuth;
-  const redirectDashboard = logged && !atDashboard;
-
-  if (redirectLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
-  if (redirectDashboard) return NextResponse.redirect(new URL(DASHBOARD_URL, request.url));
+  const atDashboardHome = request.nextUrl.pathname === DASHBOARD_URL;
+  const shouldRedirectDashboardIncome = isSignedIn && atDashboardHome;
+  if (shouldRedirectDashboardIncome)
+    return NextResponse.redirect(new URL(DASHBOARD_INCOME_URL, request.url));
 }
 
 export const config = {
