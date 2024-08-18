@@ -15,7 +15,6 @@ export function downloadFileFromUrl(url: string, filename: string): void {
   link.setAttribute("download", filename);
   link.style.visibility = "hidden";
   document.body.appendChild(link);
-  console.log("link", link);
   link.click();
   document.body.removeChild(link);
 }

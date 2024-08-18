@@ -64,7 +64,7 @@ const Sidenav = () => {
                 <Link
                   href={href}
                   className={cn(
-                    `flex items-center gap-4 px-5 py-2 text-lg ${poppins.className} rounded-md transition duration-500`,
+                    `flex items-center gap-4 px-5 py-2 text-lg ${poppins.className} whitespace-nowrap rounded-md transition duration-500`,
                     href === currentPath && "bg-frustration-yellow-hover",
                   )}
                 >

@@ -19,16 +19,18 @@ export default ({
   const [highlightedMonth, setHighlightedMonth] = useState<number>(-1);
 
   return (
-    <TabPanel className='flex h-[70vh] gap-6'>
+    <TabPanel className='flex h-[65vh] gap-6'>
       <CardMonths
         cardName={name}
         transactionsByMonth={transactionsByMonth}
         highlightedMonth={highlightedMonth}
       />
-      <TransactionsChart
-        transactionsByMonth={transactionsByMonth}
-        setHighlightedMonth={setHighlightedMonth}
-      />
+      <div className='flex-grow'>
+        <TransactionsChart
+          transactionsByMonth={transactionsByMonth}
+          setHighlightedMonth={setHighlightedMonth}
+        />
+      </div>
     </TabPanel>
   );
 };

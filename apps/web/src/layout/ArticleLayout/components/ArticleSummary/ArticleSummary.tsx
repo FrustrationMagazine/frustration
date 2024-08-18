@@ -72,7 +72,6 @@ const ArticleSummaryLink = (title: string, index: number) => {
       className="flex cursor-pointer items-center gap-1.5"
       onClick={() => {
         const titleInArticle = document.getElementById(titleId);
-        console.log("titleInArticle", titleInArticle);
         if (titleInArticle) {
           titleInArticle.scrollIntoView();
           // titleInArticle.scrollIntoViewIfNeeded({ opt_center: false });

@@ -1,3 +1,5 @@
+"use server";
+
 // 💽 Database
 import { prisma } from "@/data-access/prisma";
 

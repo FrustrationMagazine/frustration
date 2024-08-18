@@ -3,8 +3,8 @@ import { getTransactionsByMonth } from "./_actions";
 
 // 🧱 Components
 import { TabGroup, TabPanels } from "@/ui/components/tabs";
-import TabList from "./_components/TabList";
-import TabPanel from "./_components/TabPanel";
+import TabList from "./components/TabList";
+import TabPanel from "./components/TabPanel";
 
 // 🔧 Libs
 import { groupByMonthAndSum } from "./_utils";
@@ -27,7 +27,7 @@ export default async () => {
   return (
     <TabGroup className='w-full p-8'>
       <TabList tabs={tabs} />
-      <TabPanels className='mx-auto w-full'>
+      <TabPanels>
         {tabs.map(({ name, transactionsTypes }) => {
           let filteredTransactionsByMonth = transactionsByMonth.filter(({ type }) =>
             transactionsTypes.includes(type),
