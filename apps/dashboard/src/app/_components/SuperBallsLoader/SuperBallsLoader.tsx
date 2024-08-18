@@ -1,10 +1,10 @@
 import React from "react";
-import "./style.css";
+import styles from "./SuperBallsLoader.module.css";
 
 const SuperBallsLoader = () => (
-  <div className='container'>
-    <div className='electron'></div>
-    <div className='electron'></div>
+  <div className={styles.container}>
+    <div className={styles.electron}></div>
+    <div className={styles.electron}></div>
   </div>
 );
 
