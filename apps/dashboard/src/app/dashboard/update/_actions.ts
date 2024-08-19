@@ -65,7 +65,7 @@ export async function updateDashboard(
 /* ******************* */
 const DEFAULT_UPDATE_TRANSACTION = { updateMethod: "smart" };
 
-async function updateTransactions({
+export async function updateTransactions({
   updateMethod,
 }: {
   updateMethod: string;
@@ -137,7 +137,7 @@ async function updateTransactions({
 
 // Update Stripe Balance
 
-async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
+export async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
   const stripeBalance = await fetchStripeBalance();
   try {
     const lastBalanceRow = await prisma.balance.findFirst({});

@@ -31,6 +31,9 @@ importers:
       '@stripe/stripe-js':
         specifier: ^4.2.0
         version: 4.2.0
+      '@vercel/functions':
+        specifier: ^1.4.0
+        version: 1.4.0
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1923,6 +1926,15 @@ packages:
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
+
+  '@vercel/functions@1.4.0':
+    resolution: {integrity: sha512-Ln6SpIkms1UJg306X2kbEMyG9ol+mjDr2xx389cvsBxgFyFMI9Bm+LYOG4N3TSik4FI59MECyyc4oz7AIAYmqQ==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      '@aws-sdk/credential-provider-web-identity': '*'
+    peerDependenciesMeta:
+      '@aws-sdk/credential-provider-web-identity':
+        optional: true
 
   '@vimeo/player@2.23.1':
     resolution: {integrity: sha512-MnxF4K4YnzR1v0KjgDOsVaivr6k5SCaWRk0llNpemADfUU7yYGRtDHDkdZFy7OIbulKvKfs2WCZtapgigQybnw==}
@@ -6167,6 +6179,8 @@ snapshots:
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.2.0': {}
+
+  '@vercel/functions@1.4.0': {}
 
   '@vimeo/player@2.23.1':
     dependencies:
