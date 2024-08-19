@@ -25,7 +25,7 @@ const SubscribersWidget = () => {
       ) : (
         <>
           <SubscribersList subscribers={subscribers} />
-          <BottomBar subscribers={subscribers} />
+          <BottomBar subscribers={subscribers} date={date} />
         </>
       )}
     </>

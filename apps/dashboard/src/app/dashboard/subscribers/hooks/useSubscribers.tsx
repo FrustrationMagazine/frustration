@@ -22,12 +22,16 @@ const useSubscribers = () => {
     (async () => {
       if (date?.from && date?.to) {
         setLoadingSubscribers(true);
+
+        // We take next day as the end date to include all the data from the selected day
         const nextDay = new Date(date.to);
         nextDay.setDate(nextDay.getDate() + 1);
+
         const subscribers = await fetchSubscribers({
           from: date.from,
           to: nextDay,
         });
+
         setSubscribers(subscribers);
         setLoadingSubscribers(false);
       }

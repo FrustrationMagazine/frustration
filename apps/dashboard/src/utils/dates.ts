@@ -9,6 +9,25 @@ export function convertUTCtoDate(dateUTC: number): Date {
   return new Date(+dateUTC * 1000);
 }
 
+/* ----------------------------------------------- */
+/* Month and year of a date (long or short format) */
+/* ----------------------------------------------- */
+
+// Input : value: "2023-10-01", monthLength: "long"
+// Output: "Octobre 2023"
+
+// Input : value: "2023-10-01", monthLength: "short"
+// Output: "Oct. 2023"
+
+export const formatExplicitMonth = (value: string | Date, monthLength: "long" | "short") => {
+  const date = !(value instanceof Date) ? new Date(value) : value;
+  const explicitMonth = date.toLocaleDateString("fr-FR", {
+    month: monthLength,
+    year: "numeric",
+  });
+  return explicitMonth.charAt(0).toUpperCase() + explicitMonth.slice(1);
+};
+
 /* ------------- */
 /* Explicit date */
 /* ------------- */

@@ -1,4 +1,6 @@
 "use client";
+
+// 📊 Charts
 import {
   type ChartConfig,
   ChartContainer,
@@ -6,7 +8,12 @@ import {
   ChartTooltipContent,
 } from "@/ui/components/chart";
 import { Area, AreaChart, XAxis, Legend } from "recharts";
-import { inEuros, formatExplicitMonth, debounce } from "../../_utils";
+
+// 🔧 Libs
+import { inEuros, debounce } from "../../_utils";
+import { formatExplicitMonth } from "@dashboard/utils/dates";
+
+// 🗿 Models
 import { TransactionsByMonth } from "../../_models";
 
 const chartConfig = {

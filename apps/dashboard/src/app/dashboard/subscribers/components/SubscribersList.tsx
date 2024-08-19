@@ -1,7 +1,6 @@
 "use client";
 
 // 🧱 Components
-import Loader from "../loading";
 import {
   Table,
   TableBody,
@@ -11,6 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui/components/table";
+
+// 🔧 Libs
+import { prettifyName } from "@dashboard/utils/strings";
 
 // 🗿 Models
 import { Customer } from "@dashboard/libs/stripe";
@@ -44,11 +46,13 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
                   day: "numeric",
                 })}
               </TableCell>
-              <TableCell className='font-medium'>{name}</TableCell>
-              <TableCell>{email}</TableCell>
+              <TableCell className='font-medium'>{prettifyName(name)}</TableCell>
+              <TableCell>
+                <a href={`mailto:${email}`}>{email}</a>
+              </TableCell>
               <TableCell>{amount / 100}€</TableCell>
-              <TableCell className='capitalize'>{ville.toLowerCase()}</TableCell>
               <TableCell>{adresse}</TableCell>
+              <TableCell className='capitalize'>{ville.toLowerCase()}</TableCell>
               <TableCell>{code_postal}</TableCell>
             </TableRow>
           ))}

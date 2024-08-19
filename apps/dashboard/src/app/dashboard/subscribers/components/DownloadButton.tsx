@@ -6,12 +6,24 @@ import { IoIosDownload } from "react-icons/io";
 
 // 🔧 Libs
 import { createCSVinURL, downloadFileFromUrl } from "../_utils";
+import { explicitDate } from "@dashboard/utils/dates";
 
 // 🗿 Model
 import { HEADERS } from "../_models";
 import { Customer } from "@dashboard/libs/stripe";
 
-export default function DownloadButton({ subscribers }: { subscribers: Customer[] }) {
+export default function DownloadButton({
+  subscribers,
+  date,
+}: {
+  subscribers: Customer[];
+  date: {
+    from: Date;
+    to: Date;
+  };
+}) {
+  console.log("date", date);
+  console.log("from", date.from);
   const handleDownloadSubscribersList = () => {
     const headersNames = HEADERS.map(({ name }) => name);
     const CSVinURL = createCSVinURL(
@@ -25,7 +37,10 @@ export default function DownloadButton({ subscribers }: { subscribers: Customer[
         ville,
       })),
     );
-    downloadFileFromUrl(CSVinURL, "nouveaux_abonnes.csv");
+
+    let filename = `nouveaux_abonnes_du_${explicitDate(date.from)}_au_${explicitDate(date.to)}.csv`;
+    filename = filename.toLowerCase().replace(/\s/g, "_");
+    downloadFileFromUrl(CSVinURL, filename);
   };
 
   return (

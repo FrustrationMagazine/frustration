@@ -126,24 +126,6 @@ export const getTotalMonthAndEvolution = (
   return { monthTotal: month.total, evolution };
 };
 
-/* ----------------------------------------------- */
-/* Month and year of a date (long or short format) */
-/* ----------------------------------------------- */
-
-// Input : value: "2023-10-01", monthLength: "long"
-// Output: "Octobre 2023"
-
-// Input : value: "2023-10-01", monthLength: "short"
-// Output: "Oct. 2023"
-
-export const formatExplicitMonth = (value: string, monthLength: "long" | "short") => {
-  const explicitMonth = new Date(value).toLocaleDateString("fr-FR", {
-    month: monthLength,
-    year: "numeric",
-  });
-  return explicitMonth.charAt(0).toUpperCase() + explicitMonth.slice(1);
-};
-
 /* -------- */
 /* Debounce */
 /* -------- */
