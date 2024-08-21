@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "prisma generate",
     "prisma-dev": "prisma generate && dotenv -e ../../.env.local -- prisma db pull",
     "prisma-migrate": "dotenv -e ../../.env.local -- pnpx prisma migrate dev",
     "prisma-generate": "dotenv -e ../../.env.local -- pnpx prisma generate",

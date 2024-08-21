@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
-    "vercel-build": "next build"
+    "vercel-build": "cd ../../packages/data-access && pnpm dlx prisma generate && cd - && next build"
   },
   "dependencies": {
     "@/data-access": "workspace:*",
