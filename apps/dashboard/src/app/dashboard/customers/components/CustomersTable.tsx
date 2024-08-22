@@ -15,8 +15,10 @@ import {
 } from "@/ui/components/table";
 import { Button } from "@/ui/components/button";
 
-// 🔧 Libs
+// 🔧 Utils
 import { prettifyName } from "@dashboard/utils/strings";
+
+// 🎁 Libraries
 import {
   ColumnDef,
   SortingState,
@@ -32,7 +34,7 @@ import { ArrowUpDown } from "lucide-react";
 // 🗿 Models
 import { Customer } from "@dashboard/libs/stripe";
 
-const columns: ColumnDef<Customer>[] = [
+const columnsCustomers: ColumnDef<Customer>[] = [
   {
     accessorKey: "created",
     header: ({ column }) => {
@@ -116,12 +118,17 @@ const columns: ColumnDef<Customer>[] = [
   },
 ];
 
-const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
+/* =============== */
+/*       UI        */
+/* =============== */
+
+export default function ({ customers }: { customers: Customer[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const filteredCustomers = customers;
 
   const table = useReactTable<Customer>({
-    data: subscribers,
-    columns,
+    data: filteredCustomers,
+    columns: columnsCustomers,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -129,8 +136,8 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
       sorting,
     },
   });
-  // Early return if no subscribers loaded
-  if (subscribers.length === 0) return <p>Aucun nouvel abonné sur cette période 😭</p>;
+  // Early return if no customers loaded
+  if (customers.length === 0) return <p>Aucun nouvel abonné sur cette période 😭</p>;
 
   return (
     <div className='mt-4 self-stretch overflow-auto rounded-md bg-white px-6 py-2 shadow-lg'>
@@ -142,7 +149,6 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {/* ⬇️ Wrap it with <> </> to avoid type issue ⬇️ */}
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -166,6 +172,4 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
       </Table>
     </div>
   );
-};
-
-export default SubscribersList;
+}

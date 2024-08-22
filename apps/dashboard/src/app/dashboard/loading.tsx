@@ -3,7 +3,7 @@ import SuperBallsLoader from "@dashboard/components/SuperBallsLoader/SuperBallsL
 
 export default () => {
   return (
-    <div className='m-auto'>
+    <div className='flex h-full grow items-center justify-center'>
       <SuperBallsLoader />
     </div>
   );

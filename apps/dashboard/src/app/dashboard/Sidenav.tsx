@@ -37,8 +37,8 @@ const SIDENAV_ELEMENTS: SidenavElement[] = [
   {
     label: "Abonnés",
     icon: <IoIosPeople size={18} />,
-    href: "/dashboard/subscribers",
-    key: "subscribers",
+    href: "/dashboard/customers",
+    key: "customers",
   },
   {
     label: "Mises à jour",

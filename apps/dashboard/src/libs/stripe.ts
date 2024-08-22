@@ -149,7 +149,7 @@ export interface Customer {
   amount: number;
 }
 
-export async function fetchStripeSubscribers(
+export async function fetchStripeCustomers(
   { from, to } = {
     from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     to: new Date(),

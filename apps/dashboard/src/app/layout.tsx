@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
   return (
     <html lang='fr'>
-      <body className={`${inter.className} flex min-h-screen flex-col antialiased`}>
+      <body className={`${inter.className} flex h-screen flex-col antialiased`}>
         <Header />
-        <main className='flex flex-grow'>{children}</main>
+        <main className='flex flex-grow overflow-auto'>{children}</main>
         <Toaster />
         <SpeedInsights />
       </body>

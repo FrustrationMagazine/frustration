@@ -66,7 +66,7 @@ const TransactionsChart = ({
   return (
     <ChartContainer
       config={chartConfig}
-      className='max-h-full w-full rounded-md bg-black/5 p-6 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-bold [&_.recharts-cartesian-axis-tick_text]:opacity-70'
+      className='w-full rounded-md bg-black/5 p-6 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-bold [&_.recharts-cartesian-axis-tick_text]:opacity-70'
     >
       <AreaChart
         accessibilityLayer

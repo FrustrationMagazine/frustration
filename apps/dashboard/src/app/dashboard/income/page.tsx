@@ -25,9 +25,9 @@ export const dynamic = "force-dynamic";
 export default async () => {
   const transactionsByMonth = await getTransactionsByMonth();
   return (
-    <TabGroup className='w-full p-8'>
+    <TabGroup className='flex h-full w-full flex-col'>
       <TabList tabs={tabs} />
-      <TabPanels>
+      <TabPanels className='grow overflow-auto'>
         {tabs.map(({ name, transactionsTypes }) => {
           let filteredTransactionsByMonth = transactionsByMonth.filter(({ type }) =>
             transactionsTypes.includes(type),
