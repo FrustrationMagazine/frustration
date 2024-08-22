@@ -2,7 +2,6 @@
 import { ViewTransitions } from "astro:transitions";
 import { fade } from "astro:transitions";
 import Header from "./Header/Header.astro";
-import Footer from "./Footer/Footer.astro";
 
 import "@fontsource/bebas-neue";
 import "@fontsource/open-sans/300.css";
@@ -23,7 +22,7 @@ const DEFAULT_DESCRIPTION = "Frustration Magazine est un média indépendant qui
 const { title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />

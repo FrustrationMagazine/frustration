@@ -1,5 +1,5 @@
 {
-  "name": "frustration-front",
+  "name": "web",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -8,53 +8,39 @@
     "build": "dotenv -e ../../.env.local -- astro build",
     "preview": "dotenv -e ../../.env.local -- astro preview",
     "astro": "dotenv -e ../../.env.local -- astro",
-    "vercel-build": "astro build"
+    "lint": "eslint .",
+    "vercel-build": "eslint . && astro build"
   },
   "dependencies": {
-
-    "astro": "^4.5.16",
-    "@astrojs/react": "^3.1.1",
+    "@astrojs/react": "^3.6.2",
     "@astrojs/tailwind": "^5.1.0",
-
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-
-    "@fontsource/bebas-neue": "^5.0.19",
-    "@fontsource/open-sans": "^5.0.27",
-
+    "@fontsource/bebas-neue": "^5.0.21",
+    "@fontsource/open-sans": "^5.0.29",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-video": "^0.8.0",
-
-    "tailwindcss": "^3.4.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "tailwind-merge": "^2.2.2",
-    "clsx": "^2.1.0",
-
-    "lucide-react": "^0.365.0",
-
-    "sharp": "^0.33.3"
+    "astro": "^4.14.4",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.429.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.33.5",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss": "^3.4.10"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.6.1",
-    "@stylistic/eslint-plugin": "^1.7.0",
-    "@tailwindcss/typography": "^0.5.12",
-    "@types/node": "^20.12.5",
-    "@types/react": "^18.2.75",
-    "@types/react-dom": "^18.2.24",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@astrojs/ts-plugin": "^1.10.1",
+    "@eslint/js": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.14",
+    "@types/node": "^22.5.0",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
     "dotenv": "^16.4.5",
-    "eslint": "^8.57.0",
-    "eslint-config-standard-with-typescript": "^38.1.0",
-    "eslint-plugin-astro": "^0.28.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.34.1",
-    "prettier": "^3.2.5",
-    "prettier-plugin-astro": "^0.11.1",
-    "prettier-plugin-tailwindcss": "^0.5.13",
-    "typescript": "^5.4.4"
+    "eslint": "^9.9.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "typescript": "^5.5.4"
   }
 }
