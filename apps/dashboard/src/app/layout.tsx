@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./Header";
 import { inter } from "../utils/fonts";
 import { Toaster } from "@/ui/components/toaster";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Frustration — Dashboard",
@@ -16,6 +17,7 @@ export default async function RootLayout({ children }: { readonly children: Reac
         <Header />
         <main className='flex flex-grow'>{children}</main>
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   );
