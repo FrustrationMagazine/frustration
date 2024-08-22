@@ -8,18 +8,23 @@ const DASHBOARD_URL = "/dashboard";
 const DASHBOARD_INCOME_URL = `${DASHBOARD_URL}/income`;
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/dashboard/income", request.url));
-  }
+  const atRoot = request.nextUrl.pathname === "/";
+
+  /* ❌ Not signed in */
 
   const isSignedIn = !!(await auth())?.user;
-  const atAuth = request.nextUrl.pathname.startsWith("/auth");
-  const shouldRedirectToLogin = !isSignedIn && !atAuth;
+  const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
+  const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
   if (shouldRedirectToLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
 
-  const atDashboardHome = request.nextUrl.pathname === DASHBOARD_URL;
-  const shouldRedirectDashboardIncome = isSignedIn && atDashboardHome;
-  if (shouldRedirectDashboardIncome)
+  /* ✅ Signed in */
+
+  const atDashboardHomepage = request.nextUrl.pathname === DASHBOARD_URL;
+  const atDashboardSubpage =
+    !atDashboardHomepage && request.nextUrl.pathname.startsWith("/dashboard");
+
+  if (atDashboardSubpage) return NextResponse.next();
+  if (atDashboardHomepage || atRoot)
     return NextResponse.redirect(new URL(DASHBOARD_INCOME_URL, request.url));
 }
 
