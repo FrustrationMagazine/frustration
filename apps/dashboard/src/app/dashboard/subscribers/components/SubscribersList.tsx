@@ -143,9 +143,9 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
                 return (
                   <TableHead key={header.id}>
                     {/* ⬇️ Wrap it with <> </> to avoid type issue ⬇️ */}
-                    {header.isPlaceholder ? null : (
-                      <>{flexRender(header.column.columnDef.header, header.getContext())}</>
-                    )}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
               })}
@@ -157,8 +157,7 @@ const SubscribersList = ({ subscribers }: { subscribers: Customer[] }) => {
             <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  {/* ⬇️ Wrap it with <> </> to avoid type issue ⬇️ */}
-                  <>{flexRender(cell.column.columnDef.cell, cell.getContext())}</>{" "}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
             </TableRow>
