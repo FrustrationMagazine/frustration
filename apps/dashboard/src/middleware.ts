@@ -1,32 +1,6 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@dashboard/auth";
 
-const SIGN_IN_URL = "/auth/signin";
-
-const DASHBOARD_URL = "/dashboard";
-const DASHBOARD_INCOME_URL = `${DASHBOARD_URL}/income`;
-
-export async function middleware(request: NextRequest) {
-  const atRoot = request.nextUrl.pathname === "/";
-
-  /* ❌ Not signed in */
-
-  const isSignedIn = !!(await auth())?.user;
-  const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
-  if (shouldRedirectToLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
-
-  /* ✅ Signed in */
-
-  const atDashboardHomepage = request.nextUrl.pathname === DASHBOARD_URL;
-  const atDashboardSubpage =
-    !atDashboardHomepage && request.nextUrl.pathname.startsWith("/dashboard");
-
-  if (atDashboardSubpage) return NextResponse.next();
-  if (atDashboardHomepage || atRoot)
-    return NextResponse.redirect(new URL(DASHBOARD_INCOME_URL, request.url));
-}
+export async function middleware(request: NextRequest) {}
 
 export const config = {
   matcher: [
