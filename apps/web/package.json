@@ -20,6 +20,7 @@
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-video": "^0.8.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@vercel/speed-insights": "^1.0.12",
     "astro": "^4.14.4",
     "clsx": "^2.1.1",
     "lucide-react": "^0.429.0",

@@ -2,6 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import { fade } from "astro:transitions";
 import Header from "./Header/Header.astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@fontsource/bebas-neue";
 import "@fontsource/open-sans/300.css";
@@ -53,6 +54,7 @@ const { title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE } = Astr
     />
     <title>Frustration Magazine - {title}</title>
     <ViewTransitions />
+    <SpeedInsights />
   </head>
   <body class="flex min-h-screen w-screen flex-col">
     <Header transition:persist />
