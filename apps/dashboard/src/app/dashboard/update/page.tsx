@@ -1,3 +1,6 @@
+// 🔩 Base
+import React from "react";
+
 // 🧱 Components
 import LastUpdate from "./_components/LastUpdate";
 import FormUpdate from "./_components/FormUpdate";

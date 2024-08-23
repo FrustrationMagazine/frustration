@@ -86,3 +86,26 @@ model Balance {
   pending   Float
   updatedAt DateTime @id @default(now())
 }
+
+// 📹 Videos
+
+enum VideoSource {
+  youtube
+}
+
+enum VideoType {
+  channel
+  video
+  playlist
+}
+
+model Video {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  type        VideoType?
+  source      VideoSource?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}

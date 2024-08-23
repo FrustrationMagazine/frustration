@@ -10,6 +10,7 @@ import { cn } from "@/ui/lib/utils";
 import { FaCreditCard } from "react-icons/fa";
 import { MdUpdate } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
+import { FaYoutube } from "react-icons/fa6";
 
 // ℹ️ Font
 import { poppins } from "@dashboard/fonts";
@@ -39,6 +40,12 @@ const SIDENAV_ELEMENTS: SidenavElement[] = [
     icon: <IoIosPeople size={18} />,
     href: "/dashboard/customers",
     key: "customers",
+  },
+  {
+    label: "Vidéos",
+    icon: <FaYoutube />,
+    href: "/dashboard/videos",
+    key: "videos",
   },
   {
     label: "Mises à jour",
