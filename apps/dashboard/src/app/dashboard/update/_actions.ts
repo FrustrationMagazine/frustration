@@ -28,18 +28,7 @@ import {
 import { Transaction } from "@dashboard/libs/transactions";
 
 // 🔧 Utils
-import { getDateInformations } from "./_utils";
-
-/* *************** */
-/* Get last update */
-/* *************** */
-export async function getLastUpdate(): Promise<LastUpdateType> {
-  const lastUpdate = await fetchLastUpdate();
-
-  if (!lastUpdate) return DEFAULT_LAST_UPDATE_DATE;
-  const { day, time, elapsedDays } = getDateInformations(lastUpdate);
-  return { day, time, elapsedDays };
-}
+import { convertLocalDateToDateUTC } from "@dashboard/utils/dates";
 
 /* **************** */
 /* Update dashboard */
@@ -54,7 +43,7 @@ export async function updateDashboard(
   if (!parsed.success) return ERROR;
 
   let result = null;
-  result = await updateStripeBalance();
+  result = await updateBalance();
   if (result.errorMessage) return result;
   result = await updateTransactions({ updateMethod: parsed.data.method });
   return result;
@@ -137,7 +126,7 @@ export async function updateTransactions({
 
 // Update Stripe Balance
 
-export async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
+export async function updateBalance(): Promise<UpdateDashboardResponse> {
   const stripeBalance = await fetchStripeBalance();
   try {
     const lastBalanceRow = await prisma.balance.findFirst({});
@@ -155,7 +144,10 @@ export async function updateStripeBalance(): Promise<UpdateDashboardResponse> {
 
   try {
     await prisma.balance.create({
-      data: stripeBalance,
+      data: {
+        ...stripeBalance,
+        updatedAt: convertLocalDateToDateUTC(new Date()),
+      },
     });
   } catch (error) {
     if (typeof error === "string") {

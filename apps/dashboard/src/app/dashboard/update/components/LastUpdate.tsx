@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 // 🗿 Models
@@ -6,9 +8,9 @@ import { DEFAULT_LAST_UPDATE_DATE } from "../_models";
 // 🔧 Utils
 import { getDateInformations } from "../_utils";
 
-const LastUpdate: React.FC<{ lastUpdate: Date | null }> = ({ lastUpdate }) => {
-  const { day, time, elapsedDays } = lastUpdate
-    ? getDateInformations(lastUpdate)
+const LastUpdate: React.FC<{ lastUpdateInUTC: Date | null }> = ({ lastUpdateInUTC }) => {
+  const { day, time, elapsedDays } = lastUpdateInUTC
+    ? getDateInformations(lastUpdateInUTC)
     : DEFAULT_LAST_UPDATE_DATE;
 
   const today = elapsedDays && +elapsedDays === 0;

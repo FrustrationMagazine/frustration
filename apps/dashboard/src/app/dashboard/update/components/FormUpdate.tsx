@@ -6,7 +6,7 @@ import React from "react";
 import { TfiReload } from "react-icons/tfi";
 
 // 🧱 Components
-import TooltipUpdate from "../_components/TooltipUpdate";
+import TooltipUpdate from "./TooltipUpdate";
 
 import { Form, FormControl, FormField, FormItem } from "@/ui/components/form";
 import { Button } from "@/ui/components/button";

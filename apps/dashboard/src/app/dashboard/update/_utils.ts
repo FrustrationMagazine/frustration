@@ -18,7 +18,7 @@ export const getDateInformations: (date: Date) => LastUpdateType = (date) => {
   now.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
 
-  const elapsedDays = String(Math.floor((new Date().getTime() - date.getTime()) / SECONDS_IN_DAY));
+  const elapsedDays = String(Math.floor((now.getTime() - date.getTime()) / SECONDS_IN_DAY));
 
   return { day, time, elapsedDays };
 };

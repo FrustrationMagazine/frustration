@@ -230,8 +230,6 @@ interface StripeFormattedBalance {
 
 export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
   const balance = await stripe.balance.retrieve();
-  let date = new Date();
-  date.setHours(0, 0, 0, 0);
   const formattedBalance = {
     available: balance.available[0].amount / 100,
     pending: balance.pending[0].amount / 100,

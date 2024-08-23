@@ -1,6 +1,27 @@
-/* -------------------- */
-/* Convert date to UTC  */
-/* -------------------- */
+/* ------------------------------- */
+/* Convert local date to date UTC  */
+/* ------------------------------- */
+/*
+  Input : 2023-10-01T12:00:00-04:00
+  Output : 2023-10-01T16:00:00.000Z
+*/
+export function convertLocalDateToDateUTC(date: Date): Date {
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+      date.getUTCMilliseconds(),
+    ),
+  );
+}
+
+/* ------------------------------------ */
+/* Convert unix timestamp to Date UTC   */
+/* ------------------------------------ */
 /*
   Input : 811111000
   Output : Thu Sep 14 1995 22:36:40 GMT+0200 (Central European Summer Time)
