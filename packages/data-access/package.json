@@ -20,6 +20,7 @@
     "prisma": "^5.18.0"
   },
   "exports": {
-    "./prisma": "./prisma/client.ts"
+    "./prisma": "./prisma/client.ts",
+    "./youtube": "./youtube.ts"
   }
 }

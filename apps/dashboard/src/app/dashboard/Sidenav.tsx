@@ -42,7 +42,7 @@ const SIDENAV_ELEMENTS: SidenavElement[] = [
     key: "customers",
   },
   {
-    label: "Vidéos",
+    label: "Vidéos à la une",
     icon: <FaYoutube />,
     href: "/dashboard/videos",
     key: "videos",

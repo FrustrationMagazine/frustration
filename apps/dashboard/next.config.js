@@ -9,6 +9,18 @@ const nextConfig = {
       config.plugins = [...config.plugins, new PrismaPlugin()]
     }
     return config
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'yt3.ggpht.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      }
+    ]
   }
 }
 
