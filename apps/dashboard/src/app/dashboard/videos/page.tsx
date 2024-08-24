@@ -12,9 +12,12 @@ interface ColumnType {
   dialogTitle: string;
   dialogDescription: string;
   placeholder: string;
-  tooltip: string;
-  alertDialogTitle: string;
-  alertDialogAction: string;
+  tooltipAdd: string;
+  tooltipRemove: string;
+  alertDialogTitleAdd: string;
+  alertDialogActionAdd: string;
+  alertDialogTitleRemove: string;
+  alertDialogActionRemove: string;
 }
 
 const COLUMNS: ColumnType[] = [
@@ -26,9 +29,13 @@ const COLUMNS: ColumnType[] = [
     dialogTitle: "Rechercher une chaîne",
     dialogDescription: "Rechercher une chaîne youtube en entrant un nom",
     placeholder: "Rechercher une chaîne youtube",
-    tooltip: "Ajouter cette chaîne",
-    alertDialogTitle: "Voulez-vous vraiment ajouter cette chaîne ?",
-    alertDialogAction: "Ajouter les vidéos de cette chaîne",
+    tooltipAdd: "Ajouter cette chaîne",
+    tooltipRemove: "Supprimer cette chaîne",
+    alertDialogTitleAdd: "Voulez-vous vraiment ajouter cette chaîne ?",
+    alertDialogActionAdd: "Ajouter les vidéos de cette chaîne",
+    alertDialogTitleRemove:
+      "Voulez-vous vraiment supprimer l'affichage des vidéos de cette chaîne de votre page d'accueil ?",
+    alertDialogActionRemove: "Supprimer l'affichage des vidéos de cette chaîne",
   },
   {
     title: "Playlists",
@@ -39,9 +46,13 @@ const COLUMNS: ColumnType[] = [
     dialogDescription:
       "Rechercher une playlist youtube en entrant un nom ou l'URL d'une vidéo de cette playlist",
     placeholder: "Rechercher une playlist youtube",
-    tooltip: "Ajouter cette playlist",
-    alertDialogTitle: "Voulez-vous vraiment ajouter cette playlist ?",
-    alertDialogAction: "Ajouter les vidéos de cette playlist",
+    tooltipAdd: "Ajouter cette playlist",
+    tooltipRemove: "Supprimer cette playlist",
+    alertDialogTitleAdd: "Voulez-vous vraiment ajouter cette playlist ?",
+    alertDialogActionAdd: "Ajouter les vidéos de cette playlist",
+    alertDialogTitleRemove:
+      "Voulez-vous vraiment supprimer l'affichage des vidéos de cette playlist de votre page d'accueil ?",
+    alertDialogActionRemove: "Supprimer l'affichage des vidéos de cette playlist",
   },
   {
     title: "Vidéos",
@@ -51,9 +62,13 @@ const COLUMNS: ColumnType[] = [
     dialogTitle: "Rechercher une vidéo",
     dialogDescription: "Rechercher une vidéo youtube en entrant un nom ou son URL",
     placeholder: "Rechercher une vidéo youtube",
-    tooltip: "Ajouter cette vidéo",
-    alertDialogTitle: "Voulez-vous vraiment ajouter cette vidéo ?",
-    alertDialogAction: "Ajouter cette vidéo",
+    tooltipAdd: "Ajouter cette vidéo",
+    tooltipRemove: "Supprimer cette vidéo",
+    alertDialogTitleAdd: "Voulez-vous vraiment ajouter cette vidéo ?",
+    alertDialogActionAdd: "Ajouter cette vidéo",
+    alertDialogTitleRemove:
+      "Voulez-vous vraiment supprimer l'affichage de cette vidéo de votre page d'accueil ?",
+    alertDialogActionRemove: "Supprimer l'affichage de la vidéo",
   },
 ];
 
