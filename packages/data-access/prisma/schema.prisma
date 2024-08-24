@@ -100,12 +100,8 @@ enum VideoType {
 }
 
 model Video {
-  id          String       @id @default(cuid())
-  title       String
-  description String?
-  url         String
-  type        VideoType?
-  source      VideoSource?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id        String      @id
+  type      VideoType
+  source    VideoSource
+  createdAt DateTime    @default(now())
 }

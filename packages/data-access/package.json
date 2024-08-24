@@ -7,7 +7,7 @@
     "build": "prisma generate",
     "dev": "prisma generate && dotenv -e ../../.env.local -- prisma db pull",
     "migrate": "dotenv -e ../../.env.local -- pnpx prisma migrate dev",
-    "generate": "dotenv -e ../../.env.local -- pnpx prisma generate",
+    "generate": "dotenv -e ../../.env.local -- prisma generate && dotenv -e ../../.env.local -- prisma db push",
     "studio": "dotenv -e ../../.env.local -- pnpx prisma studio",
     "push": "dotenv -e ../../.env.local -- prisma db push",
     "prod": "dotenv -e ../../.env.local -- prisma generate && dotenv -e .env.prod -- prisma db pull"

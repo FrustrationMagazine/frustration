@@ -8,7 +8,6 @@ import { Button } from "@/ui/components/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogDescription,
   DialogHeader,
   DialogTitle,
@@ -34,7 +33,10 @@ import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 import Image from "next/image";
 
 // 💥 Actions
-import { fetchYoutubeResults } from "../_actions";
+import { fetchYoutubeResults, addYoutubeResource } from "../_actions";
+
+// 🪝 Hooks
+import { useToast } from "@/ui/components/use-toast";
 
 function createUrlFromId(type: string, id: string) {
   switch (type) {
@@ -78,7 +80,7 @@ export default function Column({
   alertDialogTitle,
   alertDialogAction,
 }: {
-  type: string;
+  type: "channel" | "playlist" | "video";
   title: string;
   subtitle: string;
   dialogTitle: string;
@@ -89,7 +91,6 @@ export default function Column({
   alertDialogAction: string;
 }) {
   const [searchTerm, setSearchTerm] = React.useState<string>("");
-
   const [suggestions, setSuggestions] = React.useState<any>([]);
   const [loadingSuggestions, setLoadingSuggestions] = React.useState<boolean>(false);
 
@@ -104,6 +105,47 @@ export default function Column({
     setLoadingSuggestions(false);
     setSuggestions(resources);
   };
+
+  const [addingResourceStatus, setAddingResourceStatus] = React.useState<{
+    successMessage: string | null;
+    errorMessage: string | null;
+  }>({ successMessage: null, errorMessage: null });
+
+  const handleAddYoutubeResource = async ({
+    type,
+    id,
+  }: {
+    type: "channel" | "playlist" | "video";
+    id: string;
+  }) => {
+    const status = await addYoutubeResource({ type, id });
+    setAddingResourceStatus(status);
+  };
+
+  const { toast } = useToast();
+  React.useEffect(
+    function displayToaster() {
+      if (addingResourceStatus?.successMessage) {
+        setTimeout(() => {
+          toast({
+            title: "✅ Succès",
+            description: addingResourceStatus?.successMessage,
+          });
+        }, 0);
+      }
+
+      if (addingResourceStatus?.errorMessage) {
+        setTimeout(() => {
+          toast({
+            title: "Une erreur s'est produite",
+            description: addingResourceStatus?.errorMessage,
+            variant: "destructive",
+          });
+        }, 0);
+      }
+    },
+    [addingResourceStatus, toast],
+  );
 
   return (
     <div className='space-y-5 self-start rounded-md bg-white px-12 py-6 text-center shadow-md'>
@@ -156,33 +198,39 @@ export default function Column({
                     {suggestion.snippet.description}
                   </p>
                 </div>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <TooltipProvider>
-                      <Tooltip>
+                <TooltipProvider>
+                  <Tooltip>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
                         <TooltipTrigger asChild>
                           <div className='self-center px-3'>
                             <AiOutlineVideoCameraAdd className='shrink-0' size={26} />
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{tooltip}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>{alertDialogTitle}</AlertDialogTitle>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Annuler</AlertDialogCancel>
-                      <AlertDialogAction asChild>
-                        <Button type='submit'>{alertDialogAction}</Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{alertDialogTitle}</AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <form
+                            action={() =>
+                              handleAddYoutubeResource({ type, id: suggestion.id?.[`${type}Id`] })
+                            }
+                          >
+                            <AlertDialogAction asChild>
+                              <Button type='submit'>{alertDialogAction}</Button>
+                            </AlertDialogAction>
+                          </form>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                    <TooltipContent>
+                      <p>{tooltip}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             ))
           )}

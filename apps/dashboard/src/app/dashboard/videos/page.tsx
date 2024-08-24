@@ -4,7 +4,20 @@ import React from "react";
 // 🧱 Components
 import Column from "./components/Column";
 
-const COLUMNS = [
+interface ColumnType {
+  title: string;
+  type: "channel" | "playlist" | "video";
+  key: string;
+  subtitle: string;
+  dialogTitle: string;
+  dialogDescription: string;
+  placeholder: string;
+  tooltip: string;
+  alertDialogTitle: string;
+  alertDialogAction: string;
+}
+
+const COLUMNS: ColumnType[] = [
   {
     title: "Chaînes",
     type: "channel",

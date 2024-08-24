@@ -1,6 +1,6 @@
 "use server";
 
-// 🔧 Functions
+// 🔧 Libs
 import { signIn, getAuthorizedEmails } from "@dashboard/auth";
 
 // 🖼️ Models
