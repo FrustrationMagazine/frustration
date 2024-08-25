@@ -52,7 +52,7 @@ export default function CardResources({
   const [loadingSuggestions, setLoadingSuggestions] = React.useState<boolean>(false);
 
   const [resources, setResources] = React.useState<any>([]);
-  const [loadingResources, setLoadingResources] = React.useState(false);
+  const [loadingResources, setLoadingResources] = React.useState(true);
 
   const [requestStatus, setRequestStatus] = React.useState<{
     success: string | null;
@@ -203,6 +203,8 @@ export default function CardResources({
       </div>
       {loadingResources ? (
         <SuperBallsLoader className='mx-auto my-12' />
+      ) : resources.length === 0 ? (
+        <p>🤷‍♂️ Aucune {type} </p>
       ) : (
         <ul className='space-y-1'>
           {resources.map((resource: any) => (
