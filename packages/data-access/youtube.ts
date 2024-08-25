@@ -1,109 +1,58 @@
-function warnApiKeyIsMissing(): void {
-  console.warn("No API key for Google found.");
+/* --------- */
+/* 🔧 Utils  */
+/* --------- */
+
+export function createYoutubeUrlFromIdAndType(type: string, id: string) {
+  switch (type) {
+    case "channel":
+      return `https://www.youtube.com/channel/${id}`;
+    case "playlist":
+      return `https://www.youtube.com/playlist?list=${id}`;
+    case "video":
+      return `https://www.youtube.com/watch?v=${id}`;
+  }
 }
 
-export function createVideoYoutubeUrl(videoId: string): string {
-  return `https://www.youtube.com/watch?v=${videoId}`;
-}
+/* --------- */
+/* 🗿 Models */
+/* --------- */
 
-export async function searchYoutube(params: Record<string, any>): Promise<any> {
+export type YoutubeResourceType = "channel" | "playlist" | "video";
+
+export const YOUTUBE_VIDEO_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+export const YOUTUBE_PLAYLIST_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]list=)|youtu\.be\/)([a-zA-Z0-9_-]{34})/;
+
+/* ------------ */
+/* 🐝 API Calls */
+/* ------------ */
+
+/* Fetch youtube */
+/* ------------- */
+export async function fetchYoutube({ params, type }: { params: Record<string, any>; type?: YoutubeResourceType }): Promise<any> {
+  // ❌ #1 Early return if no API key detected
   if (!process.env.API_KEY_GOOGLE) {
-    warnApiKeyIsMissing();
+    console.warn("No API key for Google found.");
     return [];
   }
-  const url = new URL(`${process.env.API_ENDPOINT_YOUTUBE}/search`);
+
+  // 🥘 Prepare
+  const endpoint = type ? `${process.env.API_ENDPOINT_YOUTUBE}/${type}s` : `${process.env.API_ENDPOINT_YOUTUBE}/search`;
+  const url = new URL(endpoint);
   url.searchParams.append("key", process.env.API_KEY_GOOGLE);
-  url.searchParams.append("maxResults", "3");
   url.searchParams.append("part", "snippet");
 
-  Object.entries(params).forEach(([param, value]) => url.searchParams.append(param, value));
-  console.log("url", url);
+  // Add each param from params object that was passed to URL
+  for (let param in params) url.searchParams.append(param, params[param]);
+
+  // 🔁 Fetch
   try {
     const response = await fetch(url.href);
     const { items } = await response.json();
+    // 🎉 Return
     return items;
   } catch (error) {
-    console.error("Error fetching youtube resource:", error);
-    throw error;
-  }
-}
-
-export async function listYoutubeResources(params: Record<string, any>, type: "channel" | "playlist" | "video"): Promise<any> {
-  if (!process.env.API_KEY_GOOGLE) {
-    warnApiKeyIsMissing();
-    return [];
-  }
-  const url = new URL(`${process.env.API_ENDPOINT_YOUTUBE}/${type}s`);
-  url.searchParams.append("key", process.env.API_KEY_GOOGLE);
-  url.searchParams.append("part", "snippet");
-
-  Object.entries(params).forEach(([param, value]) => url.searchParams.append(param, value));
-  try {
-    const response = await fetch(url.href);
-    const { items } = await response.json();
-    return items;
-  } catch (error) {
+    // 🚨 Error
     console.error(`Error occured while fetching youtube ${type}s:`, error);
-    throw error;
-  }
-}
-
-export async function listYoutubeChannel(params: Record<string, any>): Promise<any> {
-  if (!process.env.API_KEY_GOOGLE) {
-    warnApiKeyIsMissing();
-    return [];
-  }
-  const url = new URL(`${process.env.API_ENDPOINT_YOUTUBE}/videos`);
-  url.searchParams.append("key", process.env.API_KEY_GOOGLE);
-  url.searchParams.append("part", "snippet");
-
-  Object.entries(params).forEach(([param, value]) => url.searchParams.append(param, value));
-  try {
-    const response = await fetch(url.href);
-    const { items } = await response.json();
-    return items;
-  } catch (error) {
-    console.error("Error fetching youtube channels:", error);
-    throw error;
-  }
-}
-
-export async function listYoutubeVideo(params: Record<string, any>): Promise<any> {
-  if (!process.env.API_KEY_GOOGLE) {
-    warnApiKeyIsMissing();
-    return [];
-  }
-  const url = new URL(`${process.env.API_ENDPOINT_YOUTUBE}/videos`);
-  url.searchParams.append("key", process.env.API_KEY_GOOGLE);
-  url.searchParams.append("part", "snippet");
-
-  Object.entries(params).forEach(([param, value]) => url.searchParams.append(param, value));
-  try {
-    const response = await fetch(url.href);
-    const { items } = await response.json();
-    return items;
-  } catch (error) {
-    console.error("Error fetching youtube video:", error);
-    throw error;
-  }
-}
-
-export async function listYoutubePlaylist(params: Record<string, any>): Promise<any> {
-  if (!process.env.API_KEY_GOOGLE) {
-    warnApiKeyIsMissing();
-    return [];
-  }
-  const url = new URL(`${process.env.API_ENDPOINT_YOUTUBE}/playlists`);
-  url.searchParams.append("key", process.env.API_KEY_GOOGLE);
-  url.searchParams.append("part", "snippet");
-
-  Object.entries(params).forEach(([param, value]) => url.searchParams.append(param, value));
-  try {
-    const response = await fetch(url.href);
-    const { items } = await response.json();
-    return items;
-  } catch (error) {
-    console.error("Error fetching youtube playlist:", error);
     throw error;
   }
 }

@@ -1,67 +1,84 @@
 "use server";
 
-// 🐝 API
+// 🔧 Libs
 import {
-  searchYoutube,
-  listYoutubeResources,
-  listYoutubeVideo,
-  listYoutubePlaylist,
+  fetchYoutube,
+  YoutubeResourceType,
+  YOUTUBE_VIDEO_URL_REGEX,
+  YOUTUBE_PLAYLIST_URL_REGEX,
 } from "@/data-access/youtube";
 
 // 💽 Database
-import { prisma, Prisma } from "@/data-access/prisma";
+import { prisma, createRecord, deleteRecord } from "@/data-access/prisma";
 
-const YOUTUBE_VIDEO_URL_REGEX =
-  /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+/* --------------------------- */
+/* 🐝 API Youtube transactions */
+/* --------------------------- */
 
-const YOUTUBE_PLAYLIST_URL_REGEX =
-  /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]list=)|youtu\.be\/)([a-zA-Z0-9_-]{34})/;
+/* Fetch youtube suggestions   */
+/* --------------------------- */
 
-/* ------------------------- */
-/* Fetch youtube suggestions */
-/* ------------------------- */
+export async function fetchSuggestions(params: Record<string, any>): Promise<any> {
+  // 🥘 Prepare
+  const isVideoUrl = YOUTUBE_VIDEO_URL_REGEX.test(params.q);
+  const isPlaylistUrl = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
+  let suggestions = [];
 
-export async function fetchYoutubeSuggestions(params: Record<string, any>): Promise<any> {
-  const isYoutubeVideo = YOUTUBE_VIDEO_URL_REGEX.test(params.q);
-  const isYoutubePlaylist = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
-
-  if (isYoutubeVideo) {
+  // 🔁 🐝 Fetch video if a video URL was passed
+  if (isVideoUrl) {
     const [, videoId] = params.q.match(YOUTUBE_VIDEO_URL_REGEX);
-    const video = (await listYoutubeResources({ id: videoId, maxResults: 1 }, "video"))?.[0];
-    if (params.type === "video") {
-      return [video];
-    }
-    if (params.type === "channel") {
-      const results = await searchYoutube({ channelId: videoId, maxResults: 1 });
-      return results ?? [];
-    }
+    var video = (await fetchYoutube({ params: { id: videoId }, type: "video" }))?.[0];
   }
 
-  if (isYoutubePlaylist && params.type === "playlist") {
+  // 🔁 🐝 Fetch playlist if a playlist URL was passed
+  if (isPlaylistUrl) {
     const [, playlistId] = params.q.match(YOUTUBE_PLAYLIST_URL_REGEX);
-    const results = await listYoutubeResources({ id: playlistId, maxResults: 1 }, "playlist");
-    return results ?? [];
+    var playlist = (await fetchYoutube({ params: { id: playlistId }, type: "playlist" }))?.[0];
   }
-  const results = await searchYoutube(params);
-  console.log(results);
-  return results ?? [];
+
+  // 🔁 🐝 Fetch by type
+  switch (params.type) {
+    case "channel":
+      // Get channel with search param or thanks to a video id if video URL that belongs to that channel was passed
+      suggestions = await fetchYoutube({
+        params: isVideoUrl ? { id: video.snippet.channelId } : params,
+      });
+    case "playlist":
+      // Get playlist with search param or thanks to its id in URL if playlist URL was passed
+      suggestions = isPlaylistUrl ? [playlist] : await fetchYoutube({ params });
+    case "video":
+      // Get video with search param or thanks to its id in URL if video URL was passed
+      suggestions = isVideoUrl ? [video] : await fetchYoutube({ params });
+  }
+
+  return suggestions;
 }
 
-export async function fetchYoutubeResourcesByIds(
-  ids: string[],
-  type: "channel" | "playlist" | "video",
-): Promise<any> {
-  const results = await listYoutubeResources({ id: ids.join(",") }, type);
-  return results ?? [];
+/* -------------------------------------- */
+/* Fetch youtube resources by id and type */
+/* -------------------------------------- */
+
+export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType): Promise<any> {
+  // 🥘 Prepare
+  // Necessay to concatenate ids for the fetch
+  const concatenatedIds = ids.join(",");
+  let resources = [];
+
+  // 🔁 📺 Fetch
+  resources = await fetchYoutube({ params: { id: concatenatedIds }, type });
+
+  // 🎉 Return
+  return resources;
 }
 
-/* ----------------------- */
-/* Get all videos by type  */
-/* ----------------------- */
-export async function getYoutubeResourcesByType(
-  type: "channel" | "playlist" | "video" = "video",
-): Promise<any> {
-  // 🔁 Fetch
+/* ------------------------ */
+/* 📀 Database transactions */
+/* ------------------------ */
+
+/* Read video (by type)  */
+/* --------------------- */
+export async function readVideosByType(type: YoutubeResourceType = "video"): Promise<any> {
+  // 🔁 📀 Fetch
   try {
     const videos = await prisma.video.findMany({
       select: {
@@ -72,94 +89,60 @@ export async function getYoutubeResourcesByType(
           equals: type,
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
-    console.log("videos retrouvées !", videos);
     return videos;
   } catch (e) {
     // ❌ Error
-    console.error("Error while fetching recorded youtube resources by type", e);
+    console.error("Error while fetching from database by type", e);
     return [];
   }
 }
 
-/* --------------- */
-/* Add to database */
-/* --------------- */
+/* Add video */
+/* --------- */
 
-export async function addYoutubeResource({
+export async function createVideoRecord({
   type,
   id,
 }: {
-  type: "channel" | "playlist" | "video";
+  type: YoutubeResourceType;
   id: string;
 }): Promise<any> {
-  // 🔁 Insert
-  try {
-    const result = await prisma.video.create({
-      data: {
-        type,
-        id,
-        source: "youtube",
-      },
-    });
-    console.log("result", result);
-    const status = {
-      successMessage: `Successfully added ${type} to database`,
-      errorMessage: null,
-    };
-    console.log("status", status);
-    return status;
-  } catch (e) {
-    // ❌ Error
+  // 🔁 📀 Add
+  const status = createRecord({
+    table: "video",
+    data: {
+      type,
+      id,
+      source: "youtube",
+    },
+    success: `La ${type} a été ajoutée !`,
+  });
 
-    const status = {
-      successMessage: null,
-      errorMessage:
-        // Still facing this issue https://github.com/prisma/prisma/issues/17945
-        e?.constructor.name === Prisma.PrismaClientKnownRequestError.name
-          ? (e as any)?.message
-          : "Une erreur inconnue s'est produite",
-    };
-    return status;
-  }
+  // 🎉 Return
+  return status;
 }
 
-/* -------------------- */
-/* Remove from database */
-/* -------------------- */
+/* Remove video */
+/* ------------ */
 
-export async function removeYoutubeResource({
+export async function deleteVideoRecord({
   id,
   type,
 }: {
   id: string;
-  type: "channel" | "playlist" | "video";
+  type: YoutubeResourceType;
 }): Promise<any> {
-  // 🔁 Insert
-  try {
-    const result = await prisma.video.delete({
-      where: {
-        id,
-      },
-    });
+  // 🔁 📀 Remove
+  const status = deleteRecord({
+    table: "video",
+    id,
+    success: `La ${type} a été supprimée !`,
+  });
 
-    const status = {
-      successMessage: `Successfully removed ${type} to database`,
-      errorMessage: null,
-    };
-    console.log("status", status);
-    return status;
-  } catch (e) {
-    // ❌ Error
-
-    const status = {
-      successMessage: null,
-      errorMessage:
-        // Still facing this issue https://github.com/prisma/prisma/issues/17945
-        e?.constructor.name === Prisma.PrismaClientKnownRequestError.name
-          ? (e as any)?.message
-          : "Une erreur inconnue s'est produite",
-    };
-    return status;
-  }
+  // 🎉 Return
+  return status;
 }
