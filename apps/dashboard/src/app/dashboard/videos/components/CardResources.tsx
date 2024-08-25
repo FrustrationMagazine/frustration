@@ -141,8 +141,6 @@ export default function CardResources({
       type,
     });
 
-    console.log("resources", resources);
-
     // ⌛ End loading...
     setLoadingSuggestions(false);
 

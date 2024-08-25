@@ -89,12 +89,14 @@ export default function ({
       key={id}
       style={{ height: `${getThumbnailSizes(type).height}px` }}
     >
+      {/* <div className='h-full w-auto'> */}
       <Image
         src={thumbnailUrl}
         alt={title}
         {...getThumbnailSizes(type)}
-        className='flex-shrink-0 self-start rounded-md'
+        className='h-full w-auto flex-shrink-0 self-start rounded-md'
       />
+      {/* </div> */}
       <div className='flex grow flex-col'>
         <h6 className='mb-1 text-lg font-bold leading-tight hover:underline'>
           <a href={createYoutubeUrlFromIdAndType(type, id)} target='_blank'>
