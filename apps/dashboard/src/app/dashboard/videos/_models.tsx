@@ -31,7 +31,7 @@ export const CardsDescription: CardType[] = [
     type: "channel",
     key: "channels",
     texts: {
-      subtitle: "Les vidéos des chaînes youtube listées seront ajoutées aux vidéos à la une",
+      subtitle: "Les vidéos de ces chaînes youtube seront ajoutées aux vidéos à la une",
       dialogTitle: "Rechercher une chaîne",
       dialogDescription: "Rechercher une chaîne youtube en entrant un nom",
       placeholder: "Rechercher une chaîne youtube",
@@ -54,7 +54,7 @@ export const CardsDescription: CardType[] = [
     type: "playlist",
     key: "playlists",
     texts: {
-      subtitle: "Les vidéos des playlists youtube listées seront ajoutées aux vidéos à la une",
+      subtitle: "Les vidéos de ces playlists youtube seront ajoutées aux vidéos à la une",
       dialogTitle: "Rechercher une playlist",
       dialogDescription:
         "Rechercher une playlist youtube en entrant un nom ou l'URL d'une vidéo de cette playlist",
@@ -78,7 +78,7 @@ export const CardsDescription: CardType[] = [
     type: "video",
     key: "videos",
     texts: {
-      subtitle: "Les vidéos seront ajoutées aux vidéos à la une",
+      subtitle: "Ces vidéos seront ajoutées aux vidéos à la une",
       dialogTitle: "Rechercher une vidéo",
       dialogDescription: "Rechercher une vidéo youtube en entrant un nom ou son URL",
       placeholder: "Rechercher une vidéo youtube",

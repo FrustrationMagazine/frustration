@@ -51,18 +51,6 @@
         "emoji": "🚨"
       },
       {
-        "value": "build",
-        "label": "build",
-        "hint": "Changes that affect the build system or external dependencies",
-        "emoji": "🚧"
-      },
-      {
-        "value": "ci",
-        "label": "ci",
-        "hint": "Changes to our CI configuration files and scripts",
-        "emoji": "🤖"
-      },
-      {
         "value": "config",
         "label": "config",
         "hint": "Modify configuration files",
@@ -73,6 +61,12 @@
         "label": "chore",
         "hint": "Other changes that do not modify src or test files",
         "emoji": "🧹"
+      },
+      {
+        "value": "wording",
+        "label": "wording",
+        "hint": "Wording changes",
+        "emoji": "💬"
       },
       {
         "value": "",
