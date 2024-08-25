@@ -43,12 +43,15 @@ export async function fetchSuggestions(params: Record<string, any>): Promise<any
       suggestions = await fetchYoutube({
         params: isVideoUrl ? { id: video.snippet.channelId } : params,
       });
+      break;
     case "playlist":
       // Get playlist with search param or thanks to its id in URL if playlist URL was passed
       suggestions = isPlaylistUrl ? [playlist] : await fetchYoutube({ params });
+      break;
     case "video":
       // Get video with search param or thanks to its id in URL if video URL was passed
       suggestions = isVideoUrl ? [video] : await fetchYoutube({ params });
+      break;
   }
 
   return suggestions;
