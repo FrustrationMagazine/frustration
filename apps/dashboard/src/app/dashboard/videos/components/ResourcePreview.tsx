@@ -25,7 +25,6 @@ import { type YoutubeResourceType } from "@/data-access/youtube";
 
 // 🖼️ Images
 import Image from "next/image";
-import { AiFillDelete } from "react-icons/ai";
 import { IconType } from "react-icons/lib";
 
 function getThumbnailSizes(type: string) {
@@ -96,7 +95,7 @@ export default function ({
         className='h-full w-auto flex-shrink-0 self-start rounded-md'
       />
       <div className='flex grow flex-col'>
-        <h6 className='mb-1 text-lg font-bold leading-tight hover:underline'>
+        <h6 className='text-md mb-1 font-bold leading-tight hover:underline'>
           <a href={createYoutubeUrlFromIdAndType(type, id)} target='_blank'>
             {title}
           </a>

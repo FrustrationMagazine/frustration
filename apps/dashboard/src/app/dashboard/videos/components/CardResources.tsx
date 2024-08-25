@@ -99,14 +99,12 @@ export default function CardResources({
     // ✅ Resource created !
     if (status.success) {
       // 1️⃣ Add saved suggestion to listed resources
-      let suggestionToAdd = suggestions.find(
-        (suggestion: any) => suggestion.id?.[`${type}Id`] === id,
-      );
+      let suggestionToAdd = suggestions.find((suggestion: any) => suggestion.id === id);
       suggestionToAdd = { snippet: { ...suggestionToAdd.snippet }, id };
       setResources([suggestionToAdd, ...resources]);
 
       // 2️⃣ Remove suggestion from current suggestions list
-      setSuggestions(suggestions.filter((suggestion: any) => suggestion.id?.[`${type}Id`] !== id));
+      setSuggestions(suggestions.filter((suggestion: any) => suggestion.id !== id));
     }
   };
 
@@ -235,7 +233,7 @@ export default function CardResources({
           ) : (
             suggestions.map((suggestion: any) => (
               <ResourcePreview
-                id={suggestion.id?.[`${type}Id`]}
+                id={suggestion.id}
                 title={suggestion.snippet.title}
                 description={suggestion.snippet.description}
                 type={type}
