@@ -37,6 +37,22 @@ import { YoutubeResourceType } from "@/data-access/youtube";
 // 🪝 Hooks
 import { useToast } from "@/ui/components/use-toast";
 
+const getYoutubeResourceId = (resource: any): string => {
+  // If id is directly accessible at root level of resource, return it
+  if (typeof resource?.id === "string") return resource.id;
+
+  // If id is nested in an object, return the "whateverId" value
+  //
+  // Example 👇
+  // id: {
+  //        "kind": "youtube#video",
+  //        "videoId": "Mkx4iRqcbr4"
+  //      }
+
+  const [, [, id]] = Object.entries(resource.id);
+  return String(id);
+};
+
 export default function CardResources({
   type,
   title,
@@ -51,8 +67,8 @@ export default function CardResources({
   const [suggestions, setSuggestions] = React.useState<any>([]);
   const [loadingSuggestions, setLoadingSuggestions] = React.useState<boolean>(false);
 
-  const [resources, setResources] = React.useState<any>([]);
-  const [loadingResources, setLoadingResources] = React.useState(true);
+  const [records, setRecords] = React.useState<any>([]);
+  const [loadingRecords, setLoadingRecords] = React.useState(true);
 
   const [requestStatus, setRequestStatus] = React.useState<{
     success: string | null;
@@ -63,7 +79,7 @@ export default function CardResources({
   React.useEffect(() => {
     (async function () {
       // ⏳ Loading...
-      setLoadingResources(true);
+      setLoadingRecords(true);
       try {
         // 🔁 📀 Read videos resources
         const resources = await readVideosByType(type);
@@ -75,54 +91,46 @@ export default function CardResources({
         results = resources.map((resource: any) =>
           results.find((result: any) => result.id === resource.id),
         );
-        setResources(results);
+        setRecords(results);
       } catch (e) {
         console.error("Error while loading resources", e);
         return;
       } finally {
-        setLoadingResources(false);
+        setLoadingRecords(false);
       }
     })();
   }, []);
 
   // 📀 Add video
-  const handleAddYoutubeResource = async ({
-    type,
-    id,
-  }: {
-    type: YoutubeResourceType;
-    id: string;
-  }) => {
+  const handleAddRecord = async ({ type, id }: { type: YoutubeResourceType; id: string }) => {
     const status = await createVideoRecord({ type, id });
     setRequestStatus(status);
 
     // ✅ Resource created !
     if (status.success) {
       // 1️⃣ Add saved suggestion to listed resources
-      let suggestionToAdd = suggestions.find((suggestion: any) => suggestion.id === id);
+      let suggestionToAdd = suggestions.find(
+        (suggestion: any) => getYoutubeResourceId(suggestion) === id,
+      );
       suggestionToAdd = { snippet: { ...suggestionToAdd.snippet }, id };
-      setResources([suggestionToAdd, ...resources]);
+      setRecords([suggestionToAdd, ...records]);
 
       // 2️⃣ Remove suggestion from current suggestions list
-      setSuggestions(suggestions.filter((suggestion: any) => suggestion.id !== id));
+      setSuggestions(
+        suggestions.filter((suggestion: any) => getYoutubeResourceId(suggestion) !== id),
+      );
     }
   };
 
   // 📀 Remove video
-  const handleDeleteYoutubeResource = async ({
-    type,
-    id,
-  }: {
-    type: YoutubeResourceType;
-    id: string;
-  }) => {
+  const handleDeleteRecord = async ({ type, id }: { type: YoutubeResourceType; id: string }) => {
     const status = await deleteVideoRecord({ type, id });
     setRequestStatus(status);
 
     // ✅ Resource deleted !
     if (status.success) {
       // Remove deleted resource from listed resources
-      setResources(resources.filter((resource: any) => resource.id !== id));
+      setRecords(records.filter((resource: any) => getYoutubeResourceId(resource) !== id));
     }
   };
 
@@ -133,7 +141,7 @@ export default function CardResources({
     setLoadingSuggestions(true);
 
     // 🐝 🔁 Fetch youtube suggestions by type
-    const resources = await fetchSuggestions({
+    const suggestions = await fetchSuggestions({
       q: searchTerm,
       relevanceLanguage: "fr",
       type,
@@ -143,7 +151,7 @@ export default function CardResources({
     setLoadingSuggestions(false);
 
     // 📦
-    setSuggestions(resources);
+    setSuggestions(suggestions);
   };
 
   const { toast } = useToast();
@@ -168,11 +176,14 @@ export default function CardResources({
   );
 
   // 🧱 Components
-
   const CardTitle = <h3 className={`text-5xl ${bebasNeue.className}`}>{title}</h3>;
   const CardSubtitle = <p className='text-zinc-800'>{texts?.subtitle}</p>;
   const AddButton = (
-    <Button className='mx-auto flex items-center gap-2 rounded-md' variant='inverted'>
+    <Button
+      className='mx-auto flex items-center gap-2 rounded-md'
+      disabled={loadingRecords}
+      variant='inverted'
+    >
       <AiOutlineVideoCameraAdd size={17} />
       <span> Ajouter </span>
     </Button>
@@ -199,27 +210,6 @@ export default function CardResources({
         {CardTitle}
         {CardSubtitle}
       </div>
-      {loadingResources ? (
-        <SuperBallsLoader className='mx-auto my-12' />
-      ) : resources.length === 0 ? (
-        <p>🤷‍♂️ Aucune {type} </p>
-      ) : (
-        <ul className='space-y-1'>
-          {resources.map((resource: any) => (
-            <ResourcePreview
-              id={resource.id}
-              type={type}
-              thumbnailUrl={resource.snippet.thumbnails.default.url}
-              title={resource.snippet.title}
-              description={resource.snippet.description}
-              texts={texts}
-              Icon={AiFillDelete}
-              iconAction={handleDeleteYoutubeResource}
-              actionType='remove'
-            />
-          ))}
-        </ul>
-      )}
       <Dialog>
         <DialogTrigger asChild>{AddButton}</DialogTrigger>
         <DialogContent className='max-w-[1000px]'>
@@ -233,20 +223,43 @@ export default function CardResources({
           ) : (
             suggestions.map((suggestion: any) => (
               <ResourcePreview
-                id={suggestion.id}
+                id={getYoutubeResourceId(suggestion)}
+                key={getYoutubeResourceId(suggestion)}
                 title={suggestion.snippet.title}
                 description={suggestion.snippet.description}
                 type={type}
                 thumbnailUrl={suggestion.snippet.thumbnails.default.url}
                 texts={texts}
                 Icon={AiOutlineVideoCameraAdd}
-                iconAction={handleAddYoutubeResource}
+                iconAction={handleAddRecord}
                 actionType='add'
               />
             ))
           )}
         </DialogContent>
       </Dialog>
+      {loadingRecords ? (
+        <SuperBallsLoader className='mx-auto my-12' />
+      ) : records.length === 0 ? (
+        <p>🤷‍♂️ Aucune {type} </p>
+      ) : (
+        <ul className='space-y-1'>
+          {records.map((resource: any) => (
+            <ResourcePreview
+              id={getYoutubeResourceId(resource)}
+              key={getYoutubeResourceId(resource)}
+              type={type}
+              thumbnailUrl={resource.snippet.thumbnails.default.url}
+              title={resource.snippet.title}
+              description={resource.snippet.description}
+              texts={texts}
+              Icon={AiFillDelete}
+              iconAction={handleDeleteRecord}
+              actionType='remove'
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

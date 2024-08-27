@@ -56,3 +56,26 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
     throw error;
   }
 }
+
+/* -------- */
+/* 🔧 Utils */
+/* -------- */
+
+/* getYoutubeResourceId */
+/* -------------------- */
+
+const getYoutubeResourceId = (resource: any): string => {
+  // Case 1️⃣ | If id is directly accessible at root level of resource, return it
+  if (typeof resource?.id === "string") return resource.id;
+
+  // Case 2️⃣ | If id is nested in an object, return the "whateverId" value
+  //
+  // Example 👇
+  // id: {
+  //        "kind": "youtube#video",
+  //        "videoId": "Mkx4iRqcbr4"
+  //      }
+
+  const [, [, id]] = Object.entries(resource.id);
+  return String(id);
+};
