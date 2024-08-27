@@ -43,7 +43,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/ui/components/DateRangePicker.tsx"
   ],
   "exclude": ["node_modules"]
 }
