@@ -44,7 +44,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "react-day-picker": "^9.0.8",
+    "react-day-picker": "^8.10.1",
     "react-hook-form": "^7.53.0",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
@@ -52,11 +52,11 @@
     "zod": "^3.23.8"
   },
   "exports": {
-    ".": [
-      "./utils.ts"
-    ],
     "./components/*": [
       "./components/*.tsx"
+    ],
+    ".": [
+      "./utils.ts"
     ]
   }
 }

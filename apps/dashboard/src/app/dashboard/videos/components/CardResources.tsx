@@ -35,7 +35,7 @@ import {
 import { YoutubeResourceType, getYoutubeResourceId } from "@/data-access/youtube";
 
 // 🪝 Hooks
-import { useToast } from "@/ui/components/use-toast";
+import { useToast } from "@/ui/components/useToast";
 
 export default function CardResources({
   type,
