@@ -6,6 +6,10 @@
   "keywords": [],
   "author": "Thibaut Izard <thibaut.izard@gmail.com>",
   "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.2"
+  },
   "exports": {
     "./*": "./*.ts"
   }

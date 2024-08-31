@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
-import { FormSubmissionStatus } from "@dashboard/libs/form";
+import { FormSubmissionStatus } from "@/utils/form";
 
 export function useFormStateMessage(
   action: (prevState: FormSubmissionStatus, data: FormData) => Promise<FormSubmissionStatus>,

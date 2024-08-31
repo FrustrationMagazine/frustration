@@ -2,7 +2,7 @@
 import { Separator } from "@/ui/components/separator";
 
 // 🔧 Libs
-import { cn } from "@dashboard/libs/utils";
+import { cn } from "@/utils/tailwind";
 
 export const YearSeparator = ({ year }: { year: number }) => (
   <div className={cn("w-[40%] px-2" /*, index > 0 && "!mt-8"*/)}>

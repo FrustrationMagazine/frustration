@@ -1,5 +1,7 @@
+// 🔩 Base
 import React from "react";
-import styles from "./SuperBallsLoader.module.css";
+
+import styles from "./loader-super-balls.module.css";
 import { cn } from "@/utils/tailwind";
 
 const SuperBallsLoader = ({ className }: { className?: string }) => (

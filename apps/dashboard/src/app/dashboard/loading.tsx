@@ -1,5 +1,5 @@
 import React from "react";
-import SuperBallsLoader from "@dashboard/components/SuperBallsLoader/SuperBallsLoader";
+import SuperBallsLoader from "@/ui/loaders/loader-super-balls";
 
 export default () => {
   return (

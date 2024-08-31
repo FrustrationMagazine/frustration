@@ -1,12 +1,8 @@
 "use server";
 
 // 🐝 Fetch
-import {
-  fetchLastUpdate,
-  fetchStripeTransactions,
-  fetchStripeBalance,
-} from "@dashboard/libs/stripe";
-import { fetchHelloAssoTransactions } from "@dashboard/libs/helloasso";
+import { fetchLastUpdate, fetchStripeTransactions, fetchStripeBalance } from "@/data-access/stripe";
+import { fetchHelloAssoTransactions } from "@/data-access/helloasso";
 
 // 🫙 Database
 import { prisma } from "@/data-access/prisma";
@@ -25,10 +21,10 @@ import {
   ERROR_UPDATE_BALANCE,
 } from "./_models";
 
-import { Transaction } from "@dashboard/libs/transactions";
+import { Transaction } from "@/data-access/models/transactions";
 
 // 🔧 Utils
-import { convertLocalDateToDateUTC } from "@dashboard/utils/dates";
+import { convertLocalDateToDateUTC } from "@/utils/dates";
 
 /* **************** */
 /* Update dashboard */

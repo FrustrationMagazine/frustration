@@ -5,7 +5,7 @@ import DownloadButton from "./DownloadButton";
 import { RiChatFollowUpFill } from "react-icons/ri";
 
 // 🗿 Models
-import { Customer } from "@dashboard/libs/stripe";
+import { Customer } from "@/data-access/stripe";
 
 const BottomBar = ({
   customers,

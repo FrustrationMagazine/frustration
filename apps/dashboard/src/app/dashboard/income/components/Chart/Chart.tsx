@@ -11,7 +11,7 @@ import { Area, AreaChart, XAxis, Legend } from "recharts";
 
 // 🔧 Libs
 import { inEuros, debounce } from "../../_utils";
-import { formatExplicitMonth } from "@dashboard/utils/dates";
+import { formatExplicitMonth } from "@/utils/dates";
 
 // 🗿 Models
 import { TransactionsByMonth } from "../../_models";

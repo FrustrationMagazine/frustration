@@ -14,12 +14,12 @@ import {
   DialogTrigger,
 } from "@/ui/components/dialog";
 import { Input } from "@/ui/components/input";
-import SuperBallsLoader from "@dashboard/components/SuperBallsLoader/SuperBallsLoader";
+import SuperBallsLoader from "@/ui/loaders/loader-super-balls";
 
 import ResourcePreview from "./ResourcePreview";
 
 // 🖼️ Assets
-import { bebasNeue } from "@dashboard/fonts";
+import { bebasNeue } from "../../../../fonts";
 import { AiOutlineVideoCameraAdd, AiFillDelete } from "react-icons/ai";
 
 // 💥 Server actions
@@ -35,7 +35,7 @@ import {
 import { YoutubeResourceType, getYoutubeResourceId } from "@/data-access/youtube";
 
 // 🪝 Hooks
-import { useToast } from "@/ui/components/useToast";
+import { useToast } from "@/ui/components/use-toast";
 
 export default function CardResources({
   type,

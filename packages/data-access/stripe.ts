@@ -1,7 +1,7 @@
 import Stripe from "stripe";
-import { prisma } from "@/data-access/prisma";
-import { TRANSACTION_TYPES, Transaction } from "./transactions";
-import { convertUTCtoDate } from "../utils/dates";
+import { prisma } from "./prisma/client";
+import { TRANSACTION_TYPES, Transaction } from "./models/transactions";
+import { convertUTCtoDate } from "@/utils/dates";
 
 /* ------------------- */
 /*        STRIPE       */
@@ -9,15 +9,13 @@ import { convertUTCtoDate } from "../utils/dates";
 
 export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
   apiVersion: null as any,
-  telemetry: false,
+  telemetry: false
 });
 
 function getTransactionType(description: string): string {
-  if (/(Subscription creation)|(Subscription update)/.test(description))
-    return TRANSACTION_TYPES.SUBSCRIPTION;
+  if (/(Subscription creation)|(Subscription update)/.test(description)) return TRANSACTION_TYPES.SUBSCRIPTION;
   if (/numéro/gi.test(description)) return TRANSACTION_TYPES.SALE;
-  if (/(🙏 Faire un don)|(Montant libre)|(\d+€)/.test(description))
-    return TRANSACTION_TYPES.DONATION;
+  if (/(🙏 Faire un don)|(Montant libre)|(\d+€)/.test(description)) return TRANSACTION_TYPES.DONATION;
   if (/STRIPE PAYOUT/.test(description)) return TRANSACTION_TYPES.PAYOUT;
   if (/REFUND FOR CHARGE/.test(description)) return TRANSACTION_TYPES.REFUND;
   if (/Payment for Invoice/.test(description)) return TRANSACTION_TYPES.PAYMENT_FOR_INVOICE;
@@ -25,15 +23,7 @@ function getTransactionType(description: string): string {
   else return TRANSACTION_TYPES.OTHER;
 }
 
-const formatStripeTransactions = ({
-  id,
-  description,
-  amount,
-  net,
-  available_on,
-  created,
-  status,
-}: StripeTransaction): Transaction => {
+const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
     console.log(`Unknown type: ${description}\n`);
@@ -44,7 +34,7 @@ const formatStripeTransactions = ({
       net,
       available_on,
       created,
-      status,
+      status
     });
   }
   return {
@@ -55,13 +45,11 @@ const formatStripeTransactions = ({
     net: net / 100,
     source: "stripe",
     type: transactionType,
-    status,
+    status
   };
 };
 
-async function fetchStripeData(
-  { getAll, afterTimestamp } = { getAll: false, afterTimestamp: 0 },
-): Promise<any[]> {
+async function fetchStripeData({ getAll, afterTimestamp } = { getAll: false, afterTimestamp: 0 }): Promise<any[]> {
   const PAGE_SIZE = 100;
   let data = [];
   let hasMore = true;
@@ -75,20 +63,20 @@ async function fetchStripeData(
       console.log(`📄 [STRIPE] Page de résultats : ${page + 1}`);
       let listOptions: any = {
         limit: PAGE_SIZE,
-        starting_after,
+        starting_after
       };
 
       // List options
       if (afterTimestamp) {
         listOptions = {
           ...listOptions,
-          created: { gt: afterTimestamp },
+          created: { gt: afterTimestamp }
         };
       }
       const { data: stripeData, has_more } = await stripe.balanceTransactions.list({
         limit: PAGE_SIZE,
         starting_after,
-        created: { gt: afterTimestamp },
+        created: { gt: afterTimestamp }
       });
 
       data.push(...stripeData);
@@ -128,8 +116,7 @@ export async function fetchStripeTransactions({ afterTimestamp } = { afterTimest
   let balanceTransactions: StripeTransaction[] = [];
   balanceTransactions = await fetchStripeData({ getAll: true, afterTimestamp });
 
-  const formattedBalanceTransactions: Transaction[] =
-    balanceTransactions.map(formatStripeTransactions);
+  const formattedBalanceTransactions: Transaction[] = balanceTransactions.map(formatStripeTransactions);
 
   return formattedBalanceTransactions;
 }
@@ -152,8 +139,8 @@ export interface Customer {
 export async function fetchStripeCustomers(
   { from, to } = {
     from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    to: new Date(),
-  },
+    to: new Date()
+  }
 ) {
   const beginTimestamp = Math.floor(from.getTime() / 1000);
   const endTimestamp = Math.floor(to.getTime() / 1000);
@@ -166,15 +153,15 @@ export async function fetchStripeCustomers(
     const { data, has_more } = await stripe.subscriptions.list({
       created: {
         gte: beginTimestamp,
-        lte: endTimestamp,
+        lte: endTimestamp
       },
       limit: 100,
-      starting_after: subscriptions.at(-1)?.id,
+      starting_after: subscriptions.at(-1)?.id
     });
 
     hasMore = has_more;
     subscriptions = [...subscriptions, ...data];
-    customersId = [...customersId, ...data.map((sub) => sub.customer)];
+    customersId = [...customersId, ...data.map((sub: any) => sub.customer)];
   } while (hasMore);
 
   if (Array.isArray(customersId)) {
@@ -182,9 +169,7 @@ export async function fetchStripeCustomers(
 
     for (let i = 0; customersId?.[i]; i += 100) {
       const sliceCustomersId = customersId.slice(i, i + 99);
-      const temp_customers = await Promise.all(
-        sliceCustomersId.map((customerId: any) => stripe.customers.retrieve(customerId)),
-      );
+      const temp_customers = await Promise.all(sliceCustomersId.map((customerId: any) => stripe.customers.retrieve(customerId)));
       customers = [...customers, ...temp_customers];
     }
 
@@ -196,7 +181,7 @@ export async function fetchStripeCustomers(
       adresse: subscriptions[index].metadata.adresse,
       code_postal: subscriptions[index].metadata.code_postal,
       ville: subscriptions[index].metadata.ville,
-      amount: subscriptions[index].items.data[0].price.unit_amount,
+      amount: subscriptions[index].items.data[0].price.unit_amount
     }));
     return formattedCustomers;
   }
@@ -232,7 +217,7 @@ export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
   const balance = await stripe.balance.retrieve();
   const formattedBalance = {
     available: balance.available[0].amount / 100,
-    pending: balance.pending[0].amount / 100,
+    pending: balance.pending[0].amount / 100
   };
   return formattedBalance;
 }

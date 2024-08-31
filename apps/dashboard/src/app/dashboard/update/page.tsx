@@ -6,7 +6,7 @@ import LastUpdate from "./components/LastUpdate";
 import FormUpdate from "./components/FormUpdate";
 
 // 🐝 Fetch
-import { fetchLastUpdate } from "@dashboard/libs/stripe";
+import { fetchLastUpdate } from "@/data-access/stripe";
 
 // 🧰 Server action configuration
 export const maxDuration = 60;

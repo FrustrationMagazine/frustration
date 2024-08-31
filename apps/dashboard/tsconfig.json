@@ -21,28 +21,16 @@
     ],
     "paths": {
       "@dashboard/components/*": ["./src/app/_components/*"],
-
       "@dashboard/auth": ["./src/auth/auth.ts"],
-
-      "@dashboard/prisma": ["./prisma/client.ts"],
-
-      "@dashboard/libs/*": ["./src/libs/*"],
-      "@dashboard/libs/transactions/*": ["./src/libs/transactions/*"],
-      "@dashboard/stripe": ["./src/libs/transactions/stripe.ts"],
-      "@dashboard/helloasso": ["./src/libs/transactions/helloasso.ts"],
-
-      "@dashboard/utils/*": ["./src/utils/*"],
-      "@dashboard/fonts": ["./src/utils/fonts.ts"],
-
       "@dashboard/hooks/*": ["./src/hooks/*"],
-      "@dashboard/models/*": ["./src/models/*"]
+      "@dashboard/fonts": ["./src/fonts.ts"],
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
+    ".next/types/**/*.ts", "../../packages/utils/files.ts", "../../packages/data-access/helloasso.ts", "../../packages/data-access/models/transactions.ts", "../../packages/data-access/stripe.ts",
   ],
   "exclude": ["node_modules"]
 }

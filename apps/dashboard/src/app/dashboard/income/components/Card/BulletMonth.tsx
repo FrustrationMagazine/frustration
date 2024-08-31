@@ -1,11 +1,8 @@
 // 🔩 Base
 import React from "react"; // Add the import statement for React
 
-// 🧱 Components
-import { Separator } from "@/ui/components/separator";
-
 // 🔧 Libs
-import { cn } from "@dashboard/libs/utils";
+import { cn } from "@/utils/tailwind";
 import { inEuros } from "../../_utils";
 
 export default ({

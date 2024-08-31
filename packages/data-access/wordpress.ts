@@ -1,5 +1,5 @@
 // 🔧 Libs
-import { convertDifferenceOfDays, getNumberOfDaysFromNow } from "../utils/dates";
+import { convertDifferenceOfDays, getNumberOfDaysFromNow } from "@/utils/dates";
 
 interface WPGraphqlParams {
   query: string;

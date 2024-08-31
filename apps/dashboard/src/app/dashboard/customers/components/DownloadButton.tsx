@@ -5,11 +5,11 @@ import { Button } from "@/ui/components/button";
 import { IoIosDownload } from "react-icons/io";
 
 // 🔧 Libs
-import { createCSVinURL, downloadFileFromUrl } from "@dashboard/utils/files";
-import { explicitDate } from "@dashboard/utils/dates";
+import { createCSVinURL, downloadFileFromUrl } from "@/utils/files";
+import { explicitDate } from "@/utils/dates";
 
 // 🗿 Models
-import { Customer } from "@dashboard/libs/stripe";
+import { Customer } from "@/data-access/stripe";
 
 export interface FileHeader {
   name: string;

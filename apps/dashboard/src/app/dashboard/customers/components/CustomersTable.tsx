@@ -16,7 +16,7 @@ import {
 import { Button } from "@/ui/components/button";
 
 // 🔧 Utils
-import { prettifyName } from "@dashboard/utils/strings";
+import { prettifyName } from "@/utils/strings";
 
 // 🎁 Libraries
 import {
@@ -32,7 +32,7 @@ import {
 import { ArrowUpDown } from "lucide-react";
 
 // 🗿 Models
-import { Customer } from "@dashboard/libs/stripe";
+import { Customer } from "@/data-access/stripe";
 
 const columnsCustomers: ColumnDef<Customer>[] = [
   {

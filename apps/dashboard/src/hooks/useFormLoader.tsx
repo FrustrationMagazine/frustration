@@ -1,5 +1,5 @@
 import React from "react";
-import { FormSubmissionStatus } from "@dashboard/libs/form";
+import { FormSubmissionStatus } from "@/utils/form";
 
 type UseFormLoaderReturnType = [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 

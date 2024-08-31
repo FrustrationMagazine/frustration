@@ -40,7 +40,6 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
   const url = new URL(endpoint);
   url.searchParams.append("key", process.env.API_KEY_GOOGLE);
   url.searchParams.append("part", "snippet");
-  console.log("🚀 ~ fetchYoutube ~ url:", url);
 
   // Add each param from params object that was passed to URL
   for (let param in params) url.searchParams.append(param, params[param]);

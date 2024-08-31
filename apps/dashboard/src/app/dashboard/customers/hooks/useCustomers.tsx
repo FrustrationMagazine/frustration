@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { fetchCustomers } from "../_actions";
 
 // 🗿 Models
-import { Customer } from "@dashboard/libs/stripe";
+import { Customer } from "@/data-access/stripe";
 
 const useCustomers = () => {
   const [loadingCustomers, setLoadingCustomers] = useState(true);

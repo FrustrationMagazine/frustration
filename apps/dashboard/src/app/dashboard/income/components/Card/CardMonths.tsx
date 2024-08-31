@@ -12,7 +12,7 @@ import BulletMonth from "./BulletMonth";
 import { type TransactionsByMonth } from "../../_models";
 
 // 🔧 Libs
-import { cn } from "@dashboard/libs/utils";
+import { cn } from "@/utils/tailwind";
 import { getTotalMonthAndEvolution, inEuros } from "../../_utils";
 
 export default ({

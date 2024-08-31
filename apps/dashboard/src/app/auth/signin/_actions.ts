@@ -12,7 +12,7 @@ import {
   generateValidEmailMessage,
 } from "./_models";
 
-import { FormSubmissionStatus } from "@dashboard/libs/form";
+import { type FormSubmissionStatus } from "@/utils/form";
 
 /* ---------------------- */
 /*    SEND MAGIC LINK     */

@@ -12,8 +12,8 @@ import { MdUpdate } from "react-icons/md";
 import { IoIosPeople } from "react-icons/io";
 import { FaYoutube } from "react-icons/fa6";
 
-// ℹ️ Font
-import { poppins } from "@dashboard/fonts";
+// ℹ️ Font../../fonts
+import { poppins } from "../../fonts";
 
 // 💥 Actions
 import SignOut from "./SignOut";
