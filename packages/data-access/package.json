@@ -19,8 +19,8 @@
     "@/utils": "workspace:*"
   },
   "devDependencies": {
-    "@prisma/client": "5.18.0",
-    "prisma": "^5.18.0"
+    "@prisma/client": "^5.19.0",
+    "prisma": "^5.19.0"
   },
   "exports": {
     "./*": "./*.ts",
