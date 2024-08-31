@@ -28,6 +28,9 @@ importers:
       '@next/env':
         specifier: ^14.2.7
         version: 14.2.7
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.19.0
+        version: 5.19.0
       '@radix-ui/react-tabs':
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1150,6 +1153,9 @@ packages:
 
   '@prisma/get-platform@5.19.0':
     resolution: {integrity: sha512-s9DWkZKnuP4Y8uy6yZfvqQ/9X3/+2KYf3IZUVZz5OstJdGBJrBlbmIuMl81917wp5TuK/1k2TpHNCEdpYLPKmg==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.19.0':
+    resolution: {integrity: sha512-OAqluu74z/b9esfNEuEHt+GQtRQkwObKj3dfQPVpTnrU1hCws7R22gtaHT4Qus+1r4xmTnVL2Wpz5vCpNVTBXQ==}
 
   '@radix-ui/number@1.1.0':
     resolution: {integrity: sha512-V3gRzhVNU1ldS5XhAPTom1fOIo4ccrjjJgmE+LI2h/WaFpHmx0MQApT+KZHnx8abG6Avtfcz4WoEciMnpFT3HQ==}
@@ -5136,6 +5142,8 @@ snapshots:
   '@prisma/get-platform@5.19.0':
     dependencies:
       '@prisma/debug': 5.19.0
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.19.0': {}
 
   '@radix-ui/number@1.1.0': {}
 
