@@ -7,7 +7,6 @@
   "author": "Thibaut Izard <thibaut.izard@gmail.com>",
   "license": "ISC",
   "exports": {
-    "./dates": "./dates.ts",
-    "./strings": "./strings.ts"
+    "./*": "./*.ts"
   }
 }

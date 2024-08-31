@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -- next dev",
-    "build": "dotenv -e ../../.env.local -- next build",
-    "start": "dotenv -e ../../.env.local -- next start",
+    "dev": "dotenv -e ../../.env -- next dev",
+    "build": "dotenv -e ../../.env -- next build",
+    "start": "dotenv -e ../../.env -- next start",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",

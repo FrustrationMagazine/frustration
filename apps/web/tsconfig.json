@@ -16,7 +16,7 @@
     "paths": {
       "@data-access/*": ["../../packages/data-access/*"],
       "@data-access/prisma": ["../../packages/data-access/prisma/client"],
-      "@utils/*": ["../../packages/utils/*"],
+      "@/utils/*": ["../../packages/utils/*"],
 
       "@web/data/*": ["./src/data/*"],
       "@web/libs/data-access/*": ["src/libs/data-access/*"],

@@ -87,7 +87,12 @@ model Balance {
   updatedAt DateTime @id @default(now())
 }
 
-// 📹 Videos
+model Video {
+  id        String      @id
+  type      VideoType
+  source    VideoSource
+  createdAt DateTime    @default(now())
+}
 
 enum VideoSource {
   youtube
@@ -97,11 +102,4 @@ enum VideoType {
   channel
   video
   playlist
-}
-
-model Video {
-  id        String      @id
-  type      VideoType
-  source    VideoSource
-  createdAt DateTime    @default(now())
 }

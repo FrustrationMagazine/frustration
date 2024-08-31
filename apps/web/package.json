@@ -3,11 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -- astro dev",
-    "start": "dotenv -e ../../.env.local -- astro dev",
-    "build": "dotenv -e ../../.env.local -- astro build",
-    "preview": "dotenv -e ../../.env.local -- astro preview",
-    "astro": "dotenv -e ../../.env.local -- astro",
+    "dev": "dotenv -e ../../.env -- astro dev",
+    "start": "dotenv -e ../../.env -- astro dev",
+    "build": "dotenv -e ../../.env -- astro build",
+    "preview": "dotenv -e ../../.env -- astro preview",
+    "astro": "dotenv -e ../../.env -- astro",
     "lint": "eslint .",
     "vercel-build": "eslint . && astro build"
   },

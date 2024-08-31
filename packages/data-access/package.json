@@ -5,27 +5,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "prisma generate",
-    "dev": "prisma generate && dotenv -e ../../.env.local -- prisma db pull",
-    "migrate": "dotenv -e ../../.env.local -- pnpx prisma migrate dev",
-    "generate": "dotenv -e ../../.env.local -- prisma generate && dotenv -e ../../.env.local -- prisma db push",
-    "studio": "dotenv -e ../../.env.local -- pnpx prisma studio",
-    "push": "dotenv -e ../../.env.local -- prisma db push",
-    "prod": "dotenv -e ../../.env.local -- prisma generate && dotenv -e .env.prod -- prisma db pull"
+    "dev": "prisma generate && dotenv -e ../../.env -- prisma db pull",
+    "migrate": "dotenv -e ../../.env -- pnpx prisma migrate dev",
+    "generate": "dotenv -e ../../.env -- prisma generate && dotenv -e ../../.env -- prisma db push",
+    "studio": "dotenv -e ../../.env -- pnpx prisma studio",
+    "push": "dotenv -e ../../.env -- prisma db push",
+    "prod": "dotenv -e ../../.env -- prisma generate && dotenv -e .env.prod -- prisma db pull"
   },
   "keywords": [],
   "author": "Thibaut Izard <thibaut.izard@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@/utils": "workspace:*",
-    "dotenv": "^16.4.5"
+    "@/utils": "workspace:*"
   },
   "devDependencies": {
     "@prisma/client": "5.18.0",
     "prisma": "^5.18.0"
   },
   "exports": {
-    "./prisma": "./prisma/client.ts",
-    "./youtube": "./youtube.ts",
-    "./wordpress": "./wordpress.ts"
+    "./*": "./*.ts",
+    "./prisma": "./prisma/client.ts"
   }
 }

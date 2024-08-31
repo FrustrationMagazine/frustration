@@ -4,7 +4,7 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/ui/lib/utils";
+import { cn } from "@/ui";
 
 // 🖼️ Icons
 import { FaCreditCard } from "react-icons/fa";
