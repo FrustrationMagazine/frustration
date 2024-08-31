@@ -2,8 +2,7 @@
    "crons": [
     {
       "path": "/api/update",
-      "schedule": "0 5 * * *",
-      "comment": "This cron job will run every day at 5:00 AM UTC to update BalanceTransaction table"
+      "schedule": "0 5 * * *"
     }
   ]
 }

@@ -102,4 +102,5 @@ enum VideoType {
   channel
   video
   playlist
+  playlistItem
 }
