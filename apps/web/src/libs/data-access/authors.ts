@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { normalizeName } from "@libs/utils/strings";
+import { normalizeName } from "@utils/strings";
 
 export const formatAuthorName = (authorName: string): string => {
   const normalizedAuthorName = normalizeName(authorName);

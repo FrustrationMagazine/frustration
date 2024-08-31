@@ -2,7 +2,7 @@
 const { title, authorName, excerpt, image, date, categories, slug } = Astro.props;
 import ClockIcon from "./icons/clock.svg?raw";
 import { Image } from "astro:assets";
-import { getAuthor } from "@libs/data-access/authors";
+import { getAuthor } from "@web/libs/data-access/authors";
 
 const author = await getAuthor(authorName);
 let picture;
@@ -36,7 +36,7 @@ if (author) {
         </h5>
         {/* Categories */}
         <div class="flex gap-1">
-          {categories.map((category: string) => <span class=" bg-yellow px-2 pt-[1.5px] font-bebas text-xs uppercase leading-none text-black lg:text-base">{category}</span>)}
+          {categories.map((category: string) => <span class="bg-yellow px-2 pt-[1.5px] font-bebas text-xs uppercase leading-none text-black lg:text-base">{category}</span>)}
         </div>
         <div class="font-open-sans text-white">
           {

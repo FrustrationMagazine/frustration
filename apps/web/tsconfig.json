@@ -1,10 +1,12 @@
 {
+  "extends": "astro/tsconfigs/strict",
+
   "compilerOptions": {
-    "moduleResolution": "node",
     "strictNullChecks": true,
     "allowJs": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "moduleResolution": "node",
     "plugins": [
       {
         "name": "@astrojs/ts-plugin",
@@ -12,14 +14,18 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@data/*": ["./src/data/*"],
-      "@libs/*": ["src/libs/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@components/*": ["src/components/*"],
-      "@layout/*": ["src/layout/*"],
-      "@styles/*": ["src/styles/*"],
+      "@data-access/*": ["../../packages/data-access/*"],
+      "@data-access/prisma": ["../../packages/data-access/prisma/client"],
+      "@utils/*": ["../../packages/utils/*"],
+
+      "@web/data/*": ["./src/data/*"],
+      "@web/libs/data-access/*": ["src/libs/data-access/*"],
+      "@web/libs/utils/*": ["src/libs/utils/*"],
+      "@web/hooks/*": ["src/hooks/*"],
+      "@web/components/*": ["src/components/*"],
+      "@web/layout/*": ["src/layout/*"],
+      "@web/styles/*": ["src/styles/*"],
     },
   },
-  "extends": "astro/tsconfigs/strict",
+  "exclude": ["node_modules"]
 }

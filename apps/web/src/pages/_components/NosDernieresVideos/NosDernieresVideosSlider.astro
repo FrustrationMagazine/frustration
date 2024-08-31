@@ -1,5 +1,7 @@
 ---
-import { fetchYoutubeVideosFromPlaylist } from "@/libs/data-access/youtube";
+import { fetchYoutubeVideosFromPlaylist } from "@web/libs/data-access/youtube";
+import { readRecords } from "@data-access/prisma";
+import { fetchYoutube, getYoutubeResourceId } from "@data-access/youtube";
 import { getCollection } from "astro:content";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -7,13 +9,73 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Video from "./Video.astro";
 import VideoInformations from "./VideoInformations.astro";
 
-const allYoutubePlaylists = await getCollection("youtubePlaylists");
-const allPlaylistIds = allYoutubePlaylists.map(({ data: { playlistId } }) => playlistId);
-const promisesPlaylists = allPlaylistIds.map((playlistId) => fetchYoutubeVideosFromPlaylist({ playlistId }));
-const playlistItems = (await Promise.all(promisesPlaylists)).flat();
-const sortedPlaylistItems = playlistItems.sort(
-  (firstItem, secondItem) => new Date(secondItem ? secondItem.snippet.publishedAt : "").getTime() - new Date(firstItem ? firstItem.snippet.publishedAt : "").getTime(),
-);
+const { data: records } = await readRecords({ table: "video", where: {}, success: "Videos read" });
+const availableTypes = records.reduce((acc: string[], { type }: { type: string }) => (acc.includes(type) ? acc : [...acc, type]), []);
+
+let resources: any[] = [];
+
+const promises = availableTypes.map(async (type: string) => {
+  const idsToFetch = records.filter(({ type: currentType }: { type: string }) => currentType === type).map(({ id }: { id: string }) => id);
+  const concatenatedIds = idsToFetch.join(",");
+
+  // 🔁 📺 Fetch
+  let results: any[] = [];
+  results = await fetchYoutube({ params: { id: concatenatedIds }, type });
+  if (results) {
+    results = results.map((result) => ({ ...result, id: getYoutubeResourceId(result) }));
+
+    // Type 1 | Videos
+    if (type === "video") {
+      let videos = results.map((video: any) => ({ ...video }));
+      resources = [...resources, ...videos];
+    }
+
+    // Type 2 | Channel
+    if (type === "channel") {
+      const channelIds = (results as any).map(({ id }) => id);
+      const channelPromises = channelIds.map(async (channelId: string) => {
+        let videosFromChannel = await fetchYoutube({ params: { type: "video", channelId, order: "date", maxResults: 10 } });
+
+        if (videosFromChannel) {
+          videosFromChannel = videosFromChannel.map((video: any) => ({ ...video, id: getYoutubeResourceId(video) }));
+
+          const idsToFetch = videosFromChannel.map(({ id }: { id: string }) => id);
+          const concatenatedIds = idsToFetch.join(",");
+          let videos = await fetchYoutube({ params: { id: concatenatedIds }, type: "video" });
+
+          resources = [...resources, ...videos];
+        }
+      });
+      await Promise.all(channelPromises);
+    }
+
+    // Type 3 | Playlist
+    if (type === "playlist") {
+      const playlistIds = (results as any).map(({ id }) => id);
+      const playlistPromises = playlistIds.map(async (playlistId: string) => {
+        const playlistTitle = results.find(({ id }) => id === playlistId)?.snippet.title;
+        let videosFromPlaylist = await fetchYoutube({ params: { playlistId }, type: "playlistItem" });
+
+        if (videosFromPlaylist) {
+          videosFromPlaylist = videosFromPlaylist.map((video: any) => ({ ...video, id: video.snippet.resourceId.videoId, snippet: { ...video.snippet, playlistTitle } }));
+          resources = [...resources, ...videosFromPlaylist];
+        }
+      });
+      await Promise.all(playlistPromises);
+    }
+  }
+});
+
+await Promise.all(promises);
+resources.sort((firstItem, secondItem) => new Date(secondItem ? secondItem.snippet.publishedAt : "").getTime() - new Date(firstItem ? firstItem.snippet.publishedAt : "").getTime());
+function getBestThumbnailUrl(thumbnails: any) {
+  if (thumbnails.maxres) return thumbnails.maxres.url;
+  if (thumbnails.standard) return thumbnails.standard.url;
+  if (thumbnails.high) return thumbnails.high.url;
+  if (thumbnails.medium) return thumbnails.medium.url;
+  if (thumbnails.default) return thumbnails.default.url;
+  return "";
+}
 ---
 
 <div class="main-home-videos-container">
@@ -21,16 +83,17 @@ const sortedPlaylistItems = playlistItems.sort(
   <div class="video-informations-container relative">
     <div class="absolute h-full w-full overflow-scroll text-white lg:block">
       {
-        sortedPlaylistItems.map(({ snippet: { thumbnails, channelTitle, description, title: videoTitle, playlistId }, id: videoId }) => {
-          const playlist = allYoutubePlaylists.find(({ data: { playlistId: currentPlaylistId } }) => currentPlaylistId === playlistId)?.data;
+        resources.map((resource) => {
           return (
             <VideoInformations
-              thumbnails={thumbnails}
-              channelTitle={channelTitle}
-              description={description}
-              title={videoTitle}
-              playlist={playlist}
-              id={videoId}
+              thumbnailUrl={getBestThumbnailUrl(resource.snippet.thumbnails)}
+              channelTitle={resource.snippet.channelTitle}
+              channelUrl={`https://www.youtube.com/channel/${resource.snippet.channelId}`}
+              description={resource.snippet.description}
+              title={resource.snippet.title}
+              playlistTitle={resource.snippet?.playlistTitle}
+              playlistUrl={`https://www.youtube.com/playlist?list=${resource.snippet.playlistId}`}
+              id={"video id"}
             />
           );
         })
@@ -60,23 +123,12 @@ const sortedPlaylistItems = playlistItems.sort(
     <div class="splide__track">
       <ul class="splide__list">
         {
-          sortedPlaylistItems.map(
-            ({
-              id: playlistItemId,
-              snippet: {
-                resourceId: { videoId },
-                thumbnails: {
-                  maxres: { url: thumbnailUrl },
-                },
-              },
-            }) => (
-              <Video
-                id={playlistItemId}
-                videoId={videoId}
-                thumbnailUrl={thumbnailUrl}
-              />
-            ),
-          )
+          resources.map((resource) => (
+            <Video
+              id={resource.id}
+              thumbnailUrl={`https://i.ytimg.com/vi/${resource.id}/hq720.jpg`}
+            />
+          ))
         }
       </ul>
     </div>
@@ -86,23 +138,12 @@ const sortedPlaylistItems = playlistItems.sort(
     <div class="splide__track">
       <ul class="splide__list gap-2">
         {
-          sortedPlaylistItems.map(
-            ({
-              id: playlistItemId,
-              snippet: {
-                resourceId: { videoId },
-                thumbnails: {
-                  maxres: { url: thumbnailUrl },
-                },
-              },
-            }) => (
-              <Video
-                id={playlistItemId}
-                videoId={videoId}
-                thumbnailUrl={thumbnailUrl}
-              />
-            ),
-          )
+          resources.map((resource) => (
+            <Video
+              id={resource.id}
+              thumbnailUrl={getBestThumbnailUrl(resource.snippet.thumbnails)}
+            />
+          ))
         }
       </ul>
     </div>

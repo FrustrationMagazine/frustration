@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { ListVideo } from "lucide-react";
-const { thumbnails, channelTitle, description, title, playlist, id } = Astro.props;
+const { thumbnailUrl, channelTitle, channelUrl, playlistTitle, playlistUrl, description, title, id } = Astro.props;
 ---
 
 <div class="video-informations relative h-full overflow-scroll rounded-xl">
   <div class="absolute left-0 top-0 w-[200%] translate-x-[-25%] opacity-30 blur-lg">
     <Image
-      src={thumbnails.maxres.url}
+      src={thumbnailUrl}
       alt=""
       width="1280"
       height="720"
@@ -19,18 +19,18 @@ const { thumbnails, channelTitle, description, title, playlist, id } = Astro.pro
     <h3 class="mb-5 text-center text-2xl font-bold leading-none">{title}</h3>
     <div class="flex flex-wrap items-center gap-3 whitespace-nowrap">
       {
-        playlist && (
+        playlistTitle && (
           <a
-            href={playlist.url}
+            href={playlistUrl}
             target="_blank"
             class="flex items-center gap-1">
             <ListVideo size={14} />
-            <span class="text-sm">{playlist.name}</span>
+            <span class="text-sm">{playlistTitle}</span>
           </a>
         )
       }
       <a
-        href=""
+        href={channelUrl}
         target="_blank"
         class="flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-[#8F8F8F] py-0.5 pl-1.5 pr-2">
         <img

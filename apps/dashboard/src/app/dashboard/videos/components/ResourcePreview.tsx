@@ -36,19 +36,19 @@ function getThumbnailSizes(type: string) {
       };
     case "playlist":
       return {
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
       };
     case "video":
       return {
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
       };
 
     default:
       return {
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
       };
   }
 }

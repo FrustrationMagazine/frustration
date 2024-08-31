@@ -1,0 +1,13 @@
+{
+  "name": "@/utils",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "Thibaut Izard <thibaut.izard@gmail.com>",
+  "license": "ISC",
+  "exports": {
+    "./dates": "./dates.ts",
+    "./strings": "./strings.ts"
+  }
+}

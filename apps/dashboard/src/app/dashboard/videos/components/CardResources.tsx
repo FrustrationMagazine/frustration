@@ -32,26 +32,10 @@ import {
 } from "../_actions";
 
 // 🔧 Libs
-import { YoutubeResourceType } from "@/data-access/youtube";
+import { YoutubeResourceType, getYoutubeResourceId } from "@/data-access/youtube";
 
 // 🪝 Hooks
 import { useToast } from "@/ui/components/use-toast";
-
-const getYoutubeResourceId = (resource: any): string => {
-  // If id is directly accessible at root level of resource, return it
-  if (typeof resource?.id === "string") return resource.id;
-
-  // If id is nested in an object, return the "whateverId" value
-  //
-  // Example 👇
-  // id: {
-  //        "kind": "youtube#video",
-  //        "videoId": "Mkx4iRqcbr4"
-  //      }
-
-  const [, [, id]] = Object.entries(resource.id);
-  return String(id);
-};
 
 export default function CardResources({
   type,

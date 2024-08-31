@@ -8,6 +8,31 @@ export const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 /* ------ */
+/*  READ  */
+/* ------ */
+
+export async function readRecords({ table, where, success }: { table: string; where: any; success: any }): Promise<any> {
+  let status = {
+    success: null,
+    error: null
+  };
+  let data = [];
+
+  // 🔁 Read
+  try {
+    data = await (prisma as any)[table].findMany({ where });
+    status.success = success;
+  } catch (e) {
+    // ❌ Error | P202
+    console.error("Error while reading records", e);
+    const readableError = e?.constructor.name === Prisma.PrismaClientKnownRequestError.name ? (e as any)?.message : "Une erreur inconnue s'est produite";
+    status.error = readableError;
+  } finally {
+    return { data, status };
+  }
+}
+
+/* ------ */
 /* CREATE */
 /* ------ */
 

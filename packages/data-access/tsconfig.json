@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "strict": true, // Enable strict type checking
+    "paths": {
+      "@/utils/*": ["../../packages/utils/*"],
+    },
+  }
+}

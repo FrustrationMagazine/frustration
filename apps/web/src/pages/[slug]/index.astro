@@ -1,6 +1,6 @@
 ---
-import BaseLayout from "@layout/BaseLayout/BaseLayout.astro";
-import ArticleLayout from "@layout/ArticleLayout/ArticleLayout.astro";
+import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
+import ArticleLayout from "@web/layout/ArticleLayout/ArticleLayout.astro";
 import {
   fetchArticle,
   formatTitleFromRawArticleData,
@@ -9,8 +9,11 @@ import {
   formatCategoriesFromRawArticleData,
   formatImageFromRawArticleData,
   formatContentFromRawArticleData,
-} from "@data/wordpress";
-import type { ArticleRaw } from "@data/wordpress";
+} from "@data-access/wordpress";
+import type { ArticleRaw } from "@data-access/wordpress";
+
+// 🧰 Config
+export const prerender = true;
 
 export const getStaticPaths = async () => {
   const ARTICLES_TO_DISPLAY = 9;

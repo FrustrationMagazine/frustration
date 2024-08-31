@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { createVideoYoutubeUrl } from "@/libs/data-access/youtube";
-const { id, videoId, thumbnailUrl } = Astro.props;
-const youtubeUrl = createVideoYoutubeUrl(videoId);
+import { createVideoYoutubeUrl } from "@web/libs/data-access/youtube";
+const { id, thumbnailUrl } = Astro.props;
+const youtubeUrl = createVideoYoutubeUrl(id);
 ---
 
 <li
