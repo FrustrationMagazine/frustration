@@ -1,5 +1,5 @@
 ---
-import { cn } from "@web/libs/utils/tailwind";
+import { cn } from "@/utils/tailwind";
 const { position = "left" } = Astro.props;
 ---
 
@@ -13,8 +13,8 @@ const { position = "left" } = Astro.props;
       "pl-8": position === "right",
       "before:translate-x-[100%]": position === "right",
       "before:right-0": position === "right",
-      "ml-auto": position === "right",
-    },
+      "ml-auto": position === "right"
+    }
   )}>
   <slot />
 </h2>

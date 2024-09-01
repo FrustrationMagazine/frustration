@@ -8,18 +8,18 @@ import {
   formatDateFromRawArticleData,
   formatCategoriesFromRawArticleData,
   formatImageFromRawArticleData,
-  formatExcerptFromRawArticleData,
-} from "@data-access/wordpress";
-import type { ArticleRaw } from "@data-access/wordpress";
-import H2 from "../H2.astro";
-import SECTION from "../SECTION.astro";
+  formatExcerptFromRawArticleData
+} from "@/data-access/wordpress";
+import type { ArticleRaw } from "@/data-access/wordpress";
+import SectionTitle from "../Title.astro";
+import Section from "../Section.astro";
 import TousLesArticles from "./TousLesArticles.astro";
 const ARTICLES_TO_DISPLAY = 9;
 const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "author", "slug", "excerpt", "date", "categories", "image"])) as ArticleRaw[];
 ---
 
-<SECTION>
-  <H2 position="left">À la une</H2>
+<Section>
+  <SectionTitle position="left">À la une</SectionTitle>
   <!-- TODO // replace flex properties by this grid layout
               display: grid;
               grid-template-columns: repeat(auto-fit, minmax(max(30%, 300px), 1fr)); -->
@@ -39,4 +39,4 @@ const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "
     }
   </div>
   <TousLesArticles />
-</SECTION>
+</Section>

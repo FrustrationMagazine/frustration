@@ -14,15 +14,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@data-access/*": ["../../packages/data-access/*"],
-      "@data-access/prisma": ["../../packages/data-access/prisma/client"],
+      "@/data-access/*": ["../../packages/data-access/*"],
+      "@/data-access/prisma": ["../../packages/data-access/prisma/client"],
+
       "@/utils/*": ["../../packages/utils/*"],
 
-      "@web/data/*": ["./src/data/*"],
-      "@web/libs/data-access/*": ["src/libs/data-access/*"],
-      "@web/libs/utils/*": ["src/libs/utils/*"],
-      "@web/hooks/*": ["src/hooks/*"],
-      "@web/components/*": ["src/components/*"],
       "@web/layout/*": ["src/layout/*"],
       "@web/styles/*": ["src/styles/*"],
     },

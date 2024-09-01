@@ -1,30 +1,38 @@
 ---
+// 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
-import NosDernieresVideos from "./_components/NosDernieresVideos/NosDernieresVideos.astro";
+
+// 🧱 Components
 import MainSlider from "./_components/MainSlider/MainSlider.astro";
+import NosDernieresVideos from "./_components/NosDernieresVideos/NosDernieresVideos.astro";
 import NewsletterBanner from "./_components/NewsletterBanner/NewsletterBanner.astro";
 import ALaUne from "./_components/ALaUne/ALaUne.astro";
 import SeparationWave from "./_components/Separators/Wave.astro";
+
 import SeparationSpades from "./_components/Separators/Spades.astro";
 import Interviews from "./_components/Interviews/Interviews.astro";
 import Footer from "../layout/BaseLayout/Footer/Footer.astro";
 
+// 🧰 Config
 const title = "Accueil";
 const description =
-  "Page d'accueil du magazine de critique sociale pour grand public Frustration Magazine sur lequel vous pourrez retrouver nos dernières vidéos et articles pour mieux comprendre l'actualité politique, économique et sociale ainsi que toutes nos analyses sur la guerre en cours que mène la bourgeoisie contre les travailleurs.";
+  "Page d'accueil du magazine de critique sociale pour grand public Frustration Magazine sur lequel vous pourrez retrouver nos dernières vidéos et articles pour mieux comprendre l'actualité politique, économique et sociale ainsi que toutes nos analyses sur la guerre en cours que mène la bourgeoisie contre les travailleuses et travailleurs.";
+
+const yellowTexture = "block w-full overflow-hidden bg-home-first-section";
+const black = "relative block w-full bg-black pb-20 pt-7";
 ---
 
 <BaseLayout
   title={title}
   description={description}>
-  <section class="block w-full overflow-hidden bg-home-first-section">
+  <section class={yellowTexture}>
     <MainSlider />
     <NosDernieresVideos />
     <NewsletterBanner />
     <ALaUne />
     <SeparationWave />
   </section>
-  <section class="relative block w-full bg-black pb-20 pt-7">
+  <section class={black}>
     <Interviews />
     <SeparationSpades />
   </section>

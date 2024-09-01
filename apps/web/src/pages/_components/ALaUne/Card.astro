@@ -2,7 +2,7 @@
 const { title, authorName, excerpt, image, date, categories, slug } = Astro.props;
 import ClockIcon from "./icons/clock.svg?raw";
 import { Image } from "astro:assets";
-import { getAuthor } from "@web/libs/data-access/authors";
+import { getAuthor } from "../../../libs/data-access/authors";
 
 const author = await getAuthor(authorName);
 let picture;
@@ -14,7 +14,7 @@ if (author) {
 <post-card
   class="group/container h-[375px] min-w-full grow basis-[32%] md:min-w-[450px] lg:h-[450px]"
   style={{
-    perspective: "1200px",
+    perspective: "1200px"
   }}>
   <a
     href={`/${slug}`}
