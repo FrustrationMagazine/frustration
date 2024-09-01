@@ -7,10 +7,19 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Video from "./Video.astro";
 import VideoInformations from "./VideoInformations.astro";
 
-const { data: records } = await readRecords({ table: "video", where: {}, success: "Videos read" });
-const availableTypes = records.reduce((acc: string[], { type }: { type: string }) => (acc.includes(type) ? acc : [...acc, type]), []);
+function getBestThumbnailUrl(thumbnails: any) {
+  if (thumbnails.maxres) return thumbnails.maxres.url;
+  if (thumbnails.standard) return thumbnails.standard.url;
+  if (thumbnails.high) return thumbnails.high.url;
+  if (thumbnails.medium) return thumbnails.medium.url;
+  if (thumbnails.default) return thumbnails.default.url;
+  return "";
+}
 
 let resources: any[] = [];
+
+const { data: records } = await readRecords({ table: "video", where: {}, success: "Videos read" });
+const availableTypes = records.reduce((acc: string[], { type }: { type: string }) => (acc.includes(type) ? acc : [...acc, type]), []);
 
 const promises = availableTypes.map(async (type: string) => {
   const idsToFetch = records.filter(({ type: currentType }: { type: string }) => currentType === type).map(({ id }: { id: string }) => id);
@@ -66,14 +75,6 @@ const promises = availableTypes.map(async (type: string) => {
 
 await Promise.all(promises);
 resources.sort((firstItem, secondItem) => new Date(secondItem ? secondItem.snippet.publishedAt : "").getTime() - new Date(firstItem ? firstItem.snippet.publishedAt : "").getTime());
-function getBestThumbnailUrl(thumbnails: any) {
-  if (thumbnails.maxres) return thumbnails.maxres.url;
-  if (thumbnails.standard) return thumbnails.standard.url;
-  if (thumbnails.high) return thumbnails.high.url;
-  if (thumbnails.medium) return thumbnails.medium.url;
-  if (thumbnails.default) return thumbnails.default.url;
-  return "";
-}
 ---
 
 <div class="main-home-videos-container">

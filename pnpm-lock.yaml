@@ -6,7 +6,14 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.19.0
+        version: 5.19.0(prisma@5.19.0)
+      prisma:
+        specifier: ^5.19.0
+        version: 5.19.0
 
   apps/dashboard:
     dependencies:

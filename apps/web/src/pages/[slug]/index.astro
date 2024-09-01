@@ -2,6 +2,7 @@
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import ArticleLayout from "@web/layout/ArticleLayout/ArticleLayout.astro";
 import {
+  type ArticleRaw,
   fetchArticle,
   formatTitleFromRawArticleData,
   formatAuthorFromRawArticleData,
@@ -10,7 +11,6 @@ import {
   formatImageFromRawArticleData,
   formatContentFromRawArticleData
 } from "@/data-access/wordpress";
-import type { ArticleRaw } from "@/data-access/wordpress";
 
 // 🧰 Config
 export const prerender = true;
