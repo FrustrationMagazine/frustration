@@ -5,7 +5,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Sidenav />
-      <div className='flex h-full grow flex-col items-center justify-center gap-3 p-8'>
+      <div className="flex h-full grow flex-col items-center gap-3 p-8">
         {children}
       </div>
     </>
