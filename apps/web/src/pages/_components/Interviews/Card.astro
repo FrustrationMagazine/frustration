@@ -1,12 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import H5 from "./CardTitle.astro";
-const { link, image, title } = Astro.props;
+const { link, image, title, slug } = Astro.props;
 ---
 
-<a
-  href={link}
-  target="_blank">
+<a href={`/${slug}`}>
   <Image
     title={image.title}
     src={image.sourceUrl}

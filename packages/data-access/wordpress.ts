@@ -148,28 +148,28 @@ const UNKNOWN_AUTHOR = "Invité.e";
 const DEFAULT_ARTICLE_IMAGE_METADATA_PATH = "DEFAULT_ARTICLE_IMAGE";
 const DEFAULT_ARTICLE_IMAGE_METADATA = { title: "Image de couverture de l'article", altText: "Image de couverture par défaut de l'article", sourceUrl: DEFAULT_ARTICLE_IMAGE_METADATA_PATH };
 
-export const formatSlugFromRawArticleData = (article: ArticleRaw): string => article.slug || "";
-export const formatTitleFromRawArticleData = (article: ArticleRaw): string => article.title || UNKNOWN_TITLE;
+export const formatSlugFromRawArticleData = (article: ArticleRaw): string => article?.slug || "";
+export const formatTitleFromRawArticleData = (article: ArticleRaw): string => article?.title || UNKNOWN_TITLE;
 
 export const formatAuthorFromRawArticleData = (article: ArticleRaw) => {
   if (article?.author?.node?.firstName || article?.author?.node?.lastName) {
-    return `${article.author.node.firstName ?? ""} ${article.author.node.lastName ?? ""}`;
+    return `${article?.author.node.firstName ?? ""} ${article?.author.node.lastName ?? ""}`;
   }
   return UNKNOWN_AUTHOR;
 };
 
 export const formatImageFromRawArticleData = (article: ArticleRaw): { title: string; altText: string; sourceUrl: string } => {
-  if (article.featuredImage?.node) {
-    return article.featuredImage.node;
+  if (article?.featuredImage?.node) {
+    return article?.featuredImage.node;
   }
 
   return DEFAULT_ARTICLE_IMAGE_METADATA;
 };
 
 export const formatDateFromRawArticleData = (article: ArticleRaw, options: { explicit: boolean } = { explicit: false }): Date | string => {
-  if (article.date) {
+  if (article?.date) {
     const intlOptions: Intl.DateTimeFormatOptions | undefined = options.explicit ? { weekday: "long", year: "numeric", month: "long", day: "numeric" } : undefined;
-    let date = new Date(article.date).toLocaleDateString("fr-FR", intlOptions);
+    let date = new Date(article?.date).toLocaleDateString("fr-FR", intlOptions);
     date = date.charAt(0).toUpperCase() + date.slice(1);
     return date;
   }
@@ -178,23 +178,23 @@ export const formatDateFromRawArticleData = (article: ArticleRaw, options: { exp
 };
 
 export const formatCategoriesFromRawArticleData = (article: ArticleRaw): string[] => {
-  if (article.categories) {
-    article.categories.nodes.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
+  if (article?.categories) {
+    article?.categories.nodes.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
   }
   return [];
 };
 
 export const formatContentFromRawArticleData = (article: ArticleRaw): string => {
-  if (article.content) {
-    return article.content;
+  if (article?.content) {
+    return article?.content;
   }
 
   return "";
 };
 
 export const formatExcerptFromRawArticleData = (article: ArticleRaw): string => {
-  if (article.excerpt) {
-    return article.excerpt;
+  if (article?.excerpt) {
+    return article?.excerpt;
   }
 
   return "";

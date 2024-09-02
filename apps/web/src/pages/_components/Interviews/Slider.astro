@@ -10,15 +10,28 @@ import Card from "./Card.astro";
   <div class="splide__track max-w-full py-12">
     <ul class="splide__list max-w-full">
       {
-        interviews.map(({ title, image, link }: { title: string; image: { title: string; sourceUrl: string; altText: string }; link: string }) => (
-          <li class="splide__slide group pb-8 transition-all hover:scale-105">
-            <Card
-              title={title}
-              image={image}
-              link={link}
-            />
-          </li>
-        ))
+        interviews.map(
+          ({
+            title,
+            image,
+            link,
+            slug,
+          }: {
+            title: string;
+            image: { title: string; sourceUrl: string; altText: string };
+            link: string;
+            slug: string;
+          }) => (
+            <li class="splide__slide group pb-8 transition-all hover:scale-105">
+              <Card
+                title={title}
+                image={image}
+                link={link}
+                slug={slug}
+              />
+            </li>
+          ),
+        )
       }
     </ul>
   </div>

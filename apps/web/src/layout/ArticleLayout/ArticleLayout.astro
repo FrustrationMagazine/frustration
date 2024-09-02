@@ -1,8 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import H1 from "./components/Title.astro";
-import Metadata from "./components/Metadata.astro";
-import FOOTER from "./components/Footer.astro";
+import AuthorPicture from "./components/AuthorPicture.astro";
+import TagIcon from "./assets/icons/tag.svg?raw";
 import Footer from "../BaseLayout/Footer/Footer.astro";
 import ArticleSummary from "./components/ArticleSummary/ArticleSummary";
 const { title, author, date, categories, image } = Astro.props;
@@ -10,17 +9,34 @@ const { title, author, date, categories, image } = Astro.props;
 
 <div class="article-layout bg-white">
   <div class="scroll-watcher sticky top-0 mb-6 h-[1.3vh] w-0 bg-yellow"></div>
-  <div class="lateral-left"></div>
   <article class="post m-auto w-[75ch] max-w-[90vw]">
+    <!-- 🔠 Titles and metadata -->
     <div class="mb-[50px]">
-      <H1>{title}</H1>
-      <Metadata
-        author={author}
-        date={date}
-        categories={categories}
-      />
+      <h1
+        class="mb-2 border-b-[5px] md:border-b-[6px] border-black font-bebas text-4xl xs:text-5xl sm:text-6xl md:text-7xl leading-[90%]">
+        {title}
+      </h1>
+      <div class="flex items-center text-sm md:text-base">
+        <AuthorPicture
+          author={author}
+          size={20}
+        />
+        <span>{author}</span>
+        <span class="mx-1">|</span>
+        {date}
+        <div class="categories ml-auto flex items-center gap-2">
+          {
+            categories.map((category: any) => (
+              <div class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[15px]">
+                <Fragment set:html={TagIcon} />
+                <span>{category}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
-    <!-- Featured image -->
+    <!-- 🖼️ Featured image -->
     <Image
       class="mb-[25px] w-full object-cover"
       title={image.title}
@@ -29,61 +45,61 @@ const { title, author, date, categories, image } = Astro.props;
       width="1000"
       height="600"
     />
-    <!-- Content -->
+    <!-- 🗞️ Content -->
     <div class="article-content">
       <slot name="article-content" />
     </div>
-    <!-- Footer -->
-    <FOOTER author={author} />
+
+    <!-- 🤓 Author -->
+    <footer>
+      <AuthorPicture
+        author={author}
+        size={175}
+      />
+      <p>{author}</p>
+    </footer>
   </article>
-  <div class="lateral-right">
-    <div class="lateral-right-content">
-      <ArticleSummary client:load />
-    </div>
-  </div>
+  <!-- 🔖 Summary -->
+  <ArticleSummary client:load />
+  <!-- 🔽 Footer -->
   <Footer transition:persist />
 </div>
 
 <style is:global>
   .article-layout {
-    display: grid;
-    height: 100vh;
-    overflow: scroll;
     scroll-behavior: smooth;
-    grid-template-columns: 1fr minmax(200px, 75ch) 1fr;
+    width: minmax(200px, 75ch);
   }
 
-  .article-layout .scroll-watcher {
-    grid-column: 1 / -1;
+  @media (min-width: 1280px) {
+    .article-layout {
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 75ch) 1fr;
+      grid-template-areas:
+        "scrollwatcher scrollwatcher scrollwatcher"
+        ". article sidenav";
+    }
   }
 
+  .article-layout .scrollwatcher {
+    grid-area: scrollwatcher;
+  }
   .article-layout article {
-    grid-column: 2 / -2;
+    grid-area: article;
   }
 
-  .article-layout .lateral-left {
-    grid-column: 1 / 2;
-    overflow: hidden;
-  }
-
-  .article-layout .lateral-right {
-    grid-column: 3 / 4;
+  .article-layout .article-summary {
+    grid-area: sidenav;
     overflow: auto;
     container-type: inline-size;
     height: fit-content;
     position: sticky;
-    top: 30px;
+    top: 80px;
   }
 
   .article-layout footer {
     grid-column: 1 / -1;
     margin-top: 50px;
-  }
-
-  @container (max-width: 250px) {
-    .article-layout .lateral-right .lateral-right-content {
-      display: none;
-    }
   }
 
   @keyframes scroll-watcher {
@@ -95,6 +111,9 @@ const { title, author, date, categories, image } = Astro.props;
   .scroll-watcher {
     animation: scroll-watcher linear;
     animation-timeline: scroll();
+    position: sticky;
+    top: 50px;
+    grid-area: scrollwatcher;
   }
 
   article.post .article-content iframe {

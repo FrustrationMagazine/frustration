@@ -9,19 +9,37 @@ import {
   formatDateFromRawArticleData,
   formatCategoriesFromRawArticleData,
   formatImageFromRawArticleData,
-  formatContentFromRawArticleData
+  formatContentFromRawArticleData,
 } from "@/data-access/wordpress";
 
 // 🧰 Config
-export const prerender = true;
+// export const prerender = true;
 
-export const getStaticPaths = async () => {
-  const ARTICLES_TO_DISPLAY = 9;
-  const articles: ArticleRaw[] = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "slug", "author", "date", "categories", "image", "content"])) as ArticleRaw[];
-  const paths = articles.map((article: ArticleRaw) => ({ params: { slug: article.slug }, props: { article } }));
-  return paths;
-};
-const { article } = Astro.props as { article: ArticleRaw };
+// Dynamic for on demand post
+const { slug } = Astro.params;
+const article: ArticleRaw = (await fetchArticle({ slug }, [
+  "title",
+  "slug",
+  "author",
+  "date",
+  "categories",
+  "image",
+  "content",
+])) as ArticleRaw;
+
+// Static for first posts
+// export const getStaticPaths = async () => {
+//   const ARTICLES_TO_DISPLAY = 9;
+//   const articles: ArticleRaw[] = (await fetchArticle(
+//     { first: ARTICLES_TO_DISPLAY },
+//     ["title", "slug", "author", "date", "categories", "image", "content"],
+//   )) as ArticleRaw[];
+//   const paths = articles.map((article: ArticleRaw) => ({
+//     params: { slug: article.slug },
+//     props: { article },
+//   }));
+//   return paths;
+// };
 ---
 
 <BaseLayout title={formatTitleFromRawArticleData(article)}>
