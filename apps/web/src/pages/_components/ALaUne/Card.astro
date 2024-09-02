@@ -1,42 +1,44 @@
 ---
-const { title, authorName, excerpt, image, date, categories, slug } =
-  Astro.props;
-import ClockIcon from "./icons/clock.svg?raw";
 import { Image } from "astro:assets";
 import { getAuthor } from "../../../libs/data-access/authors";
+import { FcCalendar } from "react-icons/fc";
+
+const { title, authorName, excerpt, image, date, categories, slug } =
+  Astro.props;
 
 const author = await getAuthor(authorName);
 let picture;
-if (author) {
-  picture = author.data.picture;
-}
+if (author) picture = author.data.picture;
 ---
 
 <post-card
-  class="group/container min-h-[300px] max-h-[375px] min-w-full grow basis-[32%] md:min-w-[450px] lg:h-[450px]"
-  style={{
-    perspective: "1200px",
-  }}>
+  class="group/container overflow-hidden"
+  style={{ perspective: "1200px" }}>
   <a
     href={`/${slug}`}
-    class="post-card-wrapper flex h-full cursor-pointer flex-col items-center overflow-hidden bg-black shadow-[0_0_1rem_4px_rgba(0,0,0,0.5)]">
-    <thumbnail class="w-full overflow-hidden">
+    data-card
+    class="flex h-full cursor-pointer flex-col bg-black">
+    <!-- 🖼️ Image -->
+    <div class="h-[300px] overflow-hidden">
       <Image
-        class="w-full object-cover"
+        class="w-full object-cover h-full"
         title={image.title}
         src={image.sourceUrl}
         alt={image.altText}
+        data-thumbnail
         width="500"
         height="300"
       />
-    </thumbnail>
-    <content class="grow p-4 sm:p-6 pb-0">
-      <content-header class="mb-[1rem] flex flex-col gap-[0.4rem]">
+    </div>
+    <!-- 🗒️ Content -->
+    <div class="grow p-4">
+      <header class="space-y-0.5">
+        <!-- Title -->
         <h5
-          class="text-balance font-bebas text-2xl xs:text-3xl leading-none text-yellow lg:text-4xl">
+          class="text-balance xl:w-[70%] font-bebas text-2xl xs:text-3xl lg:text-4xl leading-none text-yellow">
           {title}
         </h5>
-        {/* Categories */}
+        <!-- Categories -->
         <div class="flex gap-1">
           {
             categories.map((category: string) => (
@@ -46,39 +48,122 @@ if (author) {
             ))
           }
         </div>
-        <div class="hidden xs:block font-open-sans text-white">
+        <!-- Author and date -->
+        <div
+          class="hidden text-xs md:text-sm xs:flex items-center gap-1 font-open-sans text-white">
           {
-            picture && (
+            picture ? (
               <Image
                 title="Profile picture"
                 alt="alt"
                 width="100"
                 height="100"
                 src={picture}
-                class="mr-1 inline w-[15px] rounded-full"
+                class="mr-1 inline w-[13px] rounded-full"
               />
-            )
+            ) : null
           }
-          <author class="author text-xs">{authorName.toUpperCase()}</author>
-          <separator class="text-xs">|</separator>
-          <Fragment set:html={ClockIcon} />
-          <date class="date text-xs">{date}</date>
+          <span class="author">{authorName}</span>
+          <span>|</span>
+          <FcCalendar />
+          <date class="date">{date}</date>
         </div>
-      </content-header>
-      <excerpt
-        set:html={excerpt}
-        class={`grid grid-rows-[0fr] lg:group-hover/container:grid-rows-[1fr] text-white font-open-sans overflow-hidden transition-[ grid-template-rows] duration-500  lg:group-hover/container:*:mb-5 *:overflow-hidden`}
-        >{excerpt}
-      </excerpt>
-    </content>
+      </header>
+    </div>
 
-    <overlay class="overlay absolute h-full w-full opacity-0">
+    <!-- ✨ Overlay -->
+    <div
+      data-overlay
+      class="overlay absolute h-full w-full opacity-0">
       <div
         class="absolute left-[-50%] top-[-50%] h-[200%] w-[200%] rounded-3xl bg-[radial-gradient(circle_at_50%,hsla(0,0%,100%,0.25),transparent_50%)]">
       </div>
-    </overlay>
+    </div>
   </a>
 </post-card>
+<!-- 🤖 Script -->
 <script>
-  import "./animate-card";
+  class PostCard extends HTMLElement {
+    constructor() {
+      super();
+
+      const postCardWrapper: HTMLElement | null =
+        this.querySelector("[data-card]");
+      const overlay: HTMLElement | null = this.querySelector("[data-overlay]");
+      const image: HTMLElement | null = this.querySelector("[data-thumbnail]");
+
+      function handleMouseEnter() {
+        if (image) {
+          image.style.transitionDuration = "500ms";
+          image.style.transform = `scale(1.1)`;
+        }
+      }
+
+      function handleMouseMove({
+        clientX,
+        clientY,
+      }: {
+        clientX: number;
+        clientY: number;
+      }) {
+        const rotationIntensity = 3;
+        const overlayFactor = 2;
+        if (postCardWrapper) {
+          const { left, top, width, height } =
+            postCardWrapper.getBoundingClientRect();
+          const [x, y] = [clientX - left, clientY - top];
+          postCardWrapper.style.transitionDuration = "0ms";
+          postCardWrapper.style.transform = `rotateX(${-(y / (height / 2) - 1) * rotationIntensity}deg)
+          rotateY(${(x / (width / 2) - 1) * rotationIntensity}deg)`;
+          postCardWrapper.style.transitionDuration = "0ms";
+
+          if (image) {
+            image.style.transitionDuration = "0ms";
+            image.style.transform = `scale(1.1)
+            translateX(${((width - x) / width - 0.5) * 25}px)
+            translateY(${((height - y) / height - 0.5) * 25}px)`;
+          }
+
+          if (overlay) {
+            overlay.style.transitionDuration = "0ms";
+            overlay.style.transform = `translate3d(${-((x * (100 / overlayFactor)) / width - 50 / overlayFactor)}%,
+            ${-((y * (100 / overlayFactor)) / height - 50 / overlayFactor)}%,
+            0)`;
+            overlay.style.opacity = String(
+              Math.abs(width / 2 - x) / width +
+                Math.abs(height / 2 - y) / height,
+            );
+          }
+        }
+      }
+
+      function handleMouseOut() {
+        if (postCardWrapper) {
+          postCardWrapper.style.transitionDuration = "500ms";
+          postCardWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        }
+
+        if (image) {
+          image.style.transitionDuration = "500ms";
+          image.style.transform = `scale(1)
+          translateX(0px)
+          translateY(0px)`;
+        }
+
+        if (overlay) {
+          overlay.style.transitionDuration = "500ms";
+          overlay.style.opacity = "0";
+          overlay.style.transform = `translate3d(0%, 0%, 0);`;
+        }
+      }
+
+      if (document.body.clientWidth > 768) {
+        postCardWrapper?.addEventListener("mouseenter", handleMouseEnter);
+        postCardWrapper?.addEventListener("mousemove", handleMouseMove);
+        postCardWrapper?.addEventListener("mouseout", handleMouseOut);
+      }
+    }
+  }
+
+  customElements.define("post-card", PostCard);
 </script>

@@ -2,15 +2,23 @@ class PostCard extends HTMLElement {
   constructor() {
     super();
 
-    const postCardWrapper: HTMLElement | null = this.querySelector(".post-card-wrapper");
-    const overlay: HTMLElement | null = this.querySelector(".overlay");
-    const image: HTMLElement | null = this.querySelector("img");
+    const postCardWrapper: HTMLElement | null =
+      this.querySelector("[data-card]");
+    const overlay: HTMLElement | null = this.querySelector("[data-overlay]");
+    const image: HTMLElement | null = this.querySelector("[data-thumbnail]");
 
-    function handleMouseMove({ clientX, clientY }: { clientX: number; clientY: number }) {
+    function handleMouseMove({
+      clientX,
+      clientY,
+    }: {
+      clientX: number;
+      clientY: number;
+    }) {
       const rotationIntensity = 3;
       const overlayFactor = 2;
       if (postCardWrapper) {
-        const { left, top, width, height } = postCardWrapper.getBoundingClientRect();
+        const { left, top, width, height } =
+          postCardWrapper.getBoundingClientRect();
         const [x, y] = [clientX - left, clientY - top];
         postCardWrapper.style.transitionDuration = "0ms";
         postCardWrapper.style.transform = `rotateX(${-(y / (height / 2) - 1) * rotationIntensity}deg)
@@ -29,7 +37,9 @@ class PostCard extends HTMLElement {
           overlay.style.transform = `translate3d(${-((x * (100 / overlayFactor)) / width - 50 / overlayFactor)}%,
             ${-((y * (100 / overlayFactor)) / height - 50 / overlayFactor)}%,
             0)`;
-          overlay.style.opacity = String(Math.abs(width / 2 - x) / width + Math.abs(height / 2 - y) / height);
+          overlay.style.opacity = String(
+            Math.abs(width / 2 - x) / width + Math.abs(height / 2 - y) / height,
+          );
         }
       }
     }

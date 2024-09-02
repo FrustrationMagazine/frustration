@@ -32,13 +32,18 @@ const textTousLesArticles =
   "relative m-1.5 block rounded-[13px] bg-black px-10 pb-3 pt-4 font-bebas text-4xl uppercase text-yellow md:text-5xl";
 ---
 
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(max(30%, 300px), 1fr));
+  }
+</style>
 <Section>
   <SectionTitle>À la une</SectionTitle>
   <!-- TODO // replace flex properties by this grid layout
               display: grid;
               grid-template-columns: repeat(auto-fit, minmax(max(30%, 300px), 1fr)); -->
-  <div
-    class="flex w-full flex-wrap items-start justify-center gap-8 md:gap-3 xl:gap-4 px-2 xs:px-4">
+  <div class="wrapper w-full gap-4">
     {
       articles.map((article: ArticleRaw) => (
         <Card
@@ -55,7 +60,7 @@ const textTousLesArticles =
   </div>
   {/* Tous les articles */}
   <a
-    href=""
+    href="/posts"
     class={buttonTousLesArticles}>
     <span class={textTousLesArticles}> Tous nos articles </span>
   </a>
