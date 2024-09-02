@@ -1,8 +1,8 @@
 ---
 import { cn } from "@/utils/tailwind";
-import MessageCircleIcon from "./icons/message-circle.svg?raw";
-const sizes =
-  "m-auto mt-14 px-3 sm:px-6 pb-2 sm:pb-4 pt-3 sm:pt-5 gap-2 sm:gap-4";
+import { LuMessagesSquare } from "react-icons/lu";
+
+const sizes = "m-auto mt-14 px-4 md:px-5 py-2 md:py-3 gap-3";
 const text = "font-bebas text-2xl sm:text-3xl leading-none text-black";
 ---
 
@@ -13,6 +13,6 @@ const text = "font-bebas text-2xl sm:text-3xl leading-none text-black";
     sizes,
     "flex w-fit items-center  bg-white transition-transform hover:scale-110",
   )}>
-  <Fragment set:html={MessageCircleIcon} />
-  <span><slot /></span>
+  <LuMessagesSquare />
+  <span class="relative top-0.5"><slot /></span>
 </a>

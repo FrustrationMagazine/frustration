@@ -12,7 +12,7 @@ export default {
           url('/textures/home-stone-texture.png'),
           linear-gradient(#FFF200, #FFF200)
           `,
-        footer: `
+        "yellow-with-tiles": `
           url('/textures/footer-spades-texture.png'),
           linear-gradient(#FFF200, #FFF200)
         `,
