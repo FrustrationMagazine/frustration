@@ -32,7 +32,10 @@ import {
 } from "../_actions";
 
 // 🔧 Libs
-import { YoutubeResourceType, getYoutubeResourceId } from "@/data-access/youtube";
+import {
+  YoutubeResourceType,
+  getYoutubeResourceId,
+} from "@/data-access/youtube";
 
 // 🪝 Hooks
 import { useToast } from "@/ui/components/use-toast";
@@ -49,7 +52,8 @@ export default function CardResources({
   const [searchTerm, setSearchTerm] = React.useState<string>("");
 
   const [suggestions, setSuggestions] = React.useState<any>([]);
-  const [loadingSuggestions, setLoadingSuggestions] = React.useState<boolean>(false);
+  const [loadingSuggestions, setLoadingSuggestions] =
+    React.useState<boolean>(false);
 
   const [records, setRecords] = React.useState<any>([]);
   const [loadingRecords, setLoadingRecords] = React.useState(true);
@@ -67,14 +71,20 @@ export default function CardResources({
       try {
         // 🔁 📀 Read videos resources
         const resources = await readVideosByType(type);
-        const resourcesIds = resources.map((resource: any) => resource.id) as string[];
+        console.log("resources", resources);
+        const resourcesIds = resources.map(
+          (resource: any) => resource.id,
+        ) as string[];
+        console.log("resourcesIds", resourcesIds);
 
         // 🔁 🐝 Get full resources video information
         let results = (await fetchByIdsAndType(resourcesIds, type)) ?? [];
+        console.log("results", results);
         // Get the same display order as the resources stored in database
         results = resources.map((resource: any) =>
           results.find((result: any) => result.id === resource.id),
         );
+        console.log("results", results);
         setRecords(results);
       } catch (e) {
         console.error("Error while loading resources", e);
@@ -86,7 +96,13 @@ export default function CardResources({
   }, []);
 
   // 📀 Add video
-  const handleAddRecord = async ({ type, id }: { type: YoutubeResourceType; id: string }) => {
+  const handleAddRecord = async ({
+    type,
+    id,
+  }: {
+    type: YoutubeResourceType;
+    id: string;
+  }) => {
     const status = await createVideoRecord({ type, id });
     setRequestStatus(status);
 
@@ -101,20 +117,32 @@ export default function CardResources({
 
       // 2️⃣ Remove suggestion from current suggestions list
       setSuggestions(
-        suggestions.filter((suggestion: any) => getYoutubeResourceId(suggestion) !== id),
+        suggestions.filter(
+          (suggestion: any) => getYoutubeResourceId(suggestion) !== id,
+        ),
       );
     }
   };
 
   // 📀 Remove video
-  const handleDeleteRecord = async ({ type, id }: { type: YoutubeResourceType; id: string }) => {
+  const handleDeleteRecord = async ({
+    type,
+    id,
+  }: {
+    type: YoutubeResourceType;
+    id: string;
+  }) => {
     const status = await deleteVideoRecord({ type, id });
     setRequestStatus(status);
 
     // ✅ Resource deleted !
     if (status.success) {
       // Remove deleted resource from listed resources
-      setRecords(records.filter((resource: any) => getYoutubeResourceId(resource) !== id));
+      setRecords(
+        records.filter(
+          (resource: any) => getYoutubeResourceId(resource) !== id,
+        ),
+      );
     }
   };
 
@@ -160,27 +188,32 @@ export default function CardResources({
   );
 
   // 🧱 Components
-  const CardTitle = <h3 className={`text-5xl ${bebasNeue.className}`}>{title}</h3>;
-  const CardSubtitle = <p className='text-zinc-800'>{texts?.subtitle}</p>;
+  const CardTitle = (
+    <h3 className={`text-5xl ${bebasNeue.className}`}>{title}</h3>
+  );
+  const CardSubtitle = <p className="text-zinc-800">{texts?.subtitle}</p>;
   const AddButton = (
     <Button
-      className='mx-auto flex items-center gap-2 rounded-md'
+      className="mx-auto flex items-center gap-2 rounded-md"
       disabled={loadingRecords}
-      variant='inverted'
+      variant="inverted"
     >
       <AiOutlineVideoCameraAdd size={17} />
       <span> Ajouter </span>
     </Button>
   );
   const SearchInput = (
-    <form className='flex w-full items-center space-x-2' onSubmit={handleSearch}>
+    <form
+      className="flex w-full items-center space-x-2"
+      onSubmit={handleSearch}
+    >
       <Input
-        type='text'
+        type="text"
         placeholder={texts?.placeholder}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <Button type='submit'>Rechercher</Button>
+      <Button type="submit">Rechercher</Button>
     </form>
   );
 
@@ -196,14 +229,14 @@ export default function CardResources({
       </div>
       <Dialog>
         <DialogTrigger asChild>{AddButton}</DialogTrigger>
-        <DialogContent className='max-w-[1000px]'>
-          <DialogHeader className='space-y-0'>
+        <DialogContent className="max-w-[1000px]">
+          <DialogHeader className="space-y-0">
             <DialogTitle>{texts?.dialogTitle}</DialogTitle>
             <DialogDescription>{texts?.dialogDescription}</DialogDescription>
           </DialogHeader>
           {SearchInput}
           {loadingSuggestions ? (
-            <SuperBallsLoader className='mx-auto my-12' />
+            <SuperBallsLoader className="mx-auto my-12" />
           ) : (
             suggestions.map((suggestion: any) => (
               <ResourcePreview
@@ -216,18 +249,18 @@ export default function CardResources({
                 texts={texts}
                 Icon={AiOutlineVideoCameraAdd}
                 iconAction={handleAddRecord}
-                actionType='add'
+                actionType="add"
               />
             ))
           )}
         </DialogContent>
       </Dialog>
       {loadingRecords ? (
-        <SuperBallsLoader className='mx-auto my-12' />
+        <SuperBallsLoader className="mx-auto my-12" />
       ) : records.length === 0 ? (
         <p>🤷‍♂️ Aucune {type} </p>
       ) : (
-        <ul className='space-y-1'>
+        <ul className="space-y-1">
           {records.map((resource: any) => (
             <ResourcePreview
               id={getYoutubeResourceId(resource)}
@@ -239,7 +272,7 @@ export default function CardResources({
               texts={texts}
               Icon={AiFillDelete}
               iconAction={handleDeleteRecord}
-              actionType='remove'
+              actionType="remove"
             />
           ))}
         </ul>

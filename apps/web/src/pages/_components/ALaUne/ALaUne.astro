@@ -8,22 +8,37 @@ import {
   formatDateFromRawArticleData,
   formatCategoriesFromRawArticleData,
   formatImageFromRawArticleData,
-  formatExcerptFromRawArticleData
+  formatExcerptFromRawArticleData,
 } from "@/data-access/wordpress";
 import type { ArticleRaw } from "@/data-access/wordpress";
 import SectionTitle from "../SectionTitle.astro";
 import Section from "../Section.astro";
-import TousLesArticles from "./TousLesArticles.astro";
 const ARTICLES_TO_DISPLAY = 9;
-const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "author", "slug", "excerpt", "date", "categories", "image"])) as ArticleRaw[];
+const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, [
+  "title",
+  "author",
+  "slug",
+  "excerpt",
+  "date",
+  "categories",
+  "image",
+])) as ArticleRaw[];
+
+// 🎨 Styles
+const buttonTousLesArticles =
+  "button-tous-les-articles relative mx-auto mt-[5vh] w-fit block overflow-hidden rounded-[20px] before:absolute before:h-full before:w-full before:animate-disco before:bg-[conic-gradient(#faf7c2,#fff200,#898106)] before:blur";
+
+const textTousLesArticles =
+  "relative m-1.5 block rounded-[13px] bg-black px-10 pb-3 pt-4 font-bebas text-4xl uppercase text-yellow md:text-5xl";
 ---
 
 <Section>
-  <SectionTitle position="left">À la une</SectionTitle>
+  <SectionTitle>À la une</SectionTitle>
   <!-- TODO // replace flex properties by this grid layout
               display: grid;
               grid-template-columns: repeat(auto-fit, minmax(max(30%, 300px), 1fr)); -->
-  <div class="flex w-full flex-wrap items-start justify-center gap-8 md:gap-3 xl:gap-4">
+  <div
+    class="flex w-full flex-wrap items-start justify-center gap-8 md:gap-3 xl:gap-4 px-2 xs:px-4">
     {
       articles.map((article: ArticleRaw) => (
         <Card
@@ -38,5 +53,15 @@ const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, ["title", "
       ))
     }
   </div>
-  <TousLesArticles />
+  {/* Tous les articles */}
+  <a
+    href=""
+    class={buttonTousLesArticles}>
+    <span class={textTousLesArticles}> Tous nos articles </span>
+  </a>
+  <style>
+    .button-tous-les-articles:before {
+      transform: scaleX(10) scaleY(6);
+    }
+  </style>
 </Section>

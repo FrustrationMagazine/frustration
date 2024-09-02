@@ -1,20 +1,31 @@
 ---
 import { cn } from "@/utils/tailwind";
 const { position = "left" } = Astro.props;
+
+// 🎨 Styles
+const text =
+  "font-bebas  tracking-tighter text-white text-7xl sm:text-8xl md:text-9xl xl:text-[196px] 2xl:text-[212px]";
+const sizes = "pb-1 pt-4 md:mb-10 md:pr-16 xl:mb-24";
+const beforeElement =
+  "before:absolute before:top-0 before:h-full before:w-screen before:bg-black before:content-['']";
 ---
 
 <h2
   class={cn(
-    "relative mb-8 w-fit select-none bg-black pb-1 pt-4 font-bebas text-7xl tracking-tighter text-white mix-blend-darken before:absolute before:top-0 before:h-full before:w-screen before:bg-black before:content-[''] md:mb-10 md:pr-16 md:text-9xl lg:mb-12 lg:pt-10 xl:mb-24 xl:text-[196px] 2xl:text-[212px]",
+    "relative mb-8 w-fit select-none bg-black mix-blend-darken lg:mb-12 lg:pt-10 ",
+    text,
+    sizes,
+    beforeElement,
     {
       "pr-8": position === "left",
       "before:translate-x-[-100%]": position === "left",
       "ml-2": position === "left",
+
       "pl-8": position === "right",
       "before:translate-x-[100%]": position === "right",
       "before:right-0": position === "right",
-      "ml-auto": position === "right"
-    }
+      "ml-auto": position === "right",
+    },
   )}>
   <slot />
 </h2>

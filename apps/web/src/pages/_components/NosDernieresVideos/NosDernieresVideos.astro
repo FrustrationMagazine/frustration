@@ -1,10 +1,463 @@
 ---
-import NosDernieresVideosSlider from "./NosDernieresVideosSlider.astro";
+import { readRecords } from "@/data-access/prisma";
+import { fetchYoutube, getYoutubeResourceId } from "@/data-access/youtube";
 import SectionTitle from "../SectionTitle.astro";
 import Section from "../Section.astro";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Image } from "astro:assets";
+import { cn } from '@/utils/tailwind';
+import SidePanel from "./SidePanel.astro";
+import { type YoutubeResourceType } from "@/data-access/youtube";
+
+function getBestThumbnailUrl(thumbnails: any) {
+  if (thumbnails.maxres) return thumbnails.maxres.url;
+  if (thumbnails.standard) return thumbnails.standard.url;
+  if (thumbnails.high) return thumbnails.high.url;
+  if (thumbnails.medium) return thumbnails.medium.url;
+  if (thumbnails.default) return thumbnails.default.url;
+  return "";
+}
+
+function getId(item: any): string {
+  return item.id;
+}
+
+/* ----------- */
+//  📦 Data    //
+/* ----------- */
+
+let resourcesToDisplay: any[] = [];
+
+/* 📀 READ TABLE VIDEO */
+const { data: records } = await readRecords({
+  table: "video",
+  where: {},
+  success: "Videos read !",
+});
+
+console.log("🚀 ~ records:", records);
+const availableTypes: YoutubeResourceType[] = records.reduce(
+  (types: string[], { type: recordType }: { type: YoutubeResourceType }) =>
+    types.includes(recordType) ? types : [...types, recordType],
+  [],
+);
+console.log("🚀 ~ availableTypes:", availableTypes);
+
+/* 🐝 FETCH YOUTUBE RESOURCES */
+// For each type (channel, playlist, video) we fetch complete resources thanks to Youtube API
+const youtubePromises = availableTypes.map(
+  async (type: YoutubeResourceType) => {
+    const idsToFetch = records
+      .filter(
+        ({ type: currentType }: { type: YoutubeResourceType }) =>
+          currentType === type,
+      )
+      .map(getId);
+    const concatenatedIds = idsToFetch.join(",");
+
+    let youtubeResults: any[] = [];
+
+    // 🔁 📺 Fetch
+    youtubeResults = await fetchYoutube({
+      params: { id: concatenatedIds },
+      type,
+    });
+
+    if (youtubeResults) {
+      youtubeResults = youtubeResults.map((youtubeResult) => ({
+        ...youtubeResult,
+        id: getYoutubeResourceId(youtubeResult),
+      }));
+
+      // Type 1 | Videos
+      if (type === "video") {
+        let youyubeVideos = youtubeResults;
+        resourcesToDisplay = [...resourcesToDisplay, ...youyubeVideos];
+      }
+
+      // Type 2 | Channel
+      if (type === "channel") {
+        let youtubeChannels = youtubeResults;
+        const channelIds = (youtubeChannels as any[]).map(getId);
+        const channelPromises = channelIds.map(async (channelId: string) => {
+          const MAX_VIDEOS_FROM_CHANNEL = 10;
+
+          // 🔁 📺 Fetch - We get first X videos of channel
+          let youtubeVideos = await fetchYoutube({
+            params: {
+              type: "video",
+              channelId,
+              order: "date",
+              maxResults: MAX_VIDEOS_FROM_CHANNEL,
+            },
+          });
+
+          if (youtubeVideos) {
+
+            // 🔁 📺 Fetch - To get full description we need to re-fetch videos with their id
+            const idsToFetch = youtubeVideos.map(({ id }: { id: string }) => id);
+            const concatenatedIds = idsToFetch.join(",");
+            youtubeVideos = await fetchYoutube({ params: { id: concatenatedIds }, type: "video" });
+
+            youtubeVideos = youtubeVideos.map((youtubeVideo: any) => ({
+              ...youtubeVideo,
+              id: getYoutubeResourceId(youtubeVideo),
+            }));
+
+            resourcesToDisplay = [...resourcesToDisplay, ...youtubeVideos];
+          }
+        });
+        await Promise.all(channelPromises);
+      }
+
+      // Type 3 | Playlist
+      if (type === "playlist") {
+        let youtubePlaylists = youtubeResults;
+
+        const playlistIds = (youtubePlaylists as any[]).map(getId);
+
+        const playlistPromises = playlistIds.map(async (playlistId: string) => {
+          const youtubePlaylist = youtubePlaylists.find(
+            ({ id }) => id === playlistId,
+          );
+
+          const youtubePlaylistTitle = youtubePlaylist?.snippet.title;
+
+          // 🔁 📺 Fetch - We get first videos of playlist as playlist items
+          let youtubeVideos = await fetchYoutube({
+            params: { playlistId },
+            type: "playlistItem",
+          });
+
+          if (youtubeVideos) {
+            youtubeVideos = youtubeVideos.map((video: any) => ({
+              ...video,
+              id: video.snippet.resourceId.videoId,
+              snippet: {
+                ...video.snippet,
+                playlistTitle: youtubePlaylistTitle,
+              },
+            }));
+            resourcesToDisplay = [...resourcesToDisplay, ...youtubeVideos];
+          }
+        });
+        await Promise.all(playlistPromises);
+      }
+    }
+  },
+);
+
+// We wait for all promises representing youtube fetch requests to be resolved
+await Promise.all(youtubePromises);
+
+// We order all resources by date
+resourcesToDisplay.sort(
+  (a, b) =>
+    new Date(b?.snippet?.publishedAt ?? "").getTime() -
+    new Date(a?.snippet?.publishedAt ?? "").getTime(),
+);
+
+/* ------------- */
+//  🎨 Styles    //
+/* ------------- */
+
+const arrowSizesMobile="[&>button>svg]:!h-[35px] [&>button>svg]:!w-[15px] [&>button]:!h-[40px] [&>button]:!w-[40px]"
+const arrowSizesSm="[&>button>svg]:sm:!h-[45px] [&>button>svg]:sm:!w-[20px] [&>button]:sm:!h-[55px] [&>button]:sm:!w-[55px]"
+const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>button]:lg:!h-[80px] [&>button]:lg:!w-[80px]"
+
+/* ------------- */
+//     🖥️ UI     //
+/* ------------- */
 ---
 
+{resourcesToDisplay.length > 0 ?
 <Section>
-  <SectionTitle position="left">Dernières vidéos</SectionTitle>
-  <NosDernieresVideosSlider />
-</Section>
+  <SectionTitle>Vidéos</SectionTitle>
+  <div class="main-home-videos-container mx-auto">
+    <!--                   -->
+    <!--     PANELS        -->
+    <!--                   -->
+    <div class="video-informations-container relative">
+      <div class="absolute h-full w-full overflow-scroll text-white">
+        {
+          resourcesToDisplay.map(
+            ({
+              snippet: {
+                thumbnails,
+                channelTitle,
+                channelId,
+                description,
+                title,
+                id,
+                playlistTitle,
+                playlistId,
+              },
+            }) => (
+                <SidePanel
+                  thumbnailUrl={getBestThumbnailUrl(thumbnails)}
+                  channelTitle={channelTitle}
+                  channelUrl={`https://www.youtube.com/channel/${channelId}`}
+                  description={description}
+                  title={title}
+                  playlistTitle={playlistTitle}
+                  playlistUrl={`https://www.youtube.com/playlist?list=${playlistId}`}
+                  id={`panel-${id}`}
+                />
+              )
+          )
+        }
+      </div>
+    </div>
+    <!--               -->
+    <!--     SLIDER    -->
+    <!--               -->
+    <div class="splide splide-videos shadow-[0_0_1rem_4px_rgba(0,0,0,0.5)]">
+      <!-- ARROWS -->
+      <!--        -->
+      <div
+        class={cn("splide__arrows", arrowSizesMobile, arrowSizesSm, arrowSizesLg)}>
+        <button class="splide__arrow splide__arrow--prev">
+          <ChevronLeft
+            color="#FFF200"
+            className="!scale-125"
+            size={60}
+          />
+        </button>
+        <button class="splide__arrow splide__arrow--next">
+          <ChevronRight
+            color="#FFF200"
+            className="!scale-125"
+            size={60}
+          />
+        </button>
+      </div>
+      <!--                    -->
+      <!--    TRACK SLIDER    -->
+      <!--                    -->
+      <div class="splide__track">
+        <ul class="splide__list">
+          {
+            resourcesToDisplay.map((resource) => (
+              <li
+                class="splide__slide"
+                data-id={resource.id}
+                data-splide-youtube={`https://www.youtube.com/watch?v=${resource.id}`}>
+                <Image
+                  src={`https://i.ytimg.com/vi/${resource.id}/hq720.jpg`}
+                  alt=""
+                  width="1280"
+                  height="720"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    <!--                 -->
+    <!--    MAIN TRACK   -->
+    <!--                 -->
+    <div class="splide splide-videos-thumbnails">
+      <div class="splide__track">
+        <ul class="splide__list gap-2">
+          {
+            resourcesToDisplay.map((resource) => (
+              <li
+                class="splide__slide"
+                data-id={resource.id}
+                data-splide-youtube={`https://www.youtube.com/watch?v=${resource.id}`}>
+                <Image
+                  src={getBestThumbnailUrl(resource.snippet.thumbnails)}
+                  alt=""
+                  width="1280"
+                  height="720"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</Section> : null }
+<style is:global>
+
+  /* GRID LAYOUT */
+  .main-home-videos-container {
+    display: grid;
+    row-gap: 15px;
+    column-gap: 0px;
+    max-width: 1600px;
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+    grid-template-areas:
+      "videos"
+      "thumbnails";
+  }
+
+  @media (min-width: 1000px) {
+    .main-home-videos-container {
+      row-gap: 15px;
+      column-gap: 15px;
+      grid-template-columns: 1fr clamp(310px, 30vw, 450px);
+      grid-template-areas:
+        "videos informations"
+        "thumbnails .";
+    }
+  }
+
+  .main-home-videos-container .splide-videos {
+    grid-area: videos;
+  }
+  .main-home-videos-container .splide-videos-thumbnails {
+    grid-area: thumbnails;
+  }
+  @media (min-width: 1000px) {
+  .main-home-videos-container .video-informations-container {
+    grid-area: informations;
+    }
+  }
+
+  /* SPLIDE CUSTOMIZATION */
+
+  /* PLAY ICON */
+  .splide-videos .splide__video__play {
+    height: clamp(50px, 7vw, 125px);
+    width: clamp(50px, 7vw, 125px);
+    opacity: 1;
+    background: #fff200;
+  }
+
+  .splide-videos .splide__video__play::after {
+    border-color: transparent transparent transparent black;
+    border-width: 9px 0 9px 14px;
+  }
+
+   @media (min-width: 640px) {
+   .splide-videos .splide__video__play::after {
+    border-color: transparent transparent transparent black;
+    border-width: 13px 0 13px 21px;
+    }
+  }
+   @media (min-width: 1000px) {
+   .splide-videos .splide__video__play::after {
+    border-color: transparent transparent transparent black;
+    border-width: 18px 0 18px 27px;
+    }
+  }
+
+  /* ARROWS */
+  .splide-videos .splide__arrow {
+    background: #000;
+    width: 3.5em;
+    height: 3.5em;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  .splide-videos.is-playing .splide__arrow {
+    opacity: 0;
+  }
+
+  .splide-videos.is-playing:hover .splide__arrow {
+    opacity: 0.2;
+  }
+
+  .splide-videos.is-playing .splide__arrow:hover {
+    opacity: 1;
+  }
+  .splide-videos .splide__pagination__page {
+    background: black;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  .splide-videos.is-playing .splide__pagination__page {
+    opacity: 0;
+  }
+
+  .splide-videos.is-playing:hover .splide__pagination__page {
+    opacity: 1;
+  }
+
+  .splide-videos .splide__pagination__page.is-active {
+    background: #fff200;
+  }
+
+  .splide-videos-thumbnails .splide__track--nav .splide__list > .splide__slide {
+    border: none !important;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+
+  .splide-videos-thumbnails
+    .splide__track--nav
+    .splide__list
+    > .splide__slide:not(.is-active) {
+    opacity: 0.5;
+  }
+</style>
+<script>
+  import Splide from "@splidejs/splide";
+  import { Video } from "@splidejs/splide-extension-video";
+  import "@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css";
+
+  const ADDITIONAL_INFORMATIONS_SELECTOR = ".video-informations";
+
+  function manageDisplayOfAdditionalInformations(index: number = 0): void {
+    const videoInformations = document.querySelectorAll(ADDITIONAL_INFORMATIONS_SELECTOR) as unknown as HTMLElement[];
+    videoInformations.forEach((element, elementIndex) => {
+      if (elementIndex === index) {
+        element.style.display = "block";
+      } else {
+        element.style.display = "none";
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    const splideVideos = new Splide(".splide-videos", {
+      heightRatio: 0.5625,
+      width: "1200px",
+      cover: true,
+      speed: 1000,
+      rewind: true,
+      rewindSpeed: 1000,
+      lazyLoad: "nearby",
+      hideControls: false,
+      pagination: false,
+      video: {
+        loop: true,
+        playerOptions: {
+          youtube: {
+            controls: 1,
+            color: "white",
+          },
+        },
+      },
+    });
+
+    const splideVideosThumbnails = new Splide(".splide-videos-thumbnails", {
+      rewind: true,
+      width: "1200px",
+      fixedWidth: "20%",
+      heightRatio: 0.1,
+      isNavigation: true,
+      arrows: false,
+      pagination: false,
+      cover: true,
+      lazyLoad: "nearby",
+      dragMinThreshold: {
+        mouse: 4,
+        touch: 10,
+      },
+    });
+
+    splideVideos.sync(splideVideosThumbnails);
+    splideVideos.mount({ Video });
+    splideVideosThumbnails.mount();
+
+    manageDisplayOfAdditionalInformations();
+    splideVideos.on("active", ({ index }) => manageDisplayOfAdditionalInformations(index));
+});
+</script>

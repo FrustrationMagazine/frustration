@@ -40,12 +40,16 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
   const url = new URL(endpoint);
   url.searchParams.append("key", process.env.API_KEY_GOOGLE);
   url.searchParams.append("part", "snippet");
-
+  console.log("params", params);
   // Add each param from params object that was passed to URL
   for (let param in params) url.searchParams.append(param, params[param]);
-
+  for (let param in params) {
+    console.log("param", param);
+    console.log("params[param]", params[param]);
+  }
   // 🔁 Fetch
   try {
+    console.log("url.href", url.href);
     const response = await fetch(url.href);
     const { items } = await response.json();
     // 🎉 Return
@@ -126,7 +130,6 @@ export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType
 export const getYoutubeResourceId = (resource: any): string => {
   // Case 1️⃣ | If id is directly accessible at root level of resource, return it
   if (typeof resource?.id === "string") return resource.id;
-
   // Case 2️⃣ | If id is nested in an object, return the "whateverId" value
   //
   // Example 👇

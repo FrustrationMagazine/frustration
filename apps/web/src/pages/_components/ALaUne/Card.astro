@@ -1,5 +1,6 @@
 ---
-const { title, authorName, excerpt, image, date, categories, slug } = Astro.props;
+const { title, authorName, excerpt, image, date, categories, slug } =
+  Astro.props;
 import ClockIcon from "./icons/clock.svg?raw";
 import { Image } from "astro:assets";
 import { getAuthor } from "../../../libs/data-access/authors";
@@ -12,9 +13,9 @@ if (author) {
 ---
 
 <post-card
-  class="group/container h-[375px] min-w-full grow basis-[32%] md:min-w-[450px] lg:h-[450px]"
+  class="group/container min-h-[300px] max-h-[375px] min-w-full grow basis-[32%] md:min-w-[450px] lg:h-[450px]"
   style={{
-    perspective: "1200px"
+    perspective: "1200px",
   }}>
   <a
     href={`/${slug}`}
@@ -29,16 +30,23 @@ if (author) {
         height="300"
       />
     </thumbnail>
-    <content class="grow p-6 pb-0">
+    <content class="grow p-4 sm:p-6 pb-0">
       <content-header class="mb-[1rem] flex flex-col gap-[0.4rem]">
-        <h5 class="text-balance font-bebas text-3xl leading-none text-yellow lg:text-4xl">
+        <h5
+          class="text-balance font-bebas text-2xl xs:text-3xl leading-none text-yellow lg:text-4xl">
           {title}
         </h5>
         {/* Categories */}
         <div class="flex gap-1">
-          {categories.map((category: string) => <span class="bg-yellow px-2 pt-[1.5px] font-bebas text-xs uppercase leading-none text-black lg:text-base">{category}</span>)}
+          {
+            categories.map((category: string) => (
+              <span class="bg-yellow px-2 pt-[1.5px] font-bebas text-xs uppercase leading-none text-black lg:text-base">
+                {category}
+              </span>
+            ))
+          }
         </div>
-        <div class="font-open-sans text-white">
+        <div class="hidden xs:block font-open-sans text-white">
           {
             picture && (
               <Image
@@ -65,7 +73,9 @@ if (author) {
     </content>
 
     <overlay class="overlay absolute h-full w-full opacity-0">
-      <div class="absolute left-[-50%] top-[-50%] h-[200%] w-[200%] rounded-3xl bg-[radial-gradient(circle_at_50%,hsla(0,0%,100%,0.25),transparent_50%)]"></div>
+      <div
+        class="absolute left-[-50%] top-[-50%] h-[200%] w-[200%] rounded-3xl bg-[radial-gradient(circle_at_50%,hsla(0,0%,100%,0.25),transparent_50%)]">
+      </div>
     </overlay>
   </a>
 </post-card>

@@ -4,6 +4,9 @@ export default {
   plugins: [require("@tailwindcss/typography"), require("@tailwindcss/aspect-ratio")],
   theme: {
     extend: {
+      screens: {
+        xs: "425px",
+      },
       backgroundImage: {
         "home-first-section": `
           url('/textures/home-stone-texture.png'),

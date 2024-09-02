@@ -3,6 +3,8 @@ import vercel from "@astrojs/vercel/serverless";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 
+
+/** @type {import("prettier").Config} */
 // https://astro.build/config
 export default defineConfig({
   output: "server",
@@ -13,4 +15,13 @@ export default defineConfig({
   image: {
     domains: ["i0.wp.com"],
   },
+  plugins: ["prettier-plugin-astro"],
+  overrides: [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ]
 });

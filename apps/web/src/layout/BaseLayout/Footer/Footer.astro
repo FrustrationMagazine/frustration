@@ -3,7 +3,8 @@ import { Image } from "astro:assets";
 
 const currentYear = new Date().getFullYear();
 
-const loadNetworkIcon = async (iconName: string) => (await import(`./icons/networks/${iconName}.svg`)).default;
+const loadNetworkIcon = async (iconName: string) =>
+  (await import(`./icons/${iconName}.svg`)).default;
 const networks = [
   {
     name: "Twitter",
@@ -65,16 +66,27 @@ const links = [
 ---
 
 <footer class={`bg-footer bg-contain pt-10`}>
-  <div class="informations m-auto flex max-w-[1700px] flex-wrap justify-between gap-10 px-6 py-12 lg:px-20 lg:py-20">
+  <div
+    class="informations m-auto flex max-w-[1700px] flex-wrap justify-between gap-10 px-6 py-12 lg:px-20 lg:py-20">
     <div class="titles w-full">
-      <h2 class="font-bebas text-7xl uppercase leading-[80%] tracking-tighter">Frustration Magazine</h2>
-      <h4 class="font-bebas text-3xl uppercase leading-none">Le média de la lutte des classes</h4>
+      <h2
+        class="font-bebas text-6xl text-center sm:text-left sm:text-7xl uppercase leading-[80%] tracking-tighter">
+        Frustration Magazine
+      </h2>
+      <h4 class="font-bebas text-3xl uppercase leading-none">
+        Le média de la lutte des classes
+      </h4>
       <p class="font-open-sans text-base">© Frustration – {currentYear}</p>
     </div>
 
     <div class="module-newsletter mt-10 flex flex-grow basis-[47%] flex-col">
-      <h5 class="mb-2 font-bebas text-3xl uppercase leading-[80%] lg:mb-1">Nous suivre (jusqu'à la révolution)</h5>
-      <p class="mb-6 font-open-sans text-base leading-tight">Recevez régulièrement une sélection de nos meilleurs articles récemment parus !</p>
+      <h5 class="mb-2 font-bebas text-3xl uppercase leading-[80%] lg:mb-1">
+        Nous suivre (jusqu'à la révolution)
+      </h5>
+      <p class="mb-6 font-open-sans text-base leading-tight">
+        Recevez régulièrement une sélection de nos meilleurs articles récemment
+        parus !
+      </p>
       <form class="flex flex-col gap-3">
         <input
           class="px-5 py-2 text-sm"
@@ -96,9 +108,12 @@ const links = [
       </form>
     </div>
 
-    <div class="module-social-networks-credits mt-10 flex min-h-[150px] flex-grow basis-[47%] flex-col justify-between">
+    <div
+      class="module-social-networks-credits mt-10 flex min-h-[150px] flex-grow basis-[47%] flex-col justify-between">
       <div class="social-networks">
-        <h5 class="mb-3 font-bebas text-3xl uppercase leading-[80%]">Nos réseaux sociaux</h5>
+        <h5 class="mb-3 font-bebas text-3xl uppercase leading-[80%]">
+          Nos réseaux sociaux
+        </h5>
         <ul class="social-networks-links flex items-center gap-3">
           {
             networks.map(({ name, url, iconName }) => (
@@ -133,7 +148,8 @@ const links = [
     </div>
   </div>
   <!-- Useful links -->
-  <ul class="flex items-center justify-center gap-4 bg-black py-1 font-bebas text-sm text-yellow lg:py-2 lg:text-lg">
+  <ul
+    class="flex items-center justify-center gap-4 bg-black py-1 font-bebas text-sm text-yellow lg:py-2 lg:text-lg">
     {
       links.map(({ name, url }) => (
         <a

@@ -1,9 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import MagnifyingGlassIcon from "./icons/MagnifyingGlass.astro";
-import BarsIcon from "./icons/Bars.astro";
-import frustrationLogo from "./img/logo-frustration.webp";
+import frustrationLogo from "./logo-frustration.webp";
 import BannerSubscription from "./banners/BannerSubscriptions.astro";
+
+// 🧱 Components
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 ---
 
 <header class="sticky top-0 z-20">
@@ -18,18 +20,20 @@ import BannerSubscription from "./banners/BannerSubscriptions.astro";
         alt="Logo de Frustration"
       />
     </a>
-    <div class="flex gap-2 md:gap-3 lg:gap-4 xl:gap-5">
+    <div class="flex gap-2 md:gap-3 xl:gap-4">
       <button
         type="button"
         title="Recherche"
+        class="w-4 md:w-5 xl:w-6"
         aria-label="Recherche">
-        <MagnifyingGlassIcon />
+        <FaMagnifyingGlass size="100%" />
       </button>
       <button
         type="button"
         title="Menu"
+        class="w-4 md:w-5 xl:w-6"
         aria-label="Menu">
-        <BarsIcon />
+        <GiHamburgerMenu size="100%" />
       </button>
     </div>
   </nav>

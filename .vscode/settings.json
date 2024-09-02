@@ -19,5 +19,5 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#f9e64f",
-  "terminal.integrated.restore": true
+  "terminal.integrated.restore": true,
 }

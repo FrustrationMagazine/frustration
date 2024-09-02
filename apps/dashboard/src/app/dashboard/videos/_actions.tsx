@@ -18,22 +18,30 @@ import { prisma, createRecord, deleteRecord } from "@/data-access/prisma";
 /* Fetch youtube suggestions   */
 /* --------------------------- */
 
-export async function fetchSuggestions(params: Record<string, any>): Promise<any> {
+export async function fetchSuggestions(
+  params: Record<string, any>,
+): Promise<any> {
   // 🥘 Prepare
   const isVideoUrl = YOUTUBE_VIDEO_URL_REGEX.test(params.q);
   const isPlaylistUrl = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
   let suggestions = [];
 
+  console.log("params", params);
+
   // 🔁 🐝 Fetch video if a video URL was passed
   if (isVideoUrl) {
     const [, videoId] = params.q.match(YOUTUBE_VIDEO_URL_REGEX);
-    var video = (await fetchYoutube({ params: { id: videoId }, type: "video" }))?.[0];
+    var video = (
+      await fetchYoutube({ params: { id: videoId }, type: "video" })
+    )?.[0];
   }
 
   // 🔁 🐝 Fetch playlist if a playlist URL was passed
   if (isPlaylistUrl) {
     const [, playlistId] = params.q.match(YOUTUBE_PLAYLIST_URL_REGEX);
-    var playlist = (await fetchYoutube({ params: { id: playlistId }, type: "playlist" }))?.[0];
+    var playlist = (
+      await fetchYoutube({ params: { id: playlistId }, type: "playlist" })
+    )?.[0];
   }
 
   // 🔁 🐝 Fetch by type
@@ -43,6 +51,7 @@ export async function fetchSuggestions(params: Record<string, any>): Promise<any
       suggestions = await fetchYoutube({
         params: isVideoUrl ? { id: video.snippet.channelId } : params,
       });
+      console.log("suggestions", suggestions);
       break;
     case "playlist":
       // Get playlist with search param or thanks to its id in URL if playlist URL was passed
@@ -61,7 +70,10 @@ export async function fetchSuggestions(params: Record<string, any>): Promise<any
 /* Fetch youtube resources by id and type */
 /* -------------------------------------- */
 
-export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType): Promise<any> {
+export async function fetchByIdsAndType(
+  ids: string[],
+  type: YoutubeResourceType,
+): Promise<any> {
   // 🥘 Prepare
   // Necessay to concatenate ids for the fetch
   const concatenatedIds = ids.join(",");
@@ -80,7 +92,9 @@ export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType
 
 /* Read video (by type)  */
 /* --------------------- */
-export async function readVideosByType(type: YoutubeResourceType = "video"): Promise<any> {
+export async function readVideosByType(
+  type: YoutubeResourceType = "video",
+): Promise<any> {
   // 🔁 📀 Fetch
   try {
     const videos = await prisma.video.findMany({

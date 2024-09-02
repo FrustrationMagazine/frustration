@@ -4,7 +4,7 @@ const { author, date, categories } = Astro.props;
 import AuthorPicture from "./AuthorPicture.astro";
 ---
 
-<div class="flex items-center">
+<div class="flex items-center text-sm md:text-base">
   <AuthorPicture
     author={author}
     size={20}

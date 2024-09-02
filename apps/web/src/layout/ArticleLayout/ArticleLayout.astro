@@ -8,10 +8,10 @@ import ArticleSummary from "./components/ArticleSummary/ArticleSummary";
 const { title, author, date, categories, image } = Astro.props;
 ---
 
-<div class="article-layout">
+<div class="article-layout bg-white">
   <div class="scroll-watcher sticky top-0 mb-6 h-[1.3vh] w-0 bg-yellow"></div>
   <div class="lateral-left"></div>
-  <article class="post m-auto w-[75ch]">
+  <article class="post m-auto w-[75ch] max-w-[90vw]">
     <div class="mb-[50px]">
       <H1>{title}</H1>
       <Metadata

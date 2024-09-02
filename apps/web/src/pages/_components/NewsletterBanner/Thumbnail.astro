@@ -1,11 +1,15 @@
 ---
+// 🔧 Libs
 import { cn } from "@/utils/tailwind";
 import { Image } from "astro:assets";
+
 const { width, src, reverse } = Astro.props;
+
+const NEWSLETTER_URL = "https://www.frustrationmagazine.fr/?mailpoet_router&endpoint=view_in_browser&action=view&data=WzY4LCI1NWU3MmQ0MmVjNjQiLDAsMCwzNDY1LDFd";
 ---
 
 <a
-  href="https://www.frustrationmagazine.fr/?mailpoet_router&endpoint=view_in_browser&action=view&data=WzY4LCI1NWU3MmQ0MmVjNjQiLDAsMCwzNDY1LDFd"
+  href={NEWSLETTER_URL}
   class={cn("cursor-pointer hover:[animation-play-state:paused]", {
     "animate-sliding": !reverse,
     "animate-slidingReverse": reverse

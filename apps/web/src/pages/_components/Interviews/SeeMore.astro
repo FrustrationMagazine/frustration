@@ -1,10 +1,18 @@
 ---
+import { cn } from "@/utils/tailwind";
 import MessageCircleIcon from "./icons/message-circle.svg?raw";
+const sizes =
+  "m-auto mt-14 px-3 sm:px-6 pb-2 sm:pb-4 pt-3 sm:pt-5 gap-2 sm:gap-4";
+const text = "font-bebas text-2xl sm:text-3xl leading-none text-black";
 ---
 
 <a
   href="/entretiens"
-  class="m-auto mt-12 flex w-fit items-center gap-4 bg-white px-6 pb-4 pt-5 font-bebas text-3xl leading-none text-black transition-transform hover:scale-110">
+  class={cn(
+    text,
+    sizes,
+    "flex w-fit items-center  bg-white transition-transform hover:scale-110",
+  )}>
   <Fragment set:html={MessageCircleIcon} />
   <span><slot /></span>
 </a>

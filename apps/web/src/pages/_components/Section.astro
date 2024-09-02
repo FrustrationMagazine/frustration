@@ -1,7 +1,10 @@
 ---
-const centeredSection = "m-auto mt-12 h-fit w-[2200px] max-w-full sm:px-4 md:mt-20 md:px-6 lg:mt-24 lg:px-8 xl:mt-28 xl:px-10";
+import { cn } from "@/utils/tailwind";
+const sizes = "h-fit w-full max-w-[2200px]";
+const paddings = "px-2";
+const margins = "m-auto mt-12 md:mt-20 lg:mt-24 xl:mt-28";
 ---
 
-<section class={centeredSection}>
+<section class={cn(sizes, paddings, margins)}>
   <slot />
 </section>
