@@ -3,12 +3,13 @@ import { Image } from "astro:assets";
 import AuthorPicture from "./components/AuthorPicture.astro";
 import TagIcon from "./assets/icons/tag.svg?raw";
 import Footer from "../BaseLayout/Footer/Footer.astro";
-import ArticleSummary from "./components/ArticleSummary/ArticleSummary";
+import ArticleSummary from "./components/ArticleSummary";
 const { title, author, date, categories, image } = Astro.props;
 ---
 
 <div class="article-layout bg-white">
-  <div class="scroll-watcher sticky top-0 mb-6 h-[1.3vh] w-0 bg-yellow"></div>
+  <div class="scroll-watcher sticky top-0 h-[2vw] max-h-[15px] w-0 bg-yellow">
+  </div>
   <article class="post m-auto w-[75ch] max-w-[90vw]">
     <!-- 🔠 Titles and metadata -->
     <div class="mb-[50px]">
@@ -64,7 +65,20 @@ const { title, author, date, categories, image } = Astro.props;
   <!-- 🔽 Footer -->
   <Footer transition:persist />
 </div>
+<script>
+  // 🚧 Dynamically adjust scroll watcher position
+  function adjustScrollWatcherPosition() {
+    const scrollWatcher = document.querySelector(".scroll-watcher");
+    const header = document.querySelector("header");
+    if (header && scrollWatcher) {
+      const headerHeight = header.offsetHeight;
+      (scrollWatcher as HTMLElement).style.top = `${headerHeight}px`;
+    }
+  }
 
+  window.addEventListener("load", adjustScrollWatcherPosition);
+  window.addEventListener("resize", adjustScrollWatcherPosition);
+</script>
 <style is:global>
   .article-layout {
     scroll-behavior: smooth;

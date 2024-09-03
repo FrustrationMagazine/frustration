@@ -79,16 +79,19 @@ function ArticleSummary() {
       <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bebas text-3xl">
         Sommaire
       </h3>
-      <ul className="flex flex-col gap-1.5">
+      <ul className="space-y-1">
         {titles.map((title, index) => {
           const titleId = generateTitleId(title);
+          const formattedTitle = index === 0 ? "Intro" : title;
           return (
-            <li key={titleId}>
+            <li
+              key={titleId}
+              className="overflow-hidden text-ellipsis whitespace-nowrap">
               <a
+                title={formattedTitle}
                 data-title={titleId}
-                href={`#${titleId}`}
-                className="flex-shrink overflow-hidden text-ellipsis whitespace-nowrap">
-                {index === 0 ? "Intro" : title}
+                href={`#${titleId}`}>
+                {formattedTitle}
               </a>
             </li>
           );
