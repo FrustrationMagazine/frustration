@@ -1,16 +1,18 @@
+// 🔩 Base
 import React from "react";
 
-/********************************************
- *               CONSTANTS
- *********************************************/
+const MAIN_TITLE = "h1";
+const TITLE_SELECTOR = `:is(${MAIN_TITLE}, h2.wp-block-heading)`;
+const SUMMARY_LINK = ".article-summary li a";
 
-const ARTICLE_TITLE_SELECTOR = "h1";
-const TITLE_SELECTOR = `:is(${ARTICLE_TITLE_SELECTOR}, h2.wp-block-heading)`;
-const ARTICLE_SUMMARY = ".article-summary";
-const ARTICLE_SELECTOR = "article.post";
-const BANNER_SELECTOR = "#banner";
-const HEADER_SELECTOR = "header";
-const SUMMARY_OFFSET = 35;
+function generateTitleId(title: string) {
+  return title
+    .normalize("NFD") // Normalize the string to decompose combined letters
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritical marks
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
 
 /********************************************
  *               FUNCTIONS
@@ -19,67 +21,22 @@ const SUMMARY_OFFSET = 35;
 const intersectionObserverCallback = (entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry: any) => {
     if (entry.isIntersecting) {
-      const titleNode = entry.target;
-      const titleId = titleNode.getAttribute("data-title");
-      const allTitleNodesSummary = document.querySelectorAll(`.article-summary li`);
-      const titleNodeSummary = document.querySelector(`.article-summary li[data-title="${titleId}"]`);
-      if (titleNodeSummary) {
-        allTitleNodesSummary.forEach((node) => {
-          node.classList.remove("font-bold");
-          const icon = node.querySelector("svg");
-          if (icon) {
-            icon.classList.remove("block");
-            icon.classList.add("hidden");
-          }
-        });
-        titleNodeSummary.classList.add("font-bold");
-        const icon = titleNodeSummary.querySelector("svg");
-        if (icon) {
-          icon.classList.remove("hidden");
-          icon.classList.add("block");
-        }
+      const titleTarget = entry.target;
+      const titleSummaryTargeted = document.querySelector(
+        `${SUMMARY_LINK}[data-title="${titleTarget.id}"]`,
+      );
+
+      if (titleSummaryTargeted) {
+        // Remove bold from all titles
+        const allTitlesSummary = document.querySelectorAll(SUMMARY_LINK);
+        allTitlesSummary.forEach((titleSummary) =>
+          titleSummary.classList.remove("font-bold"),
+        );
+        // Add bold to the targeted title
+        titleSummaryTargeted.classList.add("font-bold");
       }
     }
   });
-};
-
-const intersectionObserverOptions = {
-  rootMargin: "-100px",
-  threshold: 1,
-};
-
-const setDataTitleAttributeAndId = (node: HTMLElement, index: number) => {
-  node.id = `title-${index}`;
-  node.setAttribute("data-title", `title-${index}`);
-};
-
-const retrieveTitlesNodesAndSetAttributes = () => {
-  const titlesNodes = Array.from(document.querySelectorAll(TITLE_SELECTOR)) as HTMLElement[];
-  titlesNodes.forEach(setDataTitleAttributeAndId);
-  return titlesNodes;
-};
-
-/********************************************
- *               SUBCOMPONENT
- *********************************************/
-
-const ArticleSummaryLink = (title: string, index: number) => {
-  const titleId = `title-${index}`;
-  return (
-    <li
-      data-title={titleId}
-      key={index}
-      className="flex cursor-pointer items-center gap-1.5"
-      onClick={() => {
-        const titleInArticle = document.getElementById(titleId);
-        if (titleInArticle) {
-          titleInArticle.scrollIntoView();
-          // titleInArticle.scrollIntoViewIfNeeded({ opt_center: false });
-        }
-      }}>
-      <span className="flex-shrink overflow-hidden text-ellipsis whitespace-nowrap">{title}</span>
-    </li>
-  );
 };
 
 /********************************************
@@ -90,24 +47,53 @@ function ArticleSummary() {
   const [titles, setTitles] = React.useState<string[]>([]);
 
   React.useEffect(function observeTitlesNodes() {
-    const titlesNodes = retrieveTitlesNodesAndSetAttributes();
-    const observer = new IntersectionObserver(intersectionObserverCallback, intersectionObserverOptions);
-    titlesNodes.forEach((node) => observer.observe(node));
+    // 1️⃣ We collect all titles from current post and set a unique id for each
+    const titlesNodes = Array.from(
+      document.querySelectorAll(TITLE_SELECTOR),
+    ) as HTMLElement[];
+
+    titlesNodes.forEach((title: HTMLElement, index: number) => {
+      const titleId = generateTitleId(title.textContent as string);
+      title.id = titleId;
+      console.log("titleId", titleId);
+      console.log("window.location.hash", window.location.hash);
+      if (`#${titleId}` === window.location.hash) title.scrollIntoView();
+    });
+
+    // 2️⃣ We create an intersection observer for each title
+    const observer = new IntersectionObserver(intersectionObserverCallback, {
+      rootMargin: "-100px",
+      threshold: 1,
+    });
+    titlesNodes.forEach((title) => observer.observe(title));
 
     const titles = titlesNodes.map((node) => node.textContent) as string[];
-    titles.splice(0, 1, "Intro");
     setTitles(titles);
   }, []);
 
-  /********************************************
-   *                   UI
-   *********************************************/
+  /* ❌ Early return if no titles */
   if (titles.length === 0) return null;
 
   return (
     <div className="article-summary border-box px-12">
-      <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bebas text-3xl">Sommaire</h3>
-      <ul className="flex flex-col gap-1.5">{titles.map(ArticleSummaryLink)}</ul>
+      <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bebas text-3xl">
+        Sommaire
+      </h3>
+      <ul className="flex flex-col gap-1.5">
+        {titles.map((title, index) => {
+          const titleId = generateTitleId(title);
+          return (
+            <li key={titleId}>
+              <a
+                data-title={titleId}
+                href={`#${titleId}`}
+                className="flex-shrink overflow-hidden text-ellipsis whitespace-nowrap">
+                {index === 0 ? "Intro" : title}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
