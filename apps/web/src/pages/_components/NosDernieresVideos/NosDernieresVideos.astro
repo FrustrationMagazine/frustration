@@ -36,13 +36,11 @@ const { data: records } = await readRecords({
   success: "Videos read !",
 });
 
-console.log("🚀 ~ records:", records);
 const availableTypes: YoutubeResourceType[] = records.reduce(
   (types: string[], { type: recordType }: { type: YoutubeResourceType }) =>
     types.includes(recordType) ? types : [...types, recordType],
   [],
 );
-console.log("🚀 ~ availableTypes:", availableTypes);
 
 /* 🐝 FETCH YOUTUBE RESOURCES */
 // For each type (channel, playlist, video) we fetch complete resources thanks to Youtube API

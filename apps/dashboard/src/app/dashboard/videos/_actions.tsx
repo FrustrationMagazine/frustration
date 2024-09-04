@@ -29,8 +29,6 @@ export async function fetchSuggestions(
   const isPlaylistUrl = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
   let suggestions = [];
 
-  console.log("params", params);
-
   // 🔁 🐝 Fetch video if a video URL was passed
   if (isVideoUrl) {
     const [, videoId] = params.q.match(YOUTUBE_VIDEO_URL_REGEX);
@@ -54,7 +52,6 @@ export async function fetchSuggestions(
       suggestions = await fetchYoutube({
         params: isVideoUrl ? { id: video.snippet.channelId } : params,
       });
-      console.log("suggestions", suggestions);
       break;
     case "playlist":
       // Get playlist with search param or thanks to its id in URL if playlist URL was passed
@@ -183,9 +180,13 @@ export async function redeploy() {
     console.error("No deploy hook found in environment variables");
     return;
   }
-  console.log("process.env.DEPLOY_HOOK", process.env.DEPLOY_HOOK);
-  fetch(process.env.DEPLOY_HOOK, { method: "POST" }).then((result) => {
-    console.log("result", result);
-  });
-  console.log("🚀 Redeploying production...");
+  fetch(process.env.DEPLOY_HOOK, { method: "POST" }).then(
+    (response: Response) => {
+      if (response.ok) {
+        console.log("🚀 Redeploying production...");
+      } else {
+        console.error("❌ Error while redeploying production with git hook");
+      }
+    },
+  );
 }

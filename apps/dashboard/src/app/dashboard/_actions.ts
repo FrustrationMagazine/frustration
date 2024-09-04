@@ -11,7 +11,7 @@ export const signOutDashboard = async () => {
     await signOut({ redirect: false });
   } catch (error) {
     // ❌ REJECTED
-    console.log("error:", error);
+    console.log("Sign out error:", error);
   } finally {
     // ✅ SIGNED OUT  REDICRETION
     redirect("/auth/signin");

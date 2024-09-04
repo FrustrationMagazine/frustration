@@ -150,7 +150,7 @@ export default function CardResources({
       );
 
       // 2️⃣ Trigger re-deployment
-      redeploy();
+      await redeploy();
     }
   };
 
