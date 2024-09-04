@@ -41,6 +41,9 @@ import {
 // 🪝 Hooks
 import { useToast } from "@/ui/components/use-toast";
 
+// 🌍 i18n
+import { typesTranslations } from "../_models";
+
 export default function CardResources({
   type,
   title,
@@ -263,7 +266,7 @@ export default function CardResources({
       {loadingRecords ? (
         <SuperBallsLoader className="mx-auto my-12" />
       ) : records.length === 0 ? (
-        <p>🤷‍♂️ Aucune {type} </p>
+        <p>🤷‍♂️ Aucune {typesTranslations.get(type)} </p>
       ) : (
         <ul className="space-y-1">
           {records.map((resource: any) => (

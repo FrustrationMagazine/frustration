@@ -11,6 +11,9 @@ import {
 // 💽 Database
 import { prisma, createRecord, deleteRecord } from "@/data-access/prisma";
 
+// 🌍 i18n
+import { typesTranslations } from "./_models";
+
 /* --------------------------- */
 /* 🐝 API Youtube transactions */
 /* --------------------------- */
@@ -136,7 +139,7 @@ export async function createVideoRecord({
       id,
       source: "youtube",
     },
-    success: `La ${type} a été ajoutée !`,
+    success: `La ${typesTranslations.get(type)} a été ajoutée !`,
   });
 
   // 🎉 Return

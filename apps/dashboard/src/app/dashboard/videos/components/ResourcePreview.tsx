@@ -18,7 +18,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/ui/components/alert-dialog";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/components/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/ui/components/tooltip";
 
 // 🗿 Models
 import { type YoutubeResourceType } from "@/data-access/youtube";
@@ -92,16 +97,16 @@ export default function ({
         src={thumbnailUrl}
         alt={title}
         {...getThumbnailSizes(type)}
-        className='h-full w-auto flex-shrink-0 self-start rounded-md'
+        className="h-full w-auto flex-shrink-0 self-start rounded-md"
       />
-      <div className='flex grow flex-col'>
-        <h6 className='text-md mb-1 font-bold leading-tight hover:underline'>
-          <a href={createYoutubeUrlFromIdAndType(type, id)} target='_blank'>
+      <div className="flex grow flex-col">
+        <h6 className="text-md mb-1 font-bold leading-tight hover:underline">
+          <a href={createYoutubeUrlFromIdAndType(type, id)} target="_blank">
             {title}
           </a>
         </h6>
         <p
-          className='overflow-auto whitespace-break-spaces text-sm text-gray-600'
+          className="overflow-auto whitespace-break-spaces text-sm text-gray-600"
           style={{ overflowWrap: "anywhere" }}
         >
           {description}
@@ -112,22 +117,24 @@ export default function ({
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <TooltipTrigger asChild>
-                <div className='shrink-0 self-center px-3'>
+                <div className="shrink-0 self-center px-3">
                   <Icon className={`text-${iconType}`} size={26} />
                 </div>
               </TooltipTrigger>
             </AlertDialogTrigger>
-            <AlertDialogContent className='max-w-[700px]'>
+            <AlertDialogContent className="max-w-[700px]">
               <AlertDialogHeader>
-                <AlertDialogTitle>{texts?.[actionType]?.alertDialogTitle}</AlertDialogTitle>
+                <AlertDialogTitle>
+                  {texts?.[actionType]?.alertDialogTitle}
+                </AlertDialogTitle>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Annuler</AlertDialogCancel>
                 <form action={() => iconAction({ type, id })}>
                   {/* Force to place variant for button here, see issue here : https://github.com/shadcn-ui/ui/issues/1115 */}
                   <AlertDialogAction asChild variant={iconType as any}>
-                    <Button type='submit' className='flex gap-2'>
-                      <Icon className='shrink-0' size={16} />
+                    <Button type="submit" className="flex gap-2">
+                      <Icon className="shrink-0" size={16} />
                       {texts?.[actionType].alertDialogAction}
                     </Button>
                   </AlertDialogAction>
