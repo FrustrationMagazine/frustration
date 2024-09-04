@@ -29,6 +29,7 @@ import {
   deleteVideoRecord,
   readVideosByType,
   fetchByIdsAndType,
+  redeploy,
 } from "../_actions";
 
 // 🔧 Libs
@@ -75,7 +76,6 @@ export default function CardResources({
         const resourcesIds = resources.map(
           (resource: any) => resource.id,
         ) as string[];
-        console.log("resourcesIds", resourcesIds);
 
         // 🔁 🐝 Get full resources video information
         let results = (await fetchByIdsAndType(resourcesIds, type)) ?? [];
@@ -84,7 +84,6 @@ export default function CardResources({
         results = resources.map((resource: any) =>
           results.find((result: any) => result.id === resource.id),
         );
-        console.log("results", results);
         setRecords(results);
       } catch (e) {
         console.error("Error while loading resources", e);
@@ -121,6 +120,9 @@ export default function CardResources({
           (suggestion: any) => getYoutubeResourceId(suggestion) !== id,
         ),
       );
+
+      // 3️⃣ Trigger re-deployment
+      redeploy();
     }
   };
 
@@ -137,12 +139,15 @@ export default function CardResources({
 
     // ✅ Resource deleted !
     if (status.success) {
-      // Remove deleted resource from listed resources
+      // 1️⃣ Remove deleted resource from listed resources
       setRecords(
         records.filter(
           (resource: any) => getYoutubeResourceId(resource) !== id,
         ),
       );
+
+      // 2️⃣ Trigger re-deployment
+      redeploy();
     }
   };
 
