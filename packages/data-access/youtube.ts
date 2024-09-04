@@ -42,9 +42,9 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
   url.searchParams.append("part", "snippet");
   // Add each param from params object that was passed to URL
   for (let param in params) url.searchParams.append(param, params[param]);
+
   // 🔁 Fetch
   try {
-    console.log("url.href", url.href);
     const response = await fetch(url.href);
     const { items } = await response.json();
     // 🎉 Return

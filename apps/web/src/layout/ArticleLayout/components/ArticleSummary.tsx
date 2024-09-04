@@ -55,8 +55,6 @@ function ArticleSummary() {
     titlesNodes.forEach((title: HTMLElement, index: number) => {
       const titleId = generateTitleId(title.textContent as string);
       title.id = titleId;
-      console.log("titleId", titleId);
-      console.log("window.location.hash", window.location.hash);
       if (`#${titleId}` === window.location.hash) title.scrollIntoView();
     });
 

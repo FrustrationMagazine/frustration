@@ -75,14 +75,12 @@ export default function CardResources({
       try {
         // 🔁 📀 Read videos resources
         const resources = await readVideosByType(type);
-        console.log("resources", resources);
         const resourcesIds = resources.map(
           (resource: any) => resource.id,
         ) as string[];
 
         // 🔁 🐝 Get full resources video information
         let results = (await fetchByIdsAndType(resourcesIds, type)) ?? [];
-        console.log("results", results);
         // Get the same display order as the resources stored in database
         results = resources.map((resource: any) =>
           results.find((result: any) => result.id === resource.id),
