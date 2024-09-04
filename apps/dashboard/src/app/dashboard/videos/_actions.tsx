@@ -183,7 +183,9 @@ export async function redeploy() {
     console.error("No deploy hook found in environment variables");
     return;
   }
-
-  fetch(process.env.DEPLOY_HOOK, { method: "POST" });
+  console.log("process.env.DEPLOY_HOOK", process.env.DEPLOY_HOOK);
+  fetch(process.env.DEPLOY_HOOK, { method: "POST" }).then((result) => {
+    console.log("result", result);
+  });
   console.log("🚀 Redeploying production...");
 }
