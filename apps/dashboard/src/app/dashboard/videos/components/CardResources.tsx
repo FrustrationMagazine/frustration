@@ -122,7 +122,7 @@ export default function CardResources({
       );
 
       // 3️⃣ Trigger re-deployment
-      redeploy();
+      await redeploy();
     }
   };
 

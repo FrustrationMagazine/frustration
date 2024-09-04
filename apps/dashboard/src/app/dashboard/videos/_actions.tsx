@@ -168,7 +168,7 @@ export async function deleteVideoRecord({
 /* 🪝 Deployent hooks       */
 /* ------------------------ */
 
-export function redeploy() {
+export async function redeploy() {
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
     console.log(`Not redeploying because we are in ${process.env.NODE_ENV}...`);
