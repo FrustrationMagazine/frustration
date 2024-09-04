@@ -94,9 +94,12 @@ const links = [
         Recevez régulièrement une sélection de nos meilleurs articles récemment
         parus !
       </p>
-      <form class="flex flex-col gap-3">
+      <form
+        data-form="newsletter-footer"
+        class="flex flex-col gap-3">
         <input
           class="px-5 py-2 text-sm"
+          required
           name="email"
           placeholder="Email"
           type="email"
@@ -108,6 +111,43 @@ const links = [
           <span>S'inscrire à la newsletter</span>
         </button>
       </form>
+      <script>
+        import { actions } from "astro:actions";
+        const form = document.querySelector(
+          "[data-form=newsletter-footer]",
+        ) as HTMLFormElement;
+        if (form) {
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const { error } = await actions.addSubscriber(formData);
+            if (error)
+              console.error("error while creating a new subscriber contact", e);
+            if (!error) {
+              const input = form.querySelector(
+                "input[type=email]",
+              ) as HTMLInputElement;
+
+              const submitButton = form.querySelector(
+                "button[type=submit]",
+              ) as HTMLButtonElement;
+
+              // Hide input
+              input.disabled = true;
+              input.placeholder = "";
+
+              // Change submit button style
+              submitButton.disabled = true;
+              submitButton.style.backgroundImage = "none";
+              submitButton.textContent =
+                "Vous êtes bien inscrit à notre newsletter !";
+
+              // Reset form
+              form.reset();
+            }
+          });
+        }
+      </script>
     </div>
     <!-- 📸 Social medias -->
     <div

@@ -53,10 +53,12 @@ const buttons = "h-[40px] w-full rounded-full ";
       </p>
       <form
         data-form="newsletter"
-        class="newsletter-form mx-auto max-w-[350px] space-y-2 md:mx-0">
+        class="newsletter-form mx-auto max-w-[350px] space-y-2 md:mx-0"
+        method="post">
         {/* 📮 Mail */}
         <input
           type="email"
+          required
           name="email"
           placeholder="Entrez votre email ici"
           class={cn(buttons, "px-6 py-2 font-open-sans text-black text-base")}
@@ -83,10 +85,32 @@ const buttons = "h-[40px] w-full rounded-full ";
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
-      const email = formData.get("email");
-      const { data, error } = await actions.addSubscriber({ email });
-      if (!error) alert(`Le mail a bien été ajouté ! ${data}`);
-      if (error) console.error(error);
+      const { error } = await actions.addSubscriber(formData);
+      if (error)
+        console.error("error while creating a new subscriber contact", e);
+      if (!error) {
+        const input = document.querySelector(
+          "[data-form=newsletter] input[type=email]",
+        ) as HTMLInputElement;
+
+        const submitButton = document.querySelector(
+          "[data-form=newsletter] button[type=submit]",
+        ) as HTMLButtonElement;
+
+        // Hide input
+        input.disabled = true;
+        input.placeholder = "";
+        input.hidden = true;
+
+        // Change submit button style
+        submitButton.disabled = true;
+        submitButton.style.backgroundImage = "none";
+        submitButton.textContent =
+          "Vous êtes bien inscrit à notre newsletter !";
+
+        // Reset form
+        form.reset();
+      }
     });
   }
 </script>

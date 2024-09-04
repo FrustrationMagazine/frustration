@@ -5,6 +5,7 @@ import { addSubscriber } from "@/data-access/mail";
 
 export const server = {
   addSubscriber: defineAction({
+    accept: "form",
     input: z.object({
       email: z.string(),
       firstName: z.string().optional(),

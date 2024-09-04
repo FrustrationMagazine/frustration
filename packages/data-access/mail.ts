@@ -1,5 +1,7 @@
 import { Resend } from "resend";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function addSubscriber({ email, firstName, lastName }: { email: string; firstName: string | undefined; lastName: string | undefined }) {
   // ❌ Early return if the api key is not set
   if (!process.env.RESEND_API_KEY) {
@@ -12,8 +14,6 @@ export async function addSubscriber({ email, firstName, lastName }: { email: str
     console.warn("🔎 Missing audience id to add subscriber");
     return;
   }
-
-  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const result = await resend.contacts.create({
