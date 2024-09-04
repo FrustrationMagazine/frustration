@@ -51,7 +51,9 @@ const buttons = "h-[40px] w-full rounded-full ";
         <span class="xs:inline hidden"> 🗞️ </span>
         Recevez régulièrement nos dernières publications !
       </p>
-      <div class="mx-auto max-w-[350px] space-y-2 md:mx-0">
+      <form
+        data-form="newsletter"
+        class="newsletter-form mx-auto max-w-[350px] space-y-2 md:mx-0">
         {/* 📮 Mail */}
         <input
           type="email"
@@ -61,14 +63,30 @@ const buttons = "h-[40px] w-full rounded-full ";
         />
         {/* 📩 Button */}
         <button
-          type="button"
+          type="submit"
           class={cn(
             buttons,
             "text-lg md:text-xl bg-[linear-gradient(90deg,rgba(252,176,69,1)_0%,rgba(253,29,29,1)_100%)] font-bebas uppercase text-white",
           )}>
           Recevoir la newsletter
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </section>
+<script>
+  import { actions } from "astro:actions";
+  const form = document.querySelector(
+    "[data-form=newsletter]",
+  ) as HTMLFormElement;
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const email = formData.get("email");
+      const { data, error } = await actions.addSubscriber({ email });
+      if (!error) alert(`Le mail a bien été ajouté ! ${data}`);
+      if (error) console.error(error);
+    });
+  }
+</script>

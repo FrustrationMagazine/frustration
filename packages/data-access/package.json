@@ -18,6 +18,7 @@
   "dependencies": {
     "@/utils": "workspace:*",
     "@stripe/stripe-js": "^4.4.0",
+    "resend": "^4.0.0",
     "stripe": "^16.9.0"
   },
   "devDependencies": {

@@ -21,7 +21,8 @@ import "@web/styles/global.css";
 
 // 🧰 Config
 const DEFAULT_IMAGE = "/img/default.png";
-const DEFAULT_DESCRIPTION = "Frustration Magazine est un média indépendant qui décrypte l'actualité politique et sociale.";
+const DEFAULT_DESCRIPTION =
+  "Frustration Magazine est un média indépendant qui décrypte l'actualité politique et sociale.";
 
 interface Props {
   title: string;
@@ -29,7 +30,11 @@ interface Props {
   image?: string;
 }
 
-const { title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE } = Astro.props;
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  image = DEFAULT_IMAGE,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -66,9 +71,9 @@ const { title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE } = Astr
     <title>Frustration Magazine - {title}</title>
     <ViewTransitions />
   </head>
-  <body class="min-h-screen bg-yellow">
+  <body class="min-h-screen bg-black">
     <Header transition:persist />
-    <main>
+    <main class="bg-yellow">
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>
     <SpeedInsights />
