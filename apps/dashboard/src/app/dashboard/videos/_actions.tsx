@@ -180,13 +180,15 @@ export async function redeploy() {
     console.error("No deploy hook found in environment variables");
     return;
   }
-  fetch(process.env.DEPLOY_HOOK, { method: "POST" }).then(
-    (response: Response) => {
+  fetch(process.env.DEPLOY_HOOK, { method: "POST" })
+    .then((response: Response) => {
       if (response.ok) {
         console.log("🚀 Redeploying production...");
       } else {
         console.error("❌ Error while redeploying production with git hook");
       }
-    },
-  );
+    })
+    .catch((e) => {
+      console.error("❌ Error while redeploying production with git hook", e);
+    });
 }
