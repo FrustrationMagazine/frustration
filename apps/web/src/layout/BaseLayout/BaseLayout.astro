@@ -71,9 +71,9 @@ const {
     <title>Frustration Magazine - {title}</title>
     <ViewTransitions />
   </head>
-  <body class="min-h-screen bg-black">
+  <body class="min-h-screen bg-yellow">
     <Header transition:persist />
-    <main class="bg-yellow">
+    <main>
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>
     <SpeedInsights />
