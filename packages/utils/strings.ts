@@ -15,6 +15,24 @@ export function normalizeName(name: string): string {
   return normalizedName;
 }
 
+/* ---------------- */
+/* Create id anchor */
+/* ---------------- */
+/*
+  Input : "Un nouveau coup d'État se prépare"
+  Output : "un-nuveau-coup-detat-se-prepare"
+*/
+export function createIdAnchor(title: string): string {
+  const idAnchor = title
+    .normalize("NFD") // Normalize the string to decompose combined letters
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritical marks
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+
+  return idAnchor;
+}
+
 /* ------------- */
 /* Prettify name */
 /* ------------- */

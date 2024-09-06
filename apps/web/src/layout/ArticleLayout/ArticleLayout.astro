@@ -12,7 +12,7 @@ const { title, author, date, categories, image } = Astro.props;
   </div>
   <article class="post m-auto w-[75ch] mt-6 max-w-[90vw]">
     <!-- 🔠 Titles and metadata -->
-    <div class="mb-[50px]">
+    <div class="mb-[30px]">
       <h1
         class="mb-2 border-b-[5px] md:border-b-[6px] border-black font-bebas text-4xl xs:text-5xl sm:text-6xl md:text-7xl leading-[90%]">
         {title}
@@ -37,6 +37,11 @@ const { title, author, date, categories, image } = Astro.props;
         </div>
       </div>
     </div>
+    <!-- 🔖 Summary (mobile only) -->
+    <ArticleSummary
+      className="article-summary article-summary_mobile mb-[30px]"
+      client:load
+    />
     <!-- 🖼️ Featured image -->
     <Image
       class="mb-[25px] w-full object-cover"
@@ -60,8 +65,11 @@ const { title, author, date, categories, image } = Astro.props;
       <p>{author}</p>
     </footer>
   </article>
-  <!-- 🔖 Summary -->
-  <ArticleSummary client:load />
+  <!-- 🔖 Summary (desktop only) -->
+  <ArticleSummary
+    className="article-summary article-summary_desktop px-12"
+    client:load
+  />
   <!-- 🔽 Footer -->
   <Footer transition:persist />
 </div>
@@ -85,6 +93,13 @@ const { title, author, date, categories, image } = Astro.props;
     width: minmax(200px, 75ch);
   }
 
+  .article-layout .article-summary_desktop {
+    display: none;
+  }
+  .article-layout .article-summary_mobile {
+    display: block;
+  }
+
   @media (min-width: 1280px) {
     .article-layout {
       display: grid;
@@ -93,27 +108,30 @@ const { title, author, date, categories, image } = Astro.props;
         "scrollwatcher scrollwatcher scrollwatcher"
         ". article sidenav";
     }
-  }
+    .article-layout .scrollwatcher {
+      grid-area: scrollwatcher;
+    }
+    .article-layout article {
+      grid-area: article;
+    }
 
-  .article-layout .scrollwatcher {
-    grid-area: scrollwatcher;
-  }
-  .article-layout article {
-    grid-area: article;
-  }
+    .article-layout .article-summary_desktop {
+      display: block;
+      grid-area: sidenav;
+      overflow: auto;
+      container-type: inline-size;
+      height: fit-content;
+      position: sticky;
+      top: 80px;
+    }
+    .article-layout .article-summary_mobile {
+      display: none;
+    }
 
-  .article-layout .article-summary {
-    grid-area: sidenav;
-    overflow: auto;
-    container-type: inline-size;
-    height: fit-content;
-    position: sticky;
-    top: 80px;
-  }
-
-  .article-layout footer {
-    grid-column: 1 / -1;
-    margin-top: 50px;
+    .article-layout footer {
+      grid-column: 1 / -1;
+      margin-top: 50px;
+    }
   }
 
   @keyframes scroll-watcher {
@@ -138,7 +156,7 @@ const { title, author, date, categories, image } = Astro.props;
   article.post .article-content h2 {
     color: #fff200;
     background: black;
-    font-size: 42px;
+    font-size: clamp(30px, 7vw, 50px);
     line-height: 120%;
     width: fitarticle-content;
     text-transform: uppercase;
