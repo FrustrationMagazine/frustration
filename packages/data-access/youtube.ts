@@ -48,7 +48,7 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
     const response = await fetch(url.href);
     const { items } = await response.json();
     // 🎉 Return
-    return items;
+    return items ?? [];
   } catch (error) {
     // 🚨 Error
     console.error(`Error occured while fetching youtube ${type}s:`, error);

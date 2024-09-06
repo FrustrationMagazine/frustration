@@ -4,12 +4,12 @@ import ArticleLayout from "@web/layout/ArticleLayout/ArticleLayout.astro";
 import {
   type ArticleRaw,
   fetchArticle,
-  formatTitleFromRawArticleData,
-  formatAuthorFromRawArticleData,
-  formatDateFromRawArticleData,
-  formatCategoriesFromRawArticleData,
-  formatImageFromRawArticleData,
-  formatContentFromRawArticleData,
+  formatTitle,
+  formatAuthor,
+  formatDate,
+  formatCategories,
+  formatImage,
+  formatContent,
 } from "@/data-access/wordpress";
 
 // 🧰 Config
@@ -42,16 +42,16 @@ const article: ArticleRaw = (await fetchArticle({ slug }, [
 // };
 ---
 
-<BaseLayout title={formatTitleFromRawArticleData(article)}>
+<BaseLayout title={formatTitle(article)}>
   <ArticleLayout
-    title={formatTitleFromRawArticleData(article)}
-    author={formatAuthorFromRawArticleData(article)}
-    date={formatDateFromRawArticleData(article, { explicit: false })}
-    categories={formatCategoriesFromRawArticleData(article)}
-    image={formatImageFromRawArticleData(article)}>
+    title={formatTitle(article)}
+    author={formatAuthor(article)}
+    date={formatDate(article, { explicit: false })}
+    categories={formatCategories(article)}
+    image={formatImage(article)}>
     <Fragment
       slot="article-content"
-      set:html={formatContentFromRawArticleData(article)}
+      set:html={formatContent(article)}
     />
   </ArticleLayout>
 </BaseLayout>

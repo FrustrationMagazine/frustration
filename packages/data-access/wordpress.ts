@@ -146,19 +146,23 @@ export const fetchArticle = async (
 const UNKNOWN_TITLE = "Article sans titre";
 const UNKNOWN_AUTHOR = "Invité.e";
 const DEFAULT_ARTICLE_IMAGE_METADATA_PATH = "DEFAULT_ARTICLE_IMAGE";
-const DEFAULT_ARTICLE_IMAGE_METADATA = { title: "Image de couverture de l'article", altText: "Image de couverture par défaut de l'article", sourceUrl: DEFAULT_ARTICLE_IMAGE_METADATA_PATH };
+const DEFAULT_ARTICLE_IMAGE_METADATA = {
+  title: "Image de couverture de l'article",
+  altText: "Image de couverture par défaut de l'article",
+  sourceUrl: "https://www.frustrationmagazine.fr/wp-content/uploads/2021/11/LOGO-SLOGAN-3.png"
+};
 
-export const formatSlugFromRawArticleData = (article: ArticleRaw): string => article?.slug || "";
-export const formatTitleFromRawArticleData = (article: ArticleRaw): string => article?.title || UNKNOWN_TITLE;
+export const formatSlug = (article: ArticleRaw): string => article?.slug ?? "";
+export const formatTitle = (article: ArticleRaw): string => article?.title ?? UNKNOWN_TITLE;
 
-export const formatAuthorFromRawArticleData = (article: ArticleRaw) => {
+export const formatAuthor = (article: ArticleRaw) => {
   if (article?.author?.node?.firstName || article?.author?.node?.lastName) {
     return `${article?.author.node.firstName ?? ""} ${article?.author.node.lastName ?? ""}`;
   }
   return UNKNOWN_AUTHOR;
 };
 
-export const formatImageFromRawArticleData = (article: ArticleRaw): { title: string; altText: string; sourceUrl: string } => {
+export const formatImage = (article: ArticleRaw): { title: string; altText: string; sourceUrl: string } => {
   if (article?.featuredImage?.node) {
     return article?.featuredImage.node;
   }
@@ -166,7 +170,7 @@ export const formatImageFromRawArticleData = (article: ArticleRaw): { title: str
   return DEFAULT_ARTICLE_IMAGE_METADATA;
 };
 
-export const formatDateFromRawArticleData = (article: ArticleRaw, options: { explicit: boolean } = { explicit: false }): Date | string => {
+export const formatDate = (article: ArticleRaw, options: { explicit: boolean } = { explicit: false }): Date | string => {
   if (article?.date) {
     const intlOptions: Intl.DateTimeFormatOptions | undefined = options.explicit ? { weekday: "long", year: "numeric", month: "long", day: "numeric" } : undefined;
     let date = new Date(article?.date).toLocaleDateString("fr-FR", intlOptions);
@@ -177,14 +181,14 @@ export const formatDateFromRawArticleData = (article: ArticleRaw, options: { exp
   return "";
 };
 
-export const formatCategoriesFromRawArticleData = (article: ArticleRaw): string[] => {
+export const formatCategories = (article: ArticleRaw): string[] => {
   if (article?.categories) {
     article?.categories.nodes.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
   }
   return [];
 };
 
-export const formatContentFromRawArticleData = (article: ArticleRaw): string => {
+export const formatContent = (article: ArticleRaw): string => {
   if (article?.content) {
     return article?.content;
   }
@@ -192,13 +196,7 @@ export const formatContentFromRawArticleData = (article: ArticleRaw): string => 
   return "";
 };
 
-export const formatExcerptFromRawArticleData = (article: ArticleRaw): string => {
-  if (article?.excerpt) {
-    return article?.excerpt;
-  }
-
-  return "";
-};
+export const formatExcerpt = (article: ArticleRaw): string => article?.excerpt ?? "";
 
 // ===================================================================================================
 

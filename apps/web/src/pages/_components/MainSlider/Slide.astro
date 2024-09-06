@@ -1,5 +1,10 @@
 ---
-import { formatTitleFromRawArticleData, formatSlugFromRawArticleData, formatImageFromRawArticleData, formatExcerptFromRawArticleData } from "@/data-access/wordpress";
+import {
+  formatTitle,
+  formatSlug,
+  formatImage,
+  formatExcerpt,
+} from "@/data-access/wordpress";
 import { Image } from "astro:assets";
 import Button from "./Button.astro";
 import H3 from "./H3.astro";
@@ -9,19 +14,20 @@ const IMAGE_SIZE = 1200;
 ---
 
 <li class="splide__slide relative">
-  <a href={`/${formatSlugFromRawArticleData(article)}`}>
-    <div class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
-      <H3>{formatTitleFromRawArticleData(article)}</H3>
-      <Excerpt content={formatExcerptFromRawArticleData(article)} />
+  <a href={`/${formatSlug(article)}`}>
+    <div
+      class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
+      <H3>{formatTitle(article)}</H3>
+      <Excerpt content={formatExcerpt(article)} />
       <Button>Lire</Button>
     </div>
     <Image
       class="h-full w-full object-cover"
-      src={formatImageFromRawArticleData(article).sourceUrl}
+      src={formatImage(article).sourceUrl}
       width={IMAGE_SIZE}
       height={IMAGE_SIZE}
-      alt={formatTitleFromRawArticleData(article)}
-      title={formatTitleFromRawArticleData(article)}
+      alt={formatTitle(article)}
+      title={formatTitle(article)}
       loading="eager"
     />
   </a>

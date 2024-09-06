@@ -1,20 +1,31 @@
 ---
-import Card from "./Card.astro";
-import {
-  fetchArticle,
-  formatTitleFromRawArticleData,
-  formatAuthorFromRawArticleData,
-  formatSlugFromRawArticleData,
-  formatDateFromRawArticleData,
-  formatCategoriesFromRawArticleData,
-  formatImageFromRawArticleData,
-  formatExcerptFromRawArticleData,
-} from "@/data-access/wordpress";
-import type { ArticleRaw } from "@/data-access/wordpress";
-import SectionTitle from "../SectionTitle.astro";
+// 🧱 Components
 import Section from "../Section.astro";
-const ARTICLES_TO_DISPLAY = 9;
-const articles = (await fetchArticle({ first: ARTICLES_TO_DISPLAY }, [
+import SectionTitle from "../SectionTitle.astro";
+import Card from "./Card.astro";
+
+// 🐝 Wordpress API
+import {
+  type ArticleRaw,
+
+  // Fetch
+  fetchArticle,
+
+  // Format functions
+  formatTitle,
+  formatAuthor,
+  formatSlug,
+  formatDate,
+  formatCategories,
+  formatImage,
+  formatExcerpt,
+} from "@/data-access/wordpress";
+
+// 🔧 Libs
+
+// 📦 Data
+const MAX_ARTICLES = 9;
+const articles = (await fetchArticle({ first: MAX_ARTICLES }, [
   "title",
   "author",
   "slug",
@@ -40,20 +51,17 @@ const textTousLesArticles =
 </style>
 <Section>
   <SectionTitle>À la une</SectionTitle>
-  <!-- TODO // replace flex properties by this grid layout
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(max(30%, 300px), 1fr)); -->
   <div class="wrapper w-full gap-4">
     {
       articles.map((article: ArticleRaw) => (
         <Card
-          title={formatTitleFromRawArticleData(article)}
-          authorName={formatAuthorFromRawArticleData(article)}
-          slug={formatSlugFromRawArticleData(article)}
-          excerpt={formatExcerptFromRawArticleData(article)}
-          image={formatImageFromRawArticleData(article)}
-          date={formatDateFromRawArticleData(article)}
-          categories={formatCategoriesFromRawArticleData(article)}
+          title={formatTitle(article)}
+          authorName={formatAuthor(article)}
+          slug={formatSlug(article)}
+          excerpt={formatExcerpt(article)}
+          image={formatImage(article)}
+          date={formatDate(article)}
+          categories={formatCategories(article)}
         />
       ))
     }
