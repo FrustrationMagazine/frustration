@@ -27,6 +27,12 @@
         "emoji": "🎨"
       },
       {
+        "value": "database",
+        "label": "database",
+        "hint": "Change database structure",
+        "emoji": "📀"
+      },
+      {
         "value": "docs",
         "label": "docs",
         "hint": "Documentation only changes",

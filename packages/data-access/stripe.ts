@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { prisma } from "./prisma/client";
-import { TRANSACTION_TYPES, Transaction } from "./models/transactions";
+import { TRANSACTION_TYPES, TRANSACTION_SUBTYPES, Transaction } from "./models/transactions";
 import { convertUTCtoDate } from "@/utils/dates";
 
 /* ------------------- */
@@ -23,8 +23,15 @@ function getTransactionType(description: string): string {
   else return TRANSACTION_TYPES.OTHER;
 }
 
+function getTransactionSubtype(description: string): string | null {
+  if (/Subscription creation/.test(description)) return TRANSACTION_SUBTYPES.SUBSCRIPTION_CREATION;
+  if (/Subscription update/.test(description)) return TRANSACTION_SUBTYPES.SUBSCRIPTION_UPDATE;
+  else return null;
+}
+
 const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
+  const transactionSubtype = getTransactionSubtype(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
     console.info(`Unknown type: ${description}\n`);
     console.info({
@@ -45,6 +52,7 @@ const formatStripeTransactions = ({ id, description, amount, net, available_on, 
     net: net / 100,
     source: "stripe",
     type: transactionType,
+    subtype: transactionSubtype,
     status
   };
 };

@@ -75,6 +75,7 @@ function formatHelloAssoTransactions({ id, date, amount, items, state }: HelloAs
     net: amount / 100,
     source: "helloasso",
     type: transactionType,
+    subtype: null,
     status: state
   };
 }

@@ -6,7 +6,12 @@ export enum TRANSACTION_TYPES {
   PAYOUT = "payout",
   REFUND = "refund",
   FEE = "fee",
-  OTHER = "other",
+  OTHER = "other"
+}
+
+export enum TRANSACTION_SUBTYPES {
+  SUBSCRIPTION_CREATION = "creation",
+  SUBSCRIPTION_UPDATE = "update"
 }
 
 export interface Transaction {
@@ -17,5 +22,6 @@ export interface Transaction {
   net: number;
   source: string;
   type: string;
+  subtype: string | null;
   status: string;
 }

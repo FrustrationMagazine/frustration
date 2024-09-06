@@ -71,7 +71,7 @@ model Authenticator {
 }
 
 model BalanceTransactions {
-  id        String   @id
+  id        String                     @id
   created   DateTime
   available DateTime
   amount    Float
@@ -79,6 +79,12 @@ model BalanceTransactions {
   source    String
   status    String
   type      String
+  subtype   BalanceTransactionSubtype?
+}
+
+enum BalanceTransactionSubtype {
+  creation
+  update
 }
 
 model Balance {
