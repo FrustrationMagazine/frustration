@@ -3,16 +3,20 @@ import React from "react";
 
 // 🧱 Components
 import CardResources from "./components/CardResources";
+import RedeployButton from "./components/RedeployButton";
 
 // 🗿 Models
 import { CardsDescription } from "./_models";
 
 export default function () {
   return (
-    <div className='grid w-full grow grid-cols-3 gap-x-4 overflow-auto'>
-      {CardsDescription.map(({ key, ...props }) => (
-        <CardResources key={key} {...props} />
-      ))}
-    </div>
+    <>
+      <div className="grid w-full grow grid-cols-3 gap-x-4 overflow-auto">
+        {CardsDescription.map(({ key, ...props }) => (
+          <CardResources key={key} {...props} />
+        ))}
+      </div>
+      <RedeployButton />
+    </>
   );
 }

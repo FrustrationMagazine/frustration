@@ -1,7 +1,10 @@
 "use server";
 
 // 🐝 Fetch
-import { fetchLastUpdate, fetchStripeTransactions, fetchStripeBalance } from "@/data-access/stripe";
+import {
+  fetchStripeTransactions,
+  fetchStripeBalance,
+} from "@/data-access/stripe";
 import { fetchHelloAssoTransactions } from "@/data-access/helloasso";
 
 // 🫙 Database
@@ -74,7 +77,9 @@ export async function updateTransactions({
     oneMonthBeforeLastUpdate.setMonth(lastUpdateDate.getMonth() - 1);
     const unixTimestamp = Math.floor(oneMonthBeforeLastUpdate.getTime() / 1000);
 
-    stripeTransactions = await fetchStripeTransactions({ afterTimestamp: unixTimestamp });
+    stripeTransactions = await fetchStripeTransactions({
+      afterTimestamp: unixTimestamp,
+    });
     helloassoTransactions = await fetchHelloAssoTransactions({
       from: oneMonthBeforeLastUpdate.toISOString(),
     });
@@ -91,17 +96,20 @@ export async function updateTransactions({
     // 1️⃣ Insert new transactions between the last update and now
     /* --------------------------------------------------------- */
     // @ts-ignore
-    const newTransactions: Array<any> = await prisma.balanceTransactions.createManyAndReturn({
-      data: allTransactions,
-      skipDuplicates: true,
-    });
-    console.log(`${newTransactions.length} transaction(s) inserted.`);
+    const newTransactions: Array<any> =
+      await prisma.balanceTransactions.createManyAndReturn({
+        data: allTransactions,
+        skipDuplicates: true,
+      });
+    console.info(`${newTransactions.length} transaction(s) inserted.`);
 
     // 2️⃣ Get transactions recorded < 1 month
     /* ------------------------------------------------------ */
     const transactionsAlreadyRegistered = allTransactions.filter(
       (transaction) =>
-        !newTransactions.some((newTransaction: any) => newTransaction.id === transaction.id),
+        !newTransactions.some(
+          (newTransaction: any) => newTransaction.id === transaction.id,
+        ),
     );
 
     // 3️⃣ Update transactions recorded < 1 month
@@ -112,7 +120,9 @@ export async function updateTransactions({
         data: { status },
       });
     });
-    console.log(`${transactionsAlreadyRegistered.length} transaction(s) updated.`);
+    console.info(
+      `${transactionsAlreadyRegistered.length} transaction(s) updated.`,
+    );
   } catch (error) {
     console.error("Failed to insert records:", error);
     return ERROR_UPSERT_PAYMENTS;

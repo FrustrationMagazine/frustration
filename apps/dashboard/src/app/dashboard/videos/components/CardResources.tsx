@@ -29,7 +29,6 @@ import {
   deleteVideoRecord,
   readVideosByType,
   fetchByIdsAndType,
-  redeploy,
 } from "../_actions";
 
 // 🔧 Libs
@@ -121,9 +120,6 @@ export default function CardResources({
           (suggestion: any) => getYoutubeResourceId(suggestion) !== id,
         ),
       );
-
-      // 3️⃣ Trigger re-deployment
-      await redeploy();
     }
   };
 
@@ -146,9 +142,6 @@ export default function CardResources({
           (resource: any) => getYoutubeResourceId(resource) !== id,
         ),
       );
-
-      // 2️⃣ Trigger re-deployment
-      await redeploy();
     }
   };
 

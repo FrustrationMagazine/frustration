@@ -23,7 +23,6 @@ export async function addSubscriber({ email, firstName, lastName }: { email: str
       unsubscribed: false,
       audienceId: process.env.SUBSCRIBERS_AUDIENCE_ID
     });
-    console.log("result", result);
   } catch (e) {
     console.error("error while creating a new subscriber contact", e);
   }

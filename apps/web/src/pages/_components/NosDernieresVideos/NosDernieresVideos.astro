@@ -36,9 +36,11 @@ const { data: records } = await readRecords({
   success: "Videos read !",
 });
 
+console.info(`${records.length} records for videos found`);
+
 const availableTypes: YoutubeResourceType[] = records.reduce(
   (types: string[], { type: recordType }: { type: YoutubeResourceType }) =>
-    types.includes(recordType) ? types : [...types, recordType],
+  types.includes(recordType) ? types : [...types, recordType],
   [],
 );
 
@@ -47,20 +49,22 @@ const availableTypes: YoutubeResourceType[] = records.reduce(
 const youtubePromises = availableTypes.map(
   async (type: YoutubeResourceType) => {
     const idsToFetch = records
-      .filter(
-        ({ type: currentType }: { type: YoutubeResourceType }) =>
-          currentType === type,
-      )
-      .map(getId);
+    .filter(
+      ({ type: currentType }: { type: YoutubeResourceType }) =>
+      currentType === type,
+    )
+    .map(getId);
     const concatenatedIds = idsToFetch.join(",");
 
     let youtubeResults: any[] = [];
 
     // 🔁 📺 Fetch
-    youtubeResults = await fetchYoutube({
-      params: { id: concatenatedIds },
-      type,
-    });
+      youtubeResults = await fetchYoutube({
+        params: { id: concatenatedIds },
+        type,
+      });
+
+    console.info(`${youtubeResults.length} Youtube results corresponding`);
 
     if (youtubeResults) {
       youtubeResults = youtubeResults.map((youtubeResult) => ({
@@ -77,7 +81,9 @@ const youtubePromises = availableTypes.map(
       // Type 2 | Channel
       if (type === "channel") {
         let youtubeChannels = youtubeResults;
-        const channelIds = (youtubeChannels as any[]).map(getId);
+        console.log("youtubeChannels", youtubeChannels);
+        const channelIds = (youtubeChannels as any[]).map(getYoutubeResourceId);
+        console.log("channelIds", channelIds);
         const channelPromises = channelIds.map(async (channelId: string) => {
           const MAX_VIDEOS_FROM_CHANNEL = 10;
 
@@ -91,10 +97,12 @@ const youtubePromises = availableTypes.map(
             },
           });
 
+          console.log("youtubeVideos", youtubeVideos);
           if (youtubeVideos) {
 
             // 🔁 📺 Fetch - To get full description we need to re-fetch videos with their id
-            const idsToFetch = youtubeVideos.map(({ id }: { id: string }) => id);
+            const idsToFetch = youtubeVideos.map(getYoutubeResourceId);
+            console.log("idsToFetch", idsToFetch);
             const concatenatedIds = idsToFetch.join(",");
             youtubeVideos = await fetchYoutube({ params: { id: concatenatedIds }, type: "video" });
 

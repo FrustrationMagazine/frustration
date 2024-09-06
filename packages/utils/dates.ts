@@ -11,7 +11,7 @@
  * Example:
  * const pastDate = new Date('2023-01-01');
  * const daysFromNow = getNumberOfDaysFromNow(pastDate);
- * console.log(daysFromNow); // Output: (number of days between January 1, 2023, and today)
+ * Output: (number of days between January 1, 2023, and today)
  *
  * @param {Date} date - The date from which to calculate the number of days to the current date.
  * @returns {number} - The number of days from the given date to the current date.
@@ -36,7 +36,7 @@ export function getNumberOfDaysFromNow(date: Date) {
  * Example:
  * const differenceInDays = 2;
  * const readableString = convertDifferenceOfDays(differenceInDays);
- * console.log(readableString); // Output: "Avant-hier"
+ * Output: "Avant-hier"
  *
  * @param {number} differenceInDays - The number of days to convert into a human-readable string.
  * @returns {string} - A human-readable string describing the difference in days in French.

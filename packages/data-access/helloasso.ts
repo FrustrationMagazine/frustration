@@ -5,7 +5,7 @@ import { TRANSACTION_TYPES, Transaction } from "./models/transactions";
 /* ------------------ */
 
 async function fetchHelloAssoToken({ endpoint_access_token }: { endpoint_access_token: string }): Promise<string | null> {
-  console.log("🔁 Récupération d'un token HelloAsso");
+  console.info("🔁 Récupération d'un token HelloAsso");
   let accessToken = null;
 
   const params = new URLSearchParams({
@@ -23,7 +23,7 @@ async function fetchHelloAssoToken({ endpoint_access_token }: { endpoint_access_
   })
     .then((response) => response.json())
     .then(({ access_token }) => {
-      console.log("✅ Récupération d'un token HelloAsso réussie");
+      console.info("✅ Récupération d'un token HelloAsso réussie");
       accessToken = access_token;
     })
     .catch((err) => console.error("Error while trying to get Helloasso access token", err));
@@ -57,8 +57,8 @@ function formatHelloAssoTransactions({ id, date, amount, items, state }: HelloAs
   const transactionType = getTransactionType(type);
 
   if (transactionType === TRANSACTION_TYPES.OTHER) {
-    console.log(`Unknown type: ${type}\n`);
-    console.log({
+    console.info(`Unknown type: ${type}\n`);
+    console.info({
       id,
       date,
       amount,
@@ -87,7 +87,7 @@ async function fetchHelloAssoTransactionsAndToken(endpoint_payments: string): Pr
   let payments: any[] = [];
   let nextToken = null;
 
-  console.log("🔁 Récupération d'une page de paiements \r\n");
+  console.info("🔁 Récupération d'une page de paiements \r\n");
   await fetch(endpoint_payments, {
     method: "GET",
     headers: {
@@ -96,7 +96,7 @@ async function fetchHelloAssoTransactionsAndToken(endpoint_payments: string): Pr
   })
     .then((res) => res.json())
     .then(({ data, pagination: { continuationToken } }) => {
-      console.log("✅ Récupération d'une page de paiements réussie \r\n");
+      console.info("✅ Récupération d'une page de paiements réussie \r\n");
       payments = data;
       nextToken = continuationToken;
     })
@@ -125,7 +125,7 @@ export async function fetchHelloAssoTransactions({ from } = { from: START_DATE_S
     month: "long",
     day: "numeric"
   };
-  console.log(`Récupération des données entre le ${startingDate.toLocaleDateString("fr-FR", options)} et le ${endingDate.toLocaleDateString("fr-FR", options)}`);
+  console.info(`Récupération des données entre le ${startingDate.toLocaleDateString("fr-FR", options)} et le ${endingDate.toLocaleDateString("fr-FR", options)}`);
 
   const params = new URLSearchParams({
     organizationSlug: process.env.HELLOASSO_ORGANIZATION_SLUG ?? "",
@@ -135,7 +135,7 @@ export async function fetchHelloAssoTransactions({ from } = { from: START_DATE_S
   });
 
   while (true) {
-    console.log(`📄 [HELLO ASSO] Page de paiements : ${counter}`);
+    console.info(`📄 [HELLO ASSO] Page de paiements : ${counter}`);
     if (continuationToken) params.set("continuationToken", continuationToken);
     ENDPOINT_PAYMENTS = `https://api.helloasso.com/v5/organizations/${process.env.HELLOASSO_ORGANIZATION_SLUG ?? ""}/payments?${params}`;
     const { payments: nextPayments, nextToken } = await fetchHelloAssoTransactionsAndToken(ENDPOINT_PAYMENTS);

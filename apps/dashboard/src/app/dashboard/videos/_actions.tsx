@@ -169,26 +169,38 @@ export async function deleteVideoRecord({
 /* ------------------------ */
 
 export async function redeploy() {
+  let status: {
+    success: string | null;
+    error: string | null;
+  } = {
+    success: null,
+    error: null,
+  };
+
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
-    console.log(`Not redeploying because we are in ${process.env.NODE_ENV}...`);
-    return;
+    status.error = `Not redeploying because we are in ${process.env.NODE_ENV}...`;
+    return status;
   }
 
   // ❌ Early return | No deploy hook found
   if (!process.env.DEPLOY_HOOK) {
-    console.error("No deploy hook found in environment variables");
-    return;
+    status.error = "No deploy hook found in environment variables";
+    return status;
   }
+
   fetch(process.env.DEPLOY_HOOK, { method: "POST" })
     .then((response: Response) => {
       if (response.ok) {
-        console.log("🚀 Redeploying production...");
+        status.success = "🚀 Redeploying production...";
       } else {
-        console.error("❌ Error while redeploying production with git hook");
+        status.error =
+          "❌ Error while trying to redeploy production with git hook";
       }
     })
     .catch((e) => {
-      console.error("❌ Error while redeploying production with git hook", e);
-    });
+      status.error = `❌ Error while fetching with git hook`;
+      console.error(e);
+    })
+    .finally(() => status);
 }

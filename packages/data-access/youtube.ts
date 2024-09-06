@@ -123,8 +123,12 @@ export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType
 /* -------------------- */
 
 export const getYoutubeResourceId = (resource: any): string => {
+  // ❌ Early return if no resource`
+  if (!resource) return "";
+
   // Case 1️⃣ | If id is directly accessible at root level of resource, return it
   if (typeof resource?.id === "string") return resource.id;
+
   // Case 2️⃣ | If id is nested in an object, return the "whateverId" value
   //
   // Example 👇
