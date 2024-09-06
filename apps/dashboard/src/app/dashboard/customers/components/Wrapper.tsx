@@ -18,8 +18,13 @@ import useCustomers from "../hooks/useCustomers";
 /* =============== */
 
 export default function () {
-  const { customers, loadingCustomers, rangeDate, setRangeDate } =
-    useCustomers();
+  const {
+    customers,
+    numberOfActiveCustomers,
+    loadingCustomers,
+    rangeDate,
+    setRangeDate,
+  } = useCustomers();
 
   return (
     <>
@@ -30,7 +35,11 @@ export default function () {
       ) : (
         <div className="max-w-[1600px] space-y-3">
           <CustomersTable customers={customers} />
-          <BottomBar customers={customers} rangeDate={rangeDate} />
+          <BottomBar
+            customers={customers}
+            numberOfActiveCustomers={numberOfActiveCustomers}
+            rangeDate={rangeDate}
+          />
         </div>
       )}
     </>

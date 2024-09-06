@@ -26,8 +26,8 @@ function getTransactionType(description: string): string {
 const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) {
-    console.log(`Unknown type: ${description}\n`);
-    console.log({
+    console.info(`Unknown type: ${description}\n`);
+    console.info({
       id,
       description,
       amount,
@@ -56,11 +56,11 @@ async function fetchStripeData({ getAll, afterTimestamp } = { getAll: false, aft
   let starting_after;
   let page = 0;
 
-  console.log(`📄 [STRIPE] Récupération des données...`);
+  console.info(`📄 [STRIPE] Récupération des données...`);
 
   do {
     try {
-      console.log(`📄 [STRIPE] Page de résultats : ${page + 1}`);
+      console.info(`📄 [STRIPE] Page de résultats : ${page + 1}`);
       let listOptions: any = {
         limit: PAGE_SIZE,
         starting_after
@@ -88,9 +88,9 @@ async function fetchStripeData({ getAll, afterTimestamp } = { getAll: false, aft
       }
     } catch (error: any) {
       if (error.type === "StripeInvalidRequestError") {
-        console.log("Invalid request error:", error.message);
+        console.info("Invalid request error:", error.message);
       } else {
-        console.log("Unexpected error:", error);
+        console.info("Unexpected error:", error);
       }
     }
   } while (getAll && hasMore);
@@ -192,28 +192,10 @@ export async function fetchStripeCustomers(
 /*    BALANCE     */
 /* -------------- */
 
-interface StripeBalance {
-  object: "balance";
-  available: StripeBalanceAmount[];
-  pending: StripeBalanceAmount[];
-  livemode: boolean;
-}
-
-interface StripeBalanceAmount {
-  amount: number;
-  currency: string;
-  source_types: {
-    card: number;
-    [key: string]: number;
-  };
-}
-
-interface StripeFormattedBalance {
+export async function fetchStripeBalance(): Promise<{
   available: number;
   pending: number;
-}
-
-export async function fetchStripeBalance(): Promise<StripeFormattedBalance> {
+}> {
   const balance = await stripe.balance.retrieve();
   const formattedBalance = {
     available: balance.available[0].amount / 100,

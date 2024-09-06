@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 
 // 🐝 API
-import { fetchCustomers } from "../_actions";
+import { fetchCustomers, fetchActiveCustomersLastMonth } from "../_actions";
 
 // 🗿 Models
 import { Customer } from "@/data-access/stripe";
@@ -12,11 +12,19 @@ import { Customer } from "@/data-access/stripe";
 const useCustomers = () => {
   const [loadingCustomers, setLoadingCustomers] = useState(true);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [numberOfActiveCustomers, setNumberOfActiveCustomers] = useState(0);
 
   const [rangeDate, setRangeDate] = useState({
     from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     to: new Date(),
   });
+
+  useEffect(() => {
+    (async () => {
+      const numberOfActiveCustomers = await fetchActiveCustomersLastMonth();
+      setNumberOfActiveCustomers(numberOfActiveCustomers);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -39,6 +47,7 @@ const useCustomers = () => {
   }, [rangeDate]);
 
   return {
+    numberOfActiveCustomers,
     customers,
     loadingCustomers,
     rangeDate,
