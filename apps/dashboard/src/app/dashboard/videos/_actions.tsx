@@ -179,7 +179,7 @@ export async function redeploy() {
 
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
-    status.error = `Not redeploying because we are in ${process.env.NODE_ENV}...`;
+    status.error = `Not redeploying because we are in ${process.env.NODE_ENV} mode...`;
     return status;
   }
 

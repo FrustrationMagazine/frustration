@@ -56,7 +56,12 @@ export default function RedeployButton() {
   );
 
   return (
-    <Button disabled={loading} className="flex gap-2" onClick={handleClick}>
+    <Button
+      size="xl"
+      disabled={loading}
+      className="flex gap-2"
+      onClick={handleClick}
+    >
       {loading ? <TbLoaderQuarter className="animate-spin" /> : <ImUpload />}
       {loading ? "Demande de redéploiement" : "Mettre à jour le site"}
     </Button>
