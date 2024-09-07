@@ -8,6 +8,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
 // 🧱 Components
 import Header from "./Header/Header.astro";
+import Footer from "./Footer/Footer.astro";
 
 // 🖊️ Fonts
 import "@fontsource/open-sans/300.css";
@@ -76,6 +77,8 @@ const {
     <main>
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>
+    <!-- 🔽 Footer -->
+    <Footer transition:persist />
     <SpeedInsights />
   </body>
 </html>

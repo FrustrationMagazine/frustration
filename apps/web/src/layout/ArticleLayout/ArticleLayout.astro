@@ -2,12 +2,12 @@
 import { Image } from "astro:assets";
 import AuthorPicture from "./components/AuthorPicture.astro";
 import TagIcon from "./assets/icons/tag.svg?raw";
-import Footer from "../BaseLayout/Footer/Footer.astro";
 import ArticleSummary from "./components/ArticleSummary";
 const { title, author, date, categories, image } = Astro.props;
 ---
 
 <div class="article-layout bg-white">
+  <!-- 📶 Scroll watcher -->
   <div class="scroll-watcher sticky top-0 h-[2vw] max-h-[15px] w-0 bg-yellow">
   </div>
   <article class="post m-auto w-[75ch] mt-6 max-w-[90vw]">
@@ -70,8 +70,6 @@ const { title, author, date, categories, image } = Astro.props;
     className="article-summary article-summary_desktop px-12"
     client:load
   />
-  <!-- 🔽 Footer -->
-  <Footer transition:persist />
 </div>
 <script>
   // 🚧 Dynamically adjust scroll watcher position
