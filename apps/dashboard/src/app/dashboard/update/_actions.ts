@@ -96,7 +96,7 @@ export async function updateTransactions({
     // 1️⃣ Insert new transactions between the last update and now
     /* --------------------------------------------------------- */
     // @ts-ignore
-    const newTransactions: Array<any> =
+    const newTransactions: Transaction[] =
       await prisma.balanceTransactions.createManyAndReturn({
         data: allTransactions,
         skipDuplicates: true,

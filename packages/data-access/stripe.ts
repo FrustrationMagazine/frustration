@@ -23,7 +23,7 @@ function getTransactionType(description: string): string {
   else return TRANSACTION_TYPES.OTHER;
 }
 
-function getTransactionSubtype(description: string): string | null {
+function getTransactionSubtype(description: string): "creation" | "update" | null {
   if (/Subscription creation/.test(description)) return TRANSACTION_SUBTYPES.SUBSCRIPTION_CREATION;
   if (/Subscription update/.test(description)) return TRANSACTION_SUBTYPES.SUBSCRIPTION_UPDATE;
   else return null;

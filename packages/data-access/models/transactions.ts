@@ -22,6 +22,6 @@ export interface Transaction {
   net: number;
   source: string;
   type: string;
-  subtype: string | null;
+  subtype: "creation" | "update" | null;
   status: string;
 }
