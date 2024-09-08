@@ -46,6 +46,7 @@ export default {
       black: "#000",
       white: "#fff",
       purple: "#5c5db7",
+      blue: "#1e40af"
     },
     fontFamily: {
       bebas: "Bebas Neue",

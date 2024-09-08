@@ -6,38 +6,112 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
 <BaseLayout title="Mentions légales">
   <PageLayout>
-    <h2 class="font-bebas text-center text-6xl font-bold mb-4">
+    <h2 class="font-bebas text-center text-6xl font-bold mb-8">
       Mentions légales
     </h2>
-    <div class="my-2">
+
+    <div class="space-y-8">
+      <!-- Données personnelles -->
+      <div class="space-y-2">
+        <h3 class="text-3xl font-bold mb-2">Données personnelles</h3>
+        <p>
+          <b>Politique de confidentialité</b>
+          Nous collectons et traitons vos données personnelles conformément à la
+          réglementation en vigueur. Les données personnelles collectées sur le site
+          ne sont en aucun cas cédées ou vendues à des tiers. Elles sont uniquement
+          utilisées pour les besoins de la communication de l’association Frustration
+          magazine et de ses activités. Plus d'informations sur <a
+            class="text-blue underline"
+            href="https://www.frustrationmagazine.fr/politique-de-confidentialite"
+            >notre politique de confidentialité</a
+          >.
+        </p>
+        <p>
+          <b
+            >Droit d’accès, de rectification et de suppression des données
+            personnelles</b
+          >
+          Conformément à la loi Informatique et Libertés, vous disposez d’un droit
+          d’accès, de rectification et de suppression des données vous concernant.
+          Pour exercer ce droit, veuillez nous contacter à l'adresse suivante <a
+            class="text-blue underline"
+            href="mailto:redaction@frustrationmagazine.fr"
+            >redaction@frustrationmagazine.fr</a
+          >
+        </p>
+      </div>
+      <!-- Cookies -->
+      <div class="space-y-2">
+        <h3 class="text-3xl font-bold mb-2">Cookies</h3>
+        <p>
+          <b>Information sur l'utilisation des cookies</b>
+          Frustration Magazine n'utilise pas de cookies.
+        </p>
+      </div>
+      <!-- Identité de l'éditeur du site -->
+      <div class="space-y-2">
+        <h3 class="text-3xl font-bold mb-2">Identité de l'éditeur du site</h3>
+        <p>
+          <b>Directeur de la publication</b> Nicolas Framont
+        </p>
+        <p>
+          <b>Contact</b>
+          <a
+            class="text-blue underline"
+            href="mailto:redaction@frustrationmagazine.fr"
+            >redaction@frustrationmagazine.fr</a
+          >
+        </p>
+        <p>
+          <b>SIRET</b> 81107310500017
+        </p>
+        <p>
+          <b>ISSN</b> 2272-4478
+        </p>
+      </div>
+      <!-- Hébergeur du site -->
+      <div class="space-y-2">
+        <h3 class="text-3xl font-bold mb-2">Hébergeur du site</h3>
+        <p>
+          <b>Nom de l'hébergeur</b> Vercel
+        </p>
+        <p>
+          <b>Site de l'hébergeur</b>
+          <a
+            class="text-blue underline"
+            href="https://vercel.com"
+            >https://vercel.com</a
+          >
+        </p>
+      </div>
+      <!-- Conditions générales d'utilisation (CGU)-->
+      <div class="space-y-2">
+        <h3 class="text-3xl font-bold mb-2">
+          Conditions générales d'utilisation (CGU)
+        </h3>
+        <p>
+          <b>Conditions d'accès et d'utilisation du site</b>
+          <span>
+            Les contenus gratuits disponibles sur ce site sont destinés à un
+            usage personnel uniquement. Toute utilisation à des fins
+            commerciales est strictement interdite.
+          </span>
+        </p>
+        <p>
+          <b>Propriété intellectuelle</b>
+          <span>
+            L’association loi 1901 Frustration magazine est propriétaire de
+            l’ensemble des contenus produits à titre gracieux dans le cadre de
+            ses activités et se réserve, en tant que structure ou via des tiers,
+            tous droits de commercialisation desdits contenus.
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="mt-10">
       Frustration magazine
       <p>
         © {new Date().getFullYear()} | Tous droits réservés
-      </p>
-    </div>
-    <div class="space-y-3">
-      <p>
-        <b>Directeur de la publication</b> : Nicolas Framont
-      </p>
-      <p>
-        <b>Contact</b> : <a href="mailto:redaction@frustrationmagazine.fr"
-          >redaction@frustrationmagazine.fr</a
-        >
-      </p>
-      <p>
-        <b>SIRET</b> : 81107310500017
-      </p>
-      <p>
-        <b>ISSN</b> : 2272-4478
-      </p>
-      <p>
-        <b>Hébergeur</b> : Haisoft – 77 Rue Vieille Levée, 45100 Orléans
-      </p>
-      <p>
-        L’association loi 1901 Frustration magazine est propriétaire de
-        l’ensemble des contenus produits à titre gracieux dans le cadre de ses
-        activités et se réserve, en tant que structure ou via des tiers, tous
-        droits de commercialisation desdits contenus.
       </p>
     </div>
   </PageLayout>
