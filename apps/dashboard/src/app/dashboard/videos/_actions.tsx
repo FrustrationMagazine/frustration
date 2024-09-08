@@ -3,6 +3,7 @@
 // 🔧 Libs
 import {
   fetchYoutube,
+  getYoutubeResourceId,
   YoutubeResourceType,
   YOUTUBE_VIDEO_URL_REGEX,
   YOUTUBE_PLAYLIST_URL_REGEX,
@@ -70,7 +71,7 @@ export async function fetchSuggestions(
 /* Fetch youtube resources by id and type */
 /* -------------------------------------- */
 
-export async function fetchByIdsAndType(
+export async function fetchYoutubeByIdsAndType(
   ids: string[],
   type: YoutubeResourceType,
 ): Promise<any> {
@@ -86,31 +87,108 @@ export async function fetchByIdsAndType(
   return resources;
 }
 
+async function upsertYoutubeVideo(youtubeVideo: any, mediaId: string) {
+  await prisma.media_video.upsert({
+    where: {
+      id: youtubeVideo.id,
+    },
+    update: {
+      title: youtubeVideo.snippet.title,
+      description: youtubeVideo.snippet.description,
+      thumbnail: youtubeVideo.snippet.thumbnails.default.url,
+      thumbnailMaxResolution: youtubeVideo.snippet.thumbnails.maxres.url,
+      channelId: youtubeVideo.snippet.channelId,
+      channelTitle: youtubeVideo.snippet.channelTitle,
+      playlistId: youtubeVideo.snippet.playlistId,
+      playlistTitle: youtubeVideo.snippet.playlistTitle,
+    },
+    create: {
+      id: youtubeVideo.id,
+      title: youtubeVideo.snippet.title,
+      description: youtubeVideo.snippet.description,
+      thumbnail: youtubeVideo.snippet.thumbnails.default.url,
+      thumbnailMaxResolution: youtubeVideo.snippet.thumbnails.maxres.url,
+      channelId: youtubeVideo.snippet.channelId,
+      channelTitle: youtubeVideo.snippet.channelTitle,
+      playlistId: youtubeVideo.snippet.playlistId,
+      playlistTitle: youtubeVideo.snippet.playlistTitle,
+      publishedAt: youtubeVideo.snippet.publishedAt,
+      mediaId,
+    },
+  });
+}
+
+async function upsertYoutubePlaylist(youtubePlaylist: any, mediaId: string) {
+  await prisma.media_playlist.upsert({
+    where: {
+      id: youtubePlaylist.id,
+    },
+    update: {
+      title: youtubePlaylist.snippet.title,
+      description: youtubePlaylist.snippet.description,
+      channelId: youtubePlaylist.snippet.channelId,
+      channelTitle: youtubePlaylist.snippet.channelTitle,
+      thumbnail: youtubePlaylist.snippet.thumbnails.default.url,
+    },
+    create: {
+      id: youtubePlaylist.id,
+      title: youtubePlaylist.snippet.title,
+      description: youtubePlaylist.snippet.description,
+      channelId: youtubePlaylist.snippet.channelId,
+      channelTitle: youtubePlaylist.snippet.channelTitle,
+      thumbnail: youtubePlaylist.snippet.thumbnails.default.url,
+      publishedAt: youtubePlaylist.snippet.publishedAt,
+      mediaId,
+    },
+  });
+}
+
+async function upsertYoutubeChannel(youtubeChannel: any, mediaId: string) {
+  await prisma.media_channel.upsert({
+    where: {
+      id: youtubeChannel.id,
+    },
+    update: {
+      title: youtubeChannel.snippet.title,
+      description: youtubeChannel.snippet.description,
+      thumbnail: youtubeChannel.snippet.thumbnails.default.url,
+    },
+    create: {
+      id: youtubeChannel.id,
+      title: youtubeChannel.snippet.title,
+      mediaId,
+      description: youtubeChannel.snippet.description,
+      thumbnail: youtubeChannel.snippet.thumbnails.default.url,
+      publishedAt: youtubeChannel.snippet.publishedAt,
+    },
+  });
+}
+
 /* ------------------------ */
 /* 📀 Database transactions */
 /* ------------------------ */
 
 /* Read video (by type)  */
 /* --------------------- */
-export async function readVideosByType(
+export async function readMediaByType(
   type: YoutubeResourceType = "video",
 ): Promise<any> {
   // 🔁 📀 Fetch
   try {
-    const videos = await prisma.video.findMany({
-      select: {
-        id: true,
-      },
+    const medias = await prisma.media.findMany({
       where: {
         type: {
           equals: type,
         },
       },
+      include: {
+        [type]: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
     });
-    return videos;
+    return medias.map((media) => media[type]).flat();
   } catch (e) {
     // ❌ Error
     console.error("Error while fetching from database by type", e);
@@ -121,7 +199,7 @@ export async function readVideosByType(
 /* Add video */
 /* --------- */
 
-export async function createVideoRecord({
+export async function createMediaRecord({
   type,
   id,
 }: {
@@ -129,8 +207,8 @@ export async function createVideoRecord({
   id: string;
 }): Promise<any> {
   // 🔁 📀 Add
-  const status = createRecord({
-    table: "video",
+  const status = await createRecord({
+    table: "media",
     data: {
       type,
       id,
@@ -139,6 +217,95 @@ export async function createVideoRecord({
     success: `La ${typesTranslations.get(type)} a été ajoutée !`,
   });
 
+  // 1. Video
+  if (type === "video") {
+    const youtubeVideos = await fetchYoutube({
+      type,
+      params: {
+        id,
+      },
+    });
+    youtubeVideos.forEach(
+      async (youtubeVideo: any) => await upsertYoutubeVideo(youtubeVideo, id),
+    );
+  }
+  // 2. Playlist
+  if (type === "playlist") {
+    // 🔁 📺 Fetch playlists
+    const youtubePlaylists = await fetchYoutube({
+      type,
+      params: {
+        id,
+      },
+    });
+
+    youtubePlaylists.forEach(async (youtubePlaylist: any) => {
+      // 🔁 📺 Upsert each playlist in media_playlist
+      await upsertYoutubePlaylist(youtubePlaylist, id);
+
+      // 🔁 📺 Fetch - We get videos of playlist as playlist items
+      const youtubePlaylistItems = await fetchYoutube({
+        params: { playlistId: id },
+        type: "playlistItem",
+      });
+
+      if (youtubePlaylistItems) {
+        const youtubeVideos = youtubePlaylistItems.map((video: any) => ({
+          ...video,
+          id: video.snippet.resourceId.videoId,
+          snippet: {
+            ...video.snippet,
+            playlistTitle: youtubePlaylist.snippet.title,
+          },
+        }));
+        youtubeVideos.forEach(async (youtubeVideo: any) =>
+          upsertYoutubeVideo(youtubeVideo, id),
+        );
+      }
+    });
+  }
+  // 3. Channel
+  if (type === "channel") {
+    // 🔁 📺 Fetch channels
+    const youtubeChannels = await fetchYoutube({
+      type,
+      params: {
+        id,
+      },
+    });
+
+    youtubeChannels.forEach(async (youtubeChannel: any) => {
+      // 🔁 📺 Upsert each channel in media_channel
+      upsertYoutubeChannel(youtubeChannel, id);
+
+      // 🔁 📺 Fetch each first X videos of each channel in media_video
+      const MAX_VIDEOS_FROM_CHANNEL = 10;
+      let youtubeVideos = await fetchYoutube({
+        params: {
+          type: "video",
+          channelId: id,
+          order: "date",
+          maxResults: MAX_VIDEOS_FROM_CHANNEL,
+        },
+      });
+
+      if (youtubeVideos) {
+        // ❓ To get full description we need to re-fetch videos with their id
+        const idsToFetch = youtubeVideos.map(getYoutubeResourceId);
+        const concatenatedIds = idsToFetch.join(",");
+        youtubeVideos = await fetchYoutube({
+          params: { id: concatenatedIds },
+          type: "video",
+        });
+
+        // 🔁 📺 Upsert each first X videos of each channel in media_video
+        youtubeVideos.forEach((youtubeVideo: any) =>
+          upsertYoutubeVideo(youtubeVideo, id),
+        );
+      }
+    });
+  }
+
   // 🎉 Return
   return status;
 }
@@ -146,7 +313,7 @@ export async function createVideoRecord({
 /* Remove video */
 /* ------------ */
 
-export async function deleteVideoRecord({
+export async function deleteMediaRecord({
   id,
   type,
 }: {
@@ -155,7 +322,7 @@ export async function deleteVideoRecord({
 }): Promise<any> {
   // 🔁 📀 Remove
   const status = deleteRecord({
-    table: "video",
+    table: "media",
     id,
     success: `La ${type} a été supprimée !`,
   });

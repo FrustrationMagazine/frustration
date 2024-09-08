@@ -102,7 +102,7 @@ export async function fetchSuggestions(params: Record<string, any>): Promise<any
 /* Fetch youtube resources by id and type */
 /* -------------------------------------- */
 
-export async function fetchByIdsAndType(ids: string[], type: YoutubeResourceType): Promise<any> {
+export async function fetchYoutubeByIdsAndType(ids: string[], type: YoutubeResourceType): Promise<any> {
   // 🥘 Prepare
   // Necessay to concatenate ids for the fetch
   const concatenatedIds = ids.join(",");

@@ -1,6 +1,5 @@
 ---
 import { readRecords } from "@/data-access/prisma";
-import { fetchYoutube, getYoutubeResourceId } from "@/data-access/youtube";
 import SectionTitle from "../SectionTitle.astro";
 import Section from "../Section.astro";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -8,161 +7,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Image } from "astro:assets";
 import { cn } from '@/utils/tailwind';
 import SidePanel from "./SidePanel.astro";
-import { type YoutubeResourceType } from "@/data-access/youtube";
-
-function getBestThumbnailUrl(thumbnails: any) {
-  if (thumbnails.maxres) return thumbnails.maxres.url;
-  if (thumbnails.standard) return thumbnails.standard.url;
-  if (thumbnails.high) return thumbnails.high.url;
-  if (thumbnails.medium) return thumbnails.medium.url;
-  if (thumbnails.default) return thumbnails.default.url;
-  return "";
-}
-
-function getId(item: any): string {
-  return item.id;
-}
 
 /* ----------- */
 //  📦 Data    //
 /* ----------- */
 
-let resourcesToDisplay: any[] = [];
-
 /* 📀 READ TABLE VIDEO */
-const { data: records } = await readRecords({
-  table: "video",
+const { data: records } : { data: any[] } = await readRecords({
+  table: "media_video",
   where: {},
+  orderBy: { publishedAt: "desc" },
   success: "Videos read !",
 });
-
-console.info(`${records.length} records for videos found`);
-
-const availableTypes: YoutubeResourceType[] = records.reduce(
-  (types: string[], { type: recordType }: { type: YoutubeResourceType }) =>
-  types.includes(recordType) ? types : [...types, recordType],
-  [],
-);
-
-/* 🐝 FETCH YOUTUBE RESOURCES */
-// For each type (channel, playlist, video) we fetch complete resources thanks to Youtube API
-const youtubePromises = availableTypes.map(
-  async (type: YoutubeResourceType) => {
-    const idsToFetch = records
-    .filter(
-      ({ type: currentType }: { type: YoutubeResourceType }) =>
-      currentType === type,
-    )
-    .map(getId);
-    const concatenatedIds = idsToFetch.join(",");
-
-    let youtubeResults: any[] = [];
-
-    // 🔁 📺 Fetch
-      youtubeResults = await fetchYoutube({
-        params: { id: concatenatedIds },
-        type,
-      });
-
-    console.info(`${youtubeResults.length} Youtube results corresponding`);
-
-    if (youtubeResults) {
-      youtubeResults = youtubeResults.map((youtubeResult) => ({
-        ...youtubeResult,
-        id: getYoutubeResourceId(youtubeResult),
-      }));
-
-      // Type 1 | Videos
-      if (type === "video") {
-        let youyubeVideos = youtubeResults;
-        resourcesToDisplay = [...resourcesToDisplay, ...youyubeVideos];
-      }
-
-      // Type 2 | Channel
-      if (type === "channel") {
-        let youtubeChannels = youtubeResults;
-        console.log("youtubeChannels", youtubeChannels);
-        const channelIds = (youtubeChannels as any[]).map(getYoutubeResourceId);
-        console.log("channelIds", channelIds);
-        const channelPromises = channelIds.map(async (channelId: string) => {
-          const MAX_VIDEOS_FROM_CHANNEL = 10;
-
-          // 🔁 📺 Fetch - We get first X videos of channel
-          let youtubeVideos = await fetchYoutube({
-            params: {
-              type: "video",
-              channelId,
-              order: "date",
-              maxResults: MAX_VIDEOS_FROM_CHANNEL,
-            },
-          });
-
-          console.log("youtubeVideos", youtubeVideos);
-          if (youtubeVideos) {
-
-            // 🔁 📺 Fetch - To get full description we need to re-fetch videos with their id
-            const idsToFetch = youtubeVideos.map(getYoutubeResourceId);
-            console.log("idsToFetch", idsToFetch);
-            const concatenatedIds = idsToFetch.join(",");
-            youtubeVideos = await fetchYoutube({ params: { id: concatenatedIds }, type: "video" });
-
-            youtubeVideos = youtubeVideos.map((youtubeVideo: any) => ({
-              ...youtubeVideo,
-              id: getYoutubeResourceId(youtubeVideo),
-            }));
-
-            resourcesToDisplay = [...resourcesToDisplay, ...youtubeVideos];
-          }
-        });
-        await Promise.all(channelPromises);
-      }
-
-      // Type 3 | Playlist
-      if (type === "playlist") {
-        let youtubePlaylists = youtubeResults;
-
-        const playlistIds = (youtubePlaylists as any[]).map(getId);
-
-        const playlistPromises = playlistIds.map(async (playlistId: string) => {
-          const youtubePlaylist = youtubePlaylists.find(
-            ({ id }) => id === playlistId,
-          );
-
-          const youtubePlaylistTitle = youtubePlaylist?.snippet.title;
-
-          // 🔁 📺 Fetch - We get first videos of playlist as playlist items
-          let youtubeVideos = await fetchYoutube({
-            params: { playlistId },
-            type: "playlistItem",
-          });
-
-          if (youtubeVideos) {
-            youtubeVideos = youtubeVideos.map((video: any) => ({
-              ...video,
-              id: video.snippet.resourceId.videoId,
-              snippet: {
-                ...video.snippet,
-                playlistTitle: youtubePlaylistTitle,
-              },
-            }));
-            resourcesToDisplay = [...resourcesToDisplay, ...youtubeVideos];
-          }
-        });
-        await Promise.all(playlistPromises);
-      }
-    }
-  },
-);
-
-// We wait for all promises representing youtube fetch requests to be resolved
-await Promise.all(youtubePromises);
-
-// We order all resources by date
-resourcesToDisplay.sort(
-  (a, b) =>
-    new Date(b?.snippet?.publishedAt ?? "").getTime() -
-    new Date(a?.snippet?.publishedAt ?? "").getTime(),
-);
 
 /* ------------- */
 //  🎨 Styles    //
@@ -176,8 +32,7 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
 //     🖥️ UI     //
 /* ------------- */
 ---
-
-{resourcesToDisplay.length > 0 ?
+{records.length > 0 ?
 <Section>
   <SectionTitle>Vidéos</SectionTitle>
   <div class="main-home-videos-container mx-auto">
@@ -187,21 +42,19 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     <div class="video-informations-container relative">
       <div class="absolute h-full w-full overflow-scroll text-white">
         {
-          resourcesToDisplay.map(
+          records.map(
             ({
-              snippet: {
-                thumbnails,
-                channelTitle,
-                channelId,
-                description,
-                title,
                 id,
+                title,
+                channelId,
+                channelTitle,
+                thumbnailMaxResolution,
+                description,
                 playlistTitle,
                 playlistId,
-              },
-            }) => (
+              }) => (
                 <SidePanel
-                  thumbnailUrl={getBestThumbnailUrl(thumbnails)}
+                  thumbnailUrl={thumbnailMaxResolution}
                   channelTitle={channelTitle}
                   channelUrl={`https://www.youtube.com/channel/${channelId}`}
                   description={description}
@@ -221,8 +74,8 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     <div class="splide splide-videos shadow-[0_0_1rem_4px_rgba(0,0,0,0.5)]">
       <!-- ARROWS -->
       <!--        -->
-      <div
-        class={cn("splide__arrows", arrowSizesMobile, arrowSizesSm, arrowSizesLg)}>
+     {<div
+        class={cn("splide__arrows", arrowSizesMobile, arrowSizesSm, arrowSizesLg, records.length < 2 ? "hidden" : "")}>
         <button class="splide__arrow splide__arrow--prev">
           <ChevronLeft
             color="#FFF200"
@@ -237,20 +90,20 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
             size={60}
           />
         </button>
-      </div>
+      </div>}
       <!--                    -->
       <!--    TRACK SLIDER    -->
       <!--                    -->
       <div class="splide__track">
         <ul class="splide__list">
           {
-            resourcesToDisplay.map((resource) => (
+            records.map((video) => (
               <li
                 class="splide__slide"
-                data-id={resource.id}
-                data-splide-youtube={`https://www.youtube.com/watch?v=${resource.id}`}>
+                data-id={video.id}
+                data-splide-youtube={`https://www.youtube.com/watch?v=${video.id}`}>
                 <Image
-                  src={`https://i.ytimg.com/vi/${resource.id}/hq720.jpg`}
+                  src={`https://i.ytimg.com/vi/${video.id}/hq720.jpg`}
                   alt=""
                   width="1280"
                   height="720"
@@ -268,13 +121,13 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
       <div class="splide__track">
         <ul class="splide__list gap-2">
           {
-            resourcesToDisplay.map((resource) => (
+            records.map((video) => (
               <li
                 class="splide__slide"
-                data-id={resource.id}
-                data-splide-youtube={`https://www.youtube.com/watch?v=${resource.id}`}>
+                data-id={video.id}
+                data-splide-youtube={`https://www.youtube.com/watch?v=${video.id}`}>
                 <Image
-                  src={getBestThumbnailUrl(resource.snippet.thumbnails)}
+                  src={video.thumbnailMaxResolution}
                   alt=""
                   width="1280"
                   height="720"

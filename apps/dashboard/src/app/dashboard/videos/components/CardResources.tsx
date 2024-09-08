@@ -25,10 +25,9 @@ import { AiOutlineVideoCameraAdd, AiFillDelete } from "react-icons/ai";
 // 💥 Server actions
 import {
   fetchSuggestions,
-  createVideoRecord,
-  deleteVideoRecord,
-  readVideosByType,
-  fetchByIdsAndType,
+  createMediaRecord,
+  deleteMediaRecord,
+  readMediaByType,
 } from "../_actions";
 
 // 🔧 Libs
@@ -58,51 +57,31 @@ export default function CardResources({
   const [loadingSuggestions, setLoadingSuggestions] =
     React.useState<boolean>(false);
 
-  const [records, setRecords] = React.useState<any>([]);
-  const [loadingRecords, setLoadingRecords] = React.useState(true);
-
   const [requestStatus, setRequestStatus] = React.useState<{
     success: string | null;
     error: string | null;
   }>({ success: null, error: null });
 
-  // 📀 Read videos resources
+  const [medias, setMedias] = React.useState<any>([]);
+  const [loadingMedias, setLoadingMedias] = React.useState(true);
+
   React.useEffect(() => {
     (async function () {
-      // ⏳ Loading...
-      setLoadingRecords(true);
-      try {
-        // 🔁 📀 Read videos resources
-        const resources = await readVideosByType(type);
-        const resourcesIds = resources.map(
-          (resource: any) => resource.id,
-        ) as string[];
-
-        // 🔁 🐝 Get full resources video information
-        let results = (await fetchByIdsAndType(resourcesIds, type)) ?? [];
-        // Get the same display order as the resources stored in database
-        results = resources.map((resource: any) =>
-          results.find((result: any) => result.id === resource.id),
-        );
-        setRecords(results);
-      } catch (e) {
-        console.error("Error while loading resources", e);
-        return;
-      } finally {
-        setLoadingRecords(false);
-      }
+      const medias = await readMediaByType(type);
+      setMedias(medias);
+      setLoadingMedias(false);
     })();
   }, []);
 
-  // 📀 Add video
-  const handleAddRecord = async ({
+  // 📀 Add media
+  const handleAddMedia = async ({
     type,
     id,
   }: {
     type: YoutubeResourceType;
     id: string;
   }) => {
-    const status = await createVideoRecord({ type, id });
+    const status = await createMediaRecord({ type, id });
     setRequestStatus(status);
 
     // ✅ Resource created !
@@ -111,8 +90,16 @@ export default function CardResources({
       let suggestionToAdd = suggestions.find(
         (suggestion: any) => getYoutubeResourceId(suggestion) === id,
       );
-      suggestionToAdd = { snippet: { ...suggestionToAdd.snippet }, id };
-      setRecords([suggestionToAdd, ...records]);
+
+      suggestionToAdd = {
+        id: suggestionToAdd.id,
+        type,
+        thumbnail: suggestionToAdd.snippet.thumbnails.default.url,
+        title: suggestionToAdd.snippet.title,
+        description: suggestionToAdd.snippet.description,
+      };
+
+      setMedias((medias: any[]) => [suggestionToAdd, ...medias]);
 
       // 2️⃣ Remove suggestion from current suggestions list
       setSuggestions(
@@ -123,25 +110,15 @@ export default function CardResources({
     }
   };
 
-  // 📀 Remove video
-  const handleDeleteRecord = async ({
-    type,
-    id,
-  }: {
-    type: YoutubeResourceType;
-    id: string;
-  }) => {
-    const status = await deleteVideoRecord({ type, id });
+  // 📀 Remove media
+  const handleDeleteMedia = async ({ id }: { id: string }) => {
+    const status = await deleteMediaRecord({ type, id });
     setRequestStatus(status);
 
-    // ✅ Resource deleted !
+    // ✅ Resource created !
     if (status.success) {
       // 1️⃣ Remove deleted resource from listed resources
-      setRecords(
-        records.filter(
-          (resource: any) => getYoutubeResourceId(resource) !== id,
-        ),
-      );
+      setMedias(medias.filter((media: any) => media.id !== id));
     }
   };
 
@@ -165,27 +142,6 @@ export default function CardResources({
     setSuggestions(suggestions);
   };
 
-  const { toast } = useToast();
-  React.useEffect(
-    function displayToaster() {
-      if (requestStatus?.success) {
-        toast({
-          title: "✅ Succès",
-          description: requestStatus?.success,
-        });
-      }
-
-      if (requestStatus?.error) {
-        toast({
-          title: "Une erreur s'est produite",
-          description: requestStatus?.error,
-          variant: "destructive",
-        });
-      }
-    },
-    [requestStatus, toast],
-  );
-
   // 🧱 Components
   const CardTitle = (
     <h3 className={`text-5xl ${bebasNeue.className}`}>{title}</h3>
@@ -194,7 +150,7 @@ export default function CardResources({
   const AddButton = (
     <Button
       className="mx-auto flex items-center gap-2 rounded-md"
-      disabled={loadingRecords}
+      disabled={false /*loadingRecords */}
       variant="inverted"
     >
       <AiOutlineVideoCameraAdd size={17} />
@@ -247,30 +203,30 @@ export default function CardResources({
                 thumbnailUrl={suggestion.snippet.thumbnails.default.url}
                 texts={texts}
                 Icon={AiOutlineVideoCameraAdd}
-                iconAction={handleAddRecord}
+                iconAction={handleAddMedia}
                 actionType="add"
               />
             ))
           )}
         </DialogContent>
       </Dialog>
-      {loadingRecords ? (
+      {loadingMedias ? (
         <SuperBallsLoader className="mx-auto my-12" />
-      ) : records.length === 0 ? (
+      ) : medias.length === 0 ? (
         <p>🤷‍♂️ Aucune {typesTranslations.get(type)} </p>
       ) : (
         <ul className="space-y-1">
-          {records.map((resource: any) => (
+          {medias.map((media: any) => (
             <ResourcePreview
-              id={getYoutubeResourceId(resource)}
-              key={getYoutubeResourceId(resource)}
+              id={media.id}
+              key={media.id}
               type={type}
-              thumbnailUrl={resource.snippet.thumbnails.default.url}
-              title={resource.snippet.title}
-              description={resource.snippet.description}
+              thumbnailUrl={media.thumbnail}
+              title={media.title}
+              description={media.description}
               texts={texts}
               Icon={AiFillDelete}
-              iconAction={handleDeleteRecord}
+              iconAction={handleDeleteMedia}
               actionType="remove"
             />
           ))}
