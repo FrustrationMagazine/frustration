@@ -169,7 +169,7 @@ export async function fetchStripeCustomers(
 
     hasMore = has_more;
     subscriptions = [...subscriptions, ...data];
-    customersId = [...customersId, ...data.map((sub: any) => sub.customer)];
+    customersId = [...customersId, ...data.map((subscription: any) => subscription.customer)];
   } while (hasMore);
 
   if (Array.isArray(customersId)) {
@@ -181,16 +181,20 @@ export async function fetchStripeCustomers(
       customers = [...customers, ...temp_customers];
     }
 
-    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email }, index) => ({
-      id,
-      created: new Date(created * 1000),
-      name,
-      email,
-      adresse: subscriptions[index].metadata.adresse,
-      code_postal: subscriptions[index].metadata.code_postal,
-      ville: subscriptions[index].metadata.ville,
-      amount: subscriptions[index].items.data[0].price.unit_amount
-    }));
+    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email }) => {
+      const subscription = subscriptions.find((subscription) => subscription.customer === id);
+      console.log("subscription", subscription);
+      return {
+        id,
+        created: new Date(created * 1000),
+        name,
+        email,
+        adresse: subscription.metadata.adresse,
+        code_postal: subscription.metadata.code_postal,
+        ville: subscription.metadata.ville,
+        amount: subscription.items.data[0].price.unit_amount
+      };
+    });
     return formattedCustomers;
   }
   return [];
