@@ -183,7 +183,6 @@ export async function fetchStripeCustomers(
 
     const formattedCustomers: Customer[] = customers.map(({ id, created, name, email }) => {
       const subscription = subscriptions.find((subscription) => subscription.customer === id);
-      console.log("subscription", subscription);
       return {
         id,
         created: new Date(created * 1000),

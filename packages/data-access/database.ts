@@ -8,11 +8,14 @@ export async function fetchNumberOfActiveCustomersLastMonth() {
   let activeSubscribers: BalanceTransactions[] = [];
 
   try {
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
     activeSubscribers = await prisma.balanceTransactions.findMany({
       where: {
         created: {
-          gte: new Date(now.getFullYear(), now.getMonth() - 1, 1),
-          lt: new Date(now.getFullYear(), now.getMonth(), 1)
+          gte: lastMonth,
+          lt: currentMonth
         },
         type: {
           equals: "subscription"
