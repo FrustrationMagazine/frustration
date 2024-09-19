@@ -7,7 +7,7 @@ import React from "react";
 import { DatePickerWithRange } from "@/ui/components/date-range-picker";
 import TitleWithDates from "./TitleWithDates";
 import CustomersTable from "./CustomersTable";
-import BottomBar from "./BottomBar";
+import TopBar from "./TopBar";
 import Loader from "../../loading";
 
 // 🪝 Hooks
@@ -34,12 +34,12 @@ export default function () {
         <Loader />
       ) : (
         <div className="max-w-[1600px] space-y-3">
-          <CustomersTable customers={customers} />
-          <BottomBar
+          <TopBar
             customers={customers}
             numberOfActiveCustomers={numberOfActiveCustomers}
             rangeDate={rangeDate}
           />
+          <CustomersTable customers={customers} />
         </div>
       )}
     </>
