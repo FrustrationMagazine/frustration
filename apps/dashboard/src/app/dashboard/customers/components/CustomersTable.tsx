@@ -40,12 +40,12 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          className='px-0 hover:bg-inherit hover:text-inherit'
+          variant="ghost"
+          className="px-0 hover:bg-inherit hover:text-inherit"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Date
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -64,7 +64,7 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Nom",
     cell: ({ row }) => {
       const name = row.getValue("name") as unknown as string;
-      return <span className='font-medium'>{prettifyName(name)}</span>;
+      return <span className="font-medium">{prettifyName(name)}</span>;
     },
   },
   {
@@ -80,12 +80,12 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          className='px-0 hover:bg-inherit hover:text-inherit'
+          variant="ghost"
+          className="px-0 hover:bg-inherit hover:text-inherit"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Montant
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -105,7 +105,7 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Ville",
     cell: ({ row }) => {
       const city = row.getValue("ville") as unknown as string;
-      return <span className='capitalize'>{city.toLowerCase()}</span>;
+      return <span className="capitalize">{city.toLowerCase()}</span>;
     },
   },
   {
@@ -137,10 +137,11 @@ export default function ({ customers }: { customers: Customer[] }) {
     },
   });
   // Early return if no customers loaded
-  if (customers.length === 0) return <p>Aucun nouvel abonné sur cette période 😭</p>;
+  if (customers.length === 0)
+    return <p>Aucun nouvel abonné sur cette période 😭</p>;
 
   return (
-    <div className='mt-4 self-stretch overflow-auto rounded-md bg-white px-6 py-2 shadow-lg'>
+    <div className="mt-4 self-stretch overflow-auto rounded-md bg-white px-6 py-2 shadow-lg">
       <Table>
         <TableCaption>Abonnés récents</TableCaption>
         <TableHeader>
@@ -151,7 +152,10 @@ export default function ({ customers }: { customers: Customer[] }) {
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                      : (flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        ) as React.ReactNode)}
                   </TableHead>
                 );
               })}
@@ -160,10 +164,18 @@ export default function ({ customers }: { customers: Customer[] }) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            <TableRow
+              key={row.id}
+              data-state={row.getIsSelected() && "selected"}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {
+                    flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext(),
+                    ) as React.ReactNode
+                  }
                 </TableCell>
               ))}
             </TableRow>
