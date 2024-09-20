@@ -344,6 +344,16 @@ export async function insertOrUpdateMediaRecord({
   }
 }
 
+/* Refresh medias in database */
+/* -------------------------- */
+export async function refreshMediasInDatabase() {
+  const medias = await prisma.media.findMany();
+  const mediasPromises = medias.map(async (media) => {
+    insertOrUpdateMediaRecord({ type: media.type, id: media.id });
+  });
+  await Promise.all(mediasPromises);
+}
+
 /* ------------------------ */
 /* 🪝 Deployent hooks       */
 /* ------------------------ */
@@ -358,11 +368,7 @@ export async function redeploy() {
   };
 
   // ✨ Refresh from existing medias in database
-  const medias = await prisma.media.findMany();
-  const mediasPromises = medias.map(async (media) => {
-    insertOrUpdateMediaRecord({ type: media.type, id: media.id });
-  });
-  await Promise.all(mediasPromises);
+  await refreshMediasInDatabase();
 
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
