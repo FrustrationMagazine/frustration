@@ -7,7 +7,6 @@ import {
 } from "@/data-access/wordpress";
 import { Image } from "astro:assets";
 import Button from "./Button.astro";
-import H3 from "./H3.astro";
 import Excerpt from "./Excerpt.astro";
 const { article } = Astro.props;
 const IMAGE_SIZE = 1200;
@@ -17,7 +16,10 @@ const IMAGE_SIZE = 1200;
   <a href={`/${formatSlug(article)}`}>
     <div
       class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
-      <H3>{formatTitle(article)}</H3>
+      <h3
+        class="mb-4 text-balance bg-black px-10 py-4 text-center font-bebas text-3xl font-bold text-yellow md:text-4xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
+        {formatTitle(article)}
+      </h3>
       <Excerpt content={formatExcerpt(article)} />
       <Button>Lire</Button>
     </div>
