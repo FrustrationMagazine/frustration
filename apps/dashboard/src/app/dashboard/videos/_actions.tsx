@@ -217,6 +217,41 @@ export async function createMediaRecord({
     success: `La ${typesTranslations.get(type)} a été ajoutée !`,
   });
 
+  // 🎉 Return
+  return status;
+}
+
+/* Remove video */
+/* ------------ */
+
+export async function deleteMediaRecord({
+  id,
+  type,
+}: {
+  id: string;
+  type: YoutubeResourceType;
+}): Promise<any> {
+  // 🔁 📀 Remove
+  const status = deleteRecord({
+    table: "media",
+    id,
+    success: `La ${type} a été supprimée !`,
+  });
+
+  // 🎉 Return
+  return status;
+}
+
+/* Fetch and update media records */
+/* ------------------------------ */
+
+export async function insertOrUpdateMediaRecord({
+  type,
+  id,
+}: {
+  type: YoutubeResourceType;
+  id: string;
+}): Promise<any> {
   // 1. Video
   if (type === "video") {
     const youtubeVideos = await fetchYoutube({
@@ -258,8 +293,9 @@ export async function createMediaRecord({
             playlistTitle: youtubePlaylist.snippet.title,
           },
         }));
-        youtubeVideos.forEach(async (youtubeVideo: any) =>
-          upsertYoutubeVideo(youtubeVideo, id),
+        youtubeVideos.forEach(
+          async (youtubeVideo: any) =>
+            await upsertYoutubeVideo(youtubeVideo, id),
         );
       }
     });
@@ -276,7 +312,7 @@ export async function createMediaRecord({
 
     youtubeChannels.forEach(async (youtubeChannel: any) => {
       // 🔁 📺 Upsert each channel in media_channel
-      upsertYoutubeChannel(youtubeChannel, id);
+      await upsertYoutubeChannel(youtubeChannel, id);
 
       // 🔁 📺 Fetch each first X videos of each channel in media_video
       const MAX_VIDEOS_FROM_CHANNEL = 10;
@@ -299,36 +335,13 @@ export async function createMediaRecord({
         });
 
         // 🔁 📺 Upsert each first X videos of each channel in media_video
-        youtubeVideos.forEach((youtubeVideo: any) =>
-          upsertYoutubeVideo(youtubeVideo, id),
+        youtubeVideos.forEach(
+          async (youtubeVideo: any) =>
+            await upsertYoutubeVideo(youtubeVideo, id),
         );
       }
     });
   }
-
-  // 🎉 Return
-  return status;
-}
-
-/* Remove video */
-/* ------------ */
-
-export async function deleteMediaRecord({
-  id,
-  type,
-}: {
-  id: string;
-  type: YoutubeResourceType;
-}): Promise<any> {
-  // 🔁 📀 Remove
-  const status = deleteRecord({
-    table: "media",
-    id,
-    success: `La ${type} a été supprimée !`,
-  });
-
-  // 🎉 Return
-  return status;
 }
 
 /* ------------------------ */
@@ -343,6 +356,13 @@ export async function redeploy() {
     success: null,
     error: null,
   };
+
+  // ✨ Refresh from existing medias in database
+  const medias = await prisma.media.findMany();
+  const mediasPromises = medias.map(async (media) => {
+    insertOrUpdateMediaRecord({ type: media.type, id: media.id });
+  });
+  await Promise.all(mediasPromises);
 
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
