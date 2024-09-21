@@ -72,9 +72,9 @@ const {
     <title>Frustration Magazine - {title}</title>
     <ViewTransitions />
   </head>
-  <body class="min-h-screen bg-yellow">
+  <body class="min-h-screen bg-yellow flex flex-col">
     <Header transition:persist />
-    <main>
+    <main class="flex-grow flex flex-col">
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>
     <!-- 🔽 Footer -->
