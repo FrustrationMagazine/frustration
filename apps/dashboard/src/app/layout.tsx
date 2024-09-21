@@ -24,9 +24,11 @@ export const metadata: Metadata = {
 
 // 🧱 Components
 const Header = (
-  <header className='flex h-fit w-full items-center justify-center bg-black py-2'>
-    <Link href='/dashboard'>
-      <h1 className={`text-7xl uppercase text-frustration-yellow ${bebasNeue.className}`}>
+  <header className="flex h-fit w-full items-center justify-center bg-black py-2">
+    <Link href="/dashboard">
+      <h1
+        className={`text-7xl uppercase text-frustration-yellow ${bebasNeue.className}`}
+      >
         Dashboard
       </h1>
     </Link>
@@ -35,22 +37,26 @@ const Header = (
 
 const isDevelopmentEnvironment = process.env.NODE_ENV === "development";
 const DevelopmentBadge = isDevelopmentEnvironment ? (
-  <Badge variant='secondary' className='absolute right-3 top-3 font-bold'>
+  <Badge variant="secondary" className="absolute right-3 top-3 font-bold">
     🚧 Dev mode
   </Badge>
 ) : null;
 
 /* ======================= */
-/*          UI             */
+/*         📄 UI           */
 /* ======================= */
 
-export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
   return (
-    <html lang='fr'>
+    <html lang="fr">
       <body className={`${inter.className} flex h-screen flex-col antialiased`}>
         {DevelopmentBadge}
         {Header}
-        <main className='flex flex-grow overflow-auto'>{children}</main>
+        <main className="flex flex-grow overflow-auto">{children}</main>
         <Toaster />
         <SpeedInsights />
       </body>
