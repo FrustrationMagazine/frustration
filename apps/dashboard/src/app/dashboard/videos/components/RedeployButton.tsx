@@ -30,6 +30,7 @@ export default function RedeployButton() {
   const handleClick = async () => {
     setLoading(true);
     const status = await redeploy();
+    console.log("status", status);
     setRequestStatus(status);
     setLoading(false);
   };
@@ -37,6 +38,7 @@ export default function RedeployButton() {
   const { toast } = useToast();
   React.useEffect(
     function displayToaster() {
+      console.log("requestStatus", requestStatus);
       if (requestStatus?.success) {
         toast({
           title: "✅ Succès",

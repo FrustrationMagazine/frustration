@@ -36,9 +36,6 @@ import {
   getYoutubeResourceId,
 } from "@/data-access/youtube";
 
-// 🪝 Hooks
-import { useToast } from "@/ui/components/use-toast";
-
 // 🌍 i18n
 import { typesTranslations } from "../_models";
 

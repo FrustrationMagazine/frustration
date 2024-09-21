@@ -347,11 +347,11 @@ export async function insertOrUpdateMediaRecord({
 /* Refresh medias in database */
 /* -------------------------- */
 export async function refreshMediasInDatabase() {
+  console.info("🔄 Refreshing medias in database...");
   const medias = await prisma.media.findMany();
-  const mediasPromises = medias.map(async (media) => {
-    insertOrUpdateMediaRecord({ type: media.type, id: media.id });
-  });
-  await Promise.all(mediasPromises);
+  medias.forEach(
+    async ({ type, id }) => await insertOrUpdateMediaRecord({ type, id }),
+  );
 }
 
 /* ------------------------ */
@@ -382,18 +382,14 @@ export async function redeploy() {
     return status;
   }
 
-  fetch(process.env.DEPLOY_HOOK, { method: "POST" })
-    .then((response: Response) => {
-      if (response.ok) {
-        status.success = "🚀 Redeploying production...";
-      } else {
-        status.error =
-          "❌ Error while trying to redeploy production with git hook";
-      }
-    })
-    .catch((e) => {
-      status.error = `❌ Error while fetching with git hook`;
-      console.error(e);
-    })
-    .finally(() => status);
+  try {
+    const response = await fetch(process.env.DEPLOY_HOOK, { method: "POST" });
+    if (response.ok) status.success = "🚀 Redeploying production...";
+    if (!response.ok) status.error = "❌ Error while redeploying production";
+  } catch (e) {
+    status.error = `❌ Error while fetching with git hook`;
+    console.error(e);
+  }
+
+  return status;
 }
