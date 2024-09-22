@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
+
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   plugins: [require("@tailwindcss/typography"), require("@tailwindcss/aspect-ratio")],
@@ -24,6 +26,7 @@ export default {
         sliding: "sliding 60s linear infinite",
         slidingReverse: "slidingReverse 60s linear infinite",
         disco: "disco 2s linear infinite",
+        shimmer: "shimmer 2s linear infinite",
       },
       keyframes: {
         sliding: {
@@ -38,6 +41,14 @@ export default {
           "0%": { rotate: "0turn" },
           "100%": { rotate: "1turn" },
         },
+         shimmer: {
+          from: {
+            "backgroundPosition": "0 0"
+          },
+          to: {
+            "backgroundPosition": "-200% 0"
+          }
+        }
       },
     },
     colors: {
@@ -46,7 +57,8 @@ export default {
       black: "#000",
       white: "#fff",
       purple: "#5c5db7",
-      blue: "#1e40af"
+      blue: "#1e40af",
+      slate: colors.slate
     },
     fontFamily: {
       bebas: "Bebas Neue",

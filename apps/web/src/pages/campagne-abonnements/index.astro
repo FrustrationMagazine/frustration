@@ -1,7 +1,33 @@
 ---
+// 🧱 Components
+import SupportingCard from "./_components/SupportingCard.astro";
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+// 💽 Data
+const CARDS_DATA = [
+  {
+    title: "MINI",
+    subtitle: "Petit abonnement, grosse confiance",
+    price: 5,
+    numberOfGifts: 1,
+    colorsRange: ["#09009f", "#00ff95"],
+  },
+  {
+    title: "MEDIUM",
+    subtitle: "L'art de la synthèse",
+    numberOfGifts: 2,
+    price: 9,
+    colorsRange: ["#c21500", "#ffc500"],
+  },
+  {
+    title: "MAX",
+    subtitle: "Un véritable mécène !",
+    numberOfGifts: 3,
+    price: 15,
+    colorsRange: ["#C04848", "#480048"],
+  },
+];
 ---
 
 <BaseLayout title="Abonnement">
@@ -59,5 +85,18 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
         >
       </p>
     </article>
+    <h3
+      class="mt-10 text-4xl lg:text-6xl text-pretty text-center uppercase font-bebas">
+      Nos formules de soutien
+    </h3>
+    <div
+      class="relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-3 lg:grid-cols-3">
+      {CARDS_DATA.map((data) => <SupportingCard {...data} />)}
+    </div>
   </PageLayout>
 </BaseLayout>
+<style>
+  .cards-wrapper {
+    width: min(95vw, 1300px);
+  }
+</style>

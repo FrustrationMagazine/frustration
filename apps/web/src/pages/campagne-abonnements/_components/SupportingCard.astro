@@ -1,0 +1,35 @@
+---
+const { title, subtitle, numberOfGifts, price, colorsRange } = Astro.props;
+---
+
+<aside class="flex flex-col items-center">
+  <header class=`w-full text-white text-center px-4 py-2`>
+    <h5 class="font-bold text-xl">{title}</h5>
+    <h6>{subtitle}</h6>
+  </header>
+  <p class="price my-5 font-open-sans bg-clip-text">
+    <span class="text-4xl font-bold">{price}€</span>
+    <br />
+    <span>/mois</span>
+  </p>
+  <p class="my-6 text-5xl">{"🎁".repeat(numberOfGifts)}</p>
+  <slot />
+
+  <button
+    class="inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+    Choisir
+  </button>
+</aside>
+<style define:vars={{ startColor: colorsRange[0], endColor: colorsRange[1] }}>
+  :is(aside header, aside .price) {
+    background-image: linear-gradient(
+      45deg,
+      var(--startColor),
+      var(--endColor) 80%
+    );
+  }
+
+  aside .price {
+    color: transparent;
+  }
+</style>
