@@ -5,5 +5,7 @@ export const maxDuration = 60;
 
 export async function GET() {
   await refreshMediasInDatabase();
-  return new Response(`🕰️ Refreshed videos from region`);
+  if (process.env.DEPLOY_HOOK)
+    await fetch(process.env.DEPLOY_HOOK, { method: "POST" });
+  return new Response(`🕰️ Refreshed videos and redeploying`);
 }
