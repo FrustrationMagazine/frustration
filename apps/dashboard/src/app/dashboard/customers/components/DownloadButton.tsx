@@ -39,13 +39,13 @@ export const FILE_HEADERS: FileHeader[] = [
     display: true,
   },
   {
-    name: "Montant",
-    key: "amount",
+    name: "Ville",
+    key: "ville",
     display: true,
   },
   {
-    name: "Adresse",
-    key: "adresse",
+    name: "Adresse postale",
+    key: "adresse_postale",
     display: true,
   },
   {
@@ -54,8 +54,8 @@ export const FILE_HEADERS: FileHeader[] = [
     display: true,
   },
   {
-    name: "Ville",
-    key: "ville",
+    name: "Montant",
+    key: "amount",
     display: true,
   },
 ];
@@ -75,18 +75,8 @@ export default function ({
   };
 }) {
   const handleDownloadCustomersList = () => {
-    const CSVinURL = createCSVinURL(
-      FILE_HEADERS.map(({ name }) => name),
-      customers.map(({ name, email, amount, adresse, code_postal, ville }) => ({
-        name,
-        email,
-        amount,
-        adresse,
-        code_postal,
-        ville,
-      })),
-    );
-
+    const headers = FILE_HEADERS.map(({ name }) => name);
+    const CSVinURL = createCSVinURL(headers, customers);
     let filename = `nouveaux_abonnes_du_${explicitDate(rangeDate.from)}_au_${explicitDate(rangeDate.to)}.csv`;
     filename = filename.toLowerCase().replace(/\s/g, "_");
     downloadFileFromUrl(CSVinURL, filename);
@@ -95,8 +85,8 @@ export default function ({
   return (
     <Button
       onClick={handleDownloadCustomersList}
-      className='flex items-center gap-2 rounded-md'
-      variant='inverted'
+      className="flex items-center gap-2 rounded-md"
+      variant="inverted"
     >
       <IoIosDownload size={17} />
       <span> Télécharger </span>
