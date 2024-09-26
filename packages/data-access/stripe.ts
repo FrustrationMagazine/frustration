@@ -168,8 +168,10 @@ export async function fetchStripeCustomers(
     });
 
     hasMore = has_more;
-    subscriptions = [...subscriptions, ...data];
-    customersId = [...customersId, ...data.map((subscription: any) => subscription.customer)];
+    // Filter out non valid subscriptions
+    const newSubscriptions = data.filter((subscription: any) => subscription.status === "active");
+    subscriptions = [...subscriptions, ...newSubscriptions];
+    customersId = [...customersId, ...newSubscriptions.map((subscription: any) => subscription.customer)];
   } while (hasMore);
 
   if (Array.isArray(customersId)) {
