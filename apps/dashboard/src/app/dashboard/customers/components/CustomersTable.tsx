@@ -141,7 +141,7 @@ export default function ({ customers }: { customers: Customer[] }) {
     return <p>Aucun nouvel abonné sur cette période 😭</p>;
 
   return (
-    <div className="mt-4 self-stretch overflow-auto rounded-md bg-white px-6 py-2 shadow-lg">
+    <div className="self-stretch overflow-auto rounded-md bg-white px-6 py-2 shadow-lg">
       <Table>
         <TableCaption>Abonnés récents</TableCaption>
         <TableHeader>

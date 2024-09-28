@@ -1,10 +1,12 @@
 ---
+// 🔧 Utils
 import { cn } from "@/utils/tailwind";
+
 const { title, subtitle, numberOfGifts, price, colorsRange, additionalClass } =
   Astro.props;
 ---
 
-<aside class={cn("flex flex-col items-center shadow-lg pb-4", additionalClass)}>
+<aside class={cn("flex flex-col items-center shadow-lg pb-6", additionalClass)}>
   <header class=`w-full text-white text-center px-4 py-2`>
     <h5 class="font-bold text-2xl">{title}</h5>
     <h6 class="text-lg">{subtitle}</h6>

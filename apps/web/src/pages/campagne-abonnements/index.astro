@@ -1,6 +1,7 @@
 ---
 // 🧱 Components
 import SupportingCard from "./_components/SupportingCard.astro";
+import StripeForm from "./_components/StripeForm.tsx";
 // 🎨 Assets
 import { Image } from "astro:assets";
 import ParasitesCover from "./_assets/parasites.webp";
@@ -66,7 +67,7 @@ const CARDS_DATA = [
       </p>
 
       <p>
-        Ce printemps, nous souhaitons <b>augmenter notre budget</b> et ainsi pouvoir
+        Dorénavant, nous souhaitons <b>augmenter notre budget</b> et ainsi pouvoir
         financer davantage de travail : des chroniques régulières sur l’écologie,
         le féminisme et les médias, de nouveaux formats vidéos (entretiens, argumentaires,
         éditos…) et des évènements (conférences-débats filmées avec les personnalités
@@ -138,6 +139,9 @@ const CARDS_DATA = [
           </div>
         </ul>
       </SupportingCard>
+    </div>
+    <div class="mt-12">
+      <StripeForm client:load />
     </div>
   </PageLayout>
 </BaseLayout>

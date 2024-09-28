@@ -33,13 +33,15 @@ export default function () {
       {loadingCustomers ? (
         <Loader />
       ) : (
-        <div className="max-w-[1600px] space-y-3">
+        <div className="flex max-w-[1600px] flex-grow flex-col space-y-3">
           <TopBar
             customers={customers}
             numberOfActiveCustomers={numberOfActiveCustomers}
             rangeDate={rangeDate}
           />
-          <CustomersTable customers={customers} />
+          <div className="h-[1px] flex-grow overflow-auto">
+            <CustomersTable customers={customers} />
+          </div>
         </div>
       )}
     </>
