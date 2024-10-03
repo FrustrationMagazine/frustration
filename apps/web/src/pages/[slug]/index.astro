@@ -27,6 +27,15 @@ const article: ArticleRaw = (await fetchArticle({ slug }, [
   "content",
 ])) as ArticleRaw;
 
+// This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=300, s-maxage=31536000",
+);
+
+// Cache strategy and ISR
+// https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro/
+
 // Static for first posts
 // export const getStaticPaths = async () => {
 //   const ARTICLES_TO_DISPLAY = 9;
