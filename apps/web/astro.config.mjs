@@ -8,11 +8,13 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   output: "hybrid",
+  prefetch: true,
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
   integrations: [react(), tailwind()],
   image: {
+    // To download external wordpress images
     domains: ["i0.wp.com"],
   },
   plugins: ["prettier-plugin-astro"],
