@@ -6,11 +6,14 @@ import { convertUTCtoDate } from "@/utils/dates";
 /* ------------------- */
 /*        STRIPE       */
 /* ------------------- */
-
-export const stripe = new Stripe(process.env.STRIPE_PROD_SECRET_KEY as string, {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: null as any,
   telemetry: false
 });
+
+/* ================== */
+/*      FORMAT        */
+/* ================== */
 
 function getTransactionType(description: string): string {
   if (/(Subscription creation)|(Subscription update)/.test(description)) return TRANSACTION_TYPES.SUBSCRIPTION;
@@ -56,6 +59,10 @@ const formatStripeTransactions = ({ id, description, amount, net, available_on, 
     status
   };
 };
+
+/* ================== */
+/*        READ        */
+/* ================== */
 
 async function fetchStripeData({ getAll, afterTimestamp } = { getAll: false, afterTimestamp: 0 }): Promise<any[]> {
   const PAGE_SIZE = 100;
@@ -106,7 +113,6 @@ async function fetchStripeData({ getAll, afterTimestamp } = { getAll: false, aft
   return data;
 }
 
-/* ------------------- */
 /*    TRANSACTIONS     */
 /* ------------------- */
 
@@ -129,7 +135,6 @@ export async function fetchStripeTransactions({ afterTimestamp } = { afterTimest
   return formattedBalanceTransactions;
 }
 
-/* ---------------- */
 /*    CUSTOMERS     */
 /* ---------------- */
 
@@ -201,7 +206,6 @@ export async function fetchStripeCustomers(
   return [];
 }
 
-/* -------------- */
 /*    BALANCE     */
 /* -------------- */
 
@@ -217,7 +221,6 @@ export async function fetchStripeBalance(): Promise<{
   return formattedBalance;
 }
 
-/* ------------------ */
 /*    LAST UPDATE     */
 /* ------------------ */
 
@@ -233,4 +236,16 @@ export async function fetchLastUpdate(): Promise<Date | null> {
     return null;
   }
   return null;
+}
+
+/* ==================== */
+/*        CREATE        */
+/* ==================== */
+
+export async function createStripeSubscription(customerId: string, priceId: string) {
+  const subscription = await stripe.subscriptions.create({
+    customer: customerId,
+    items: [{ price: priceId }]
+  });
+  return subscription;
 }

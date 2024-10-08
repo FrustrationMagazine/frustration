@@ -52,15 +52,16 @@ export default {
       },
     },
     colors: {
+      ...colors,
       yellow: "#fff200",
       red: "#700002",
       black: "#000",
       white: "#fff",
       purple: "#5c5db7",
       blue: "#1e40af",
-      slate: colors.slate
     },
     fontFamily: {
+      montserrat: "Montserrat",
       bebas: "Bebas Neue",
       arca: "'Arca Majora 3'",
       "open-sans": "Open Sans",

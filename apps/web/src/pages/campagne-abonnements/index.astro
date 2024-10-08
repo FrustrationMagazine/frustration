@@ -1,41 +1,21 @@
 ---
 // 🧱 Components
-import SupportingCard from "./_components/SupportingCard.astro";
-import StripeForm from "./_components/StripeForm.tsx";
+import SubscriptionCard from "./_components/SubscriptionCard.astro";
+import SubscriptionForm from "./SubscriptionForm";
 // 🎨 Assets
 import { Image } from "astro:assets";
 import ParasitesCover from "./_assets/parasites.webp";
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+
 // 💽 Data
-const CARDS_DATA = [
-  {
-    title: "MINI",
-    subtitle: "Petit abonnement, grosse confiance",
-    price: 5,
-    numberOfGifts: 1,
-    colorsRange: ["#09009f", "#00ff95"],
-  },
-  {
-    title: "MEDIUM",
-    subtitle: "L'art de la synthèse",
-    numberOfGifts: 2,
-    price: 9,
-    colorsRange: ["#c21500", "#ffc500"],
-  },
-  {
-    title: "MAX",
-    subtitle: "Un véritable mécène !",
-    numberOfGifts: 3,
-    price: 15,
-    colorsRange: ["#C04848", "#480048"],
-  },
-];
+import { SUBSCRIPTION_CARDS_DATA } from "./_models";
 ---
 
 <BaseLayout title="Abonnement">
   <PageLayout>
+    <!-- 🅰️ Titles -->
     <h2
       class="text-6xl lg:text-8xl text-pretty text-center font-bold uppercase font-bebas">
       Frustration a besoin de vous !
@@ -44,6 +24,7 @@ const CARDS_DATA = [
       class="text-4xl lg:text-6xl text-pretty text-center font-light uppercase font-bebas">
       Faites-nous grandir d'un coup
     </h3>
+    <!-- 🔠 Text -->
     <article class="mt-10 font-open-sans tracking-wide text-lg space-y-4">
       <p>
         Frustration est un <b>média d’opinion, engagé et apartisan</b> : financés
@@ -58,9 +39,9 @@ const CARDS_DATA = [
         >, la classe laborieuse, la gagne.
       </p>
       <p>
-        Actuellement, 1300 personnes donnent chaque mois de 5 à 15€ à notre
+        Actuellement, 1320 personnes donnent chaque mois de 5 à 15€ à notre
         magazine. Grâce à elles et eux nous avons pu établir un budget mensuel
-        permettant de <b>financer notre temps de travail</b>, pour 3 équivalents
+        permettant de <b>financer notre temps de travail</b>, pour 2 équivalents
         temps plein. Nous avons ainsi pu <b
           >lancer le volet vidéo de notre magazine</b
         >. Merci à elles et eux !
@@ -93,19 +74,22 @@ const CARDS_DATA = [
       class="mt-10 mb-10 lg:mb-20 text-6xl lg:text-6xl text-pretty text-center uppercase font-bebas">
       Nos formules de soutien
     </h3>
+    <!-- 🃏 CARDS -->
     <div
-      class="relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <SupportingCard {...CARDS_DATA[0]}>
+      class="<!-- 🤏 MINI -->
+relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <SubscriptionCard {...SUBSCRIPTION_CARDS_DATA[0]}>
         <ul style={{ listStyleType: "'✊ '" }}>
           <li><b>5</b> autocollants</li>
           <li><b>2</b> affiches inédites</li>
           <li>Accès au <b>groupe Frustration</b></li>
           <li><b>Newsletter</b> régulière</li>
         </ul>
-      </SupportingCard>
-      <SupportingCard
+      </SubscriptionCard>
+      <!-- 💪 MEDIUM -->
+      <SubscriptionCard
         additionalClass="lg:scale-105"
-        {...CARDS_DATA[1]}>
+        {...SUBSCRIPTION_CARDS_DATA[1]}>
         <ul style={{ listStyleType: "'✊ '" }}>
           <li><b>5</b> autocollants</li>
           <li><b>2</b> affiches inédites</li>
@@ -115,8 +99,9 @@ const CARDS_DATA = [
         <ul style={{ listStyleType: "'🗞️ '" }}>
           <li><b>Numéro papier</b> annuel</li>
         </ul>
-      </SupportingCard>
-      <SupportingCard {...CARDS_DATA[2]}>
+      </SubscriptionCard>
+      <!-- 💥 MAXI -->
+      <SubscriptionCard {...SUBSCRIPTION_CARDS_DATA[2]}>
         <ul style={{ listStyleType: "'✊ '" }}>
           <li><b>5</b> autocollants</li>
           <li><b>2</b> affiches inédites</li>
@@ -138,10 +123,11 @@ const CARDS_DATA = [
             />
           </div>
         </ul>
-      </SupportingCard>
+      </SubscriptionCard>
     </div>
+    <!-- 📝 💰 FORM 💰 -->
     <div class="mt-12">
-      <StripeForm client:load />
+      <SubscriptionForm client:load />
     </div>
   </PageLayout>
 </BaseLayout>

@@ -1,6 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
-
   "compilerOptions": {
     "strictNullChecks": true,
     "allowJs": true,
@@ -14,14 +13,27 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/data-access/*": ["../../packages/data-access/*"],
-      "@/data-access/prisma": ["../../packages/data-access/prisma/client"],
-
-      "@/utils/*": ["../../packages/utils/*"],
-
-      "@web/layout/*": ["src/layout/*"],
-      "@web/styles/*": ["src/styles/*"],
+      "@/data-access/*": [
+        "../../packages/data-access/*"
+      ],
+      "@/ui/*": [
+        "../../packages/ui/*"
+      ],
+      "@/data-access/prisma": [
+        "../../packages/data-access/prisma/client"
+      ],
+      "@/utils/*": [
+        "../../packages/utils/*"
+      ],
+      "@web/layout/*": [
+        "src/layout/*"
+      ],
+      "@web/styles/*": [
+        "src/styles/*"
+      ],
     },
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
