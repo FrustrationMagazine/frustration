@@ -87,7 +87,7 @@ export default function StripeForm({
       id="payment-form"
       onSubmit={handleSubmit}>
       {/* 2️⃣ CONTACT INFO */}
-      <h3 className="font-montserrat mb-6 flex flex-col items-center justify-center text-center text-2xl lg:flex-row lg:justify-start lg:gap-2 lg:text-left">
+      <h3 className="mb-6 flex flex-col items-center justify-center text-center font-montserrat text-2xl lg:flex-row lg:justify-start lg:gap-2 lg:text-left">
         <span className="max-lg:text-3xl">2️⃣</span>
         <span>Vos informations de contact</span>
       </h3>
@@ -98,7 +98,7 @@ export default function StripeForm({
       />
       <div className="my-2"></div>
       <AddressElement options={{ mode: "shipping" }} />
-      <h3 className="font-montserrat mb-6 mt-10 flex flex-col items-center justify-center text-center text-2xl lg:flex-row lg:justify-start lg:gap-2 lg:text-left">
+      <h3 className="mb-6 mt-10 flex flex-col items-center justify-center text-center font-montserrat text-2xl lg:flex-row lg:justify-start lg:gap-2 lg:text-left">
         <span className="max-lg:text-3xl">3️⃣</span>
         <span>Vos informations de paiement</span>
       </h3>

@@ -1,3 +1,6 @@
+export const ALL_FORMULAS = ["mini", "maxi", "medium"] as const;
+export type FormulaType = (typeof ALL_FORMULAS)[number];
+
 export const SUBSCRIPTION_CARDS_DATA = [
   // 🤏 MINI
   {

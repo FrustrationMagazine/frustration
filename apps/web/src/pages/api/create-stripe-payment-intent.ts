@@ -4,41 +4,55 @@ import { stripe } from "@/data-access/stripe";
 export const prerender = "false";
 
 export const POST: APIRoute = async ({ request }: { request: any }) => {
-  const { formula } = await request.json();
-  const REGEX_SUBSCRIPTION_PRODUCT = /Abonnement/;
+  const { priceId } = await request.json();
 
-  // 1️⃣ Get the subscription product
-  const products = await stripe.products.list().then((res) => res.data);
-  const productSubscription = products.find(({ name }) =>
-    REGEX_SUBSCRIPTION_PRODUCT.test(name),
-  );
+  // // 1️⃣ Get the subscription product
+  // const products = await stripe.products.list().then(({ data }) => data);
+  // const productSubscription = products.find(({ name }) =>
+  //   REGEX_SUBSCRIPTION_PRODUCT.test(name),
+  // );
 
-  // 2️⃣ Get the price of the chosen formula
-  if (productSubscription) {
-    const prices = await stripe.prices.list().then((res) => res.data);
-    const chosenPrice = prices.find(
-      ({ metadata: { name }, product }) =>
-        name === formula && product === productSubscription.id,
-    );
-
-    // 3️⃣ Create a payment intent
-    if (chosenPrice && chosenPrice.unit_amount) {
-      const amount = chosenPrice.unit_amount;
-      const currency = chosenPrice.currency;
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency,
-      });
-
-      // 4️⃣ Return the payment intent
-      return new Response(JSON.stringify({ paymentIntent }), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
+  // 1️⃣ Get the full price object
+  let price;
+  try {
+    price = await stripe.prices.retrieve(priceId);
+  } catch (e) {
+    console.error("Error retrieving price:", e);
+    return new Response(JSON.stringify({ error: "Failed to retrieve price" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
-  return new Response();
+  // 2️⃣ Create the payment intent
+  if (price && price.unit_amount) {
+    let paymentIntent;
+    try {
+      paymentIntent = await stripe.paymentIntents.create({
+        amount: price.unit_amount,
+        currency: price.currency,
+      });
+    } catch (e) {
+      console.error("Error creating payment intent:", e);
+      return new Response(
+        JSON.stringify({ error: "Failed to create payment intent" }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    // 3️⃣ Return the payment intent
+    return new Response(JSON.stringify({ paymentIntent }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 };

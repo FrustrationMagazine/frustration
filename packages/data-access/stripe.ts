@@ -11,6 +11,8 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   telemetry: false
 });
 
+export const { STRIPE_PRICE_SUBSCRIPTION_MINI, STRIPE_PRICE_SUBSCRIPTION_MEDIUM, STRIPE_PRICE_SUBSCRIPTION_MAXI } = process.env;
+
 /* ================== */
 /*      FORMAT        */
 /* ================== */
