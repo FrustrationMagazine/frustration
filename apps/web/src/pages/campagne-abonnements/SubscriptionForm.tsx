@@ -10,15 +10,11 @@ import { Elements } from "@stripe/react-stripe-js";
 import StripeForm from "./_components/StripeForm";
 import FormulaCard from "./_components/FormulaCard";
 
-// 🗿 Models
-import { type FormulaType, ALL_FORMULAS } from "./_models";
-
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise = loadStripe(
-  "pk_test_51LmuVdDkQL5ueMP8JnZtHdkuUJ9V9EIDlzQVUByHETjVtnmZHOlAyK341DRhwyG4XCoxuO4ntda3WsbNn1AgIOVn00vO0NqGml",
-);
+const { PUBLIC_STRIPE_PUBLIC_KEY } = import.meta.env;
+const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLIC_KEY);
 const PAYMENT_INTENT_ENDPOINT = "/api/create-stripe-payment-intent";
 
 const {
