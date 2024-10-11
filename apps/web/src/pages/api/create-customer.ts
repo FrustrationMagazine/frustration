@@ -5,7 +5,7 @@ export const prerender = "false";
 
 export const POST: APIRoute = async ({ request }: { request: any }) => {
   const { name, address, email } = await request.json();
-  console.info("🛜 /api/create-customer", name, address, email);
+  console.info("🛜 /api/create-customer \n", name, "\n", address, "\n", email);
 
   // 1️⃣ Create a customer
   let customer;
