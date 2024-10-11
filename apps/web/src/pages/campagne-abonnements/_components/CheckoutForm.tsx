@@ -6,78 +6,98 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import Stripe from "stripe";
-import { type StripePaymentElementOptions } from "@stripe/stripe-js";
 import { MessageCircleWarning } from "lucide-react";
+import { type StripePaymentElementOptions } from "@stripe/stripe-js";
 import { cn } from "@/utils/tailwind";
 
 const paymentElementOptions: StripePaymentElementOptions = {
   layout: "tabs",
 };
 
-const CREATE_CUSTOMER_ENDPOINT = "/api/create-stripe-customer";
-const CREATE_SUBSCRIPTION_ENDPOINT = "/api/create-stripe-subscription";
+const CREATE_CUSTOMER_ENDPOINT = "/api/create-customer";
+const CREATE_SUBSCRIPTION_ENDPOINT = "/api/create-subscription";
 
-export default function StripeForm({
-  paymentIntent,
-}: {
-  paymentIntent: Stripe.PaymentIntent;
-}) {
+export default function StripeForm({ priceId }: { priceId: string }) {
+  // 🪝 Hooks
   const stripe = useStripe();
   const elements = useElements();
 
-  const [message, setMessage] = useState<string | null>(null);
+  // 🔼 State
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
   const disableCheckout = isLoading || !stripe || !elements;
 
+  /* Handle payment */
+  /* -------------- */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!stripe || !elements) return;
 
+    // 1️⃣ Check form is valid
+    const { error: submitError } = await elements.submit();
+    if (submitError) return;
+
     setIsLoading(true);
 
+    // 2️⃣ Create customer
+    let customer;
     const addressElement = elements.getElement("address");
-
-    let subscription;
-
     if (addressElement && email) {
-      const {
-        complete,
-        value: { address, name },
-      } = await addressElement.getValue();
+      const { address, name } = await addressElement
+        .getValue()
+        .then(({ value }) => value);
 
-      if (complete && address && name) {
-        const { customer } = await fetch(CREATE_CUSTOMER_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, address, email, paymentIntent }),
-        }).then((res) => res.json());
+      const resCustomerCreation = await fetch(CREATE_CUSTOMER_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, address, email }),
+      }).then((res) => res.json());
 
-        console.log("customer", customer);
-      }
+      if (resCustomerCreation?.customer)
+        customer = resCustomerCreation.customer;
     }
 
-    // const { error } = await stripe.confirmPayment({
-    //   elements,
-    //   confirmParams: {
-    //     // Make sure to change this to your payment completion page
-    //     return_url: "http://localhost:3000/complete",
-    //   },
-    // });
+    // 3️⃣ Create subscription
+    let subscription;
+    if (customer) {
+      const resSubscriptionCreation = await fetch(
+        CREATE_SUBSCRIPTION_ENDPOINT,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ customerId: customer.id, priceId }),
+        },
+      ).then((res) => res.json());
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    // if (error.type === "card_error" || error.type === "validation_error") {
-    //   setMessage(error.message || null);
-    // } else {
-    //   setMessage("Une erreur inattendue est survenue.");
-    // }
+      if (resSubscriptionCreation?.subscription)
+        subscription = resSubscriptionCreation.subscription;
+    }
+
+    if (subscription) {
+      const clientSecret =
+        subscription?.latest_invoice?.payment_intent?.client_secret;
+
+      if (clientSecret) {
+        // 4️⃣ Try to confirm payment and redirect if that the case or handle error
+        const { error } = await stripe.confirmPayment({
+          elements,
+          clientSecret,
+          confirmParams: {
+            // Make sure to change this to your payment completion page
+            return_url: "http://localhost:3000/complete",
+          },
+        });
+
+        if (error.type === "card_error" || error.type === "validation_error") {
+          setMessage(error.message ?? null);
+        } else {
+          setMessage("Une erreur inattendue est survenue.");
+        }
+      }
+    }
 
     setIsLoading(false);
   };
@@ -92,9 +112,7 @@ export default function StripeForm({
         <span>Vos informations de contact</span>
       </h3>
       <LinkAuthenticationElement
-        onChange={(event) => {
-          setEmail(event.value.email);
-        }}
+        onChange={({ value: { email } }) => setEmail(email)}
       />
       <div className="my-2"></div>
       <AddressElement options={{ mode: "shipping" }} />
@@ -102,6 +120,14 @@ export default function StripeForm({
         <span className="max-lg:text-3xl">3️⃣</span>
         <span>Vos informations de paiement</span>
       </h3>
+
+      {/* 💬 Error or success message */}
+      {/* 3️⃣ PAYMENT */}
+      <PaymentElement
+        id="payment-element"
+        options={paymentElementOptions}
+        className="mb-4"
+      />
 
       {/* 💬 Error or success message */}
       {message && (
@@ -112,12 +138,6 @@ export default function StripeForm({
           {message}
         </div>
       )}
-      {/* 3️⃣ PAYMENT */}
-      <PaymentElement
-        id="payment-element"
-        options={paymentElementOptions}
-        className="mb-4"
-      />
 
       {/* ⬛ VALIDATION */}
       <button

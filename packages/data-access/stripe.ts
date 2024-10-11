@@ -6,8 +6,8 @@ import { convertUTCtoDate } from "@/utils/dates";
 /* ------------------- */
 /*        STRIPE       */
 /* ------------------- */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: null as any,
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2024-09-30.acacia",
   telemetry: false
 });
 

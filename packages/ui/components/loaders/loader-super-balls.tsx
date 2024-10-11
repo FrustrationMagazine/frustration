@@ -1,6 +1,4 @@
 // 🔩 Base
-import React from "react";
-
 import styles from "./loader-super-balls.module.css";
 import { cn } from "@/utils/tailwind";
 

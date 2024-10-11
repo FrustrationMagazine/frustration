@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react";
 
 // 🔧 Libs
-import { loadStripe } from "@stripe/stripe-js";
-import Stripe from "stripe";
+import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
 
 // 🧱 Components
 import { Elements } from "@stripe/react-stripe-js";
-import StripeForm from "./_components/StripeForm";
+import CheckoutForm from "./_components/CheckoutForm";
+
 import FormulaCard from "./_components/FormulaCard";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -15,7 +15,6 @@ import FormulaCard from "./_components/FormulaCard";
 // This is your test publishable API key.
 const { PUBLIC_STRIPE_PUBLIC_KEY } = import.meta.env;
 const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLIC_KEY);
-const PAYMENT_INTENT_ENDPOINT = "/api/create-stripe-payment-intent";
 
 const {
   PUBLIC_STRIPE_PRICE_SUBSCRIPTION_MINI,
@@ -23,36 +22,22 @@ const {
   PUBLIC_STRIPE_PRICE_SUBSCRIPTION_MAXI,
 } = import.meta.env;
 
+const DEFAULT_PRICE = PUBLIC_STRIPE_PRICE_SUBSCRIPTION_MEDIUM;
+
+const options: StripeElementsOptions = {
+  mode: "subscription",
+  amount: 900,
+  currency: "eur",
+  appearance: {
+    theme: "stripe",
+  },
+};
+
+/* ==================================================== */
+/* ==================================================== */
+
 export default function SubscriptionForm() {
-  const [paymentIntent, setPaymentIntent] =
-    useState<null | Stripe.PaymentIntent>(null);
-  const [selectedPriceId, setSelectedPriceId] = useState("");
-
-  // 🔑 Payment Intent
-  useEffect(
-    () => {
-      (async function createStripePaymentIntent() {
-        if (selectedPriceId) {
-          setPaymentIntent(null);
-          const { paymentIntent } = await fetch(PAYMENT_INTENT_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ priceId: selectedPriceId }),
-          }).then((res) => res.json());
-          setPaymentIntent(paymentIntent);
-        }
-      })();
-    },
-    // Each time we opt for a different formula, we create a new payment intent
-    [selectedPriceId],
-  );
-
-  const options = {
-    clientSecret: paymentIntent?.client_secret,
-    appearance: {
-      theme: "stripe",
-    },
-  };
+  const [selectedPriceId, setSelectedPriceId] = useState(DEFAULT_PRICE);
 
   return (
     <div className="mx-auto mt-32 max-w-[500px]">
@@ -107,13 +92,11 @@ export default function SubscriptionForm() {
         </ul>
       </div>
       {/* 2️⃣ 🗒️ Client informations and payment */}
-      {paymentIntent?.client_secret ? (
-        <Elements
-          options={options as any}
-          stripe={stripePromise}>
-          <StripeForm paymentIntent={paymentIntent} />
-        </Elements>
-      ) : null}
+      <Elements
+        options={options as any}
+        stripe={stripePromise}>
+        <CheckoutForm priceId={selectedPriceId} />
+      </Elements>
 
       {/* Specific rule for displaying check icon only on selected card */}
       <style>
