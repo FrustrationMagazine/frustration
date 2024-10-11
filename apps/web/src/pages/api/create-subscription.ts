@@ -5,7 +5,7 @@ export const prerender = "false";
 
 // https://docs.stripe.com/payments/accept-a-payment-deferred?type=subscription
 export const POST: APIRoute = async ({ request }: { request: any }) => {
-  const { customerId, priceId } = await request.json();
+  const { customerId, customerAddress, priceId } = await request.json();
   console.info("🛜 /api/create-subscription", { priceId });
 
   // 1️⃣ Create a subscription
@@ -18,6 +18,7 @@ export const POST: APIRoute = async ({ request }: { request: any }) => {
           price: priceId,
         },
       ],
+      metadata: { ...customerAddress },
       payment_behavior: "default_incomplete",
       payment_settings: { save_default_payment_method: "on_subscription" },
       expand: ["latest_invoice.payment_intent", "pending_setup_intent"],

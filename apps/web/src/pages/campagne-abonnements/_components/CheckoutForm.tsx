@@ -14,6 +14,14 @@ const paymentElementOptions: StripePaymentElementOptions = {
   layout: "tabs",
 };
 
+const { MODE, SITE } = import.meta.env;
+
+const SUCCESS_PAGE = "paiement-termine";
+const REDIRECT_URL =
+  MODE === "production"
+    ? `${SITE}/${SUCCESS_PAGE}`
+    : `http://localhost:4321/${SUCCESS_PAGE}`;
+
 const CREATE_CUSTOMER_ENDPOINT = "/api/create-customer";
 const CREATE_SUBSCRIPTION_ENDPOINT = "/api/create-subscription";
 
@@ -68,7 +76,11 @@ export default function StripeForm({ priceId }: { priceId: string }) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ customerId: customer.id, priceId }),
+          body: JSON.stringify({
+            customerId: customer.id,
+            customerAddress: customer.address,
+            priceId,
+          }),
         },
       ).then((res) => res.json());
 
@@ -86,8 +98,7 @@ export default function StripeForm({ priceId }: { priceId: string }) {
           elements,
           clientSecret,
           confirmParams: {
-            // Make sure to change this to your payment completion page
-            return_url: "http://localhost:3000/complete",
+            return_url: REDIRECT_URL,
           },
         });
 

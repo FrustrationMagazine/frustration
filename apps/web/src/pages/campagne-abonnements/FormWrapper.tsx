@@ -38,7 +38,6 @@ const options: StripeElementsOptions = {
 
 export default function SubscriptionForm() {
   const [selectedPriceId, setSelectedPriceId] = useState(DEFAULT_PRICE);
-
   return (
     <div className="mx-auto mt-32 max-w-[500px]">
       {/* 🔠 Titres */}

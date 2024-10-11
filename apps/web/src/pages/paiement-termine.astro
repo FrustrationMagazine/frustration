@@ -1,0 +1,33 @@
+---
+export const prerender = false;
+// 🖼️ Layout
+import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
+import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+---
+
+<BaseLayout title="Mentions légales">
+  <PageLayout>
+    <!-- 🅰️ Titles -->
+    <h2 class="font-bebas text-center text-6xl font-bold mb-8">
+      Merci pour votre soutien !
+    </h2>
+    <p class="mb-3">
+      Votre abonnement est bien activé ! 🎉 Un <b>mail de confirmation</b> a été
+      envoyé à l'adresse indiquée lors de la souscription.
+    </p>
+    <p class="mb-3">
+      Vous recevrez d'ici quelques semaines vos <b>contreparties</b> à l'adresse
+      que vous avez renseignée lors de votre paiement. N'hésitez pas à <b
+        >nous contacter à <a
+          class="text-blue underline"
+          href="mailto:redaction@frustrationmagazine.fr"
+          >redaction@frustrationmagazine.fr</a
+        >
+      </b>si vous avez des questions ou besoin d'effectuer une modification.
+    </p>
+    <p class="mb-3">
+      En attendant, vous pouvez continuer à naviguer sur notre site pour
+      découvrir nos derniers articles et vidéos 😉
+    </p>
+  </PageLayout>
+</BaseLayout>
