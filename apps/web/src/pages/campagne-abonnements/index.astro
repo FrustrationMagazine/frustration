@@ -1,7 +1,7 @@
 ---
 // 🧱 Components
 import SubscriptionCard from "./_components/SubscriptionCard.astro";
-import SubscriptionForm from "./SubscriptionForm";
+import FormWrapper from "./FormWrapper";
 // 🎨 Assets
 import { Image } from "astro:assets";
 import ParasitesCover from "./_assets/parasites.webp";
@@ -76,8 +76,8 @@ import { SUBSCRIPTION_CARDS_DATA } from "./_models";
     </h3>
     <!-- 🃏 CARDS -->
     <div
-      class="<!-- 🤏 MINI -->
-relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      class="relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <!-- 🤏 MINI -->
       <SubscriptionCard {...SUBSCRIPTION_CARDS_DATA[0]}>
         <ul style={{ listStyleType: "'✊ '" }}>
           <li><b>5</b> autocollants</li>
@@ -127,7 +127,7 @@ relative cards-wrapper left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-
     </div>
     <!-- 📝 💰 FORM 💰 -->
     <div class="mt-12">
-      <SubscriptionForm client:load />
+      <FormWrapper client:load />
     </div>
   </PageLayout>
 </BaseLayout>

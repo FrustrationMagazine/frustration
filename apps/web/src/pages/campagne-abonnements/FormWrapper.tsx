@@ -1,5 +1,5 @@
 // 🔩 Base
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // 🔧 Libs
 import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
