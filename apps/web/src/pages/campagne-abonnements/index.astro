@@ -1,7 +1,7 @@
 ---
 // 🧱 Components
 import SubscriptionCard from "./_components/SubscriptionCard.astro";
-import FormWrapper from "./FormWrapper";
+import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
 // 🎨 Assets
 import { Image } from "astro:assets";
 import ParasitesCover from "./_assets/parasites.webp";
@@ -127,7 +127,7 @@ import { SUBSCRIPTION_CARDS_DATA } from "./_models";
     </div>
     <!-- 📝 💰 FORM 💰 -->
     <div class="mt-12">
-      <FormWrapper client:load />
+      <CheckoutFormWrapper client:load />
     </div>
   </PageLayout>
 </BaseLayout>

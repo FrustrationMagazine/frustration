@@ -6,9 +6,9 @@ import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
 
 // 🧱 Components
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "./_components/CheckoutForm";
+import CheckoutForm from "./CheckoutForm";
 
-import FormulaCard from "./_components/FormulaCard";
+import FormulaCard from "./FormulaCard";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.

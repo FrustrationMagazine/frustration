@@ -2,8 +2,15 @@
 // 🔧 Utils
 import { cn } from "@/utils/tailwind";
 
-const { title, subtitle, numberOfGifts, price, colorsRange, additionalClass } =
-  Astro.props;
+const {
+  id,
+  title,
+  subtitle,
+  numberOfGifts,
+  price,
+  colorsRange,
+  additionalClass,
+} = Astro.props;
 ---
 
 <aside class={cn("flex flex-col items-center shadow-lg pb-6", additionalClass)}>
@@ -21,11 +28,22 @@ const { title, subtitle, numberOfGifts, price, colorsRange, additionalClass } =
   </div>
 
   <button
+    data-button={id}
     class="mt-auto text-xl w-[80%] bg-clip-text font-montserrat uppercase py-2 px-4 font-bold"
     type="button">
     Choisir
   </button>
 </aside>
+<script define:vars={{ id }}>
+  const buttonEl = document.querySelector(`button[data-button=${id}]`);
+  buttonEl.addEventListener("click", () => {
+    const formulaCardLabelEl = document.querySelector(
+      `[data-formula=${id}] label`,
+    );
+    formulaCardLabelEl.scrollIntoView({ behavior: "smooth" });
+    formulaCardLabelEl.click();
+  });
+</script>
 <style define:vars={{ startColor: colorsRange[0], endColor: colorsRange[1] }}>
   :is(aside header, aside .price, aside button, aside button::before) {
     background-image: linear-gradient(

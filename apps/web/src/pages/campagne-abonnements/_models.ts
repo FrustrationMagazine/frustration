@@ -4,6 +4,7 @@ export type FormulaType = (typeof ALL_FORMULAS)[number];
 export const SUBSCRIPTION_CARDS_DATA = [
   // 🤏 MINI
   {
+    id: "mini",
     title: "MINI",
     subtitle: "Petit abonnement, grosse confiance",
     price: 5,
@@ -12,6 +13,7 @@ export const SUBSCRIPTION_CARDS_DATA = [
   },
   // 💪 MEDIUM
   {
+    id: "medium",
     title: "MEDIUM",
     subtitle: "L'art de la synthèse",
     numberOfGifts: 2,
@@ -20,6 +22,7 @@ export const SUBSCRIPTION_CARDS_DATA = [
   },
   // 💥 MAXI
   {
+    id: "maxi",
     title: "MAX",
     subtitle: "Un véritable mécène !",
     numberOfGifts: 3,

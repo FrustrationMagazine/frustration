@@ -30,7 +30,9 @@ const FormulaCard = ({
   selectedPriceId: string;
   setSelectedPriceId: React.Dispatch<React.SetStateAction<string>>;
 }) => (
-  <li className="transition-transform [&:has(input:checked)]:scale-105">
+  <li
+    data-formula={id}
+    className="transition-transform [&:has(input:checked)]:scale-105">
     <input
       id={id}
       type="radio"
