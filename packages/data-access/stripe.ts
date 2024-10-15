@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-import { prisma } from "./prisma/client";
 import { TRANSACTION_TYPES, TRANSACTION_SUBTYPES, Transaction } from "./models/transactions";
 import { convertUTCtoDate } from "@/utils/dates";
 
@@ -37,18 +36,7 @@ function getTransactionSubtype(description: string): "creation" | "update" | nul
 const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
   const transactionSubtype = getTransactionSubtype(description);
-  if (transactionType === TRANSACTION_TYPES.OTHER) {
-    console.info(`Unknown type: ${description}\n`);
-    console.info({
-      id,
-      description,
-      amount,
-      net,
-      available_on,
-      created,
-      status
-    });
-  }
+  if (transactionType === TRANSACTION_TYPES.OTHER) console.info(`Unknown type: ${description}\n`);
   return {
     id,
     created: convertUTCtoDate(created),
@@ -197,9 +185,9 @@ export async function fetchStripeCustomers(
         created: new Date(created * 1000),
         name,
         email,
-        adresse: subscription.metadata.adresse,
-        code_postal: subscription.metadata.code_postal,
-        ville: subscription.metadata.ville,
+        adresse: subscription.metadata?.adresse || subscription.metadata?.line1,
+        code_postal: subscription.metadata?.code_postal || subscription.metadata?.postal_code,
+        ville: subscription.metadata?.ville || subscription.metadata?.city,
         amount: subscription.items.data[0].price.unit_amount
       };
     });
@@ -221,23 +209,6 @@ export async function fetchStripeBalance(): Promise<{
     pending: balance.pending[0].amount / 100
   };
   return formattedBalance;
-}
-
-/*    LAST UPDATE     */
-/* ------------------ */
-
-export async function fetchLastUpdate(): Promise<Date | null> {
-  try {
-    const lastBalanceRow = await prisma.balance.findFirst({});
-    if (lastBalanceRow?.updatedAt) {
-      const date = new Date(lastBalanceRow.updatedAt);
-      return date;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-  return null;
 }
 
 /* ==================== */

@@ -19,22 +19,35 @@ const tabs: TabType[] = [
   { name: "Dons", transactionsTypes: ["donation"] },
 ];
 
-// 🧰 Config
-export const dynamic = "force-dynamic";
-
 export default async () => {
   const transactionsByMonth = await getTransactionsByMonth();
+
+  // ❌ Early return if no data
+  if (transactionsByMonth.length === 0)
+    return (
+      <h3 className="grid w-[50%] max-w-[700px] grow place-items-center text-center text-2xl font-bold">
+        🤷‍♂️ Aucune donnée disponible à afficher, essayez de mettre à jour la base
+        de données depuis l'onglet "Mises à jour"
+      </h3>
+    );
+
   return (
-    <TabGroup className='flex h-full w-full flex-col'>
+    <TabGroup className="flex h-full w-full flex-col">
       <TabList tabs={tabs} />
-      <TabPanels className='grow overflow-auto'>
+      <TabPanels className="grow overflow-auto">
         {tabs.map(({ name, transactionsTypes }) => {
-          let filteredTransactionsByMonth = transactionsByMonth.filter(({ type }) =>
-            transactionsTypes.includes(type),
+          let filteredTransactionsByMonth = transactionsByMonth.filter(
+            ({ type }) => transactionsTypes.includes(type),
           );
-          filteredTransactionsByMonth = groupByMonthAndSum(filteredTransactionsByMonth);
+          filteredTransactionsByMonth = groupByMonthAndSum(
+            filteredTransactionsByMonth,
+          );
           return (
-            <TabPanel key={name} name={name} transactionsByMonth={filteredTransactionsByMonth} />
+            <TabPanel
+              key={name}
+              name={name}
+              transactionsByMonth={filteredTransactionsByMonth}
+            />
           );
         })}
       </TabPanels>

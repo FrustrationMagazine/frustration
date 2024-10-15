@@ -28,6 +28,7 @@ import {
   createMediaRecord,
   deleteMediaRecord,
   readMediaByType,
+  refreshMediasInDatabase,
 } from "../_actions";
 
 // 🔧 Libs
@@ -38,6 +39,8 @@ import {
 
 // 🌍 i18n
 import { typesTranslations } from "../_models";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 export default function CardResources({
   type,
@@ -53,11 +56,6 @@ export default function CardResources({
   const [suggestions, setSuggestions] = React.useState<any>([]);
   const [loadingSuggestions, setLoadingSuggestions] =
     React.useState<boolean>(false);
-
-  const [requestStatus, setRequestStatus] = React.useState<{
-    success: string | null;
-    error: string | null;
-  }>({ success: null, error: null });
 
   const [medias, setMedias] = React.useState<any>([]);
   const [loadingMedias, setLoadingMedias] = React.useState(true);
@@ -79,7 +77,6 @@ export default function CardResources({
     id: string;
   }) => {
     const status = await createMediaRecord({ type, id });
-    setRequestStatus(status);
 
     // ✅ Resource created !
     if (status.success) {
@@ -98,6 +95,9 @@ export default function CardResources({
 
       setMedias((medias: any[]) => [suggestionToAdd, ...medias]);
 
+      // During development mode we fetch directly new medias information instead of redeploying the app
+      if (!isProduction) await refreshMediasInDatabase();
+
       // 2️⃣ Remove suggestion from current suggestions list
       setSuggestions(
         suggestions.filter(
@@ -110,10 +110,12 @@ export default function CardResources({
   // 📀 Remove media
   const handleDeleteMedia = async ({ id }: { id: string }) => {
     const status = await deleteMediaRecord({ type, id });
-    setRequestStatus(status);
 
     // ✅ Resource created !
     if (status.success) {
+      // During development mode we fetch directly new medias information instead of redeploying the app
+      if (!isProduction) await refreshMediasInDatabase();
+
       // 1️⃣ Remove deleted resource from listed resources
       setMedias(medias.filter((media: any) => media.id !== id));
     }

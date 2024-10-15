@@ -26,7 +26,9 @@ export const NO_AUTHORIZED_EMAIL: FormSubmissionStatus = {
   errorMessage: "Impossible de retrouver les adresses e-mail autorisées.",
 };
 
-export const generateValidEmailMessage: (email: string) => FormSubmissionStatus = (email) => ({
+export const generateValidEmailMessage: (
+  email: string,
+) => FormSubmissionStatus = (email) => ({
   successMessage: `Vous allez recevoir un message à ${email} contenant un lien de connexion.`,
   errorMessage: null,
 });

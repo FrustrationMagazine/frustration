@@ -9,11 +9,10 @@ import { fetchHelloAssoTransactions } from "@/data-access/helloasso";
 
 // 🫙 Database
 import { prisma } from "@/data-access/prisma";
+import { fetchLastUpdate } from "@/data-access/database";
 
 // 🗿 Models
 import {
-  type LastUpdateType,
-  DEFAULT_LAST_UPDATE_DATE,
   FormUpdateSchema,
   UpdateDashboardResponse,
   SUCCESS,
@@ -28,6 +27,16 @@ import { Transaction } from "@/data-access/models/transactions";
 
 // 🔧 Utils
 import { convertLocalDateToDateUTC } from "@/utils/dates";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+/* **************** */
+/*  Get last update */
+/* **************** */
+export async function getLastUpdate() {
+  const lastUpdate = await fetchLastUpdate();
+  return lastUpdate instanceof Date ? lastUpdate.toISOString() : null;
+}
 
 /* **************** */
 /* Update dashboard */
@@ -80,14 +89,18 @@ export async function updateTransactions({
     stripeTransactions = await fetchStripeTransactions({
       afterTimestamp: unixTimestamp,
     });
-    helloassoTransactions = await fetchHelloAssoTransactions({
-      from: oneMonthBeforeLastUpdate.toISOString(),
-    });
+    helloassoTransactions = isProduction
+      ? await fetchHelloAssoTransactions({
+          from: oneMonthBeforeLastUpdate.toISOString(),
+        })
+      : [];
   }
 
   if (!lastUpdate || updateMethod !== "smart") {
     stripeTransactions = await fetchStripeTransactions();
-    helloassoTransactions = await fetchHelloAssoTransactions();
+    helloassoTransactions = isProduction
+      ? await fetchHelloAssoTransactions()
+      : [];
   }
 
   try {
@@ -130,7 +143,9 @@ export async function updateTransactions({
   return SUCCESS;
 }
 
-// Update Stripe Balance
+/* ********************* */
+/* Update Stripe balance */
+/* ********************* */
 
 export async function updateBalance(): Promise<UpdateDashboardResponse> {
   const stripeBalance = await fetchStripeBalance();

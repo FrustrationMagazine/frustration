@@ -2,47 +2,58 @@
 
 import React from "react";
 
-// 🗿 Models
-import { DEFAULT_LAST_UPDATE_DATE } from "../_models";
-
 // 🔧 Utils
-import { getDateInformations } from "../_utils";
+import { getDateSegments } from "../_utils";
 
-const LastUpdate: React.FC<{ lastUpdateInUTC: Date | null }> = ({ lastUpdateInUTC }) => {
-  const { day, time, elapsedDays } = lastUpdateInUTC
-    ? getDateInformations(lastUpdateInUTC)
-    : DEFAULT_LAST_UPDATE_DATE;
+// 🐝 Fetch
+import { getLastUpdate } from "../_actions";
 
-  const today = elapsedDays && +elapsedDays === 0;
-  const yesterday = elapsedDays && +elapsedDays === 1;
-  const dayBeforeYesterday = elapsedDays && +elapsedDays === 2;
-  const longTimeAgo = elapsedDays && +elapsedDays > 2;
+const LastUpdate: React.FC = () => {
+  const [loading, setLoading] = React.useState(true);
+  const [lastUpdate, setLastUpdate] = React.useState<Date | null>(null);
 
-  const ElapsedDays = elapsedDays ? (
-    <>
-      {today ? <span>Aujourd&rsquo;hui</span> : null}
-      {yesterday ? <span>Hier</span> : null}
-      {dayBeforeYesterday ? <span>Avant-hier</span> : null}
-      {longTimeAgo ? <span> Il y a {elapsedDays} jours</span> : null}
-    </>
-  ) : null;
+  React.useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const dateISOString = await getLastUpdate();
+        if (dateISOString) setLastUpdate(new Date(dateISOString));
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
-  const Icon = <span className='text-2xl'>🕰️</span>;
-  const LastUpdate = <span className='text-lg font-bold'>Dernière mise à jour</span>;
-
-  const LastDate = day ? <span className='text-xs capitalize'>{day}</span> : null;
-  const LastTime = time ? <span className='text-xs'> {time}</span> : null;
+  const { day, time, elapsedDays } = getDateSegments(lastUpdate);
 
   return (
-    <p className='text-center'>
-      {Icon}
+    <p className="text-center">
+      <span className="text-2xl">🕰️</span>
       <br />
-      {LastUpdate}
+      <span className="text-lg font-bold">Dernière mise à jour</span>
       <br />
-      {ElapsedDays}
-      <br />
-      {LastDate}
-      {LastTime}
+      {loading ? (
+        <span className="text-sm">Chargement...</span>
+      ) : (
+        <>
+          {elapsedDays ? (
+            <>
+              {+elapsedDays === 0 ? <span>Aujourd&rsquo;hui</span> : null}
+              {+elapsedDays === 1 ? <span>Hier</span> : null}
+              {+elapsedDays === 2 ? <span>Avant-hier</span> : null}
+              {+elapsedDays > 2 ? (
+                <span> Il y a {elapsedDays} jours</span>
+              ) : null}
+            </>
+          ) : (
+            <span>Pas de dernière mise à jour</span>
+          )}
+          <br />
+          {day && <span className="text-xs capitalize">{day}</span>}{" "}
+          {time && <span className="text-xs">{time}</span>}
+        </>
+      )}
     </p>
   );
 };

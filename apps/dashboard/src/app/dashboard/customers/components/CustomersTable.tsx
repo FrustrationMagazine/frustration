@@ -136,7 +136,7 @@ export default function ({ customers }: { customers: Customer[] }) {
       sorting,
     },
   });
-  // Early return if no customers loaded
+  // ❌ Early return if no customers loaded
   if (customers.length === 0)
     return <p>Aucun nouvel abonné sur cette période 😭</p>;
 

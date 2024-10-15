@@ -13,6 +13,12 @@ import Loader from "../../loading";
 // 🪝 Hooks
 import useCustomers from "../hooks/useCustomers";
 
+const NoData = (
+  <h3 className="mx-auto mt-5 w-[50%] max-w-[700px] text-center text-xl">
+    😔 Aucun nouvel abonné sur cette période
+  </h3>
+);
+
 /* =============== */
 /*       UI        */
 /* =============== */
@@ -33,14 +39,18 @@ export default function () {
       {loadingCustomers ? (
         <Loader />
       ) : (
-        <div className="flex max-w-[1600px] flex-grow flex-col space-y-3">
+        <div className="flex min-w-[1100px] max-w-[1600px] flex-grow flex-col space-y-3">
           <TopBar
             customers={customers}
             numberOfActiveCustomers={numberOfActiveCustomers}
             rangeDate={rangeDate}
           />
           <div className="h-[1px] flex-grow overflow-auto">
-            <CustomersTable customers={customers} />
+            {customers.length === 0 ? (
+              NoData
+            ) : (
+              <CustomersTable customers={customers} />
+            )}
           </div>
         </div>
       )}

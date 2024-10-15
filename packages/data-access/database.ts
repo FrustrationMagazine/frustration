@@ -3,6 +3,9 @@
 import { prisma } from "./prisma/client";
 import { BalanceTransactions } from "@prisma/client";
 
+/*    ACTIVE CUSTOMERS     */
+/* ----------------------- */
+
 export async function fetchNumberOfActiveCustomersLastMonth() {
   const now = new Date();
   let activeSubscribers: BalanceTransactions[] = [];
@@ -30,4 +33,22 @@ export async function fetchNumberOfActiveCustomersLastMonth() {
   }
 
   return activeSubscribers.length;
+}
+
+/*    LAST UPDATE     */
+/* ------------------ */
+
+export async function fetchLastUpdate(): Promise<Date | null> {
+  console.log("❗ dans fetchLastUpdate");
+  try {
+    const lastBalanceRow = await prisma.balance.findFirst({});
+    if (lastBalanceRow?.updatedAt) {
+      const date = new Date(lastBalanceRow.updatedAt);
+      return date;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+  return null;
 }

@@ -16,8 +16,13 @@ import { TbLoaderQuarter } from "react-icons/tb";
 // 💥 Actions
 import { redeploy } from "../_actions";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export default function RedeployButton() {
   const [loading, setLoading] = React.useState(false);
+
+  // ❌ Early return | Not redeploying in development
+  if (!isProduction) return null;
 
   const [requestStatus, setRequestStatus] = React.useState<
     | {
@@ -30,7 +35,6 @@ export default function RedeployButton() {
   const handleClick = async () => {
     setLoading(true);
     const status = await redeploy();
-    console.log("status", status);
     setRequestStatus(status);
     setLoading(false);
   };

@@ -174,21 +174,15 @@ export async function readMediaByType(
   type: YoutubeResourceType = "video",
 ): Promise<any> {
   // 🔁 📀 Fetch
+  let table = `media_${type}` as any;
+
   try {
-    const medias = await prisma.media.findMany({
-      where: {
-        type: {
-          equals: type,
-        },
-      },
-      include: {
-        [type]: true,
-      },
+    const medias = await (prisma[table] as any).findMany({
       orderBy: {
-        createdAt: "desc",
+        publishedAt: "desc",
       },
     });
-    return medias.map((media) => media[type]).flat();
+    return medias;
   } catch (e) {
     // ❌ Error
     console.error("Error while fetching from database by type", e);
@@ -349,6 +343,7 @@ export async function insertOrUpdateMediaRecord({
 export async function refreshMediasInDatabase() {
   console.info("🔄 Refreshing medias in database...");
   const medias = await prisma.media.findMany();
+  await prisma.media_video.deleteMany();
   medias.forEach(
     async ({ type, id }) => await insertOrUpdateMediaRecord({ type, id }),
   );
@@ -372,13 +367,15 @@ export async function redeploy() {
 
   // ❌ Early return | Not redeploying in development
   if (process.env.NODE_ENV !== "production") {
-    status.error = `Not redeploying because we are in ${process.env.NODE_ENV} mode...`;
+    status.error =
+      "Le redéploiement n'est pas possible en environnement de développement";
     return status;
   }
 
   // ❌ Early return | No deploy hook found
   if (!process.env.DEPLOY_HOOK) {
-    status.error = "No deploy hook found in environment variables";
+    status.error =
+      "Aucun hook de déploiement trouvé parmi les variables d'environnement";
     return status;
   }
 

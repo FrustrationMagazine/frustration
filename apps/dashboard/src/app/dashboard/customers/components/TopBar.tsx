@@ -23,11 +23,14 @@ const BottomBar = ({
     <div className="flex items-center gap-2 self-stretch">
       <div className="flex items-center gap-2 rounded-md bg-zinc-900 px-4 py-2 text-white shadow-lg">
         <RiChatFollowUpFill />
-        <p>{customers.length} nouveaux abonnés sur la période</p>
+        <p>
+          {customers.length} {customers.length > 1 ? "nouveaux" : "nouvel"}{" "}
+          abonné{customers.length > 1 && "s"} sur la période
+        </p>
       </div>
       <div className="flex items-center gap-2 rounded-md bg-white px-4 py-2 text-zinc-900 shadow-lg">
         <FaPeopleGroup />
-        <p>{numberOfActiveCustomers} abonnés actifs</p>
+        <p>{numberOfActiveCustomers} abonnés actifs le mois dernier</p>
       </div>
       <div className="ml-auto">
         <DownloadButton customers={customers} rangeDate={rangeDate} />
