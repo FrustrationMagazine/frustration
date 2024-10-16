@@ -6,8 +6,7 @@ import {
   formatExcerpt,
 } from "@/data-access/wordpress";
 import { Image } from "astro:assets";
-import Button from "./Button.astro";
-import Excerpt from "./Excerpt.astro";
+import { Newspaper } from "lucide-react";
 const { article } = Astro.props;
 const IMAGE_SIZE = 1200;
 ---
@@ -17,11 +16,15 @@ const IMAGE_SIZE = 1200;
     <div
       class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
       <h3
-        class="mb-4 text-balance bg-black px-10 py-4 text-center font-bebas text-3xl font-bold text-yellow md:text-4xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
+        class="mb-4 text-balance bg-black px-10 py-4 text-center font-bebas text-3xl font-bold text-yellow md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
         {formatTitle(article)}
       </h3>
-      <Excerpt content={formatExcerpt(article)} />
-      <Button>Lire</Button>
+      <div class="hidden xl:block [&>p]:inline [&>p]:text-balance [&>p]:bg-yellow [&>p]:text-center [&>p]:text-xl [&>p]:font-bold [&>p]:leading-snug [&>p]:text-black" set:html={formatExcerpt(article)}/>
+        <div class="m-auto mt-6 flex w-fit items-center gap-1 bg-yellow px-5 py-1 font-bebas text-lg font-bold text-black md:gap-2 md:py-2 md:text-xl lg:px-6 lg:py-2 lg:text-2xl xl:gap-3 xl:bg-black xl:text-yellow">
+          <Newspaper size={20} />
+          <span>Lire</span>
+        </div>
+      </div>
     </div>
     <Image
       class="h-full w-full object-cover"
