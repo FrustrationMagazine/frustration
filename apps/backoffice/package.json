@@ -5,7 +5,7 @@
   "description": "A Strapi application",
   "scripts": {
     "build": "dotenv -e ../../.env -- strapi build",
-    "vercel-build": "dotenv -e ../../.env -- strapi build",
+    "vercel-build": "strapi build",
     "deploy": "dotenv -e ../../.env -- strapi deploy",
     "develop": "dotenv -e ../../.env -- strapi develop",
     "seed:example": "node ./scripts/seed.js",
