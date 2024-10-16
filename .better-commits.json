@@ -87,12 +87,16 @@
     "max_items": "Infinity",
     "options": [
       {
+        "value": "dashboard",
+        "label": "dashboard"
+      },
+      {
         "value": "web",
         "label": "web"
       },
       {
-        "value": "dashboard",
-        "label": "dashboard"
+        "value": "backoffice",
+        "label": "backoffice"
       },
       {
         "value": "ui",
