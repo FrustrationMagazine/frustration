@@ -80,7 +80,9 @@ const links = [
       <h4 class="font-bebas text-3xl uppercase leading-none">
         Le média de la lutte des classes
       </h4>
-      <p class="font-open-sans text-sm">© Frustration Magazine – {currentYear}</p>
+      <p class="font-open-sans text-sm">
+        © Frustration Magazine – {currentYear}
+      </p>
     </div>
     <!-- 📤 Newsletter -->
     <div class="mt-3 flex flex-grow basis-[47%] flex-col">
@@ -151,7 +153,7 @@ const links = [
     </div>
     <!-- 📸 Social medias -->
     <div
-      class="mt-10 flex min-h-[150px] flex-grow basis-[47%] flex-col justify-between">
+      class="mt-10 flex min-h-[100px] flex-grow basis-[47%] flex-col justify-between">
       <div class="">
         <h5 class="mb-3 font-bebas text-3xl uppercase leading-[80%]">
           Nos réseaux sociaux
@@ -178,7 +180,7 @@ const links = [
         </ul>
       </div>
       <!-- 👏 Credits -->
-      <div class="credits flex flex-col gap-1">
+      <div class="credits flex flex-col gap-1 text-sm">
         {
           credits.map(({ name, role }) => (
             <p class="font-open-sans leading-none">

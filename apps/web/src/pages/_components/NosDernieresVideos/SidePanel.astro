@@ -25,12 +25,13 @@ const {
       class="decorative-video-thumbnail"
     />
   </div>
-  <div class="relative z-10 p-6">
+  <div class="relative z-10 p-4 xl:p-6">
     {/* VIDEO TITLE */}
-    <h3 class="mb-5 text-center text-xl xl:text-2xl font-bold leading-none">
+    <h3 class="mb-5 text-center xl:text-xl 2xl:text-2xl font-bold leading-none">
       {title}
     </h3>
-    <div class="flex flex-wrap items-center gap-3 whitespace-nowrap">
+    <div
+      class="flex flex-wrap items-center gap-3 whitespace-nowrap text-xs xl:text-sm">
       {/* PLAYLIST */}
       {
         playlistTitle && (
@@ -39,7 +40,7 @@ const {
             target="_blank"
             class="flex items-center gap-1">
             <ListVideo size={14} />
-            <span class="text-xs xl:text-sm">{playlistTitle}</span>
+            <span>{playlistTitle}</span>
           </a>
         )
       }
@@ -53,11 +54,13 @@ const {
           width="18"
         />
         <span class="text-xs">/</span>
-        <span class="text-xs xl:text-sm leading-none">{channelTitle}</span>
+        <span class="leading-none">{channelTitle}</span>
       </a>
     </div>
     {/* DESCRIPTION */}
-    <p class="mt-3 text-sm xl:text-base line-clamp-[15]">{description}</p>
+    <p class="mt-3 line-clamp-[15] text-xs xl:text-sm">
+      {description}
+    </p>
   </div>
   <style is:global>
     .video-informations {

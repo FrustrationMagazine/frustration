@@ -147,7 +147,7 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     display: grid;
     row-gap: 15px;
     column-gap: 0px;
-    max-width: 1600px;
+    max-width: min(1600px, 80vw);
     grid-template-rows: auto;
     grid-template-columns: auto;
     grid-template-areas:
@@ -159,7 +159,7 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     .main-home-videos-container {
       row-gap: 15px;
       column-gap: 15px;
-      grid-template-columns: 1fr clamp(310px, 30vw, 450px);
+      grid-template-columns: 1fr clamp(250px, 25%, 450px);
       grid-template-areas:
         "videos informations"
         "thumbnails .";
