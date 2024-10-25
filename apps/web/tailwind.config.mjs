@@ -54,11 +54,14 @@ export default {
     colors: {
       ...colors,
       yellow: "#fff200",
+      paleYellow: "#F2EC80",
       red: "#700002",
       black: "#000",
       white: "#fff",
       purple: "#5c5db7",
+      palePurple: "#7C76B0",
       blue: "#1e40af",
+      primary: "#fff200",
     },
     fontFamily: {
       montserrat: "Montserrat",
