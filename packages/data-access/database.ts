@@ -39,7 +39,6 @@ export async function fetchNumberOfActiveCustomersLastMonth() {
 /* ------------------ */
 
 export async function fetchLastUpdate(): Promise<Date | null> {
-  console.log("❗ dans fetchLastUpdate");
   try {
     const lastBalanceRow = await prisma.balance.findFirst({});
     if (lastBalanceRow?.updatedAt) {

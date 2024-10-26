@@ -22,7 +22,7 @@ export default function RedeployButton() {
   const [loading, setLoading] = React.useState(false);
 
   // ❌ Early return | Not redeploying in development
-  if (!isProduction) return null;
+  // if (!isProduction) return null;
 
   const [requestStatus, setRequestStatus] = React.useState<
     | {
@@ -42,7 +42,6 @@ export default function RedeployButton() {
   const { toast } = useToast();
   React.useEffect(
     function displayToaster() {
-      console.log("requestStatus", requestStatus);
       if (requestStatus?.success) {
         toast({
           title: "✅ Succès",
@@ -65,7 +64,7 @@ export default function RedeployButton() {
     <Button
       size="xl"
       disabled={loading}
-      className="flex gap-2"
+      className="flex gap-2 py-4"
       onClick={handleClick}
     >
       {loading ? <TbLoaderQuarter className="animate-spin" /> : <ImUpload />}

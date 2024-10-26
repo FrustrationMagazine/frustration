@@ -381,8 +381,10 @@ export async function redeploy() {
 
   try {
     const response = await fetch(process.env.DEPLOY_HOOK, { method: "POST" });
-    if (response.ok) status.success = "🚀 Redeploying production...";
-    if (!response.ok) status.error = "❌ Error while redeploying production";
+    if (response.ok) status.success = "🚀 Redéploiement du site...";
+    if (!response.ok)
+      status.error =
+        "❌ Une erreur est survenue lors de la tentative de redéploiement";
   } catch (e) {
     status.error = `❌ Error while fetching with git hook`;
     console.error(e);
