@@ -31,6 +31,9 @@
       "@web/styles/*": [
         "src/styles/*"
       ],
+      "@web/utils": [
+        "src/utils.ts"
+      ],
     },
   },
   "exclude": [

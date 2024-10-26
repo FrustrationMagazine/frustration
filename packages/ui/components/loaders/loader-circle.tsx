@@ -1,6 +1,6 @@
 import styles from "./loader-circle.module.css";
 
-const LoaderCircle = () => (
+const LoaderCircle = ({ color }: { color: string }) => (
   <svg
     className={styles.container}
     viewBox="0 0 40 40"
@@ -24,6 +24,9 @@ const LoaderCircle = () => (
       pathLength="100"
       stroke-width="5px"
       fill="none"
+      style={{ stroke: color }}
     />
   </svg>
 );
+
+export default LoaderCircle;

@@ -1,0 +1,156 @@
+---
+// 🧱 Components
+import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
+
+// 🖼️ Layout
+import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
+import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+---
+
+<BaseLayout
+  title="Campagne de dons"
+  displayBanner={false}>
+  <PageLayout>
+    <!-- 🅰️ Titles -->
+    <h2
+      class="text-5xl lg:text-7xl text-pretty text-center font-bold uppercase font-bebas">
+      Chaîne twitch, nouveaux formats et international : <br /> 40 000€ pour nous
+      aider à élargir à gauche la fenêtre d’Overton
+    </h2>
+    <!-- 🔠 Text -->
+    <article class="mt-10 font-open-sans tracking-wide text-lg">
+      <p class="text-center mb-11 text-xl">
+        Frustration magazine c’est un média en ligne <b>100% gratuit</b>, <b
+          >100% indépendant</b
+        >, <b>sans publicité ni mécène</b>, qui défend une <b
+          >ligne radicale mais accessible</b
+        >. C’est aussi un épais magazine publié chaque année et disponible dans
+        toutes les bonnes librairies.
+      </p>
+      <h3 class="font-bold text-center text-2xl mb-6">
+        Grâce à vous en une seule année nous avons :
+      </h3>
+      <ul
+        class="text-base pl-6 xl:text-xl list-disc list-achievements space-y-4">
+        <li>
+          Produit de très nombreuses analyses, enquêtes et argumentaires pour
+          documenter la <b>réalité de la lutte des classes</b>, de la <b
+            >domination coloniale</b
+          > et des <b>mécanismes patriarcaux</b> ;
+        </li>
+        <li>Développé de <b>nouveaux formats vidéos</b> ;</li>
+        <li>
+          Rénové entièrement <b>nos réseaux sociaux</b> et tous nos <b
+            >canaux de diffusion</b
+          >
+          ;
+        </li>
+        <li>
+          Renforcé nos liens avec de <b>nombreux médias indépendants alliés</b> ;
+        </li>
+        <li>
+          Envoyé des membres de notre équipe parler de fin du capitalisme <b
+            >dans des médias <i>mainstream</i></b
+          > ;
+        </li>
+        <li>
+          Apporté dans le débat public des <b
+            >analyses intransigeantes sur le coup d'État institutionnel de l'été
+            2024</b
+          > ;
+        </li>
+        <li>
+          Dénoncé et raconté le <b>nettoyage ethnique en Palestine</b> et l'invasion
+          du Liban par l'armée coloniale israélienne ;
+        </li>
+        <li>
+          Poursuivi notre <b
+            >travail d'analyse et de dénonciation de la guerre des classes</b
+          > que la bourgeoisie nous mène.
+        </li>
+      </ul>
+      <h3 class="font-bold text-center text-2xl mt-16 mb-6">
+        Et cela a payé ! Puisque dans le même temps nous avons vu :
+      </h3>
+      <ul class="text-base pl-6 xl:text-xl list-disc space-y-4 list-results">
+        <li>Le nombre de visiteurs sur notre site web multiplié par 2 ;</li>
+        <li>Notre nombre d'abonnés sur Instagram et Youtube doubler ;</li>
+        <li>Notre newsletter passer le cap des 6 000 abonnés ;</li>
+        <li>Notre audience se rajeunir et se féminiser.</li>
+      </ul>
+      <h3 class="font-bold text-center text-2xl mt-16 mb-6">
+        Fort de ces succès et actions, nous souhaitons continuer de nous
+        développer en menant, en 2025, ces nouveaux projets :
+      </h3>
+      <ul class="text-base pl-6 xl:text-xl list-disc space-y-4 list-projects">
+        <li>
+          Une refonte complète de notre site web avec <b
+            >des contenus interactifs</b
+          >
+          pour faire découvrir nos analyses comme des quiz, des contenus audios et
+          vidéos inédits, notre horoscope décalé etc. ;
+        </li>
+        <li>
+          <b>Agrandir encore notre équipe permanente</b> et accueillir <b
+            >davantage de contributeurs et contributrices</b
+          > pour couvrir une diversité de sujets plus importante ;
+        </li>
+        <li>
+          <b>Accélérer le mouvement d'internationalisation </b>de notre travail
+          avec nos partenaires belges, britanniques et espagnols ;
+        </li>
+        <li>
+          Lancer une <b
+            >émission régulière de commentaire d'actualité sur Twitch</b
+          >
+          ;
+        </li>
+        <li>Offrir un <b>toilettage complet</b> à Rob Grams.</li>
+      </ul>
+    </article>
+    <section class="mt-16 text-2xl text-center space-y-2">
+      <p>
+        Pour mener à bien ces projets, nous souhaitons <b
+          >récolter 40 000 euros en trois mois</b
+        >.
+      </p>
+      <p>
+        Vous aimez notre travail, vous voulez nous aider à en faire plus ?
+        <b>Donnez la somme de votre choix !</b> Même les plus petits montants sont
+        utiles.
+      </p>
+    </section>
+    <CheckoutFormWrapper client:only="react" />
+  </PageLayout>
+</BaseLayout>
+<style>
+  @counter-style results-counter {
+    system: cyclic;
+    symbols: "✌️" "📈" "📨" "👩‍🎤";
+    suffix: "  ";
+  }
+
+  @counter-style achievements-counter {
+    system: cyclic;
+    symbols: "🖋️" "🎥" "#️⃣" "🤝" "🧛" "🗯️" "🙅‍♂️" "👊";
+    suffix: "  ";
+  }
+
+  @counter-style projects-counter {
+    system: cyclic;
+    symbols: "🎨" "👯" "🌍" "🎤" "🐶";
+    suffix: "  ";
+  }
+
+  .list-achievements {
+    list-style: achievements-counter;
+  }
+
+  .list-results {
+    list-style: results-counter;
+  }
+
+  .list-projects {
+    list-style: projects-counter;
+  }
+</style>

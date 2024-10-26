@@ -43,3 +43,19 @@ export function createIdAnchor(title: string): string {
 export function prettifyName(uglyName: string): string {
   return uglyName.toLowerCase().replace(/(?<=(\s|-|^))\b./g, (char) => char.toUpperCase());
 }
+
+/* ----------------- */
+/* Format currency € */
+/* ----------------- */
+/*
+  Input : 1500
+  Output : "15 €"
+*/
+export function formatCurrency({ amount, decimals = true }: { amount: number; decimals: boolean }): string {
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: decimals ? 2 : 0,
+    maximumFractionDigits: decimals ? 2 : 0
+  }).format(amount);
+}

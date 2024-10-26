@@ -1,0 +1,75 @@
+input[type=range] {
+    height: 1.5rem;
+    cursor: pointer;
+
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-appearance: none;
+
+    --range-shdw: #FFF200;
+
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: .5rem;
+    width: 100%;
+    border-radius: 1rem;
+    background-color: black;
+}
+
+input[type=range]::-moz-range-track {
+    height: .5rem;
+    width: 100%;
+    border-radius: 1rem;
+    background-color: #FFF200;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    position: relative;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 1rem;
+    border-style: none;
+    --tw-bg-opacity: 1;
+
+    background-color: black;
+
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-appearance: none;
+
+    top: 50%;
+    color: var(--range-shdw);
+    transform: translateY(-50%);
+
+    --filler-size: 100rem;
+    --filler-offset: .6rem;
+
+    box-shadow:
+    calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size)
+}
+
+input[type=range]::-moz-range-thumb {
+    position: relative;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 1rem;
+    border-style: none;
+    --tw-bg-opacity: 1;
+
+    background-color: black;
+
+    top: 50%;
+
+    color: var(--range-shdw);
+
+    --filler-size: 100rem;
+    --filler-offset: .5rem;
+
+    box-shadow:
+    0 0 0 3px var(--range-shdw) inset,
+    calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size)
+}

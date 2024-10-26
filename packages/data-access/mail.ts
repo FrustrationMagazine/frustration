@@ -14,7 +14,7 @@ export async function addSubscriber({ email, firstName, lastName }: { email: str
     console.warn("🔎 Missing audience id to add subscriber");
     return { success: false, message: "Missing audience id" };
   }
-
+  console.log("email", email);
   try {
     const { error } = await resend.contacts.create({
       email,
