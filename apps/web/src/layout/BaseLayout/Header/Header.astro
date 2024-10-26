@@ -6,6 +6,8 @@ import Banner from "./banners/BannerSubscriptionsCampagne.astro";
 // 🧱 Components
 // import { GiHamburgerMenu } from "react-icons/gi";
 // import { FaMagnifyingGlass } from "react-icons/fa6";
+
+const { displayBanner = true } = Astro.props;
 ---
 
 <header class="sticky top-0 z-20">
@@ -39,4 +41,4 @@ import Banner from "./banners/BannerSubscriptionsCampagne.astro";
     </div> -->
   </nav>
 </header>
-<Banner />
+{displayBanner ? <Banner /> : null}

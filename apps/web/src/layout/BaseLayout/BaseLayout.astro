@@ -35,6 +35,7 @@ const {
   title,
   description = DEFAULT_DESCRIPTION,
   image = DEFAULT_IMAGE,
+  displayBanner = true,
 } = Astro.props;
 ---
 
@@ -73,7 +74,10 @@ const {
     <ViewTransitions />
   </head>
   <body class="min-h-screen bg-yellow flex flex-col">
-    <Header transition:persist />
+    <Header
+      displayBanner={displayBanner}
+      transition:persist
+    />
     <main class="flex-grow flex flex-col">
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>
