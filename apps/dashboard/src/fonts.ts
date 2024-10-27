@@ -1,4 +1,4 @@
-import { Bebas_Neue, Montserrat, Poppins, Inter } from "next/font/google";
+import { Bebas_Neue, Poppins, Inter } from "next/font/google";
 
 /* Bebas Neue */
 export const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
@@ -12,11 +12,5 @@ export const poppins = Poppins({
 /* Inter */
 export const inter = Inter({
   weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
-
-/* Montserrat */
-export const montserrat = Montserrat({
-  weight: ["400", "800"],
   subsets: ["latin"],
 });

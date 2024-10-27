@@ -270,7 +270,7 @@ const Form = () => {
         {/* 📨 Newsletter */}
         <label
           htmlFor="newsletter"
-          className="mt-6 flex gap-1">
+          className="mt-6 flex items-center gap-1">
           <input
             type="checkbox"
             name="newsletter"

@@ -193,9 +193,15 @@ importers:
       '@fontsource/bebas-neue':
         specifier: ^5.0.21
         version: 5.0.21
+      '@fontsource/montserrat':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@fontsource/open-sans':
         specifier: ^5.0.29
         version: 5.0.29
+      '@fontsource/roboto':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@mui/material':
         specifier: ^6.1.5
         version: 6.1.5(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1529,8 +1535,14 @@ packages:
   '@fontsource/bebas-neue@5.0.21':
     resolution: {integrity: sha512-F70ux0JvCY3leBi4M8y6rVa9IVzWc7FEeyRkYrthRixQnJEidBJrjjSfXbFOaKdN7MbL+j/sHg00oN+5G46Apw==}
 
+  '@fontsource/montserrat@5.1.0':
+    resolution: {integrity: sha512-HB4+rWP9Y8g6T9RGRVJk2SvAJtx2eBAXuivvPOqQdD806/9WESUfucfH9LqFj3bGgdhNCfh0Rv0NGuwEmBLRiw==}
+
   '@fontsource/open-sans@5.0.29':
     resolution: {integrity: sha512-5ayVkmB5fY2NXm/YKF0UxtjWipLIqeXBxyhjtR46ab+z8xiJonolUBIVFYUfn5zH4FDf078zXbsIvmo82C0Aew==}
+
+  '@fontsource/roboto@5.1.0':
+    resolution: {integrity: sha512-cFRRC1s6RqPygeZ8Uw/acwVHqih8Czjt6Q0MwoUoDe9U3m4dH1HmNDRBZyqlMSFwgNAUKgFImncKdmDHyKpwdg==}
 
   '@formatjs/ecma402-abstract@1.18.2':
     resolution: {integrity: sha512-+QoPW4csYALsQIl8GbN14igZzDbuwzcpWrku9nyMXlaqAlwRBgl5V+p0vWMGFqHOw37czNXaP/lEk4wbLgcmtA==}
@@ -10653,7 +10665,11 @@ snapshots:
 
   '@fontsource/bebas-neue@5.0.21': {}
 
+  '@fontsource/montserrat@5.1.0': {}
+
   '@fontsource/open-sans@5.0.29': {}
+
+  '@fontsource/roboto@5.1.0': {}
 
   '@formatjs/ecma402-abstract@1.18.2':
     dependencies:
