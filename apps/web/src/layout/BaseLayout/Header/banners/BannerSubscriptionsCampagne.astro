@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 
 // 🧱 Components
-import { Progress } from "@/ui/components/progress";
+import ProgressBar from "@/ui/components/progress";
 
 // 🖼️ Assets
 import bannerEndYear from "./assets/banner_end_year.png";
@@ -31,7 +31,7 @@ const percentActiveSubscribers = +(
       class="text-center mb-2 text-yellow text-4xl text-shadow-lg [text-shadow:0_2px_0_rgb(0_0_0_/_90%)]">
       {percentActiveSubscribers === 0 ? 83 : percentActiveSubscribers}%
     </p>
-    <Progress
+    <ProgressBar
       value={percentActiveSubscribers === 0 ? 83 : percentActiveSubscribers}
       className="w-[300px] h-7 shadow-lg border-2 border-yellow"
     />

@@ -1,6 +1,7 @@
 ---
 // 🧱 Components
 import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
+import ProgressBar from "@/ui/components/progress";
 
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
@@ -14,18 +15,23 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
     <!-- 🅰️ Titles -->
     <h2
       class="text-5xl lg:text-7xl text-pretty text-center font-bold uppercase font-bebas">
-      Chaîne twitch, nouveaux formats et international : <br /> 40 000€ pour nous
-      aider à élargir à gauche la fenêtre d’Overton
+      Twitch, nouveaux formats et international : <br /> 40 000€ pour nous aider
     </h2>
+    <div class="animate-disco w-12 h-12 bg-red"></div>
+    <ProgressBar
+      value={70}
+      background="bg-yellow"
+      className="h-10 mt-6 shadow-lg"
+    />
     <!-- 🔠 Text -->
-    <article class="mt-10 font-open-sans tracking-wide text-lg">
+    <article class="mt-12 font-open-sans tracking-wide text-lg">
       <p class="text-center mb-11 text-xl">
         Frustration magazine c’est un média en ligne <b>100% gratuit</b>, <b
           >100% indépendant</b
         >, <b>sans publicité ni mécène</b>, qui défend une <b
           >ligne radicale mais accessible</b
-        >. C’est aussi un épais magazine publié chaque année et disponible dans
-        toutes les bonnes librairies.
+        >. C’est aussi une revue papier annuelle disponible dans toutes les
+        bonnes librairies.
       </p>
       <h3 class="font-bold text-center text-2xl mb-6">
         Grâce à vous en une seule année nous avons :
@@ -34,39 +40,29 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
         class="text-base pl-6 xl:text-xl list-disc list-achievements space-y-4">
         <li>
           Produit de très nombreuses analyses, enquêtes et argumentaires pour
-          documenter la <b>réalité de la lutte des classes</b>, de la <b
+          mettre au jour la <b>réalité de la lutte des classes</b>, de la <b
             >domination coloniale</b
           > et des <b>mécanismes patriarcaux</b> ;
         </li>
-        <li>Développé de <b>nouveaux formats vidéos</b> ;</li>
+        <li>
+          Développé de <b>nouveaux formats vidéos</b> (<i>Comprendre</i>, <i
+            >État des lieux</i
+          >, <i>Frustration Rencontres</i> etc.) ;
+        </li>
         <li>
           Rénové entièrement <b>nos réseaux sociaux</b> et tous nos <b
             >canaux de diffusion</b
-          >
+          > pour les rendre plus agréables et lisibles ;
+        </li>
+        <li>
+          Renforcé nos liens avec de <b>nombreux médias indépendants alliés</b> (partenariat
+          avec <i>Le Média</i> pour l'émission <i>Coup de Griffe</i> par exemple)
           ;
         </li>
         <li>
-          Renforcé nos liens avec de <b>nombreux médias indépendants alliés</b> ;
-        </li>
-        <li>
-          Envoyé des membres de notre équipe parler de fin du capitalisme <b
+          Envoyé des membres de notre équipe parler de la fin du capitalisme <b
             >dans des médias <i>mainstream</i></b
           > ;
-        </li>
-        <li>
-          Apporté dans le débat public des <b
-            >analyses intransigeantes sur le coup d'État institutionnel de l'été
-            2024</b
-          > ;
-        </li>
-        <li>
-          Dénoncé et raconté le <b>nettoyage ethnique en Palestine</b> et l'invasion
-          du Liban par l'armée coloniale israélienne ;
-        </li>
-        <li>
-          Poursuivi notre <b
-            >travail d'analyse et de dénonciation de la guerre des classes</b
-          > que la bourgeoisie nous mène.
         </li>
       </ul>
       <h3 class="font-bold text-center text-2xl mt-16 mb-6">
@@ -84,7 +80,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </h3>
       <ul class="text-base pl-6 xl:text-xl list-disc space-y-4 list-projects">
         <li>
-          Une refonte complète de notre site web avec <b
+          Une refonte complète de notre site web qui intègrera <b
             >des contenus interactifs</b
           >
           pour faire découvrir nos analyses comme des quiz, des contenus audios et
@@ -92,8 +88,8 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
         </li>
         <li>
           <b>Agrandir encore notre équipe permanente</b> et accueillir <b
-            >davantage de contributeurs et contributrices</b
-          > pour couvrir une diversité de sujets plus importante ;
+            >une plus grande diversité d'autrices et d'auteurs</b
+          > pour couvrir encore plus de sujets qui nous tiennent à cœur ;
         </li>
         <li>
           <b>Accélérer le mouvement d'internationalisation </b>de notre travail
@@ -116,8 +112,8 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </p>
       <p>
         Vous aimez notre travail, vous voulez nous aider à en faire plus ?
-        <b>Donnez la somme de votre choix !</b> Même les plus petits montants sont
-        utiles.
+        <b>Vous pouvez donner la somme de votre choix !</b> Même les plus petits
+        montants sont utiles.
       </p>
     </section>
     <CheckoutFormWrapper client:only="react" />

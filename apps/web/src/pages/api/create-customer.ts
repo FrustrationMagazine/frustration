@@ -15,9 +15,20 @@ export const POST: APIRoute = async ({ request }: { request: any }) => {
       const customers = await stripe.customers.search({
         query: `email:'${customerInformations.email}'`,
       });
-      console.log("customers", customers);
+
       if (customers.data.length > 0) {
+        // ✨ Update customer with new informations
         customer = customers.data[0];
+        try {
+          customer = await stripe.customers.update(customer.id, {
+            ...customerInformations,
+          });
+        } catch (error) {
+          console.error(
+            "Error while updating already existing customer with new informations:",
+            error,
+          );
+        }
       }
     } catch (error) {
       console.error("Error while searching customer with email:", error);

@@ -190,7 +190,7 @@ const Form = () => {
           Montant de votre choix
         </label>
         {isCustom && (
-          <div className="items-center gap-1 py-4 text-4xl">
+          <div className="items-center gap-2 py-4 text-4xl">
             <div className="mb-2 flex items-center justify-center text-center">
               <input
                 type="number"
@@ -261,7 +261,7 @@ const Form = () => {
                 <i>
                   <b> Parasites</b>
                 </i>{" "}
-                de Nicolas Framont
+                (éd. de Poche) de Nicolas Framont
               </p>
             )}
           </div>
@@ -270,7 +270,7 @@ const Form = () => {
         {/* 📨 Newsletter */}
         <label
           htmlFor="newsletter"
-          className="mt-6 flex items-center gap-1">
+          className="mt-6 flex items-center gap-2">
           <input
             type="checkbox"
             name="newsletter"
@@ -278,7 +278,7 @@ const Form = () => {
             onChange={() => setWantsNewsletter(!wantsNewsletter)}
             id="newsletter"
           />
-          <span>
+          <span className="leading-none">
             Je souhaite recevoir la newsletter de{" "}
             <span style={{ fontVariant: "all-small-caps" }}>
               Frustration Magazine

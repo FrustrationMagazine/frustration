@@ -21,8 +21,11 @@ const paymentElementOptions: StripePaymentElementOptions = {
 
 const CREATE_CUSTOMER_ENDPOINT = "/api/create-customer";
 const CREATE_PAYMENT_INTENT_ENDPOINT = "/api/create-payment-intent";
+const UPDATE_PAYMENT_INTENT_ENDPOINT = "/api/update-payment-intent";
 const CREATE_SUBSCRIPTION_ENDPOINT = "/api/create-subscription";
-const ADD_NEWSLETTER_SUBSCRIBER_ENDPOINT = "/api/add-newsletter-subscriber";
+
+const CAMPAIGN_TAG = "dons-fin-2024";
+
 const { MODE, SITE, PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION } = import.meta.env;
 
 const SUCCESS_PAGE = "paiement-termine";
@@ -51,7 +54,11 @@ const CheckoutForm = ({
   const [isLoading, setIsLoading] = React.useState(false);
 
   const mode = frequency === FREQUENCY.ONETIME ? "payment" : "subscription";
-  const [message, setMessage] = React.useState<string | null>(null);
+
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    setErrorMessage(null);
+  }, [frequency]);
 
   const disableCheckout = isLoading || !stripe || !elements;
 
@@ -59,16 +66,13 @@ const CheckoutForm = ({
   /* -------------- */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("stripe", stripe);
-    console.log("elements", elements);
+
+    // 🔁 Check everything is loaded
     if (!stripe || !elements) return;
 
     // 📝 Check form is valid
     const { error: submitError } = await elements.submit();
-    if (submitError) {
-      console.error("submit error", submitError);
-      return;
-    }
+    if (submitError) return;
 
     setIsLoading(true);
 
@@ -78,7 +82,7 @@ const CheckoutForm = ({
     /* ONE TIME PAYMENT */
     /* ---------------- */
     if (frequency === FREQUENCY.ONETIME) {
-      //  2️⃣ Create customer
+      // 1️⃣ Customer
       let customer;
       if (email) {
         const resCustomerCreation = await fetch(CREATE_CUSTOMER_ENDPOINT, {
@@ -87,17 +91,16 @@ const CheckoutForm = ({
           body: JSON.stringify({
             email,
             metadata: {
-              campaign: "dons-fin-2024",
+              campaign: CAMPAIGN_TAG,
             },
           }),
         }).then((res) => res.json());
 
         if (resCustomerCreation?.customer)
           customer = resCustomerCreation.customer;
-        console.log("customer", customer);
       }
 
-      // 3️⃣ Create payment intent for this customer
+      // 2️⃣ Payment intent
       let paymentIntent;
       if (customer) {
         const resPaymentIntentCreation = await fetch(
@@ -112,6 +115,7 @@ const CheckoutForm = ({
               currency: "eur",
               metadata: {
                 hasGifts,
+                campaign: CAMPAIGN_TAG,
               },
               description: `${amount / 100}€`,
             }),
@@ -130,23 +134,36 @@ const CheckoutForm = ({
     /* ---------------- */
     if (frequency === FREQUENCY.RECURRING) {
       let customer;
+      let address = {};
+      let name = null;
       const addressElement = elements.getElement("address");
-      if (addressElement && email) {
-        const { address, name } = await addressElement
-          .getValue()
-          .then(({ value }) => value);
 
+      if (hasGifts && addressElement) {
+        await addressElement.getValue().then(({ value }) => {
+          address = value.address;
+          name = value.name;
+        });
+      }
+
+      if (email) {
+        // 1️⃣ Customer
         const resCustomerCreation = await fetch(CREATE_CUSTOMER_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, address, email }),
+          body: JSON.stringify({
+            ...(name ? { name } : {}),
+            ...(address ? { address } : {}),
+            email,
+            metadata: {
+              campaign: CAMPAIGN_TAG,
+            },
+          }),
         }).then((res) => res.json());
-
         if (resCustomerCreation?.customer)
-          customer = resCustomerCreation.customer;
+          customer = { ...resCustomerCreation.customer };
       }
 
-      // 3️⃣ Create subscription
+      // 2️⃣ Subscription
       let subscription;
       if (customer) {
         const resSubscriptionCreation = await fetch(
@@ -160,15 +177,40 @@ const CheckoutForm = ({
               productId: PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION,
               amount,
               nickname: `Abonnement de soutien à Frustation Magazine de ${amount / 100}€/mois`,
+              metadata: {
+                campaign: CAMPAIGN_TAG,
+              },
             }),
           },
         ).then((res) => res.json());
 
+        // 3️⃣ Payment intent
+
         if (resSubscriptionCreation?.subscription) {
           subscription = resSubscriptionCreation.subscription;
-          console.log("subscription", subscription);
-          clientSecret =
-            subscription?.latest_invoice?.payment_intent?.client_secret;
+          const paymentIntent = subscription?.latest_invoice?.payment_intent;
+          const resUpdatedPaymentIntent = await fetch(
+            UPDATE_PAYMENT_INTENT_ENDPOINT,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentIntentId: paymentIntent.id,
+                paymentIntentUpdatedInformations: {
+                  receipt_email: customer.email,
+                  metadata: {
+                    campaign: CAMPAIGN_TAG,
+                  },
+                },
+              }),
+            },
+          ).then((res) => res.json());
+          if (resUpdatedPaymentIntent?.paymentIntent) {
+            const {
+              paymentIntent: { client_secret },
+            } = resUpdatedPaymentIntent;
+            clientSecret = client_secret;
+          }
         }
       }
     }
@@ -204,9 +246,9 @@ const CheckoutForm = ({
       });
 
       if (error.type === "card_error" || error.type === "validation_error") {
-        setMessage(error.message ?? null);
+        setErrorMessage(error.message ?? null);
       } else {
-        setMessage("Une erreur inattendue est survenue.");
+        setErrorMessage("Une erreur inattendue est survenue.");
       }
     }
 
@@ -248,12 +290,23 @@ const CheckoutForm = ({
 
       {/* ====================================================================== */}
       {/* 💬 Error or success message */}
-      {message && (
+      {errorMessage && (
         <div
           className="mb-4 flex gap-2 rounded bg-purple px-4 py-2 text-white"
           id="payment-message">
-          <MessageCircleWarning />
-          {message}
+          <MessageCircleWarning className="shrink-0" />
+          <div>
+            <span>{errorMessage}</span>{" "}
+            <span>
+              Veuillez réessayer et si l'erreur persiste n'hésitez pas à nous
+              contacter à{" "}
+              <a
+                className="text-lightBlue-300 underline"
+                href="mailto:redaction@frustrationmagazine.fr">
+                redaction@frustrationmagazine.fr
+              </a>
+            </span>
+          </div>
         </div>
       )}
 
@@ -262,7 +315,7 @@ const CheckoutForm = ({
       {/* ⬛ Validation */}
       <button
         className={cn(
-          "mx-auto mt-16 block max-h-[70px] rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
+          "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
           disableCheckout && "opacity-30",
         )}
         type="submit"

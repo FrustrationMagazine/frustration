@@ -3,6 +3,8 @@ import { stripe } from "@/data-access/stripe";
 import { generateResponseError } from "@web/utils";
 export const prerender = "false";
 
+const { PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION } = import.meta.env;
+
 // https://docs.stripe.com/payments/accept-a-payment-deferred?type=subscription
 export const POST: APIRoute = async ({ request }: { request: any }) => {
   const { customerId, customerAddress, priceId, productId, amount, nickname } =
@@ -13,7 +15,10 @@ export const POST: APIRoute = async ({ request }: { request: any }) => {
   if (!priceId && productId && amount) {
     // 🔎 Look for existing price
     try {
-      const prices = await stripe.prices.list({ product: productId });
+      const prices = await stripe.prices.search({
+        query: `active:'true' AND product:'${PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION}'`,
+      });
+
       price = prices.data.find(
         (price) => price.unit_amount === amount && price.currency === "eur",
       );
