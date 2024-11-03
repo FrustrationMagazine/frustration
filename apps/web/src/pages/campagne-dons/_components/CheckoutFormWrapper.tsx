@@ -278,7 +278,7 @@ const Form = () => {
             onChange={() => setWantsNewsletter(!wantsNewsletter)}
             id="newsletter"
           />
-          <span className="leading-none">
+          <span className="text-pretty leading-none">
             Je souhaite recevoir la newsletter de{" "}
             <span style={{ fontVariant: "all-small-caps" }}>
               Frustration Magazine
