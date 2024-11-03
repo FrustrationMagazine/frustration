@@ -30,6 +30,7 @@ export default {
         slidingReverse: "slidingReverse 60s linear infinite",
         disco: "disco 2s linear infinite",
         shimmer: "shimmer 2s linear infinite",
+        slideProgress: "slideProgres 2s linear infinite",
       },
       keyframes: {
         sliding: {
@@ -51,9 +52,14 @@ export default {
           to: {
             "backgroundPosition": "-200% 0"
           }
+        },
+        slideProgres: {
+          "0%": { left: "0%", translate: "-100% 0" },
+          "100%": { left: "100%", translate: "0 0" },
         }
       },
     },
+    // 🎨 Colors
     colors: {
       ...colors,
       yellow: "#fff200",

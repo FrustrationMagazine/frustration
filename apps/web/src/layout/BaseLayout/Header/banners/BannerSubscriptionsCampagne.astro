@@ -15,6 +15,7 @@ const percentActiveSubscribers = +(
   (numberOfActiveSubscribers * 100) /
   1500
 ).toFixed(0);
+console.log("numberOfActiveSubscribers", numberOfActiveSubscribers);
 ---
 
 <a
@@ -29,10 +30,10 @@ const percentActiveSubscribers = +(
   <div class="absolute bottom-5">
     <p
       class="text-center mb-2 text-yellow text-4xl text-shadow-lg [text-shadow:0_2px_0_rgb(0_0_0_/_90%)]">
-      {percentActiveSubscribers === 0 ? 83 : percentActiveSubscribers}%
+      {percentActiveSubscribers === 1 ? 83 : percentActiveSubscribers}%
     </p>
     <ProgressBar
-      value={percentActiveSubscribers === 0 ? 83 : percentActiveSubscribers}
+      value={percentActiveSubscribers === 1 ? 83 : percentActiveSubscribers}
       className="w-[300px] h-7 shadow-lg border-2 border-yellow"
     />
   </div>

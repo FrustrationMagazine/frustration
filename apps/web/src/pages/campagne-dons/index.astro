@@ -1,7 +1,8 @@
 ---
 // 🧱 Components
 import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
-import ProgressBar from "@/ui/components/progress";
+import ProgressBar from "./_components/ProgressBar";
+import TitlePullUp from "./_components/TitlePullUp";
 
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
@@ -13,15 +14,17 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
   displayBanner={false}>
   <PageLayout>
     <!-- 🅰️ Titles -->
-    <h2
-      class="text-5xl lg:text-7xl text-pretty text-center font-bold uppercase font-bebas">
-      Twitch, nouveaux formats et international : <br /> 40 000€ pour nous aider
-    </h2>
-    <div class="animate-disco w-12 h-12 bg-red"></div>
+    <TitlePullUp
+      client:load
+      words="Twitch, nouveaux formats et international : 40 000€ pour nous aider"
+      className="text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+    />
     <ProgressBar
-      value={70}
+      client:load
+      value={5}
+      delayInSeconds={2}
       background="bg-yellow"
-      className="h-10 mt-6 shadow-lg"
+      className="h-10 mt-12 shadow-lg"
     />
     <!-- 🔠 Text -->
     <article class="mt-12 font-open-sans tracking-wide text-lg">
@@ -104,6 +107,10 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
         <li>Offrir un <b>toilettage complet</b> à Rob Grams.</li>
       </ul>
     </article>
+    <TitlePullUp
+      words="Twitch, nouveaux formats et international : 40 000€ pour nous aider"
+      class="text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+    />
     <section class="mt-16 text-2xl text-center space-y-2">
       <p>
         Pour mener à bien ces projets, nous souhaitons <b
