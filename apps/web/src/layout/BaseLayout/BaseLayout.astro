@@ -6,7 +6,6 @@ import { fade } from "astro:transitions";
 // 🚀 SEO
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Head from "../Head.astro";
-import previewImage from "../preview.png";
 
 // 🧱 Components
 import Header from "./Header/Header.astro";
@@ -27,7 +26,7 @@ import "@web/styles/global.css";
 // 🧰 Config
 const DEFAULT_IMAGE = "/img/default.png";
 const DEFAULT_DESCRIPTION =
-  "Frustration Magazine est un média indépendant qui décrypte l'actualité politique et sociale.";
+  "Frustration Magazine, média indépendant et offensif.";
 
 interface Props {
   title: string;
@@ -51,7 +50,7 @@ const {
   <Head
     title={title}
     description={description}
-    ogImage="https://www.frustrationmagazine.fr/wp-content/uploads/2024/11/462542618_1223602578859544_8688981379924258110_n-1.png"
+    ogImage="https://www.frustrationmagazine.fr/wp-content/uploads/2024/11/preview_small_rs.jpg"
   />
 
   <meta charset="UTF-8" />
