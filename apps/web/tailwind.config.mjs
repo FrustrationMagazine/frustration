@@ -2,7 +2,11 @@
 const colors = require('tailwindcss/colors')
 
 export default {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: [
+    "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
+      // 👇 required so components imported from @/ui work with tailwind classes
+    "../../packages/ui/components/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),

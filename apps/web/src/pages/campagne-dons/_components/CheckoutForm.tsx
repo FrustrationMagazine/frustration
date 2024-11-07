@@ -10,6 +10,17 @@ import { type StripePaymentElementOptions } from "@stripe/stripe-js";
 import { FREQUENCY } from "./CheckoutFormWrapper";
 import CircleLoader from "@/ui/components/loaders/loader-circle";
 import { actions } from "astro:actions";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/ui/components/alert-dialog";
+import { Button } from "@/ui/components/button";
 
 // 🔧 Utils
 import { cn } from "@/utils/tailwind";
@@ -36,11 +47,13 @@ const REDIRECT_URL_BASE =
 
 const CheckoutForm = ({
   frequency,
+  setFrequency,
   amount,
   hasGifts = false,
   wantsNewsletter = false,
 }: {
   frequency: FREQUENCY;
+  setFrequency: (frequency: FREQUENCY) => void;
   amount: number;
   hasGifts?: boolean;
   wantsNewsletter: boolean;
@@ -54,6 +67,7 @@ const CheckoutForm = ({
   const [isLoading, setIsLoading] = React.useState(false);
 
   const mode = frequency === FREQUENCY.ONETIME ? "payment" : "subscription";
+  const [forcePayment, setForcePayment] = React.useState(false);
 
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   React.useEffect(() => {
@@ -313,21 +327,62 @@ const CheckoutForm = ({
       {/* ====================================================================== */}
 
       {/* ⬛ Validation */}
-      <button
-        className={cn(
-          "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
-          disableCheckout && "opacity-30",
-        )}
-        type="submit"
-        id="submit">
-        <span id="button-text">
-          {isLoading ? (
-            <CircleLoader color="#FFF200" />
-          ) : (
-            "💝 Soutenir Frustration"
+      {mode === "payment" && !forcePayment ? (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button
+              className={cn(
+                "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
+                disableCheckout && "opacity-30",
+              )}
+              type="button">
+              <span id="button-text">
+                {isLoading ? (
+                  <CircleLoader color="#FFF200" />
+                ) : (
+                  "💝 Soutenir Frustration"
+                )}
+              </span>
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-white">
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Souhaiteriez-vous passer à <b>un don mensuel</b> ? Vous recevrez
+                en contrepartie plusieurs cadeaux comme le dernier numéro papier
+                de <i>Frustration</i> ou l'édition poche de <i>Parasites</i> de
+                Nicolas Framont 🙌
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setForcePayment(true)}>
+                Rester sur un don unique
+              </AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button onClick={() => setFrequency(FREQUENCY.RECURRING)}>
+                  Passer à un don mensuel 🎁
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ) : (
+        <button
+          className={cn(
+            "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
+            disableCheckout && "opacity-30",
           )}
-        </span>
-      </button>
+          type="submit"
+          id="submit">
+          <span id="button-text">
+            {isLoading ? (
+              <CircleLoader color="#FFF200" />
+            ) : (
+              "💝 Soutenir Frustration"
+            )}
+          </span>
+        </button>
+      )}
     </form>
   );
 };

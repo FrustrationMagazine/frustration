@@ -150,6 +150,7 @@ const Form = () => {
         {DONATION_AMOUNTS.map(({ value: amount, gifts }) => (
           <label
             htmlFor={`amount-${amount}`}
+            key={`amount-${amount}`}
             className="inline-block w-1/2 cursor-pointer rounded-sm border px-6 py-4 text-center font-bold hover:bg-gray-100 has-[:checked]:bg-black has-[:checked]:text-yellow">
             <input
               type="radio"
@@ -292,6 +293,7 @@ const Form = () => {
         stripe={stripePromise}>
         <CheckoutForm
           frequency={selectedFrequency}
+          setFrequency={setSelectedFrequency}
           amount={selectedAmount}
           hasGifts={hasGifts}
           wantsNewsletter={wantsNewsletter}
