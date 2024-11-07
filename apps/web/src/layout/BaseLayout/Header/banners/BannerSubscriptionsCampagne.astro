@@ -30,10 +30,10 @@ console.log("numberOfActiveSubscribers", numberOfActiveSubscribers);
   <div class="absolute bottom-5">
     <p
       class="text-center mb-2 text-yellow text-4xl text-shadow-lg [text-shadow:0_2px_0_rgb(0_0_0_/_90%)]">
-      {percentActiveSubscribers === 1 ? 83 : percentActiveSubscribers}%
+      {percentActiveSubscribers}%
     </p>
     <ProgressBar
-      value={percentActiveSubscribers === 1 ? 83 : percentActiveSubscribers}
+      value={percentActiveSubscribers}
       className="w-[300px] h-7 shadow-lg border-2 border-yellow"
     />
   </div>

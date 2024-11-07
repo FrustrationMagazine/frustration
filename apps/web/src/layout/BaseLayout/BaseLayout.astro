@@ -5,6 +5,8 @@ import { fade } from "astro:transitions";
 
 // 🚀 SEO
 import SpeedInsights from "@vercel/speed-insights/astro";
+import Head from "../Head.astro";
+import previewImage from "../preview.png";
 
 // 🧱 Components
 import Header from "./Header/Header.astro";
@@ -46,36 +48,41 @@ const {
 <html
   lang="fr"
   class="bg-black">
-  <head>
-    <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="/img/favicon_frustration.webp"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width"
-    />
-    <meta
-      name="generator"
-      content={Astro.generator}
-    />
-    <meta
-      name="description"
-      content={description}
-    />
-    <meta
-      property="og:title"
-      content={`Frustration Magazine - ${title}`}
-    />
-    <meta
-      property="og:image"
-      content={image}
-    />
-    <title>Frustration Magazine - {title}</title>
-    <ViewTransitions />
-  </head>
+  <Head
+    title={title}
+    description={description}
+    ogImage="https://www.frustrationmagazine.fr/wp-content/uploads/2024/11/462542618_1223602578859544_8688981379924258110_n-1.png"
+  />
+
+  <meta charset="UTF-8" />
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="/img/favicon_frustration.webp"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width"
+  />
+  <meta
+    name="generator"
+    content={Astro.generator}
+  />
+  <meta
+    name="description"
+    content={description}
+  />
+  <meta
+    property="og:title"
+    content={`Frustration Magazine - ${title}`}
+  />
+  <meta
+    property="og:image"
+    content={image}
+  />
+  <title>Frustration Magazine - {title}</title>
+  <ViewTransitions />
+
   <body class="min-h-screen bg-yellow flex flex-col">
     <Header
       displayBanner={displayBanner}
