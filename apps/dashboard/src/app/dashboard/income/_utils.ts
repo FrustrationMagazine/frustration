@@ -1,4 +1,4 @@
-import type { TransactionsByMonth } from "./_models";
+import type { Transactions } from "./_models";
 
 /* ----------------------- */
 /* Convert number in euros */
@@ -54,21 +54,21 @@ Output : [
 ]
   */
 
-export const groupByMonthAndSum = (transactionsByMonth: TransactionsByMonth[]) => {
-  return transactionsByMonth.reduce(
-    (groupedTransactionsByMonth: TransactionsByMonth[], currentMonth: TransactionsByMonth) => {
-      const alreadyRegisteredMonth = groupedTransactionsByMonth.find(
-        ({ month }) => month.getTime() === currentMonth.month.getTime(),
+export const groupByAndSum = (transactions: Transactions[]) => {
+  return transactions.reduce(
+    (groupedTransactions: Transactions[], currentDate: Transactions) => {
+      const alreadyRegisteredMonth = groupedTransactions.find(
+        ({ date }) => date.getTime() === currentDate.date.getTime(),
       );
 
       if (alreadyRegisteredMonth) {
-        alreadyRegisteredMonth.stripe += currentMonth.stripe;
-        alreadyRegisteredMonth.helloasso += currentMonth.helloasso;
-        alreadyRegisteredMonth.total += currentMonth.total;
+        alreadyRegisteredMonth.stripe += currentDate.stripe;
+        alreadyRegisteredMonth.helloasso += currentDate.helloasso;
+        alreadyRegisteredMonth.total += currentDate.total;
       } else {
-        groupedTransactionsByMonth.push({ ...currentMonth });
+        groupedTransactions.push({ ...currentDate });
       }
-      return groupedTransactionsByMonth;
+      return groupedTransactions;
     },
     [],
   );
@@ -99,7 +99,7 @@ Output
 
 export const getTotalMonthAndEvolution = (
   monthToSearch: Date,
-  transactionsByMonth: TransactionsByMonth[],
+  transactionsByMonth: Transactions[],
 ): {
   monthTotal: number | null;
   evolution: string;
@@ -110,7 +110,7 @@ export const getTotalMonthAndEvolution = (
   if (transactionsByMonth.length === 0) return FALLBACK;
 
   const matchingIndex = transactionsByMonth.findIndex(
-    ({ month }) => month.getTime() === monthToSearch.getTime(),
+    ({ date }) => date.getTime() === monthToSearch.getTime(),
   );
 
   // Early return if no matching month

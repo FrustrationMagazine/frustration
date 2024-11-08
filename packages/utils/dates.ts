@@ -95,6 +95,26 @@ export const formatExplicitMonth = (value: string | Date, monthLength: "long" | 
   return explicitMonth.charAt(0).toUpperCase() + explicitMonth.slice(1);
 };
 
+/* ----------------------------------------------- */
+/* Day, month and year of a date (long or short format) */
+/* ----------------------------------------------- */
+/*
+  Input : value: "2023-10-01", dayLength: "long"
+  Output: "1 octobre 2023"
+
+  Input : value: "2023-10-01", dayLength: "short"
+  Output: "1 oct. 2023"
+*/
+export const formatExplicitDay = (value: string | Date, dayLength: "long" | "short") => {
+  const date = !(value instanceof Date) ? new Date(value) : value;
+  const explicitDay = date.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: dayLength,
+    year: "numeric"
+  });
+  return explicitDay.charAt(0).toUpperCase() + explicitDay.slice(1);
+};
+
 /* ------------- */
 /* Explicit date */
 /* ------------- */

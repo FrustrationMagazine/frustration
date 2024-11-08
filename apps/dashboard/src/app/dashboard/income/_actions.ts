@@ -4,16 +4,21 @@
 import { prisma } from "@/data-access/prisma";
 
 // 🗿 Models
-import { type TransactionsByMonth } from "./_models";
+import { type Transactions } from "./_models";
 
 /* ---------------------------- */
 /*    Transactions by month     */
 /* ---------------------------- */
 
-export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {
-  const transactions: TransactionsByMonth[] = await prisma.$queryRaw`
+export async function getTransactions({
+  period,
+}: {
+  period: "month" | "day";
+}): Promise<Transactions[]> {
+  const test = "month";
+  const transactions: Transactions[] = await prisma.$queryRaw`
      SELECT
-      DATE_TRUNC('month', created) as month,
+      DATE_TRUNC(${period}, created) as date,
       type,
       SUM(CASE WHEN source = 'stripe' THEN net ELSE 0 END) as stripe,
       SUM(CASE WHEN source = 'helloasso' THEN net ELSE 0 END)  as helloasso,
@@ -21,12 +26,12 @@ export async function getTransactionsByMonth(): Promise<TransactionsByMonth[]> {
     FROM
       "BalanceTransactions"
     WHERE
-      DATE_TRUNC('month', created) <> DATE_TRUNC('month', CURRENT_DATE)
+      DATE_TRUNC(${period}, created) <> DATE_TRUNC(${period}, CURRENT_DATE)
     GROUP BY
-      month,
+      date,
       type
     ORDER BY
-      month ASC
+      date ASC
   `;
 
   return transactions;

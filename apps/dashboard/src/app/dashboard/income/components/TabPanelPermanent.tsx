@@ -7,19 +7,19 @@ import { useState } from "react";
 import { TabPanel } from "@/ui/components/tabs";
 import CardMonths from "./Card/CardMonths";
 import TransactionsChart from "./Chart/Chart";
-import { type TransactionsByMonth } from "../_models";
+import { type Transactions } from "../_models";
 
 export default ({
   name,
   transactionsByMonth,
 }: {
   name: string;
-  transactionsByMonth: TransactionsByMonth[];
+  transactionsByMonth: Transactions[];
 }) => {
   const [highlightedMonth, setHighlightedMonth] = useState<number>(-1);
 
   return (
-    <TabPanel className='flex h-full gap-6'>
+    <TabPanel className="flex h-full gap-6">
       <CardMonths
         cardName={name}
         transactionsByMonth={transactionsByMonth}

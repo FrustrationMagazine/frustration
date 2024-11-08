@@ -14,7 +14,7 @@ import { inEuros, debounce } from "../../_utils";
 import { formatExplicitMonth } from "@/utils/dates";
 
 // 🗿 Models
-import { TransactionsByMonth } from "../../_models";
+import { Transactions } from "../../_models";
 
 const chartConfig = {
   income: {
@@ -26,14 +26,14 @@ const TransactionsChart = ({
   transactionsByMonth,
   setHighlightedMonth,
 }: {
-  transactionsByMonth: TransactionsByMonth[];
+  transactionsByMonth: Transactions[];
   setHighlightedMonth: any;
 }) => {
   const NUMBER_OF_LAST_MONTHS_TO_DISPLAY = 12;
 
   const chartData = transactionsByMonth
-    .map(({ month, stripe, helloasso, total }) => ({
-      month: month.toISOString(),
+    .map(({ date, stripe, helloasso, total }) => ({
+      month: date.toISOString(),
       stripe: Math.round(stripe),
       helloasso: Math.round(helloasso),
       total: Math.round(total),
@@ -44,7 +44,9 @@ const TransactionsChart = ({
     const RECHARTS_ACTIVE_DOT_CIRCLE_SELECTOR = ".recharts-active-dot circle";
     const RECHARTS_DOT_CIRCLE_SELECTOR = ".recharts-area-dots circle";
 
-    const activeDot = document.querySelector(RECHARTS_ACTIVE_DOT_CIRCLE_SELECTOR);
+    const activeDot = document.querySelector(
+      RECHARTS_ACTIVE_DOT_CIRCLE_SELECTOR,
+    );
     if (!activeDot) setHighlightedMonth(-1);
     if (activeDot) {
       const activeDotPositionX = activeDot?.getAttribute("cx");
@@ -53,7 +55,9 @@ const TransactionsChart = ({
           document.querySelectorAll(RECHARTS_DOT_CIRCLE_SELECTOR),
         ).toReversed();
         const dotsPositionX = dots.map((dot) => dot.getAttribute("cx"));
-        const indexMonth = dotsPositionX.findIndex((dotX) => dotX === activeDotPositionX);
+        const indexMonth = dotsPositionX.findIndex(
+          (dotX) => dotX === activeDotPositionX,
+        );
         setHighlightedMonth(indexMonth);
       }
     }
@@ -66,7 +70,7 @@ const TransactionsChart = ({
   return (
     <ChartContainer
       config={chartConfig}
-      className='w-full rounded-md bg-black/5 p-6 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-bold [&_.recharts-cartesian-axis-tick_text]:opacity-70'
+      className="w-full rounded-md bg-black/5 p-6 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-bold [&_.recharts-cartesian-axis-tick_text]:opacity-70"
     >
       <AreaChart
         accessibilityLayer
@@ -75,56 +79,60 @@ const TransactionsChart = ({
         onMouseLeave={resetHighlightedMonth}
       >
         <defs>
-          <linearGradient id='stripeGradient' x1='0' x2='0' y1='0' y2='1'>
-            <stop offset='0%' stopColor='#827cf8' stopOpacity={1} />
-            <stop offset='100%' stopColor='#b5b2fb' stopOpacity={0} />
+          <linearGradient id="stripeGradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#827cf8" stopOpacity={1} />
+            <stop offset="100%" stopColor="#b5b2fb" stopOpacity={0} />
           </linearGradient>
-          <linearGradient id='helloassoGradient' x1='0' x2='0' y1='0' y2='1'>
-            <stop offset='0%' stopColor='#56c679' stopOpacity={1} />
-            <stop offset='100%' stopColor='#8dd9a5' stopOpacity={0} />
+          <linearGradient id="helloassoGradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#56c679" stopOpacity={1} />
+            <stop offset="100%" stopColor="#8dd9a5" stopOpacity={0} />
           </linearGradient>
         </defs>
         <XAxis
-          dataKey='month'
+          dataKey="month"
           tickLine={false}
           angle={-45}
           axisLine={false}
           fontSize={14}
           padding={{ left: 40, right: 40 }}
           tickMargin={30}
-          stroke='#0f172a'
+          stroke="#0f172a"
           tickFormatter={(value) => formatExplicitMonth(value, "short")}
         />
         <ChartTooltip
           content={
             <ChartTooltipContent
               valueFormatter={inEuros}
-              xValue='month'
+              xValue="month"
               formatterXValue={(value) => formatExplicitMonth(value, "long")}
-              labelKey='income'
+              labelKey="income"
             />
           }
         />
         <Area
-          dataKey='stripe'
-          type='monotone'
-          fill='url(#stripeGradient)'
-          stroke='#625bf6'
+          dataKey="stripe"
+          type="monotone"
+          fill="url(#stripeGradient)"
+          stroke="#625bf6"
           radius={4}
           // Import to keep this dot property so dots are painted but invisible and we can check position of active dot within it whenever we want
           dot={{ fill: "transparent", strokeWidth: 0 }}
         />
         <Area
-          dataKey='helloasso'
-          type='monotone'
-          fill='url(#helloassoGradient)'
-          stroke='#359d55'
+          dataKey="helloasso"
+          type="monotone"
+          fill="url(#helloassoGradient)"
+          stroke="#359d55"
           radius={4}
         />
         <Legend
-          iconType='plainline'
+          iconType="plainline"
           iconSize={18}
-          wrapperStyle={{ fontSize: 14, paddingTop: "60px", fontWeight: "bold" }}
+          wrapperStyle={{
+            fontSize: 14,
+            paddingTop: "60px",
+            fontWeight: "bold",
+          }}
           formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
         />
       </AreaChart>
