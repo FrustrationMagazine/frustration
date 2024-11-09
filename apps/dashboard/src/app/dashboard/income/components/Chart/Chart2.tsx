@@ -10,7 +10,7 @@ import {
 import { Area, AreaChart, XAxis, Legend } from "recharts";
 
 // 🔧 Libs
-import { inEuros, debounce } from "../../_utils";
+import { inEuros } from "../../_utils";
 import { formatExplicitDay } from "@/utils/dates";
 
 // 🗿 Models

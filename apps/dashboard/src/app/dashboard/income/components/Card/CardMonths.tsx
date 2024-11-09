@@ -31,7 +31,6 @@ export default ({
   highlightedMonth: number;
 }) => {
   const months = transactionsByMonth.map(({ date }) => date).toReversed();
-  console.log("months", months);
   return (
     <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
       <CardHeader className="text-3xl font-semibold">

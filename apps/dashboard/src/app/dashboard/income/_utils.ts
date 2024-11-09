@@ -126,6 +126,38 @@ export const getTotalMonthAndEvolution = (
   return { monthTotal: month.total, evolution };
 };
 
+/* --------------------- */
+/* Generate combinations */
+/* --------------------- */
+
+/*
+Input : [1, 2, 3]
+
+Output : [
+  [1],
+  [1, 2],
+  [1, 2, 3],
+  [1, 3],
+  [2],
+  [2, 3],
+  [3]
+]
+*/
+
+export const generateUniqueCombinations = <T extends string | number>(
+  arr: T[],
+): T[][] => {
+  const result: T[][] = [];
+  const f = (prefix: T[], arr: T[]) => {
+    for (let i = 0; i < arr.length; i++) {
+      result.push([...prefix, arr[i]]);
+      f([...prefix, arr[i]], arr.slice(i + 1));
+    }
+  };
+  f([], arr);
+  return result;
+};
+
 /* -------- */
 /* Debounce */
 /* -------- */

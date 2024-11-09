@@ -15,7 +15,6 @@ export async function getTransactions({
 }: {
   period: "month" | "day";
 }): Promise<Transactions[]> {
-  const test = "month";
   const transactions: Transactions[] = await prisma.$queryRaw`
      SELECT
       DATE_TRUNC(${period}, created) as date,

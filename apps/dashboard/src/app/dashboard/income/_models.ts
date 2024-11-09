@@ -1,9 +1,11 @@
 export type TransactionType = "subscription" | "donation";
 
+type CampaignType = "permanent" | "temporary";
+
 export type Tab = {
   name: string;
   transactionsTypes: TransactionType[];
-  campaignType: "permanent" | "temporary";
+  campaignType: CampaignType;
 };
 
 export type Transactions = {
@@ -21,3 +23,12 @@ export type Transactions = {
 //   helloasso: 100,
 //   total: 200
 // }
+
+export type Campaign = {
+  name: string;
+  type: CampaignType;
+  tag?: string;
+  goal?: number;
+  begin: Date;
+  end: Date | null;
+};
