@@ -23,14 +23,14 @@ import { getTotalMonthAndEvolution } from "../../_utils";
 
 export default ({
   cardName,
-  transactionsByMonth,
+  transactions,
   highlightedMonth,
 }: {
   cardName: string;
-  transactionsByMonth: Transactions[];
+  transactions: Transactions[];
   highlightedMonth: number;
 }) => {
-  const months = transactionsByMonth.map(({ date }) => date).toReversed();
+  const months = transactions.map(({ date }) => date).toReversed();
   return (
     <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
       <CardHeader className="text-3xl font-semibold">
@@ -58,7 +58,7 @@ export default ({
           });
           const { monthTotal, evolution } = getTotalMonthAndEvolution(
             month,
-            transactionsByMonth,
+            transactions,
           );
           if (typeof monthTotal !== "number") return null;
           return (

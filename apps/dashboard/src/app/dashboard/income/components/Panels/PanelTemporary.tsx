@@ -2,8 +2,8 @@
 
 // 🧱 Components
 import { TabPanel } from "@/ui/components/tabs";
-import TransactionsChart from "./Chart/Chart2";
-import { type Transactions } from "../_models";
+import TransactionsChart from "../Chart/Chart2";
+import { type Transactions } from "../../_models";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import {
 } from "@/ui/components/card";
 
 // 🔧 Libs
-import { inEuros } from "../_utils";
+import { inEuros } from "../../_utils";
 
 export default ({
   name,
@@ -26,7 +26,6 @@ export default ({
   goal: number;
   transactions: Transactions[];
 }) => {
-  console.log(goal, "goal");
   const total = transactions.reduce((acc, cv) => acc + cv.total / 100, 0);
   const progressRoundedFirstDecimal = Math.round((total * 1000) / goal) / 10;
 
@@ -34,7 +33,7 @@ export default ({
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
   const meanDay = total / differenceInDays;
   return (
-    <TabPanel className="flex h-full gap-6">
+    <>
       <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
         <CardHeader className="text-3xl font-semibold">
           <CardTitle>Bilan</CardTitle>
@@ -69,6 +68,6 @@ export default ({
         </CardContent>
       </Card>
       <TransactionsChart transactions={transactions} />
-    </TabPanel>
+    </>
   );
 };

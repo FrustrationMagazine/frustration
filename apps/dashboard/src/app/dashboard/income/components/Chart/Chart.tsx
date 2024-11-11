@@ -23,15 +23,15 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const TransactionsChart = ({
-  transactionsByMonth,
+  transactions,
   setHighlightedMonth,
 }: {
-  transactionsByMonth: Transactions[];
+  transactions: Transactions[];
   setHighlightedMonth: any;
 }) => {
   const NUMBER_OF_LAST_MONTHS_TO_DISPLAY = 12;
 
-  const chartData = transactionsByMonth
+  const chartData = transactions
     .map(({ date, stripe, helloasso, total }) => ({
       month: date.toISOString(),
       stripe: Math.round(stripe),

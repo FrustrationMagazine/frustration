@@ -5,30 +5,30 @@ import { useState } from "react";
 
 // 🧱 Components
 import { TabPanel } from "@/ui/components/tabs";
-import CardMonths from "./Card/CardMonths";
-import TransactionsChart from "./Chart/Chart";
-import { type Transactions } from "../_models";
+import CardMonths from "../Card/CardMonths";
+import TransactionsChart from "../Chart/Chart";
+import { type Transactions } from "../../_models";
 
 export default ({
   name,
-  transactionsByMonth,
+  transactions,
 }: {
   name: string;
-  transactionsByMonth: Transactions[];
+  transactions: Transactions[];
 }) => {
   const [highlightedMonth, setHighlightedMonth] = useState<number>(-1);
 
   return (
-    <TabPanel className="flex h-full gap-6">
+    <>
       <CardMonths
         cardName={name}
-        transactionsByMonth={transactionsByMonth}
+        transactions={transactions}
         highlightedMonth={highlightedMonth}
       />
       <TransactionsChart
-        transactionsByMonth={transactionsByMonth}
+        transactions={transactions}
         setHighlightedMonth={setHighlightedMonth}
       />
-    </TabPanel>
+    </>
   );
 };
