@@ -219,8 +219,10 @@ export default async () => {
                             [],
                           );
 
-                        filteredTransactionsCampaign =
-                          filteredTransactionsCampaign.toReversed();
+                        // Order by date
+                        filteredTransactionsCampaign.sort(
+                          (a, b) => a.date - b.date,
+                        );
 
                         return (
                           <TabPanelTemporary
