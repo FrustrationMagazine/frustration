@@ -64,7 +64,9 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Nom",
     cell: ({ row }) => {
       const name = row.getValue("name") as unknown as string;
-      return <span className="font-medium">{prettifyName(name)}</span>;
+      return (
+        <span className="font-medium">{name ? prettifyName(name) : "-"}</span>
+      );
     },
   },
   {
@@ -105,16 +107,26 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Ville",
     cell: ({ row }) => {
       const city = row.getValue("ville") as unknown as string;
-      return <span className="capitalize">{city.toLowerCase()}</span>;
+      return (
+        <span className="capitalize">{city ? city.toLowerCase() : "-"}</span>
+      );
     },
   },
   {
     accessorKey: "adresse",
     header: "Adresse",
+    cell: ({ row }) => {
+      const address = row.getValue("adresse") as unknown as string;
+      return address || "-";
+    },
   },
   {
     accessorKey: "code_postal",
     header: "Code postal",
+    cell: ({ row }) => {
+      const postalCode = row.getValue("code_postal") as unknown as string;
+      return postalCode || "-";
+    },
   },
 ];
 

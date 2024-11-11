@@ -178,16 +178,18 @@ export async function fetchStripeCustomers(
       customers = [...customers, ...temp_customers];
     }
 
-    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email }) => {
+    console.log(customers[0]);
+
+    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email, address }) => {
       const subscription = subscriptions.find((subscription) => subscription.customer === id);
       return {
         id,
         created: new Date(created * 1000),
         name,
         email,
-        adresse: subscription.metadata?.adresse || subscription.metadata?.line1,
-        code_postal: subscription.metadata?.code_postal || subscription.metadata?.postal_code,
-        ville: subscription.metadata?.ville || subscription.metadata?.city,
+        adresse: address?.line1 || subscription.metadata?.adresse || subscription.metadata?.line1,
+        code_postal: address?.postal_code || subscription.metadata?.code_postal || subscription.metadata?.postal_code,
+        ville: address?.city || subscription.metadata?.ville || subscription.metadata?.city,
         amount: subscription.items.data[0].price.unit_amount
       };
     });
