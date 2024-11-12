@@ -47,7 +47,7 @@ export type Campaign = {
 
 export const CAMPAIGNS: Campaign[] = [
   {
-    name: "Régulier",
+    name: "Total",
     type: "permanent",
     begin: new Date("2022-01-01"),
     end: null,
@@ -91,7 +91,7 @@ export const TRANSACTION_TYPES = generateUniqueCombinations<string>([
 export const TRANSACTIONS_TABS: any[] = CAMPAIGNS.map((campaign) => {
   return TRANSACTION_TYPES.map((transactionsTypes) => {
     let name;
-    if (transactionsTypes.length > 1) name = "Global";
+    if (transactionsTypes.length > 1) name = "Abonnements + Dons";
     if (
       transactionsTypes.length === 1 &&
       transactionsTypes[0] === "subscription"
