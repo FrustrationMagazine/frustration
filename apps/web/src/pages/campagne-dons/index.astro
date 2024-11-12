@@ -7,6 +7,34 @@ import TitlePullUp from "./_components/TitlePullUp";
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+
+// 🔧 Libs
+import { stripe } from "@/data-access/stripe";
+
+export const prerender = false;
+Astro.response.headers.set('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+
+// Compute percent in prohress for campaign
+ let transactions: any[] = [];
+  let has_more;
+  let next_page;
+  do {
+    try {
+      const resTransactions = (await stripe.charges.search({
+        query: `metadata['campaign']:'dons-fin-2024' AND created>${(new Date("2024-11-07").getTime()) / 1000}`,
+        limit: 100,
+        ...(next_page ? { page: next_page } : {}),
+      })) as any;
+      next_page = resTransactions.next_page;
+      if (has_more) next_page = resTransactions.next_page;
+      transactions = [...transactions, ...resTransactions.data];
+    } catch (e) {
+      console.error("Error while fetching transactions for campaign", e);
+    }
+  } while (has_more);
+  const total = transactions.filter(transaction => !transaction.invoice).reduce((acc, cv) => acc + (cv.amount/100) , 0)
+  const MIN_VALUE = 5
+  const progressInPercent = Math.max((Math.floor(total)/40000)*100, MIN_VALUE)
 ---
 
 <BaseLayout
@@ -21,7 +49,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
     />
     <ProgressBar
       client:load
-      value={5}
+      value={progressInPercent}
       delayInSeconds={2}
       background="bg-yellow"
       className="h-10 mt-12 shadow-lg"

@@ -15,7 +15,7 @@ const ProgressBar = React.forwardRef<
 >(({ className, value, delayInSeconds, background, ...props }, ref) => {
   const [counter, setCounter] = React.useState(0);
 
-  React.useLayoutEffect(function startCounter() {
+  React.useEffect(function startCounter() {
     let intervalId: NodeJS.Timeout;
     let counter2 = 0;
     if (value) {
@@ -51,7 +51,7 @@ const ProgressBar = React.forwardRef<
             width: `${counter / 4}%`,
           }}></div>
       </ProgressPrimitive.Indicator>
-      <div className="animate-slideProgress absolute left-0 top-0 aspect-[4/1] h-full rounded-full bg-white blur-xl"></div>
+      <div className="absolute left-0 top-0 aspect-[4/1] h-full animate-slideProgress rounded-full bg-white blur-xl"></div>
       <div
         className="absolute -right-3 top-1/2 -translate-y-1/2 translate-x-full text-2xl font-bold text-black"
         style={{ right: `calc(${100 - (counter || 0)}% - 10px)` }}>

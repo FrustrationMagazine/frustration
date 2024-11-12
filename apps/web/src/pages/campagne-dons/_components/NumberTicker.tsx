@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
 
 export function NumberTicker({
@@ -22,13 +22,13 @@ export function NumberTicker({
     damping: 50,
     stiffness: 85,
   });
-  useLayoutEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       motionValue.set(direction === "down" ? 0 : value);
     }, delay * 1000);
   }, [motionValue, delay, value, direction]);
 
-  useLayoutEffect(
+  useEffect(
     () =>
       springValue.on("change", (latest) => {
         if (ref.current) {
