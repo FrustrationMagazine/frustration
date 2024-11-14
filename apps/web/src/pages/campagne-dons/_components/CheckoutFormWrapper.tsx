@@ -44,32 +44,32 @@ const DONATION_FREQUENCIES = [
 ];
 const DONATION_AMOUNTS = [
   {
-    value: 500,
+    value: 1500,
     emoji: "😄",
-    gifts: [],
+    gifts: [GIFTS.MAGAZINE],
   },
   {
-    value: 1000,
+    value: 3000,
     emoji: "😃",
     gifts: [GIFTS.MAGAZINE],
   },
   {
-    value: 2000,
+    value: 5000,
     emoji: "😙",
     gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
   },
   {
-    value: 5000,
+    value: 10000,
     emoji: "😘",
     gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
   },
   {
-    value: 10000,
+    value: 20000,
     emoji: "🥰",
     gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
   },
   {
-    value: 20000,
+    value: 50000,
     emoji: "🤩",
     gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
   },
@@ -95,11 +95,24 @@ const Form = () => {
     FREQUENCY.ONETIME,
   );
 
+  /* Amount */
+  /* ------ */
+  const queryParams = new URLSearchParams(window.location.search);
+  const initialAmount = queryParams.get("amount")
+    ? parseInt(queryParams.get("amount")!) * 100
+    : DONATION_AMOUNTS[1].value;
+  let initialIsCustom = false;
+  if (!DONATION_AMOUNTS.map(({ value }) => value).includes(initialAmount)) {
+    initialIsCustom = true;
+  }
+
   const [{ selectedAmount, isCustom }, setSelectedAmount] = React.useState({
-    selectedAmount: 2000,
-    isCustom: false,
+    selectedAmount: initialAmount,
+    isCustom: initialIsCustom,
   });
 
+  /* Newsletter */
+  /* ---------- */
   const [wantsNewsletter, setWantsNewsletter] = React.useState(true);
 
   const gifts =
@@ -181,6 +194,7 @@ const Form = () => {
             name="amount"
             className="hidden"
             id="amount-custom"
+            checked={isCustom}
             onClick={() =>
               setSelectedAmount(({ selectedAmount }) => ({
                 selectedAmount,
@@ -195,18 +209,21 @@ const Form = () => {
             <div className="mb-2 flex items-center justify-center text-center">
               <input
                 type="number"
-                className="border-none px-0 py-2 text-right font-bold"
+                className="border-2 border-black px-0 py-2 text-right font-bold"
                 style={{
                   width: `${(selectedAmount / 100).toString().length + 1}ch`,
                 }}
                 value={selectedAmount / 100}
-                min="1"
-                onChange={(e) =>
+                min="15"
+                onChange={(e) => {
+                  let wantedAmount = +e.target.value;
+                  if (wantedAmount < 15) wantedAmount = 15;
+
                   setSelectedAmount({
-                    selectedAmount: +e.target.value * 100,
+                    selectedAmount: wantedAmount * 100,
                     isCustom: true,
-                  })
-                }
+                  });
+                }}
               />
               <span>€</span>
             </div>
@@ -214,8 +231,10 @@ const Form = () => {
               <input
                 type="range"
                 className="mr-4 grow"
-                min="1"
-                max="200"
+                min="15"
+                max={DONATION_AMOUNTS.map(({ value }) => value / 100)
+                  .sort((a, b) => b - a)
+                  .at(0)}
                 value={selectedAmount / 100}
                 onChange={(e) =>
                   setSelectedAmount({

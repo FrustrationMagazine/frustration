@@ -199,7 +199,6 @@ const CheckoutForm = ({
         ).then((res) => res.json());
 
         // 3️⃣ Payment intent
-
         if (resSubscriptionCreation?.subscription) {
           subscription = resSubscriptionCreation.subscription;
           const paymentIntent = subscription?.latest_invoice?.payment_intent;
