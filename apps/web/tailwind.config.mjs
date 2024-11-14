@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors')
-
 export default {
   content: [
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
@@ -35,6 +34,7 @@ export default {
         disco: "disco 2s linear infinite",
         shimmer: "shimmer 2s linear infinite",
         slideProgress: "slideProgres 2s linear infinite",
+        rainbow: "rainbow var(--speed, 2s) infinite linear",
       },
       keyframes: {
         sliding: {
@@ -60,7 +60,11 @@ export default {
         slideProgres: {
           "0%": { left: "0%", translate: "-100% 0" },
           "100%": { left: "100%", translate: "0 0" },
-        }
+        },
+        rainbow: {
+          "0%": { "background-position": "0%" },
+          "100%": { "background-position": "200%" },
+        },
       },
     },
     // 🎨 Colors
@@ -75,6 +79,11 @@ export default {
       palePurple: "#7C76B0",
       blue: "#1e40af",
       primary: "#fff200",
+      "color-rainbow-1": "hsl(var(--color-rainbow-1))",
+      "color-rainbow-2": "hsl(var(--color-rainbow-2))",
+      "color-rainbow-3": "hsl(var(--color-rainbow-3))",
+      "color-rainbow-4": "hsl(var(--color-rainbow-4))",
+      "color-rainbow-5": "hsl(var(--color-rainbow-5))",
     },
     fontFamily: {
       montserrat: "Montserrat",

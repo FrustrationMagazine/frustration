@@ -9,9 +9,9 @@ const LoaderCircle = ({ color }: { color: string }) => (
   >
     <circle
       className={styles.track}
-      cx="20"
-      cy="20"
-      r="17.5"
+      cx="10"
+      cy="10"
+      r="8.75"
       pathLength="100"
       stroke-width="5px"
       fill="none"
@@ -20,9 +20,9 @@ const LoaderCircle = ({ color }: { color: string }) => (
       className={styles.car}
       cx="20"
       cy="20"
-      r="17.5"
+      r="8.75"
       pathLength="100"
-      stroke-width="5px"
+      stroke-width="3px"
       fill="none"
       style={{ stroke: color }}
     />

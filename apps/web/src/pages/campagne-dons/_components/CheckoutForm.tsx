@@ -7,9 +7,11 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { type StripePaymentElementOptions } from "@stripe/stripe-js";
+import { actions } from "astro:actions";
+
+// 🧱 Components
 import { FREQUENCY } from "./CheckoutFormWrapper";
 import CircleLoader from "@/ui/components/loaders/loader-circle";
-import { actions } from "astro:actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/ui/components/alert-dialog";
 import { Button } from "@/ui/components/button";
+import { RainbowButton } from "./RainbowButton";
 
 // 🔧 Utils
 import { cn } from "@/utils/tailwind";
@@ -329,20 +332,17 @@ const CheckoutForm = ({
       {mode === "payment" && !forcePayment ? (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button
+            <div
               className={cn(
-                "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
+                "mx-auto mt-10 w-fit",
                 disableCheckout && "opacity-30",
-              )}
-              type="button">
-              <span id="button-text">
-                {isLoading ? (
-                  <CircleLoader color="#FFF200" />
-                ) : (
-                  "💝 Soutenir Frustration"
-                )}
-              </span>
-            </button>
+              )}>
+              <RainbowButton className="mx-auto rounded-md px-4 py-3 lg:py-4">
+                <span className="text-xl font-bold text-yellow lg:text-2xl">
+                  💝 Soutenir Frustration
+                </span>
+              </RainbowButton>
+            </div>
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
@@ -366,21 +366,24 @@ const CheckoutForm = ({
           </AlertDialogContent>
         </AlertDialog>
       ) : (
-        <button
+        <div
           className={cn(
-            "mx-auto mt-16 block rounded bg-black px-6 py-4 text-2xl font-bold text-yellow",
+            "mx-auto mt-10 w-fit",
             disableCheckout && "opacity-30",
-          )}
-          type="submit"
-          id="submit">
-          <span id="button-text">
+          )}>
+          <RainbowButton
+            className="mx-auto rounded-md px-4 py-3 lg:py-4"
+            type="submit"
+            id="submit">
             {isLoading ? (
               <CircleLoader color="#FFF200" />
             ) : (
-              "💝 Soutenir Frustration"
+              <span className="text-xl font-bold text-yellow lg:text-2xl">
+                💝 Soutenir Frustration
+              </span>
             )}
-          </span>
-        </button>
+          </RainbowButton>
+        </div>
       )}
     </form>
   );

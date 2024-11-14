@@ -13,4 +13,9 @@
 html {
   scroll-padding-top: 100px;
   scroll-behavior: smooth;
+  --color-rainbow-1: 0 100% 63%;
+  --color-rainbow-2: 270 100% 63%;
+  --color-rainbow-3: 210 100% 63%;
+  --color-rainbow-4: 195 100% 63%;
+  --color-rainbow-5: 90 100% 63%;
 }
