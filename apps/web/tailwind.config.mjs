@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors')
+const colors = require("tailwindcss/colors");
 export default {
   content: [
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
-      // 👇 required so components imported from @/ui work with tailwind classes
+    // 👇 required so components imported from @/ui work with tailwind classes
     "../../packages/ui/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   plugins: [
@@ -35,6 +35,8 @@ export default {
         shimmer: "shimmer 2s linear infinite",
         slideProgress: "slideProgres 2s linear infinite",
         rainbow: "rainbow var(--speed, 2s) infinite linear",
+        grid: "grid 15s linear infinite",
+        meteor: "meteor 5s linear infinite",
       },
       keyframes: {
         sliding: {
@@ -49,13 +51,17 @@ export default {
           "0%": { rotate: "0turn" },
           "100%": { rotate: "1turn" },
         },
-         shimmer: {
+        shimmer: {
           from: {
-            "backgroundPosition": "0 0"
+            backgroundPosition: "0 0",
           },
           to: {
-            "backgroundPosition": "-200% 0"
-          }
+            backgroundPosition: "-200% 0",
+          },
+        },
+        grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
         },
         slideProgres: {
           "0%": { left: "0%", translate: "-100% 0" },
@@ -64,6 +70,14 @@ export default {
         rainbow: {
           "0%": { "background-position": "0%" },
           "100%": { "background-position": "200%" },
+        },
+        meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: 1 },
+          "70%": { opacity: 1 },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: 0,
+          },
         },
       },
     },

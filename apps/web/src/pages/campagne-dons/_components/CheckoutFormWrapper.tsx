@@ -135,7 +135,7 @@ const Form = () => {
   return (
     <div className="mx-auto mt-12 flex max-w-[500px] flex-col items-center">
       <div className="mb-8 text-center">
-        <h3 className="font-bebas text-7xl"> Faire un don</h3>
+        <h3 className="font-bebas text-7xl"> Don direct</h3>
         <p className="text-3xl font-bold">Aidez-nous à grandir ! 🌱</p>
       </div>
 
@@ -214,7 +214,7 @@ const Form = () => {
                   width: `${(selectedAmount / 100).toString().length + 1}ch`,
                 }}
                 value={selectedAmount / 100}
-                min="15"
+                min="1"
                 onChange={(e) => {
                   let wantedAmount = +e.target.value;
                   if (wantedAmount < 15) wantedAmount = 15;
@@ -231,7 +231,7 @@ const Form = () => {
               <input
                 type="range"
                 className="mr-4 grow"
-                min="15"
+                min="1"
                 max={DONATION_AMOUNTS.map(({ value }) => value / 100)
                   .sort((a, b) => b - a)
                   .at(0)}

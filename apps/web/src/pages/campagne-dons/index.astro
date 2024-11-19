@@ -3,6 +3,8 @@
 import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
 import ProgressBar from "./_components/ProgressBar";
 import TitlePullUp from "./_components/TitlePullUp";
+import Meteors from "./_components/Meteors";
+import { Image } from "astro:assets";
 
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
@@ -11,42 +13,71 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 // 🔧 Libs
 import { stripe } from "@/data-access/stripe";
 
+// 🎨 Assets
+import TipeeeLogo from "./tipeee.png";
+import SemaineType from "./semaine-type.jpg";
+import CoverCampaign from "./cover-campaign.jpg";
+import BottomPageIllu from "./bottom-page.webp";
+
 export const prerender = false;
-Astro.response.headers.set('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+Astro.response.headers.set(
+  "Cache-Control",
+  "s-maxage=3600, stale-while-revalidate",
+);
 
 // Compute percent in prohress for campaign
- let transactions: any[] = [];
-  let has_more;
-  let next_page;
-  do {
-    try {
-      const resTransactions = (await stripe.charges.search({
-        query: `metadata['campaign']:'dons-fin-2024' AND created>${(new Date("2024-11-07").getTime()) / 1000}`,
-        limit: 100,
-        ...(next_page ? { page: next_page } : {}),
-      })) as any;
-      next_page = resTransactions.next_page;
-      if (has_more) next_page = resTransactions.next_page;
-      transactions = [...transactions, ...resTransactions.data];
-    } catch (e) {
-      console.error("Error while fetching transactions for campaign", e);
-    }
-  } while (has_more);
-  const total = transactions.filter(transaction => !transaction.invoice).reduce((acc, cv) => acc + (cv.amount/100) , 0)
-  const MIN_VALUE = 5
-  const progressInPercent = Math.max((Math.floor(total)/40000)*100, MIN_VALUE)
+let transactions: any[] = [];
+let has_more;
+let next_page;
+do {
+  try {
+    const resTransactions = (await stripe.charges.search({
+      query: `metadata['campaign']:'dons-fin-2024' AND created>${new Date("2024-11-07").getTime() / 1000}`,
+      limit: 100,
+      ...(next_page ? { page: next_page } : {}),
+    })) as any;
+    next_page = resTransactions.next_page;
+    if (has_more) next_page = resTransactions.next_page;
+    transactions = [...transactions, ...resTransactions.data];
+  } catch (e) {
+    console.error("Error while fetching transactions for campaign", e);
+  }
+} while (has_more);
+const total = transactions
+  .filter((transaction) => !transaction.invoice)
+  .reduce((acc, cv) => acc + cv.amount / 100, 0);
+const MIN_VALUE = 5;
+const progressInPercent = Math.max(
+  (Math.floor(total) / 40000) * 100,
+  MIN_VALUE,
+);
 ---
 
 <BaseLayout
-  title="Aidez Frustration Magazine à grandir !"
+  title="Aidez <i>Frustration</i> Magazine à grandir !"
   displayBanner={false}>
   <PageLayout>
-    <!-- 🅰️ Titles -->
-    <TitlePullUp
-      client:load
-      words="Twitch, nouveaux formats et international : 40 000€ pour nous aider"
-      className="text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+    <!-- 🖼️ Cover -->
+    <Image
+      src={CoverCampaign}
+      class="mx-auto mb-16"
+      width="800"
+      alt="Une semaine type de publications sur <i>Frustration</i> Magazine pour notre prochain réorganisation"
     />
+    <div
+      class="relative flex h-[200px] w-full flex-col items-center justify-center overflow-hidden bg-background">
+      <Meteors
+        client:load
+        number={20}
+      />
+      <!-- 🅰️ Titles -->
+      <TitlePullUp
+        client:load
+        words="On a besoin de vous pour continuer !"
+        className="z-10 text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+      />
+    </div>
+    <!-- === Progress bar -->
     <ProgressBar
       client:load
       value={progressInPercent}
@@ -56,132 +87,428 @@ Astro.response.headers.set('Cache-Control', 's-maxage=3600, stale-while-revalida
     />
     <!-- 🔠 Text -->
     <article class="mt-12 px-2 font-open-sans tracking-wide text-lg">
-      <p class="text-center mb-11 text-xl">
-        Frustration magazine c’est un média en ligne <b>100% gratuit</b>, <b
-          >100% indépendant</b
-        >, <b>sans publicité ni mécène</b>, qui défend une <b
-          >ligne radicale mais accessible</b
-        >. C’est aussi une revue papier annuelle disponible dans toutes les
-        bonnes librairies.
+      <p class="mb-11 text-lg">
+        <i>Frustration</i> a fait d’énormes progrès cette année, <b
+          >mais notre modèle économique n’est plus viable sur le long terme</b
+        >. Nous sommes une équipe de 2,5 personnes, sans local, et malgré notre
+        succès croissant, <b>la charge de travail dépasse nos capacités</b>.
+        Pour continuer à produire un journalisme libre et de qualité, <b
+          >nous avons besoin de votre soutien pour publier quotidiennement</b
+        >, développer notre partie vidéo, et offrir une vraie sécurité à notre
+        équipe. Votre aide est essentielle pour que <i><i>Frustration</i></i>
+        <b>devienne un média stable tout en restant indépendant</b>.
       </p>
-      <h3 class="font-bold text-center text-2xl mb-6">
-        Grâce à vous en une seule année nous avons :
+      <section class="mb-10">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Pour résumer
+        </h3>
+        <ul class="space-y-3 list-decimal">
+          <li>
+            <b><i>Frustration</i> a réalisé de gros progrès</b> : doublement de la
+            fréquentation du site, meilleure visibilité médiatique, forte progression
+            sur les réseaux sociaux, augmentation de la production d'articles et
+            de vidéos, et une version papier ambitieuse.
+          </li>
+          <li>
+            <b>Mais notre modèle économique n’est plus viable</b> : une équipe de
+            seulement 2,5 personnes avec peu de moyens et une charge de travail exponentielle.
+          </li>
+          <li>
+            <b>Nos défis quotidiens</b> : gestion des mails, réseaux sociaux, correction
+            d’articles, production vidéo, comptabilité, logistique des dons, etc.
+          </li>
+        </ul>
+      </section>
+      <section class="mb-10">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Nos objectifs à court terme
+        </h3>
+        <ul class="space-y-3 list-disc">
+          <li>
+            <b>Publier quotidiennement</b> pour rivaliser avec les médias installés.
+          </li>
+          <li>
+            <b>Devenir un vrai média vidéo</b> avec des formats longs et réguliers,
+            en plus de l’écrit.
+          </li>
+          <li>
+            <b>Assurer une sécurité professionnelle</b> en passant de statuts précaires
+            à une équipe de 3 salariés en CDI à temps plein.
+          </li>
+        </ul>
+      </section>
+      <p class="text-center text-2xl">
+        <b>Votre soutien est essentiel</b> : votre aide permet de renforcer notre
+        indépendance et d’assurer la pérennité du média sans publicité ni subventions.
+      </p>
+
+      <Image
+        src={SemaineType}
+        class="mx-auto my-8"
+        width="800"
+        alt="Une semaine type de publications sur <i>Frustration</i> Magazine pour notre prochain réorganisation"
+      />
+      <h3
+        class="title-to-underline w-fit mx-auto uppercase font-bebas text-center font-bold text-6xl mb-10">
+        Comment nous aider ?
       </h3>
-      <ul
-        class="text-base pl-6 xl:text-xl list-disc list-achievements space-y-4">
-        <li>
-          Produit de très nombreuses analyses, enquêtes et argumentaires pour
-          mettre au jour la <b>réalité de la lutte des classes</b>, de la <b
-            >domination coloniale</b
-          > et des <b>mécanismes patriarcaux</b> ;
-        </li>
-        <li>
-          Développé de <b>nouveaux formats vidéos</b> (<i>Comprendre</i>, <i
-            >État des lieux</i
-          >, <i>Frustration Rencontres</i> etc.) ;
-        </li>
-        <li>
-          Rénové entièrement <b>nos réseaux sociaux</b> et tous nos <b
-            >canaux de diffusion</b
-          > pour les rendre plus agréables et lisibles ;
-        </li>
-        <li>
-          Renforcé nos liens avec de <b>nombreux médias indépendants alliés</b> (partenariat
-          avec <i>Le Média</i> pour l'émission <i>Coup de Griffe</i> par exemple)
-          ;
-        </li>
-        <li>
-          Envoyé des membres de notre équipe parler de la fin du capitalisme <b
-            >dans des médias <i>mainstream</i></b
-          > ;
-        </li>
-      </ul>
-      <h3 class="font-bold text-center text-2xl mt-16 mb-6 text-pretty">
-        Et cela a payé ! Puisque dans le même temps nous avons vu :
-      </h3>
-      <ul class="text-base pl-6 xl:text-xl list-disc space-y-4 list-results">
-        <li>Le nombre de visiteurs sur notre site web multiplié par 2 ;</li>
-        <li>Notre nombre d'abonnés sur Instagram et Youtube doubler ;</li>
-        <li>Notre newsletter passer le cap des 6 000 abonnés ;</li>
-        <li>Notre audience se rajeunir et se féminiser.</li>
-      </ul>
-      <h3 class="font-bold text-center text-2xl mt-16 mb-6 text-pretty">
-        Fort de ces succès et actions, nous souhaitons continuer de nous
-        développer en menant, en 2025, ces nouveaux projets :
-      </h3>
-      <ul class="text-base pl-6 xl:text-xl list-disc space-y-4 list-projects">
-        <li>
-          Une refonte complète de notre site web qui intègrera <b
-            >des contenus interactifs</b
-          >
-          pour faire découvrir nos analyses comme des quiz, des contenus audios et
-          vidéos inédits, notre horoscope décalé etc. ;
-        </li>
-        <li>
-          <b>Agrandir encore notre équipe permanente</b> et accueillir <b
-            >une plus grande diversité d'autrices et d'auteurs</b
-          > pour couvrir encore plus de sujets qui nous tiennent à cœur ;
-        </li>
-        <li>
-          <b>Accélérer le mouvement d'internationalisation </b>de notre travail
-          avec nos partenaires belges, britanniques et espagnols ;
-        </li>
-        <li>
-          Lancer une <b
-            >émission régulière de commentaire d'actualité sur Twitch</b
-          >
-          ;
-        </li>
-        <li>Offrir un <b>toilettage complet</b> à Rob Grams.</li>
-      </ul>
+      <a
+        href="https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux"
+        target="_blank">
+        <h3 class="text-center text-5xl text-pretty emoji-pendular">👇</h3>
+        <Image
+          src={TipeeeLogo}
+          class="mx-auto my-8"
+          width="200"
+          alt="Logo de la plateforme de finance participatif Tipeee"
+        />
+      </a>
+      <p class="font-bold my-16 text-3xl text-center">=== OU ===</p>
+
+      <CheckoutFormWrapper client:only="react" />
+
+      <section class="mt-24">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Notre situation et nos projets
+        </h3>
+        <div class="space-y-3">
+          <p>
+            Ces derniers mois, <i>Frustration</i> a réalisé de <em
+              >gros progrès</em
+            > dans la diffusion de son travail : <em
+              >doublement de la fréquentation du site</em
+            >, invitations médias beaucoup plus régulières, très grosses
+            progressions sur les réseaux sociaux, augmentation de la production
+            d’articles et de vidéos, une version papier de plus en plus
+            ambitieuse qui rencontre un certain succès… Nous sommes très fier-es
+            de tout cela.
+          </p>
+          <p>
+            Malheureusement, <i>Frustration</i> fait face à de <em
+              >très lourdes difficultés</em
+            >
+            et à un <em>décalage de plus en plus fort</em> entre la charge de travail
+            exponentielle que représente son succès et la réalité matérielle de notre
+            média.
+          </p>
+          <p>
+            Nous ne sommes que <em>2,5 en équivalent temps plein</em> et nous ne
+            disposons d’<em>aucun local</em>. De l’extérieur on s’imagine
+            parfois que l’essentiel du travail dans un média réside dans
+            l’écriture d’articles, d’enquêtes et d’entretiens. Cela ne
+            représente pourtant, dans les faits, qu’une <em
+              >part infime du travail</em
+            >.
+          </p>
+          <p>
+            Avec cette équipe <em>extrêmement réduite</em>, nous devons au
+            quotidien :
+            <em>gérer les mails des lecteurs</em>, gérer les nombreux <em
+              >réseaux sociaux</em
+            >
+            (Facebook, Youtube, Twitter, Mastodon, Threads, TikTok, Instagram…) et
+            créer des visuels, faire la <em
+              >relecture, la correction et la mise en page des articles</em
+            >, gérer et refonder le site (qui n’est plus assez solide par
+            rapport à l’afflux de nouveaux internautes), réaliser des
+            newsletters, faire la <em>comptabilité</em>, gérer les dons (les
+            modules, les demandes de résiliation ou de modification, les
+            centaines d’envois postaux pour les cadeaux…), faire le <em
+              >travail vidéo</em
+            > (captation ou réalisation, montage, étalonnage, mixage…), réaliser
+            des illustrations, travailler sur la <em
+              >production du numéro annuel</em
+            > (recrutement, maquettage, relectures, tournée promotionnelle qui implique
+            de co-organiser des évènements…)...
+          </p>
+          <p>
+            Vous le voyez sûrement en filigrane, en plus du paiement de la
+            charge de travail, ces activités ont un <em>coût</em> : logiciels, déplacements,
+            matériel vidéo (caméra, micro, logiciels de montage…), hébergement du
+            site et divers plugins, frais postaux, matériel informatique, outil de
+            newsletter… Nous sommes d’ailleurs encore souvent contraintes et contraints
+            d’assumer personnellement une partie de ces <em>coûts</em>.
+          </p>
+          <p>
+            Même avec toute notre bonne volonté, nous sommes face à des <em
+              >limites et des obstacles</em
+            > qui nous empêchent de devenir le média solide, régulier, serein que
+            nous aimerions être, que beaucoup de nos lectrices et lecteurs aimeraient
+            que nous soyons (ou pensent que nous sommes déjà en raison de l’optimisme
+            que nous souhaitons continuer à afficher).
+          </p>
+
+          <p>
+            C’est pourquoi nous vous sollicitons pour un <em>coup de pouce</em>.
+            Notre
+            <em>indépendance</em>, la <em>gratuité totale</em> de notre site web,
+            notre
+            <em>refus de la publicité</em>, de l’argent des millionnaires
+            (contrairement à ce qu’on s’imagine : des médias de gauche y font
+            aussi parfois appel) et des subventions, tout cela n’est possible
+            qu’avec votre <em>soutien</em>. Nous fonctionnons avec un modèle de
+            dons mensuels pour avoir une base fiable chaque mois, que nous
+            renforçons avec des appels à dons uniques pour celles et ceux qui ne
+            peuvent pas donner de manière aussi régulière mais dont l’aide nous
+            est aussi précieuse.
+          </p>
+
+          <p>
+            La vente du magazine papier permet de rembourser sa production et
+            peut parfois rapporter un peu d’excédents - qui sont réinjectés dans
+            les dépenses de fonctionnement du média - mais cela est tout à fait
+            <em>marginal</em> (moins de 3% des revenus).
+          </p>
+
+          <p>
+            C’est donc un <em>modèle de financement original</em> qui repose entièrement
+            sur la <em>confiance réciproque</em> entre notre média, ses lectrices
+            et ses lecteurs.
+          </p>
+        </div>
+      </section>
+      <section class="mt-12">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Étape n°1 : Publier quotidiennement
+        </h3>
+
+        <div class="space-y-3">
+          <p>
+            Notre premier objectif est d’arriver à <em
+              >publier tous les jours</em
+            >, comme le font les médias plus installés. Vous le comprenez
+            aisément : avec toutes les tâches que nous assurons avec une équipe
+            très réduite et des moyens financiers faibles, nous ne sommes pas en
+            mesure d’écrire autant que nous le voudrions.
+          </p>
+
+          <p>
+            Avec votre aide, nous pourrions <em
+              >fidéliser les contributeurs et contributrices</em
+            > qui écrivent déjà pour <i>Frustration</i>, voire recourir
+            davantage à des
+            <em>chroniques et des pigistes extérieurs</em> (que nous souhaitons d’ailleurs
+            rémunérer décemment contrairement à des pratiques répandues).
+          </p>
+
+          <p>
+            En termes de contenus, cela nous permettrait également d’avoir
+            davantage de <em>formats d'enquêtes</em>, des articles qui, dans
+            leur nature même, sont beaucoup plus coûteux car impliquent des
+            déplacements, du matériel…
+          </p>
+        </div>
+      </section>
+      <section class="mt-12">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Étape n°2 : Devenir un vrai média (en plus de l'écrit)
+        </h3>
+
+        <div class="space-y-5">
+          <p>
+            Une fois la production régulière d’articles consolidée, nous voulons
+            poursuivre le développement de notre <em>partie vidéo</em>.
+          </p>
+
+          <p>
+            Nous avons déjà commencé à le faire, avec un certain succès, avec :
+
+            <ul class="space-y-1 list-disc">
+              <li>
+                Des captations d'événements que nous avons organisés le
+                développement de trois séries de formats vidéo :
+                <ul class="pl-5 space-y-2 mt-3">
+                  <li>
+                    <b>État des lieux</b> - où des membres de l’équipe reviennent
+                    sur l’actualité chaude du moment
+                  </li>
+                  <li>
+                    <b>Comprendre</b> - un format plus documentaire et factuel qui
+                    donne du contexte et de la profondeur sur un sujet en lien avec
+                    l’actualité
+                  </li>
+                  <li>
+                    <b>Rencontres</b> - un échange entre un ou une membre de la rédaction
+                    et une ou un invité
+                  </li>
+                </ul>
+              </li>
+              <li>
+                La publication plus régulière de <em>reels</em> sur les réseaux sociaux
+              </li>
+              <li>
+                La mise en place d’un <em>partenariat</em> avec <i>Le Média</i> pour
+                l’émission
+                <i>Coup de Griffe</i>
+              </li>
+            </ul>
+          </p>
+
+          <p>
+            Nous aimons l’écriture et continuerons d’être avant tout un média
+            d’articles écrits. Toutefois la moindre vidéo a un <em
+              >audimat infiniment supérieur</em
+            > à un article et c’est quelque chose que nous voulons prendre en compte
+            par souci d’<em>accessibilité au plus grand nombre</em>. De la même
+            façon, une <em>chaîne Twitch</em> ne remplacerait pas notre travail de
+            fond mais permettrait de s’adapter aux <em>nouveaux formats</em> et d’avoir
+            davantage d’<em>interactions avec nos lectrices et lecteurs</em>,
+            d’en faire un véritable <em>espace d’échanges</em>.
+          </p>
+        </div>
+      </section>
+      <section class="mt-12">
+        <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
+          Étape n°3 : Offrir une vraie sécurité professionnelle
+        </h3>
+        <div class="space-y-3">
+          <p>
+            Nous sommes <em>cohérentes et cohérents</em> : nous défendons le droit
+            à des <em>bonnes conditions de travail</em> et à des <em
+              >salaires décents</em
+            >, c’est donc, naturellement, ce que nous voulons aussi offrir aux
+            personnes qui travaillent pour notre magazine.
+          </p>
+          <p>
+            C’est pourquoi nous souhaitons sortir du <em>statut précaire</em>,
+            fait notamment de <em>temps partiel</em>, dans lequel nous nous
+            trouvons actuellement, pour avoir <em
+              >trois salariés en CDI à temps complet</em
+            >, et si possible avec un <em
+              >salaire autour du salaire moyen en France</em
+            >.
+          </p>
+          <p>
+            Avoir une <em>équipe de trois salariés à temps complet</em> permettrait
+            de <em>stabiliser énormément le travail</em> au sein de <i
+              >Frustration</i
+            >.
+          </p>
+          <p>
+            Voilà donc les <em>objectifs que nous nous sommes fixés</em> et que nous
+            avons voulus raisonnables et ce à quoi, concrètement, votre aide contribuera.
+          </p>
+          <p>
+            Nous vous <em>remerçions infiniment</em> pour votre <em
+              >soutien précieux</em
+            > depuis des années qui donne du <em>courage</em>, de l’<em
+              >espoir</em
+            > et de la <em>motivation</em> !
+          </p>
+        </div>
+      </section>
     </article>
-    <TitlePullUp
-      words="Twitch, nouveaux formats et international : 40 000€ pour nous aider"
-      class="text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+    <Image
+      src={BottomPageIllu}
+      class="mx-auto mt-16"
+      width="800"
+      alt="Une rangée de travailleuses et travailleurs"
     />
-    <section class="mt-16 text-2xl text-center space-y-2">
-      <p>
-        Pour mener à bien ces projets, nous souhaitons <b
-          >récolter 40 000 euros en trois mois</b
-        >.
-      </p>
-      <p>
-        Vous aimez notre travail, vous voulez nous aider à en faire plus ?
-        <b>Vous pouvez donner la somme de votre choix !</b> Même les plus petits
-        montants sont utiles.
-      </p>
-    </section>
-    <CheckoutFormWrapper client:only="react" />
   </PageLayout>
+
+  <script>
+    import { annotate } from "rough-notation";
+    const titlesToHighlight = Array.from(
+      document.querySelectorAll(".title-to-highlight"),
+    ) as HTMLElement[];
+
+    titlesToHighlight.forEach((title) => {
+      const annotation = annotate(title, {
+        type: "highlight",
+        animationDuration: 2000,
+        color: "#FFF200",
+      });
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                annotation.show();
+                observer.disconnect();
+              }, 1000);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      observer.observe(title);
+    });
+
+    const titlesToUnderline = Array.from(
+      document.querySelectorAll(".title-to-underline"),
+    ) as HTMLElement[];
+
+    titlesToUnderline.forEach((title) => {
+      const annotation = annotate(title, {
+        type: "underline",
+        iterations: 3,
+        strokeWidth: 3,
+        animationDuration: 2000,
+        color: "black",
+      });
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                annotation.show();
+                observer.disconnect();
+              }, 1000);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      observer.observe(title);
+    });
+  </script>
+  <style>
+    @counter-style results-counter {
+      system: cyclic;
+      symbols: "✌️" "📈" "📨" "👩‍🎤";
+      suffix: "  ";
+    }
+
+    @counter-style achievements-counter {
+      system: cyclic;
+      symbols: "🖋️" "🎥" "#️⃣" "🤝" "🧛" "🗯️" "🙅‍♂️" "👊";
+      suffix: "  ";
+    }
+
+    @counter-style projects-counter {
+      system: cyclic;
+      symbols: "🎨" "👯" "🌍" "🎤" "🐶";
+      suffix: "  ";
+    }
+    @keyframes pendular {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    em {
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    .emoji-pendular {
+      animation: pendular 2s ease-in-out infinite;
+    }
+
+    .list-achievements {
+      list-style: achievements-counter;
+    }
+
+    .list-results {
+      list-style: results-counter;
+    }
+
+    .list-projects {
+      list-style: projects-counter;
+    }
+  </style>
 </BaseLayout>
-<style>
-  @counter-style results-counter {
-    system: cyclic;
-    symbols: "✌️" "📈" "📨" "👩‍🎤";
-    suffix: "  ";
-  }
-
-  @counter-style achievements-counter {
-    system: cyclic;
-    symbols: "🖋️" "🎥" "#️⃣" "🤝" "🧛" "🗯️" "🙅‍♂️" "👊";
-    suffix: "  ";
-  }
-
-  @counter-style projects-counter {
-    system: cyclic;
-    symbols: "🎨" "👯" "🌍" "🎤" "🐶";
-    suffix: "  ";
-  }
-
-  .list-achievements {
-    list-style: achievements-counter;
-  }
-
-  .list-results {
-    list-style: results-counter;
-  }
-
-  .list-projects {
-    list-style: projects-counter;
-  }
-</style>
