@@ -299,7 +299,9 @@ const Form = () => {
             id="newsletter"
           />
           <span className="text-pretty leading-none">
-            Je souhaite recevoir la newsletter de{" "}
+            <span className="text-sm">
+              Je souhaite recevoir la newsletter de{" "}
+            </span>
             <span style={{ fontVariant: "all-small-caps" }}>
               Frustration Magazine
             </span>
