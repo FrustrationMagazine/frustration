@@ -59,3 +59,23 @@ export function formatCurrency({ amount, decimals = true }: { amount: number; de
     maximumFractionDigits: decimals ? 2 : 0
   }).format(amount);
 }
+
+/* -------------------------- */
+/* Convert country initials   */
+/* -------------------------- */
+/*
+  Input : "FR"
+  Output : "France"
+*/
+export function convertCountryInitials(initials: string): string {
+  const countries: { [key: string]: string } = {
+    FR: "France",
+    BE: "Belgique",
+    US: "United States",
+    DE: "Germany",
+    ES: "Spain",
+    IT: "Italy"
+  };
+
+  return countries[initials?.toUpperCase()] || initials || "❓";
+}

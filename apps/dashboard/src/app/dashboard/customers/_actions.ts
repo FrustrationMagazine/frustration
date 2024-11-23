@@ -11,6 +11,7 @@ export async function fetchCustomers({
   to: Date;
 }): Promise<Customer[]> {
   const customers = await fetchStripeCustomers({ from, to });
+
   return customers;
 }
 

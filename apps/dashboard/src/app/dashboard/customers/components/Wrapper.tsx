@@ -27,7 +27,9 @@ export default function () {
   const {
     customers,
     numberOfActiveCustomers,
+
     loadingCustomers,
+
     rangeDate,
     setRangeDate,
   } = useCustomers();

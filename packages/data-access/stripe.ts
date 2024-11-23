@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { TRANSACTION_TYPES, TRANSACTION_SUBTYPES, Transaction } from "./models/transactions";
 import { convertUTCtoDate } from "@/utils/dates";
+import { convertCountryInitials, prettifyName } from "@/utils/strings";
 
 /* ------------------- */
 /*        STRIPE       */
@@ -136,7 +137,9 @@ export interface Customer {
   adresse: string;
   code_postal: string;
   ville: string;
+  pays: string;
   amount: number;
+  campaign: string;
 }
 
 export async function fetchStripeCustomers(
@@ -171,26 +174,39 @@ export async function fetchStripeCustomers(
 
   if (Array.isArray(customersId)) {
     let customers: any[] = [];
+    let paymentMethods: any[] = [];
 
     for (let i = 0; customersId?.[i]; i += 100) {
       const sliceCustomersId = customersId.slice(i, i + 99);
       const temp_customers = await Promise.all(sliceCustomersId.map((customerId: any) => stripe.customers.retrieve(customerId)));
       customers = [...customers, ...temp_customers];
+      let temp_paymentMethods = await Promise.all(sliceCustomersId.map((customerId: any) => stripe.paymentMethods.list({ customer: customerId })));
+      temp_paymentMethods = temp_paymentMethods.map((paymentMethod: any) => paymentMethod?.data.at(0));
+      paymentMethods = [...paymentMethods, ...temp_paymentMethods];
     }
 
-    console.log(customers[0]);
-
-    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email, address }) => {
+    const formattedCustomers: Customer[] = customers.map(({ id, created, name, email, metadata, address }) => {
       const subscription = subscriptions.find((subscription) => subscription.customer === id);
+      const paymentMethod = paymentMethods.find((paymentMethod) => paymentMethod.customer === id);
+
+      const adresse = address?.line1 || subscription.metadata?.adresse || subscription.metadata?.line1;
+      const ville = address?.city || subscription.metadata?.ville || subscription.metadata?.city;
+      const code_postal = address?.postal_code || subscription.metadata?.code_postal || subscription.metadata?.postal_code;
+      const amount = subscription.items.data[0].price.unit_amount;
+      const pays = convertCountryInitials(address?.country || paymentMethod?.card?.country);
+      const campaign = metadata?.campaign || "permanente";
+
       return {
         id,
         created: new Date(created * 1000),
-        name,
+        name: name ? prettifyName(name) : "-",
         email,
-        adresse: address?.line1 || subscription.metadata?.adresse || subscription.metadata?.line1,
-        code_postal: address?.postal_code || subscription.metadata?.code_postal || subscription.metadata?.postal_code,
-        ville: address?.city || subscription.metadata?.ville || subscription.metadata?.city,
-        amount: subscription.items.data[0].price.unit_amount
+        adresse,
+        code_postal,
+        ville,
+        pays,
+        amount,
+        campaign
       };
     });
     return formattedCustomers;

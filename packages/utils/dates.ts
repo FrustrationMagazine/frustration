@@ -105,7 +105,7 @@ export const formatExplicitMonth = (value: string | Date, monthLength: "long" | 
   Input : value: "2023-10-01", dayLength: "short"
   Output: "1 oct. 2023"
 */
-export const formatExplicitDay = (value: string | Date, dayLength: "long" | "short") => {
+export const formatExplicitDay = (value: string | Date, dayLength: "long" | "short" = "long") => {
   const date = !(value instanceof Date) ? new Date(value) : value;
   const explicitDay = date.toLocaleDateString("fr-FR", {
     day: "numeric",

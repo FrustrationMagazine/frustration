@@ -39,8 +39,8 @@ export const FILE_HEADERS: FileHeader[] = [
     display: true,
   },
   {
-    name: "Ville",
-    key: "ville",
+    name: "Montant",
+    key: "amount",
     display: true,
   },
   {
@@ -49,13 +49,18 @@ export const FILE_HEADERS: FileHeader[] = [
     display: true,
   },
   {
-    name: "Code postal",
-    key: "code_postal",
+    name: "Ville",
+    key: "ville",
     display: true,
   },
   {
-    name: "Montant",
-    key: "amount",
+    name: "Pays",
+    key: "pays",
+    display: true,
+  },
+  {
+    name: "Code postal",
+    key: "code_postal",
     display: true,
   },
 ];
@@ -75,7 +80,7 @@ export default function ({
   };
 }) {
   const handleDownloadCustomersList = () => {
-    const headers = FILE_HEADERS.map(({ name }) => name);
+    const headers = customers.length ? Object.keys(customers[0]) : [];
     const CSVinURL = createCSVinURL(headers, customers);
     let filename = `nouveaux_abonnes_du_${explicitDate(rangeDate.from)}_au_${explicitDate(rangeDate.to)}.csv`;
     filename = filename.toLowerCase().replace(/\s/g, "_");

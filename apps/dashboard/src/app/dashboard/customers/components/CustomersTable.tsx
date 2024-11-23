@@ -34,6 +34,8 @@ import { ArrowUpDown } from "lucide-react";
 // 🗿 Models
 import { Customer } from "@/data-access/stripe";
 
+const DEFAULT_VALUE = "-";
+
 const columnsCustomers: ColumnDef<Customer>[] = [
   {
     accessorKey: "created",
@@ -64,9 +66,7 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Nom",
     cell: ({ row }) => {
       const name = row.getValue("name") as unknown as string;
-      return (
-        <span className="font-medium">{name ? prettifyName(name) : "-"}</span>
-      );
+      return <span className="font-medium">{name}</span>;
     },
   },
   {
@@ -103,21 +103,31 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     },
   },
   {
+    accessorKey: "adresse",
+    header: "Adresse",
+    cell: ({ row }) => {
+      const address = row.getValue("adresse") as unknown as string;
+      return address || DEFAULT_VALUE;
+    },
+  },
+  {
     accessorKey: "ville",
     header: "Ville",
     cell: ({ row }) => {
       const city = row.getValue("ville") as unknown as string;
       return (
-        <span className="capitalize">{city ? city.toLowerCase() : "-"}</span>
+        <span className="capitalize">
+          {city ? city.toLowerCase() : DEFAULT_VALUE}
+        </span>
       );
     },
   },
   {
-    accessorKey: "adresse",
-    header: "Adresse",
+    accessorKey: "pays",
+    header: "Pays",
     cell: ({ row }) => {
-      const address = row.getValue("adresse") as unknown as string;
-      return address || "-";
+      const country = row.getValue("pays") as unknown as string;
+      return country || DEFAULT_VALUE;
     },
   },
   {
@@ -125,7 +135,15 @@ const columnsCustomers: ColumnDef<Customer>[] = [
     header: "Code postal",
     cell: ({ row }) => {
       const postalCode = row.getValue("code_postal") as unknown as string;
-      return postalCode || "-";
+      return postalCode || DEFAULT_VALUE;
+    },
+  },
+  {
+    accessorKey: "campaign",
+    header: "Campagne",
+    cell: ({ row }) => {
+      const campaign = row.getValue("campaign") as unknown as string;
+      return campaign || DEFAULT_VALUE;
     },
   },
 ];
