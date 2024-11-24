@@ -1,8 +1,7 @@
-/* ==================== */
-/*     TRANSACTIONS     */
-
 import { generateUniqueCombinations } from "./_utils";
 
+/* ==================== */
+/*     TRANSACTIONS     */
 /* ==================== */
 export type TransactionType = "subscription" | "donation";
 
@@ -83,24 +82,43 @@ export type TabTransactions = TabCampaign & {
   tag: string;
 };
 
-export const TRANSACTION_TYPES = generateUniqueCombinations<string>([
-  "subscription",
-  "donation",
-]);
+enum TRANSACTION_TYPES {
+  SUBSCRIPTION = "subscription",
+  DONATION = "donation",
+}
+
+export const TRANSACTION_TYPE_DISPLAY_NAMES: {
+  [key in TRANSACTION_TYPES]: string;
+} = {
+  [TRANSACTION_TYPES.SUBSCRIPTION]: "Abonnement",
+  [TRANSACTION_TYPES.DONATION]: "Don",
+};
+
+export const TRANSACTION_TYPES_COMBINATIONS =
+  generateUniqueCombinations<TRANSACTION_TYPES>([
+    TRANSACTION_TYPES.SUBSCRIPTION,
+    TRANSACTION_TYPES.DONATION,
+  ]);
 
 export const TRANSACTIONS_TABS: any[] = CAMPAIGNS.map((campaign) => {
-  return TRANSACTION_TYPES.map((transactionsTypes) => {
+  return TRANSACTION_TYPES_COMBINATIONS.map((transactionsTypes) => {
     let name;
-    if (transactionsTypes.length > 1) name = "Abonnements + Dons";
-    if (
-      transactionsTypes.length === 1 &&
-      transactionsTypes[0] === "subscription"
-    )
-      name = "Abonnements";
-    if (transactionsTypes.length === 1 && transactionsTypes[0] === "donation")
-      name = "Dons";
+    const multipleTypes = transactionsTypes.length > 1;
+    const subscriptionType =
+      !multipleTypes &&
+      transactionsTypes.includes(TRANSACTION_TYPES.SUBSCRIPTION);
+    const donationType =
+      !multipleTypes && transactionsTypes.includes(TRANSACTION_TYPES.DONATION);
 
-    return {
+    if (multipleTypes) {
+      name = "Global";
+    } else if (subscriptionType) {
+      name = TRANSACTION_TYPE_DISPLAY_NAMES[TRANSACTION_TYPES.SUBSCRIPTION];
+    } else if (donationType) {
+      name = TRANSACTION_TYPE_DISPLAY_NAMES[TRANSACTION_TYPES.DONATION];
+    }
+
+    const tab = {
       name,
       campaignName: campaign.name,
       campaignType: campaign.type,
@@ -109,5 +127,7 @@ export const TRANSACTIONS_TABS: any[] = CAMPAIGNS.map((campaign) => {
       goal: campaign?.goal,
       transactionsTypes,
     };
+
+    return tab;
   });
 });

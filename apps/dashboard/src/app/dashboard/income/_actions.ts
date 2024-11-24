@@ -12,7 +12,6 @@ import { type Transactions } from "./_models";
 /* ---------------------------- */
 /*    Transactions by month     */
 /* ---------------------------- */
-
 export async function getTransactions({
   period,
 }: {
@@ -42,7 +41,6 @@ export async function getTransactions({
 /* -------------------------------- */
 /*    Transactions for campaign     */
 /* -------------------------------- */
-
 export async function getTransactionsForCampaign(
   dateInMilliseconds: number,
   tag: string,

@@ -75,6 +75,20 @@ model Authenticator {
 }
 
 // ******************
+// 🫴 Campaigns     *
+// ******************
+
+model Campaign {
+  id        String    @id @default(cuid())
+  name      String
+  type      String
+  begin     DateTime
+  end       DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// ******************
 // 💰 Transactions  *
 // ******************
 
