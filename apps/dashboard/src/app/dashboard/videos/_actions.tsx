@@ -29,42 +29,65 @@ export async function fetchSuggestions(
   const isVideoUrl = YOUTUBE_VIDEO_URL_REGEX.test(params.q);
   const isPlaylistUrl = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
   let suggestions = [];
+  let video;
+  let playlist;
 
   // 🔁 🐝 Fetch video if a video URL was passed
   if (isVideoUrl) {
     const [, videoId] = params.q.match(YOUTUBE_VIDEO_URL_REGEX);
-    var video = (
-      await fetchYoutube({ params: { id: videoId }, type: "video" })
-    )?.[0];
+    const { items } = await fetchYoutube({
+      params: { id: videoId },
+      type: "video",
+    });
+
+    video = items?.[0];
   }
 
   // 🔁 🐝 Fetch playlist if a playlist URL was passed
   if (isPlaylistUrl) {
     const [, playlistId] = params.q.match(YOUTUBE_PLAYLIST_URL_REGEX);
-    var playlist = (
-      await fetchYoutube({ params: { id: playlistId }, type: "playlist" })
-    )?.[0];
+    const { items } = await fetchYoutube({
+      params: { id: playlistId },
+      type: "playlist",
+    });
+
+    playlist = items?.[0];
   }
 
+  let token = null;
   // 🔁 🐝 Fetch by type
   switch (params.type) {
-    case "channel":
+    case "channel": {
       // Get channel with search param or thanks to a video id if video URL that belongs to that channel was passed
-      suggestions = await fetchYoutube({
+      const { items, nextPageToken = null } = await fetchYoutube({
         params: isVideoUrl ? { id: video.snippet.channelId } : params,
       });
+      suggestions = items;
+      token = nextPageToken;
       break;
-    case "playlist":
+    }
+    case "playlist": {
       // Get playlist with search param or thanks to its id in URL if playlist URL was passed
-      suggestions = isPlaylistUrl ? [playlist] : await fetchYoutube({ params });
+      const { items, nextPageToken = null } = isPlaylistUrl
+        ? { items: [playlist] }
+        : await fetchYoutube({ params });
+      suggestions = items;
+      token = nextPageToken;
       break;
-    case "video":
+    }
+    case "video": {
       // Get video with search param or thanks to its id in URL if video URL was passed
-      suggestions = isVideoUrl ? [video] : await fetchYoutube({ params });
+      const { items, nextPageToken = null } = isVideoUrl
+        ? { items: [video] }
+        : await fetchYoutube({ params });
+      suggestions = items;
+      token = nextPageToken;
+
       break;
+    }
   }
 
-  return suggestions;
+  return { suggestions, token };
 }
 
 /* -------------------------------------- */
@@ -81,7 +104,11 @@ export async function fetchYoutubeByIdsAndType(
   let resources = [];
 
   // 🔁 📺 Fetch
-  resources = await fetchYoutube({ params: { id: concatenatedIds }, type });
+  const { items } = await fetchYoutube({
+    params: { id: concatenatedIds },
+    type,
+  });
+  resources = items;
 
   // 🎉 Return
   return resources;
@@ -248,32 +275,32 @@ export async function insertOrUpdateMediaRecord({
 }): Promise<any> {
   // 1. Video
   if (type === "video") {
-    const youtubeVideos = await fetchYoutube({
+    const { items } = await fetchYoutube({
       type,
       params: {
         id,
       },
     });
-    youtubeVideos.forEach(
+    items.forEach(
       async (youtubeVideo: any) => await upsertYoutubeVideo(youtubeVideo, id),
     );
   }
   // 2. Playlist
   if (type === "playlist") {
     // 🔁 📺 Fetch playlists
-    const youtubePlaylists = await fetchYoutube({
+    const { items } = await fetchYoutube({
       type,
       params: {
         id,
       },
     });
 
-    youtubePlaylists.forEach(async (youtubePlaylist: any) => {
+    items.forEach(async (youtubePlaylist: any) => {
       // 🔁 📺 Upsert each playlist in media_playlist
       await upsertYoutubePlaylist(youtubePlaylist, id);
 
       // 🔁 📺 Fetch - We get videos of playlist as playlist items
-      const youtubePlaylistItems = await fetchYoutube({
+      const { items: youtubePlaylistItems } = await fetchYoutube({
         params: { playlistId: id },
         type: "playlistItem",
       });
@@ -297,20 +324,20 @@ export async function insertOrUpdateMediaRecord({
   // 3. Channel
   if (type === "channel") {
     // 🔁 📺 Fetch channels
-    const youtubeChannels = await fetchYoutube({
+    const { items } = await fetchYoutube({
       type,
       params: {
         id,
       },
     });
 
-    youtubeChannels.forEach(async (youtubeChannel: any) => {
+    items.forEach(async (youtubeChannel: any) => {
       // 🔁 📺 Upsert each channel in media_channel
       await upsertYoutubeChannel(youtubeChannel, id);
 
       // 🔁 📺 Fetch each first X videos of each channel in media_video
       const MAX_VIDEOS_FROM_CHANNEL = 10;
-      let youtubeVideos = await fetchYoutube({
+      const { items: youtubeVideos } = await fetchYoutube({
         params: {
           type: "video",
           channelId: id,
@@ -323,13 +350,13 @@ export async function insertOrUpdateMediaRecord({
         // ❓ To get full description we need to re-fetch videos with their id
         const idsToFetch = youtubeVideos.map(getYoutubeResourceId);
         const concatenatedIds = idsToFetch.join(",");
-        youtubeVideos = await fetchYoutube({
+        const { items: newYoutubeVideos } = await fetchYoutube({
           params: { id: concatenatedIds },
           type: "video",
         });
 
         // 🔁 📺 Upsert each first X videos of each channel in media_video
-        youtubeVideos.forEach(
+        newYoutubeVideos.forEach(
           async (youtubeVideo: any) =>
             await upsertYoutubeVideo(youtubeVideo, id),
         );

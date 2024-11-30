@@ -104,18 +104,37 @@ const useVideos = ({ type }: Props) => {
     // ⏳ Loading...
     setLoadingSuggestions(true);
 
+    const DEFAULT_SUGGESTIONS_COUNT = 5;
+    let newSuggestions = [];
+    let newToken = null;
+
     // 🐝 🔁 Fetch youtube suggestions by type
-    const suggestions = await fetchSuggestions({
-      q: searchTerm,
-      relevanceLanguage: "fr",
-      type,
-    });
+    do {
+      let { suggestions, token } = await fetchSuggestions({
+        q: searchTerm,
+        relevanceLanguage: "fr",
+        type,
+        ...(newToken ? { pageToken: newToken } : null),
+      });
+
+      const tempSuggestions = suggestions.filter(
+        (suggestion: any) =>
+          !medias.find(
+            (media: any) => media.id === getYoutubeResourceId(suggestion),
+          ),
+      );
+
+      newSuggestions.push(...tempSuggestions);
+      newToken = token;
+    } while (newSuggestions.length < DEFAULT_SUGGESTIONS_COUNT && newToken);
+
+    newSuggestions = newSuggestions.slice(0, DEFAULT_SUGGESTIONS_COUNT);
 
     // ⌛ End loading...
     setLoadingSuggestions(false);
 
     // 📦
-    setSuggestions(suggestions);
+    setSuggestions(newSuggestions);
   };
 
   return {

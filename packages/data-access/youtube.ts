@@ -46,9 +46,9 @@ export async function fetchYoutube({ params, type }: { params: Record<string, an
   // 🔁 Fetch
   try {
     const response = await fetch(url.href);
-    const { items } = await response.json();
+    const { items, nextPageToken } = await response.json();
     // 🎉 Return
-    return items ?? [];
+    return { items, nextPageToken };
   } catch (error) {
     // 🚨 Error
     console.error(`Error occured while fetching youtube ${type}s:`, error);
@@ -64,35 +64,45 @@ export async function fetchSuggestions(params: Record<string, any>): Promise<any
   const isVideoUrl = YOUTUBE_VIDEO_URL_REGEX.test(params.q);
   const isPlaylistUrl = YOUTUBE_PLAYLIST_URL_REGEX.test(params.q);
   let suggestions = [];
+  let video;
+  let playlist;
 
   // 🔁 🐝 Fetch video if a video URL was passed
   if (isVideoUrl) {
     const [, videoId] = params.q.match(YOUTUBE_VIDEO_URL_REGEX);
-    var video = (await fetchYoutube({ params: { id: videoId }, type: "video" }))?.[0];
+    const { items } = await fetchYoutube({ params: { id: videoId }, type: "video" });
+    video = items?.[0];
   }
 
   // 🔁 🐝 Fetch playlist if a playlist URL was passed
   if (isPlaylistUrl) {
     const [, playlistId] = params.q.match(YOUTUBE_PLAYLIST_URL_REGEX);
-    var playlist = (await fetchYoutube({ params: { id: playlistId }, type: "playlist" }))?.[0];
+    const { items } = await fetchYoutube({ params: { id: playlistId }, type: "playlist" });
+    playlist = items?.[0];
   }
 
   // 🔁 🐝 Fetch by type
   switch (params.type) {
-    case "channel":
+    case "channel": {
       // Get channel with search param or thanks to a video id if video URL that belongs to that channel was passed
-      suggestions = await fetchYoutube({
+      const { items } = await fetchYoutube({
         params: isVideoUrl ? { id: video.snippet.channelId } : params
       });
+      suggestions = items;
       break;
-    case "playlist":
+    }
+    case "playlist": {
       // Get playlist with search param or thanks to its id in URL if playlist URL was passed
-      suggestions = isPlaylistUrl ? [playlist] : await fetchYoutube({ params });
+      const { items } = isPlaylistUrl ? { items: [playlist] } : await fetchYoutube({ params });
+      suggestions = items;
       break;
-    case "video":
+    }
+    case "video": {
       // Get video with search param or thanks to its id in URL if video URL was passed
-      suggestions = isVideoUrl ? [video] : await fetchYoutube({ params });
+      const { items } = isVideoUrl ? { items: [video] } : await fetchYoutube({ params });
+      suggestions = items;
       break;
+    }
   }
 
   return suggestions;
@@ -109,7 +119,13 @@ export async function fetchYoutubeByIdsAndType(ids: string[], type: YoutubeResou
   let resources = [];
 
   // 🔁 📺 Fetch
-  resources = await fetchYoutube({ params: { id: concatenatedIds }, type });
+  try {
+    const { items } = await fetchYoutube({ params: { id: concatenatedIds }, type });
+    resources = items;
+  } catch (e) {
+    console.error(`Error occured while fetching youtube ${type}s by ids:`, e);
+    throw e;
+  }
 
   // 🎉 Return
   return resources;
@@ -138,5 +154,6 @@ export const getYoutubeResourceId = (resource: any): string => {
   //      }
 
   const [, [, id]] = Object.entries(resource.id);
+
   return String(id);
 };
