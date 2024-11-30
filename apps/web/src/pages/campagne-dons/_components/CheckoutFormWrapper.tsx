@@ -135,7 +135,7 @@ const Form = () => {
   return (
     <div className="mx-auto mt-12 flex max-w-[500px] flex-col items-center">
       <div className="mb-8 text-center">
-        <h3 className="font-bebas text-7xl"> Don direct</h3>
+        <h3 className="font-bakbak text-7xl"> Don direct</h3>
         <p className="text-3xl font-bold">Aidez-nous à grandir ! 🌱</p>
       </div>
 

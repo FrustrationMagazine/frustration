@@ -12,6 +12,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
 // 🔧 Libs
 import { stripe } from "@/data-access/stripe";
+import puppeteer from "puppeteer";
 
 // 🎨 Assets
 import TipeeeLogo from "./tipeee.png";
@@ -25,7 +26,7 @@ Astro.response.headers.set(
   "s-maxage=3600, stale-while-revalidate",
 );
 
-// Compute percent in prohress for campaign
+// Compute percent in progress for campaign
 let transactions: any[] = [];
 let has_more;
 let next_page;
@@ -51,6 +52,62 @@ const progressInPercent = Math.max(
   (Math.floor(total) / 40000) * 100,
   MIN_VALUE,
 );
+
+// // Get tipeee comments
+// const browser = await puppeteer.launch({
+//   headless: false,
+//   defaultViewport: null,
+// });
+
+// // Open a new page
+// const page = await browser.newPage();
+
+// // On this new page:
+// // - open the "http://quotes.toscrape.com/" website
+// // - wait until the dom content is loaded (HTML is ready)
+// await page.goto(
+//   "https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux/comments",
+//   {
+//     waitUntil: "domcontentloaded",
+//   },
+// );
+
+// await page.waitForSelector(".p-comm-inner");
+
+// // Get page data
+// let comments: any[] = [];
+
+// await page.evaluate(() => {
+//   // Fetch the first element with class "quote"
+//   const commentBlocs = Array.from(document.querySelectorAll(".p-comm-inner"));
+//   // console.log("commentBlocs", commentBlocs);
+//   commentBlocs.map((commentBloc: any) => {
+//     if (commentBloc) {
+//       console.log("commentBloc", commentBloc);
+//       const author = commentBloc.querySelector(".p-c-author a").innerText;
+//       const text = commentBloc.querySelector(".p-c-content").innerText;
+//       console.log("author", author);
+//       console.log("text", text);
+//       return { author, text };
+//     }
+//     return null;
+//   });
+//   // console.log("document", document);
+//   // console.log("comments", comments);
+//   if (comments) {
+//     return comments;
+//     // Fetch the sub-elements from the previously fetched quote element
+//     // Get the displayed text and return it (`.innerText`)
+//     // const text = quote.querySelector(".text").innerText;
+//     // const author = quote.querySelector(".author").innerText;
+//     // return { text, author };
+//   }
+
+//   return [];
+// });
+
+// Close the browser
+// await browser.close();
 ---
 
 <BaseLayout
@@ -74,7 +131,7 @@ const progressInPercent = Math.max(
       <TitlePullUp
         client:load
         words="On a besoin de vous pour continuer !"
-        className="z-10 text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bebas"
+        className="z-10 text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak"
       />
     </div>
     <!-- === Progress bar -->
@@ -149,7 +206,7 @@ const progressInPercent = Math.max(
         alt="Une semaine type de publications sur <i>Frustration</i> Magazine pour notre prochain réorganisation"
       />
       <h3
-        class="title-to-underline w-fit mx-auto uppercase font-bebas text-center font-bold text-6xl mb-10">
+        class="title-to-underline w-fit mx-auto uppercase font-bakbak text-center font-bold text-6xl mb-10">
         Comment nous aider ?
       </h3>
       <a

@@ -1,7 +1,10 @@
-import { Bebas_Neue, Poppins, Inter } from "next/font/google";
+import { Bebas_Neue, Poppins, Inter, Bakbak_One } from "next/font/google";
 
 /* Bebas Neue */
 export const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
+
+/* Bakbak One */
+export const bakbakOne = Bakbak_One({ weight: "400", subsets: ["latin"] });
 
 /* Poppins */
 export const poppins = Poppins({

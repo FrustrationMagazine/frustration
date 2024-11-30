@@ -69,7 +69,7 @@ function ArticleSummary({ className }: { className?: string }) {
     <div
       className={cn(className, "border-box")}
       ref={summaryRef}>
-      <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bebas text-2xl lg:text-3xl">
+      <h3 className="font-bakbak mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow text-2xl lg:text-3xl">
         Sommaire
       </h3>
       <ul className="space-y-1">

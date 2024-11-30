@@ -103,6 +103,7 @@ export default {
       montserrat: "Montserrat",
       roboto: "Roboto",
       bebas: "Bebas Neue",
+      bakbak: "Bakbak One",
       arca: "'Arca Majora 3'",
       "open-sans": "Open Sans",
     },

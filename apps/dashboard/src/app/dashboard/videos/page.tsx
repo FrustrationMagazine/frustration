@@ -2,21 +2,23 @@
 import React from "react";
 
 // 🧱 Components
-import CardResources from "./components/CardResources";
+import VideosCard from "./components/VideosCard";
 import RedeployButton from "./components/RedeployButton";
 
 // 🗿 Models
 import { CardsDescription } from "./_models";
-
-export default function () {
+console.log("CardsDescription", CardsDescription);
+const VideosTab = () => {
   return (
     <>
       <div className="grid w-full grow grid-cols-3 gap-x-4 overflow-auto">
         {CardsDescription.map(({ key, ...props }) => (
-          <CardResources key={key} {...props} />
+          <VideosCard key={key} {...props} />
         ))}
       </div>
       <RedeployButton />
     </>
   );
-}
+};
+
+export default VideosTab;

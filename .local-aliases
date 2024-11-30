@@ -1,0 +1,3 @@
+alias bcp='bc && git push origin'
+alias amend='git commit --amend --no-edit && git push origin -f'
+alias mp='git stash -u && git switch main && git merge develop && git push origin && git switch - && git stash pop'

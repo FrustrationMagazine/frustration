@@ -1,23 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { ListVideo } from "lucide-react";
-const {
-  thumbnailUrl,
-  channelTitle,
-  channelUrl,
-  playlistTitle,
-  playlistUrl,
-  description,
-  title,
-  id,
-} = Astro.props;
+const { thumbnail, channelTitle, channelUrl, playlistTitle, playlistUrl, description, title, id } = Astro.props;
 ---
 
 <div class="video-informations relative h-full overflow-scroll rounded-xl">
-  <div
-    class="absolute left-0 top-0 w-[200%] translate-x-[-25%] opacity-30 blur-lg">
+  <div class="absolute left-0 top-0 w-[200%] translate-x-[-25%] opacity-30 blur-lg">
     <Image
-      src={thumbnailUrl}
+      src={thumbnail}
       alt=""
       width="1280"
       height="720"
@@ -30,8 +20,7 @@ const {
     <h3 class="mb-5 text-center xl:text-xl 2xl:text-2xl font-bold leading-none">
       {title}
     </h3>
-    <div
-      class="flex flex-wrap items-center gap-3 whitespace-nowrap text-xs xl:text-sm">
+    <div class="flex flex-wrap items-center gap-3 whitespace-nowrap text-xs xl:text-sm">
       {/* PLAYLIST */}
       {
         playlistTitle && (
@@ -64,13 +53,7 @@ const {
   </div>
   <style is:global>
     .video-informations {
-      background: linear-gradient(
-          to bottom,
-          rgba(68, 76, 89, 0.8) 0%,
-          rgba(68, 76, 89, 0.298) 33.000001%,
-          rgba(15, 15, 15, 1) 100%
-        ),
-        linear-gradient(to bottom, #444c59, #444c59);
+      background: linear-gradient(to bottom, rgba(68, 76, 89, 0.8) 0%, rgba(68, 76, 89, 0.298) 33.000001%, rgba(15, 15, 15, 1) 100%), linear-gradient(to bottom, #444c59, #444c59);
       display: none;
     }
   </style>

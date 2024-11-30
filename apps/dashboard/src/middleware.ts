@@ -9,13 +9,16 @@ const DASHBOARD_INCOME_URL = `${DASHBOARD_URL}/income`;
 
 export async function middleware(request: NextRequest) {
   const atRoot = request.nextUrl.pathname === "/";
+  const isProd = process.env.NODE_ENV === "production";
 
   /* ❌ Not signed in */
-
-  const isSignedIn = !!(await auth())?.user;
-  const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
-  if (shouldRedirectToLogin) return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
+  if (isProd) {
+    const isSignedIn = !!(await auth())?.user;
+    const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
+    const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
+    if (shouldRedirectToLogin)
+      return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
+  }
 
   /* ✅ Signed in */
 

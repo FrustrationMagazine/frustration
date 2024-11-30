@@ -42,7 +42,7 @@ export default function SubscriptionForm() {
     <div className="mx-auto mt-32 max-w-[500px]">
       {/* 🔠 Titres */}
       <div className="mb-10">
-        <h3 className="text-center font-bebas text-6xl font-bold uppercase">
+        <h3 className="font-bakbak text-center text-6xl font-bold uppercase">
           S'abonner à Frustration
         </h3>
         <h5 className="text-center text-lg text-zinc-500">

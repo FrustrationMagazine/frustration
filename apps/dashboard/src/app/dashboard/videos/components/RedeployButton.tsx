@@ -21,9 +21,6 @@ const isProduction = process.env.NODE_ENV === "production";
 export default function RedeployButton() {
   const [loading, setLoading] = React.useState(false);
 
-  // ❌ Early return | Not redeploying in development
-  // if (!isProduction) return null;
-
   const [requestStatus, setRequestStatus] = React.useState<
     | {
         success: string | null;
@@ -59,6 +56,9 @@ export default function RedeployButton() {
     },
     [requestStatus, toast],
   );
+
+  // ❌ Early return | Not redeploying in development
+  if (!isProduction) return null;
 
   return (
     <Button

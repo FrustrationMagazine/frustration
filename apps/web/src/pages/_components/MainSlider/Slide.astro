@@ -14,26 +14,29 @@ const IMAGE_SIZE = 1200;
 <li class="splide__slide relative">
   <a href={`/${formatSlug(article)}`}>
     <div
-      class="font-bebase absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
+      class="font-bakbak absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
       <h3
-        class="mb-4 text-balance bg-black px-10 py-4 text-center font-bebas text-3xl font-bold text-yellow md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+        class="mb-4 text-balance bg-black px-10 py-4 text-center font-bakbak text-3xl font-bold text-yellow md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
         {formatTitle(article)}
       </h3>
-      <div class="hidden xl:block [&>p]:inline [&>p]:text-balance [&>p]:bg-yellow [&>p]:text-center [&>p]:text-xl [&>p]:font-bold [&>p]:leading-snug [&>p]:text-black" set:html={formatExcerpt(article)}/>
-        <div class="m-auto mt-6 flex w-fit items-center gap-1 bg-yellow px-5 py-1 font-bebas text-lg font-bold text-black md:gap-2 md:py-2 md:text-xl lg:px-6 lg:py-2 lg:text-2xl xl:gap-3 xl:bg-black xl:text-yellow">
-          <Newspaper size={20} />
-          <span>Lire</span>
-        </div>
+      <div
+        class="hidden xl:block [&>p]:inline [&>p]:text-balance [&>p]:bg-yellow [&>p]:text-center [&>p]:text-xl [&>p]:font-bold [&>p]:leading-snug [&>p]:text-black"
+        set:html={formatExcerpt(article)}
+      />
+      <div
+        class="m-auto mt-6 flex w-fit items-center gap-1 bg-yellow px-5 py-1 font-bakbak text-lg font-bold text-black md:gap-2 md:py-2 md:text-xl lg:px-6 lg:py-2 lg:text-2xl xl:gap-3 xl:bg-black xl:text-yellow">
+        <Newspaper size={20} />
+        <span>Lire</span>
       </div>
     </div>
-    <Image
-      class="h-full w-full object-cover"
-      src={formatImage(article).sourceUrl}
-      width={IMAGE_SIZE}
-      height={IMAGE_SIZE}
-      alt={formatTitle(article)}
-      title={formatTitle(article)}
-      loading="eager"
-    />
   </a>
+  <Image
+    class="h-full w-full object-cover"
+    src={formatImage(article).sourceUrl}
+    width={IMAGE_SIZE}
+    height={IMAGE_SIZE}
+    alt={formatTitle(article)}
+    title={formatTitle(article)}
+    loading="eager"
+  />
 </li>
