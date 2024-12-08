@@ -4,6 +4,7 @@ import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
 import ProgressBar from "./_components/ProgressBar";
 import TitlePullUp from "./_components/TitlePullUp";
 import Meteors from "./_components/Meteors";
+import MarqueeDemo from "./_components/MarqueeDemo";
 import { Image } from "astro:assets";
 
 // 🖼️ Layout
@@ -15,10 +16,10 @@ import { stripe } from "@/data-access/stripe";
 import puppeteer from "puppeteer";
 
 // 🎨 Assets
-import TipeeeLogo from "./tipeee.png";
-import SemaineType from "./semaine-type.jpg";
-import CoverCampaign from "./cover-campaign.jpg";
-import BottomPageIllu from "./bottom-page.webp";
+import TipeeeLogo from "./assets/tipeee.png";
+import SemaineType from "./assets/semaine-type.jpg";
+import CoverCampaign from "./assets/cover-campaign.jpg";
+import BottomPageIllu from "./assets/bottom-page.webp";
 
 export const prerender = false;
 Astro.response.headers.set(
@@ -220,6 +221,7 @@ const progressInPercent = Math.max(
           alt="Logo de la plateforme de finance participatif Tipeee"
         />
       </a>
+      <MarqueeDemo client:load />
       <p class="font-bold my-16 text-3xl text-center">=== OU ===</p>
 
       <CheckoutFormWrapper client:only="react" />
