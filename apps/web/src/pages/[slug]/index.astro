@@ -15,7 +15,6 @@ import {
 // 🧰 Config
 export const prerender = false;
 
-// Dynamic for on demand post
 const { slug } = Astro.params;
 const article: ArticleRaw = (await fetchArticle({ slug }, [
   "title",
@@ -26,6 +25,8 @@ const article: ArticleRaw = (await fetchArticle({ slug }, [
   "image",
   "content",
 ])) as ArticleRaw;
+
+if (!article) return Astro.rewrite("/404");
 
 // This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
 Astro.response.headers.set(

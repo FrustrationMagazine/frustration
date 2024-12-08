@@ -7,7 +7,7 @@ import RedeployButton from "./components/RedeployButton";
 
 // 🗿 Models
 import { CardsDescription } from "./_models";
-console.log("CardsDescription", CardsDescription);
+
 const VideosTab = () => {
   return (
     <>

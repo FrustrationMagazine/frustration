@@ -2,6 +2,13 @@
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+
+// 🧰 Config
+const currentYear = new Date().getFullYear();
+
+// 🎨 Styles
+const titleStyle = "text-3xl font-bold mb-2";
+const linkStyle = "text-blue underline";
 ---
 
 <BaseLayout title="Mentions légales">
@@ -10,10 +17,10 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       Mentions légales
     </h2>
 
-    <div class="space-y-8">
+    <div class="space-y-10">
       <!-- Données personnelles -->
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mb-2">Données personnelles</h3>
+        <h3 class={titleStyle}>Données personnelles</h3>
         <p>
           <b>Politique de confidentialité</b>
           Nous collectons et traitons vos données personnelles conformément à la
@@ -21,7 +28,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
           ne sont en aucun cas cédées ou vendues à des tiers. Elles sont uniquement
           utilisées pour les besoins de la communication de l’association Frustration
           magazine et de ses activités. Plus d'informations sur <a
-            class="text-blue underline"
+            class={linkStyle}
             href="politique-de-confidentialite"
             >notre politique de confidentialité</a
           >.
@@ -34,7 +41,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
           Conformément à la loi Informatique et Libertés, vous disposez d’un droit
           d’accès, de rectification et de suppression des données vous concernant.
           Pour exercer ce droit, veuillez nous contacter à l'adresse suivante <a
-            class="text-blue underline"
+            class={linkStyle}
             href="mailto:redaction@frustrationmagazine.fr"
             >redaction@frustrationmagazine.fr</a
           >
@@ -42,7 +49,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </div>
       <!-- Cookies -->
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mb-2">Cookies</h3>
+        <h3 class={titleStyle}>Cookies</h3>
         <p>
           <b>Information sur l'utilisation des cookies</b>
           Frustration Magazine n'utilise pas de cookies.
@@ -50,14 +57,14 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </div>
       <!-- Identité de l'éditeur du site -->
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mb-2">Identité de l'éditeur du site</h3>
+        <h3 class={titleStyle}>Identité de l'éditeur du site</h3>
         <p>
           <b>Directeur de la publication</b> Nicolas Framont
         </p>
         <p>
           <b>Contact</b>
           <a
-            class="text-blue underline"
+            class={linkStyle}
             href="mailto:redaction@frustrationmagazine.fr"
             >redaction@frustrationmagazine.fr</a
           >
@@ -71,14 +78,14 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </div>
       <!-- Hébergeur du site -->
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mb-2">Hébergeur du site</h3>
+        <h3 class={titleStyle}>Hébergeur du site</h3>
         <p>
           <b>Nom de l'hébergeur</b> Vercel
         </p>
         <p>
           <b>Site de l'hébergeur</b>
           <a
-            class="text-blue underline"
+            class={linkStyle}
             href="https://vercel.com"
             >https://vercel.com</a
           >
@@ -86,9 +93,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
       </div>
       <!-- Conditions générales d'utilisation (CGU)-->
       <div class="space-y-2">
-        <h3 class="text-3xl font-bold mb-2">
-          Conditions générales d'utilisation (CGU)
-        </h3>
+        <h3 class={titleStyle}>Conditions générales d'utilisation (CGU)</h3>
         <p>
           <b>Conditions d'accès et d'utilisation du site</b>
           <span>
@@ -111,7 +116,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
     <div class="mt-10">
       Frustration magazine
       <p>
-        © {new Date().getFullYear()} | Tous droits réservés
+        © {currentYear} | Tous droits réservés
       </p>
     </div>
   </PageLayout>

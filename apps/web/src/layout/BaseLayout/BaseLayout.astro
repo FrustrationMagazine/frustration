@@ -4,7 +4,7 @@ import { ViewTransitions } from "astro:transitions";
 import { fade } from "astro:transitions";
 
 // 🚀 SEO
-import SpeedInsights from "@vercel/speed-insights/astro";
+// import SpeedInsights from "@vercel/speed-insights/astro";
 import Head from "../Head.astro";
 
 // 🧱 Components
@@ -83,7 +83,7 @@ const {
   <title>Frustration Magazine - {title}</title>
   <ViewTransitions />
 
-  <body class="min-h-screen bg-yellow flex flex-col">
+  <body class="min-h-screen bg-white flex flex-col">
     <Header
       displayBanner={displayBanner}
       transition:persist
@@ -93,6 +93,6 @@ const {
     </main>
     <!-- 🔽 Footer -->
     <Footer transition:persist />
-    <SpeedInsights />
+    <!-- <SpeedInsights /> -->
   </body>
 </html>
