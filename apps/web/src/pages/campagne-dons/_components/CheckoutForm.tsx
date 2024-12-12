@@ -10,7 +10,7 @@ import { type StripePaymentElementOptions } from "@stripe/stripe-js";
 import { actions } from "astro:actions";
 
 // 🧱 Components
-import { FREQUENCY } from "./CheckoutFormWrapper";
+import { FREQUENCY } from "../models";
 import CircleLoader from "@/ui/components/loaders/loader-circle";
 import {
   AlertDialog,
@@ -31,6 +31,7 @@ import { MessageCircleWarning } from "lucide-react";
 
 const paymentElementOptions: StripePaymentElementOptions = {
   layout: "tabs",
+  paymentMethodOrder: ["card", "sepa_debit", "paypal"],
 };
 
 const CREATE_CUSTOMER_ENDPOINT = "/api/create-customer";
@@ -61,6 +62,12 @@ const CheckoutForm = ({
   hasGifts?: boolean;
   wantsNewsletter: boolean;
 }) => {
+  // Params
+  const queryParams = new URLSearchParams(window.location.search);
+  const defaultPaymentMethod = queryParams.get("payment_method");
+  if (defaultPaymentMethod)
+    paymentElementOptions.paymentMethodOrder = [defaultPaymentMethod];
+
   // 🪝 Hooks
   const stripe = useStripe();
   const elements = useElements();

@@ -21,59 +21,12 @@ import ToggleButtonGroup, {
 import CheckoutForm from "./CheckoutForm";
 
 // 💽 Data
-
-export enum FREQUENCY {
-  ONETIME = "onetime",
-  RECURRING = "recurring",
-}
-
-export enum GIFTS {
-  MAGAZINE = "magazine",
-  BOOK = "book",
-}
-
-const DONATION_FREQUENCIES = [
-  {
-    value: FREQUENCY.ONETIME,
-    text: "Don unique",
-  },
-  {
-    value: FREQUENCY.RECURRING,
-    text: "Don mensuel",
-  },
-];
-const DONATION_AMOUNTS = [
-  {
-    value: 1500,
-    emoji: "😄",
-    gifts: [GIFTS.MAGAZINE],
-  },
-  {
-    value: 3000,
-    emoji: "😃",
-    gifts: [GIFTS.MAGAZINE],
-  },
-  {
-    value: 5000,
-    emoji: "😙",
-    gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
-  },
-  {
-    value: 10000,
-    emoji: "😘",
-    gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
-  },
-  {
-    value: 20000,
-    emoji: "🥰",
-    gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
-  },
-  {
-    value: 50000,
-    emoji: "🤩",
-    gifts: [GIFTS.MAGAZINE, GIFTS.BOOK],
-  },
-];
+import {
+  FREQUENCY,
+  GIFTS,
+  DONATION_FREQUENCIES,
+  DONATION_AMOUNTS,
+} from "../models";
 
 // 🎨 Styles
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
@@ -83,38 +36,46 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
   },
 }));
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
+// 💰 Stripe
 const { PUBLIC_STRIPE_PUBLIC_KEY } = import.meta.env;
 const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLIC_KEY);
 
 const Form = () => {
-  // 🔼 State
-  const [selectedFrequency, setSelectedFrequency] = React.useState(
-    FREQUENCY.ONETIME,
-  );
-
-  /* Amount */
-  /* ------ */
+  // 🔗 Query params
+  // amount
+  // type : recurring | onetime
+  // payment_method : sepa_debit
   const queryParams = new URLSearchParams(window.location.search);
-  const initialAmount = queryParams.get("amount")
+
+  const defaultAmount = queryParams.get("amount")
     ? parseInt(queryParams.get("amount")!) * 100
     : DONATION_AMOUNTS[1].value;
+
+  const defaultFrequency = [FREQUENCY.ONETIME, FREQUENCY.RECURRING].includes(
+    queryParams.get("type") as FREQUENCY,
+  )
+    ? queryParams.get("type")
+    : FREQUENCY.ONETIME;
+
   let initialIsCustom = false;
-  if (!DONATION_AMOUNTS.map(({ value }) => value).includes(initialAmount)) {
+  if (!DONATION_AMOUNTS.map(({ value }) => value).includes(defaultAmount))
     initialIsCustom = true;
-  }
+
+  // 🔼 State
+  const [selectedFrequency, setSelectedFrequency] =
+    React.useState(defaultFrequency);
 
   const [{ selectedAmount, isCustom }, setSelectedAmount] = React.useState({
-    selectedAmount: initialAmount,
+    selectedAmount: defaultAmount,
     isCustom: initialIsCustom,
   });
 
-  /* Newsletter */
-  /* ---------- */
+  /* 📨 Newsletter */
+  /* ------------- */
   const [wantsNewsletter, setWantsNewsletter] = React.useState(true);
 
+  /* 🎁 Gifts */
+  /* -------- */
   const gifts =
     DONATION_AMOUNTS.findLast(({ value }) => selectedAmount >= value)?.gifts ||
     [];
@@ -133,7 +94,9 @@ const Form = () => {
   };
 
   return (
-    <div className="mx-auto mt-12 flex max-w-[500px] flex-col items-center">
+    <div
+      className="mx-auto mt-12 flex max-w-[500px] flex-col items-center"
+      id="form">
       <div className="mb-8 text-center">
         <h3 className="font-bakbak text-7xl"> Don direct</h3>
         <p className="text-3xl font-bold">Aidez-nous à grandir ! 🌱</p>
@@ -209,7 +172,7 @@ const Form = () => {
             <div className="mb-2 flex items-center justify-center text-center">
               <input
                 type="number"
-                className="border-2 border-black px-0 py-2 text-right font-bold"
+                className="px-0 py-2 text-right font-bold"
                 style={{
                   width: `${(selectedAmount / 100).toString().length + 1}ch`,
                 }}
