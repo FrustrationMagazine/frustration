@@ -70,6 +70,22 @@ const Form = () => {
     isCustom: initialIsCustom,
   });
 
+  // 🔄 Effect
+  React.useEffect(() => {
+    const scrollToHash = () => {
+      const { hash } = window.location; // Get the current hash from the URL
+      if (hash) {
+        const element = document.getElementById(hash.substring(1)); // Remove the '#' from the hash
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    };
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, []);
+
   /* 📨 Newsletter */
   /* ------------- */
   const [wantsNewsletter, setWantsNewsletter] = React.useState(true);
