@@ -1,5 +1,5 @@
 // 💥 Fetch
-import { getTransactions, getTransactionsForCampaign } from "./_actions";
+import { getTransactions, getTransactionsForPeriod } from "./_actions";
 
 // 🧱 Components
 import { TabGroup, TabPanels, TabPanel } from "@/ui/components/tabs";
@@ -33,40 +33,41 @@ const processPermanent = (transactions: any, transactionsTypes: any) => {
 const processTemporary = (transactions: any, transactionsTypes: any) => {
   let processedTransactions: any[] = [];
 
-  processedTransactions = transactions.filter(
-    ({ status, paid }: { status: string; paid: boolean }) =>
-      status === "succeeded" && paid,
-  );
+  processedTransactions = transactions;
+  // processedTransactions = transactions.filter(
+  //   ({ status, paid }: { status: string; paid: boolean }) =>
+  //     status === "succeeded" && paid,
+  // );
 
   if (arraysEqual(transactionsTypes, ["subscription"])) {
     processedTransactions = processedTransactions.filter(
-      (transaction) => transaction.invoice,
+      (transaction) =>
+        transaction.type === "subscription" &&
+        transaction.subtype === "creation",
     );
   }
 
   if (arraysEqual(transactionsTypes, ["donation"])) {
     processedTransactions = processedTransactions.filter(
-      (transaction) => !transaction.invoice,
+      (transaction) => transaction.type === "donation",
     );
   }
-
-  // 🥣 Group day
+  // 🥣 Group by day
   processedTransactions = processedTransactions.reduce(
     (acc, { created, amount }) => {
       const alreadyRegisteredDay = acc.find(
         ({ date }: { date: Date }) =>
-          date.toDateString() === new Date(created * 1000).toDateString(),
+          date.toDateString() === created.toDateString(),
       );
 
       if (alreadyRegisteredDay) {
         alreadyRegisteredDay.total += amount;
       } else {
-        const newDate = new Date(created * 1000);
         acc.push({
           date: new Date(
-            newDate.getFullYear(),
-            newDate.getMonth(),
-            newDate.getDate(),
+            created.getFullYear(),
+            created.getMonth(),
+            created.getDate(),
           ),
           total: amount,
         });
@@ -99,7 +100,8 @@ export default async () => {
           <TabPanel className="h-full w-full">
             {/* Level 2️⃣ - Choose transaction type (subscription and/or donation) */}
             <TabGroup className="flex h-full w-full flex-col items-center">
-              {/* TabList */} <TransactionTypeTabs tabs={tabs} />
+              {/* TabList */}
+              <TransactionTypeTabs tabs={tabs} />
               <TabPanels className="w-full grow overflow-auto">
                 {tabs.map(
                   async ({
@@ -135,8 +137,14 @@ export default async () => {
                     /* ============ */
                     if (campaignType === "temporary") {
                       // 🐝 Fetch from Stripe API
+                      // let transactionsCampaign: any[] =
+                      //   await getTransactionsForCampaign(begin.getTime(), tag);
+
                       let transactionsCampaign: any[] =
-                        await getTransactionsForCampaign(begin.getTime(), tag);
+                        await getTransactionsForPeriod({
+                          begin,
+                          end: null,
+                        });
 
                       // ❌ Early return if no transactions by month
                       if (transactionsCampaign.length === 0) return NoData;

@@ -4,7 +4,7 @@
 import { prisma } from "@/data-access/prisma";
 
 // 🔧 Libs
-import { stripe } from "@/data-access/stripe";
+import { stripe, formatStripeTransactions } from "@/data-access/stripe";
 
 // 🗿 Models
 import { type Transactions } from "./_models";
@@ -38,6 +38,65 @@ export async function getTransactions({
   return transactions;
 }
 
+/* ------------------- */
+/*    Transactions     */
+/* ------------------- */
+export async function getTransactionsForPeriod({
+  begin,
+  end = null,
+}: {
+  begin: Date;
+  end: Date | null;
+}): Promise<any[]> {
+  const PAGE_SIZE = 100;
+  let data: any = [];
+  let hasMore = true;
+  let starting_after;
+
+  do {
+    try {
+      let listOptions: any = {
+        limit: 100,
+        starting_after,
+      };
+
+      // List options
+      listOptions = {
+        ...listOptions,
+        created: { gt: begin.getTime() / 1000 },
+      };
+
+      const { data: stripeData, has_more } =
+        await stripe.balanceTransactions.list({
+          limit: PAGE_SIZE,
+          starting_after,
+          created: { gt: begin.getTime() / 1000 },
+        });
+
+      data.push(...stripeData);
+      hasMore = has_more;
+      if (hasMore) {
+        const lastItem: any = data.slice(-1)[0];
+        starting_after = lastItem.id;
+      }
+    } catch (error: any) {
+      if (error.type === "StripeInvalidRequestError") {
+        console.info("Invalid request error:", error.message);
+      } else {
+        console.info("Unexpected error:", error);
+      }
+    }
+  } while (hasMore);
+  data = data.map(formatStripeTransactions) as any;
+  data = data.filter(
+    ({ type, subtype }: { type: any; subtype: any }) =>
+      type === "donation" ||
+      (type === "subscription" && subtype === "creation"),
+  );
+
+  return data;
+}
+
 /* -------------------------------- */
 /*    Transactions for campaign     */
 /* -------------------------------- */
@@ -48,6 +107,7 @@ export async function getTransactionsForCampaign(
   let transactions: any[] = [];
   let has_more;
   let next_page;
+
   do {
     try {
       const resTransactions = (await stripe.charges.search({

@@ -26,8 +26,8 @@ export default ({
   goal: number;
   transactions: Transactions[];
 }) => {
-  const total = transactions.reduce((acc, cv) => acc + cv.total / 100, 0);
-  const progressRoundedFirstDecimal = Math.round((total * 1000) / goal) / 10;
+  const total = transactions.reduce((acc, cv) => acc + cv.total, 0);
+  const progressRoundedFirstDecimal = Math.round((total * 100) / goal);
 
   const differenceInTime = new Date().getTime() - begin.getTime();
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));

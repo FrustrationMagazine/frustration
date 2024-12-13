@@ -34,10 +34,10 @@ const TransactionsChart = ({
 
   let cumul = 0;
   const chartData = transactions.map(({ date, total }) => {
-    cumul += Math.round(total / 100);
+    cumul += total;
     return {
       day: date.toISOString(),
-      total: Math.round(total / 100),
+      total: total,
       cumul,
     };
   });
