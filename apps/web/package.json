@@ -10,7 +10,8 @@
     "astro": "dotenv -e ../../.env -- astro",
     "lint": "eslint .",
     "stripe-webhook": "dotenv -e ../../.env -- stripe listen --forward-to http://localhost:4321/api/webhook",
-    "vercel-build": "cd ../../ && pnpm dlx prisma generate --schema='./packages/data-access/prisma/schema.prisma' && pnpm dlx prisma db push --schema='./packages/data-access/prisma/schema.prisma' --accept-data-loss && cd - && eslint . && astro build"
+    "vercel-prisma": "cd ../../ && pnpm dlx prisma generate --schema='./packages/data-access/prisma/schema.prisma' && pnpm dlx prisma db push --schema='./packages/data-access/prisma/schema.prisma' --accept-data-loss && cd -",
+    "vercel-build": "pnpm run vercel-prisma && eslint . && astro build"
   },
   "dependencies": {
     "@/data-access": "workspace:*",

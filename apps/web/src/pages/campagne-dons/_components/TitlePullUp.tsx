@@ -1,8 +1,4 @@
-"use client";
-
 import { motion, type Variants } from "framer-motion";
-
-import { cn } from "@/utils/tailwind";
 
 interface WordPullUpProps {
   words: string;

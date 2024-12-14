@@ -10,7 +10,7 @@ import { type StripePaymentElementOptions } from "@stripe/stripe-js";
 import { actions } from "astro:actions";
 
 // 🧱 Components
-import { FREQUENCY } from "../models";
+import { FREQUENCY } from "../_models";
 import CircleLoader from "@/ui/components/loaders/loader-circle";
 import {
   AlertDialog,

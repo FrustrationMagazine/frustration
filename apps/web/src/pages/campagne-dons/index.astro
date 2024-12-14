@@ -17,10 +17,10 @@ import puppeteer from "puppeteer";
 
 // 🎨 Assets
 
-import TipeeeLogo from "./assets/tipeee.png";
-import SemaineType from "./assets/semaine-type.jpg";
-import CoverCampaign from "./assets/cover-campaign.jpg";
-import BottomPageIllu from "./assets/bottom-page.webp";
+import TipeeeLogo from "./_assets/tipeee.png";
+import SemaineType from "./_assets/semaine-type.jpg";
+import CoverCampaign from "./_assets/cover-campaign.jpg";
+import BottomPageIllu from "./_assets/bottom-page.webp";
 
 // export const prerender = false;
 Astro.response.headers.set(
@@ -29,6 +29,7 @@ Astro.response.headers.set(
 );
 
 let totalTipeee = 0;
+let reviews: any = [];
 
 // Tipeee comments and total
 const browser = await puppeteer.launch({
@@ -50,7 +51,6 @@ await page.waitForSelector(".p-comm-inner");
 const totalHandle = await page.$(
   ".p-results-panel .p-result-item .p-value span",
 );
-console.log("totalHandle", totalHandle);
 if (totalHandle) {
   totalTipeee = await totalHandle.evaluate((el: any) =>
     el.textContent.trim()?.replace(/\s/g, "")?.match(/\d+/)?.at(0),
@@ -58,7 +58,7 @@ if (totalHandle) {
 }
 
 const reviewsHandle = await page.$$(".p-comm-inner");
-const reviews = await Promise.all(
+reviews = await Promise.all(
   reviewsHandle.map(async (review) =>
     review.evaluate((el) => {
       const name = el?.querySelector(".p-c-author a")?.innerText;
@@ -217,7 +217,10 @@ const progressInPercent = Math.max(
           alt="Logo de la plateforme de finance participatif Tipeee"
         />
       </a>
-      <MarqueeDemo reviews={reviews} />
+      <MarqueeDemo
+        client:load
+        reviews={reviews}
+      />
       <p
         class="font-bold my-16 text-4xl gap-2 text-center flex items-center justify-center">
         <svg

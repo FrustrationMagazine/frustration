@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/utils/tailwind";
 
 export default function RetroGrid({

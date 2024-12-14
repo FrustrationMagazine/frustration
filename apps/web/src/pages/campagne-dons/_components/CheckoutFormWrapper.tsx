@@ -26,7 +26,7 @@ import {
   GIFTS,
   DONATION_FREQUENCIES,
   DONATION_AMOUNTS,
-} from "../models";
+} from "../_models";
 
 // 🎨 Styles
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({

@@ -47,7 +47,7 @@ type Props = {
   reviews: Review[];
 };
 
-export const MarqueeDemo = ({ reviews }: Props) => {
+export default function MarqueeDemo({ reviews }: Props) {
   const firstRow = reviews.slice(0, reviews.length / 2);
   const secondRow = reviews.slice(reviews.length / 2);
 
@@ -78,6 +78,4 @@ export const MarqueeDemo = ({ reviews }: Props) => {
       <div className="dark:from-background pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white"></div>
     </div>
   );
-};
-
-export default MarqueeDemo;
+}
