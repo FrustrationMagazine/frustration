@@ -34,7 +34,7 @@ function getTransactionSubtype(description: string): "creation" | "update" | nul
   else return null;
 }
 
-export const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status }: StripeTransaction): Transaction => {
+export const formatStripeTransactions = ({ id, description, amount, net, available_on, created, status, source }: StripeTransaction): Transaction => {
   const transactionType = getTransactionType(description);
   const transactionSubtype = getTransactionSubtype(description);
   if (transactionType === TRANSACTION_TYPES.OTHER) console.info(`Unknown type: ${description}\n`);
@@ -44,6 +44,7 @@ export const formatStripeTransactions = ({ id, description, amount, net, availab
     available: convertUTCtoDate(available_on),
     amount: amount / 100,
     net: net / 100,
+    stripe_source: source || "",
     source: "stripe",
     type: transactionType,
     subtype: transactionSubtype,
@@ -113,6 +114,7 @@ interface StripeTransaction {
   available_on: number;
   created: number;
   description: string;
+  source?: string;
   net: number;
   status: string;
 }

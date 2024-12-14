@@ -16,12 +16,14 @@ import { stripe } from "@/data-access/stripe";
 import puppeteer from "puppeteer";
 
 // 🎨 Assets
+
 import TipeeeLogo from "./assets/tipeee.png";
 import SemaineType from "./assets/semaine-type.jpg";
 import CoverCampaign from "./assets/cover-campaign.jpg";
 import BottomPageIllu from "./assets/bottom-page.webp";
+import Wave from "./assets/wave.svg";
 
-export const prerender = false;
+// export const prerender = false;
 Astro.response.headers.set(
   "Cache-Control",
   "s-maxage=3600, stale-while-revalidate",
@@ -39,15 +41,14 @@ do {
       ...(next_page ? { page: next_page } : {}),
     })) as any;
     next_page = resTransactions.next_page;
+    has_more = resTransactions.has_more;
     if (has_more) next_page = resTransactions.next_page;
     transactions = [...transactions, ...resTransactions.data];
   } catch (e) {
     console.error("Error while fetching transactions for campaign", e);
   }
 } while (has_more);
-const total = transactions
-  .filter((transaction) => !transaction.invoice)
-  .reduce((acc, cv) => acc + cv.amount / 100, 0);
+const total = transactions.reduce((acc, cv) => acc + cv.amount / 100, 0);
 const MIN_VALUE = 5;
 const progressInPercent = Math.max(
   (Math.floor(total) / 40000) * 100,
@@ -132,7 +133,7 @@ const progressInPercent = Math.max(
       <TitlePullUp
         client:load
         words="On a besoin de vous pour continuer !"
-        className="z-10 text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak"
+        className="z-10 text-4xl md:text-5xl text-black lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak"
       />
     </div>
     <!-- === Progress bar -->
@@ -144,8 +145,8 @@ const progressInPercent = Math.max(
       className="h-10 mt-12 shadow-lg"
     />
     <!-- 🔠 Text -->
-    <article class="mt-12 px-2 font-open-sans tracking-wide text-lg">
-      <p class="mb-11 text-lg">
+    <article class="mt-12 font-open-sans tracking-wide md:text-lg">
+      <p class="mb-11">
         <i>Frustration</i> a fait d’énormes progrès cette année, <b
           >mais notre modèle économique n’est plus viable sur le long terme</b
         >. Nous sommes une équipe de 2,5 personnes, sans local, et malgré notre
@@ -160,7 +161,7 @@ const progressInPercent = Math.max(
         <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
           Pour résumer
         </h3>
-        <ul class="space-y-3 list-decimal">
+        <ul class="space-y-3 pl-3 list-decimal">
           <li>
             <b><i>Frustration</i> a réalisé de gros progrès</b> : doublement de la
             fréquentation du site, meilleure visibilité médiatique, forte progression
@@ -181,7 +182,7 @@ const progressInPercent = Math.max(
         <h3 class="title-to-highlight w-fit font-bold text-3xl mb-6">
           Nos objectifs à court terme
         </h3>
-        <ul class="space-y-3 list-disc">
+        <ul class="space-y-3 pl-3 list-disc">
           <li>
             <b>Publier quotidiennement</b> pour rivaliser avec les médias installés.
           </li>
@@ -210,6 +211,7 @@ const progressInPercent = Math.max(
         class="title-to-underline w-fit mx-auto uppercase font-bakbak text-center font-bold text-6xl mb-10">
         Comment nous aider ?
       </h3>
+      <p class="text-3xl text-center mb-8">En participant à notre Tipeee</p>
       <a
         href="https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux"
         target="_blank">
@@ -222,7 +224,30 @@ const progressInPercent = Math.max(
         />
       </a>
       <MarqueeDemo client:load />
-      <p class="font-bold my-16 text-3xl text-center">=== OU ===</p>
+      <p
+        class="font-bold my-16 text-4xl gap-2 text-center flex items-center justify-center">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          ><path
+            fill="currentColor"
+            d="M11 22V6.83L2 16v-2.83L13 2v15.17L22 8v2.83z"
+          ></path></svg
+        >
+        <span>OU</span>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          ><path
+            fill="currentColor"
+            d="M11 22V6.83L2 16v-2.83L13 2v15.17L22 8v2.83z"
+          ></path></svg
+        >
+      </p>
 
       <CheckoutFormWrapper client:only="react" />
 
@@ -374,7 +399,7 @@ const progressInPercent = Math.max(
           <p>
             Nous avons déjà commencé à le faire, avec un certain succès, avec :
 
-            <ul class="space-y-1 list-disc">
+            <ul class="space-y-1 pl-3 list-disc">
               <li>
                 Des captations d'événements que nous avons organisés le
                 développement de trois séries de formats vidéo :
@@ -461,7 +486,7 @@ const progressInPercent = Math.max(
     </article>
     <Image
       src={BottomPageIllu}
-      class="mx-auto mt-16 -mb-16"
+      class="mx-auto mt-12 -mb-16"
       width="800"
       alt="Une rangée de travailleuses et travailleurs"
     />

@@ -114,7 +114,10 @@ const Form = () => {
       className="mx-auto mt-12 flex max-w-[500px] flex-col items-center"
       id="form">
       <div className="mb-8 text-center">
-        <h3 className="font-bakbak text-7xl"> Don direct</h3>
+        <h3 className="font-bakbak text-6xl md:text-7xl">
+          {" "}
+          Faire un don direct
+        </h3>
         <p className="text-3xl font-bold">Aidez-nous à grandir ! 🌱</p>
       </div>
 
@@ -232,10 +235,10 @@ const Form = () => {
         )}
         {selectedFrequency === FREQUENCY.ONETIME && selectedAmount >= 900 && (
           <p
-            className="my-4 flex cursor-pointer items-center gap-2 font-bold leading-tight hover:underline"
+            className="my-4 flex cursor-pointer flex-col items-center gap-2 font-bold leading-tight hover:underline md:flex-row"
             onClick={() => setSelectedFrequency(FREQUENCY.RECURRING)}>
             <TbBulb size={36} />
-            <span>
+            <span className="flex-shrink text-center md:text-left">
               Passez à un don mensuel pour recevoir des contreparties en échange{" "}
               <small>🎁 </small>
             </span>

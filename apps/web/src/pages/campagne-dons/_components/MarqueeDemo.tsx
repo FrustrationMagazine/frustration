@@ -3,6 +3,18 @@ import { Marquee } from "./Marquee";
 
 const reviews = [
   {
+    name: "Franzysch",
+    date: "12 décembre 2024 à 09:48",
+    body: "j'ai aussi fait un petit post sur linkedin (François-Henri Perrin) pour parler de votre campagne !",
+    img: "https://api.tipeee.com/cache/20220420200758/media/200/200/zoom/1616544/0bc287bfee045e9f6c360c421e1221d5753f5e95.jpg",
+  },
+  {
+    name: "valerie",
+    date: "11 décembre 2024 à 19:41",
+    body: "Merci pour votre super boulot",
+    img: "https://api.tipeee.com/img/default_avatar_7.png",
+  },
+  {
     name: "ViveLeCommunisme",
     date: "1 décembre 2024 à 11:41",
     body: "Merci pour votre travail essentiel à la lutte des classes. Vos articles sont très satisfaisants à lire, riche pour comprendre notre société tout en étant très accessible !",
