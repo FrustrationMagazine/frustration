@@ -13,7 +13,7 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
 // 🔧 Libs
 import { stripe } from "@/data-access/stripe";
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
 
 // 🎨 Assets
 
@@ -32,54 +32,56 @@ let totalTipeee = 0;
 let reviews: any = [];
 
 // Tipeee comments and total
-const browser = await puppeteer.launch({
-  headless: true,
-  defaultViewport: null,
-});
+// const browser = await puppeteer.launch({
+//   headless: true,
+//   defaultViewport: null,
+// });
 
-const page = await browser.newPage();
+// const page = await browser.newPage();
 
-await page.goto(
-  "https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux/comments",
-  {
-    waitUntil: "domcontentloaded",
-  },
-);
+// await page.goto(
+//   "https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux/comments",
+//   {
+//     waitUntil: "domcontentloaded",
+//   },
+// );
 
-await page.waitForSelector(".p-comm-inner");
+// await page.waitForSelector(".p-comm-inner");
 
-const totalHandle = await page.$(
-  ".p-results-panel .p-result-item .p-value span",
-);
-if (totalHandle) {
-  totalTipeee = await totalHandle.evaluate((el: any) =>
-    el.textContent.trim()?.replace(/\s/g, "")?.match(/\d+/)?.at(0),
-  );
-}
+// const totalHandle = await page.$(
+//   ".p-results-panel .p-result-item .p-value span",
+// );
+// if (totalHandle) {
+//   totalTipeee = await totalHandle.evaluate((el: any) =>
+//     el.textContent.trim()?.replace(/\s/g, "")?.match(/\d+/)?.at(0),
+//   );
+// }
 
-const reviewsHandle = await page.$$(".p-comm-inner");
-reviews = await Promise.all(
-  reviewsHandle.map(async (review) =>
-    review.evaluate((el) => {
-      const name = el?.querySelector(".p-c-author a")?.innerText;
-      const date = el
-        ?.querySelector(".p-c-metas")
-        ?.innerText.match(/\d+.+/)
-        .at(0);
-      const imgTag = el?.querySelector(".p-comm-heading a") as HTMLElement;
+// const reviewsHandle = await page.$$(".p-comm-inner");
+// reviews = await Promise.all(
+//   reviewsHandle.map(async (review) =>
+//     review.evaluate((el) => {
+//       const name = el?.querySelector(".p-c-author a")?.innerText;
+//       const date = el
+//         ?.querySelector(".p-c-metas")
+//         ?.innerText.match(/\d+.+/)
+//         .at(0);
+//       const imgTag = el?.querySelector(".p-comm-heading a") as HTMLElement;
 
-      const img = getComputedStyle(imgTag)
-        .backgroundImage.match(/https[^"]*/)
-        ?.at(0);
+//       const img = getComputedStyle(imgTag)
+//         .backgroundImage.match(/https[^"]*/)
+//         ?.at(0);
 
-      const body = el?.querySelector(".p-c-content")?.innerText;
+//       const body = el?.querySelector(".p-c-content")?.innerText;
 
-      return { name, date, body, img };
-    }),
-  ),
-);
+//       return { name, date, body, img };
+//     }),
+//   ),
+// );
 
 // Compute percent in progress for campaign
+if (totalTipeee === 0) totalTipeee = 4717;
+
 let transactions: any[] = [];
 let has_more;
 let next_page;

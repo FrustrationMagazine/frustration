@@ -30,12 +30,13 @@ export default ({
 }) => {
   const total = transactions.reduce((acc, cv) => acc + cv.total, 0);
   const progressRoundedFirstDecimal = Math.round(
-    ((total + totalTipeee) * 100) / goal,
+    ((total + (totalTipeee === 0 ? 4717 : totalTipeee)) * 100) / goal,
   );
 
   const differenceInTime = new Date().getTime() - begin.getTime();
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-  const meanDay = (total + totalTipeee) / differenceInDays;
+  const meanDay =
+    (total + (totalTipeee === 0 ? 4717 : totalTipeee)) / differenceInDays;
   return (
     <>
       <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
@@ -67,12 +68,16 @@ export default ({
           {/* Tipeee */}
           <div>
             <h5 className="text-2xl font-bold">Tipeee</h5>
-            <p className="text-xl">{inEuros(totalTipeee)}</p>
+            <p className="text-xl">
+              {inEuros(totalTipeee === 0 ? 4717 : totalTipeee)}
+            </p>
           </div>
           {/* Total + Tipeee */}
           <div>
             <h5 className="text-2xl font-bold">Dons site + Tipeee</h5>
-            <p className="text-xl">{inEuros(total + totalTipeee)}</p>
+            <p className="text-xl">
+              {inEuros(total + (totalTipeee === 0 ? 4717 : totalTipeee))}
+            </p>
           </div>
           {/* Progress */}
           <div>

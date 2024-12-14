@@ -23,32 +23,32 @@ export const dynamic = "force-dynamic";
 let totalTipeee = 0;
 
 // TEST
-try {
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
-  });
+// try {
+//   const browser = await puppeteer.launch({
+//     headless: true,
+//     defaultViewport: null,
+//   });
 
-  const page = await browser.newPage();
+//   const page = await browser.newPage();
 
-  await page.goto("https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux", {
-    waitUntil: "domcontentloaded",
-  });
+//   await page.goto("https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux", {
+//     waitUntil: "domcontentloaded",
+//   });
 
-  await page.waitForSelector(".p-results-panel");
+//   await page.waitForSelector(".p-results-panel");
 
-  const element = await page.$(".p-results-panel .p-value span");
-  const text = await page.evaluate((el: any) => el.textContent.trim(), element);
-  if (text) {
-    const total = text?.replace(/\s/g, "")?.match(/\d+/)?.at(0);
-    if (total) totalTipeee = parseInt(total);
-  }
+//   const element = await page.$(".p-results-panel .p-value span");
+//   const text = await page.evaluate((el: any) => el.textContent.trim(), element);
+//   if (text) {
+//     const total = text?.replace(/\s/g, "")?.match(/\d+/)?.at(0);
+//     if (total) totalTipeee = parseInt(total);
+//   }
 
-  // Close the browser
-  await browser.close();
-} catch (e) {
-  console.error("Pupeeter error", e);
-}
+//   // Close the browser
+//   await browser.close();
+// } catch (e) {
+//   console.error("Pupeeter error", e);
+// }
 
 /* ============================================= */
 /*              🚀 Component                     */
