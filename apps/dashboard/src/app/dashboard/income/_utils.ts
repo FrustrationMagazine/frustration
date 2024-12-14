@@ -181,3 +181,71 @@ export const debounce = (fn: any, delay: number): ((...args: any) => void) => {
     timer = setTimeout(() => fn.apply(this, args), delay);
   };
 };
+
+/* ------------------------------------- */
+/* Process from stripe to data for chart */
+/* ------------------------------------- */
+
+export const processPermanent = (transactions: any, transactionsTypes: any) => {
+  // 🔬 Filter transaction type
+  let processedTransactions = transactions.filter(
+    ({ type }: { type: string }) => transactionsTypes.includes(type),
+  );
+
+  // 🥣 Group date
+  processedTransactions = groupByAndSum(processedTransactions);
+
+  return processedTransactions;
+};
+
+export const processTemporary = (transactions: any, transactionsTypes: any) => {
+  let processedTransactions: any[] = [];
+
+  processedTransactions = transactions;
+  // processedTransactions = transactions.filter(
+  //   ({ status, paid }: { status: string; paid: boolean }) =>
+  //     status === "succeeded" && paid,
+  // );
+
+  if (arraysEqual(transactionsTypes, ["subscription"])) {
+    processedTransactions = processedTransactions.filter(
+      (transaction) =>
+        transaction.type === "subscription" &&
+        transaction.subtype === "creation",
+    );
+  }
+
+  if (arraysEqual(transactionsTypes, ["donation"])) {
+    processedTransactions = processedTransactions.filter(
+      (transaction) => transaction.type === "donation",
+    );
+  }
+  // 🥣 Group by day
+  processedTransactions = processedTransactions.reduce(
+    (acc, { created, amount }) => {
+      const alreadyRegisteredDay = acc.find(
+        ({ date }: { date: Date }) =>
+          date.toDateString() === created.toDateString(),
+      );
+
+      if (alreadyRegisteredDay) {
+        alreadyRegisteredDay.total += amount;
+      } else {
+        acc.push({
+          date: new Date(
+            created.getFullYear(),
+            created.getMonth(),
+            created.getDate(),
+          ),
+          total: amount,
+        });
+      }
+      return acc;
+    },
+    [],
+  );
+
+  // 🔄 Order by date
+  processedTransactions.sort((a, b) => a.date - b.date);
+  return processedTransactions;
+};

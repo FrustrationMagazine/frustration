@@ -3,6 +3,7 @@ import { getTransactions, getTransactionsForPeriod } from "./_actions";
 
 // 🧱 Components
 import { TabGroup, TabPanels, TabPanel } from "@/ui/components/tabs";
+
 import TransactionTypeTabs from "./components/Tabs/TransactionTypeTabs";
 import CampaignTabs from "./components/Tabs/CampaignTabs";
 import PanelPermanent from "./components/Panels/PanelPermanent";
@@ -10,7 +11,8 @@ import PanelTemporary from "./components/Panels/PanelTemporary";
 import NoData from "./components/NoData";
 
 // 🔧 Libs
-import { groupByAndSum, arraysEqual } from "./_utils";
+import { processPermanent, processTemporary } from "./_utils";
+import puppeteer from "puppeteer";
 
 // 🗿 Models
 import { CAMPAIGNS, TRANSACTIONS_TABS, type TabTransactions } from "./_models";
@@ -18,69 +20,35 @@ import { CAMPAIGNS, TRANSACTIONS_TABS, type TabTransactions } from "./_models";
 // 🧰 Config
 export const dynamic = "force-dynamic";
 
-const processPermanent = (transactions: any, transactionsTypes: any) => {
-  // 🔬 Filter transaction type
-  let processedTransactions = transactions.filter(
-    ({ type }: { type: string }) => transactionsTypes.includes(type),
-  );
+let totalTipeee = 0;
 
-  // 🥣 Group date
-  processedTransactions = groupByAndSum(processedTransactions);
+// TEST
+try {
+  const browser = await puppeteer.launch({
+    headless: true,
+    defaultViewport: null,
+  });
 
-  return processedTransactions;
-};
+  const page = await browser.newPage();
 
-const processTemporary = (transactions: any, transactionsTypes: any) => {
-  let processedTransactions: any[] = [];
+  await page.goto("https://fr.tipeee.com/aidez-nous-a-continuer-en-mieux", {
+    waitUntil: "domcontentloaded",
+  });
 
-  processedTransactions = transactions;
-  // processedTransactions = transactions.filter(
-  //   ({ status, paid }: { status: string; paid: boolean }) =>
-  //     status === "succeeded" && paid,
-  // );
+  await page.waitForSelector(".p-results-panel");
 
-  if (arraysEqual(transactionsTypes, ["subscription"])) {
-    processedTransactions = processedTransactions.filter(
-      (transaction) =>
-        transaction.type === "subscription" &&
-        transaction.subtype === "creation",
-    );
+  const element = await page.$(".p-results-panel .p-value span");
+  const text = await page.evaluate((el: any) => el.textContent.trim(), element);
+  if (text) {
+    const total = text?.replace(/\s/g, "")?.match(/\d+/)?.at(0);
+    if (total) totalTipeee = parseInt(total);
   }
 
-  if (arraysEqual(transactionsTypes, ["donation"])) {
-    processedTransactions = processedTransactions.filter(
-      (transaction) => transaction.type === "donation",
-    );
-  }
-  // 🥣 Group by day
-  processedTransactions = processedTransactions.reduce(
-    (acc, { created, amount }) => {
-      const alreadyRegisteredDay = acc.find(
-        ({ date }: { date: Date }) =>
-          date.toDateString() === created.toDateString(),
-      );
-
-      if (alreadyRegisteredDay) {
-        alreadyRegisteredDay.total += amount;
-      } else {
-        acc.push({
-          date: new Date(
-            created.getFullYear(),
-            created.getMonth(),
-            created.getDate(),
-          ),
-          total: amount,
-        });
-      }
-      return acc;
-    },
-    [],
-  );
-
-  // 🔄 Order by date
-  processedTransactions.sort((a, b) => a.date - b.date);
-  return processedTransactions;
-};
+  // Close the browser
+  await browser.close();
+} catch (e) {
+  console.error("Pupeeter error", e);
+}
 
 /* ============================================= */
 /*              🚀 Component                     */
@@ -94,7 +62,7 @@ export default async () => {
   return (
     // Level 1️⃣ - Choose campaign
     <TabGroup className="flex h-full w-full flex-col">
-      {/* TabList */} <CampaignTabs campaigns={CAMPAIGNS} />
+      <CampaignTabs campaigns={CAMPAIGNS} />
       <TabPanels className="overflow-auto">
         {TRANSACTIONS_TABS.map((tabs) => (
           <TabPanel className="h-full w-full">
@@ -160,6 +128,7 @@ export default async () => {
                           begin={begin}
                           goal={goal}
                           transactions={transactions}
+                          totalTipeee={totalTipeee}
                         />
                       );
                     }

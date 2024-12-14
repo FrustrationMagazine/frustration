@@ -9,9 +9,9 @@ import { type Campaign } from "../../_models";
 
 export default ({ campaigns }: { campaigns: Campaign[] }) => {
   return (
-    <TabList className="mx-auto mb-5 w-fit rounded-sm bg-white p-2">
+    <TabList className="font-bebas mx-auto mb-5 w-fit rounded-md bg-black p-2 text-frustration-yellow">
       {campaigns.map(({ name }) => (
-        <Tab className="rounded-sm p-3 font-bold uppercase focus:outline-none data-[selected]:bg-zinc-100">
+        <Tab className="w-[220px] rounded-sm p-3 text-xl font-bold uppercase focus:outline-none data-[selected]:bg-frustration-yellow data-[selected]:text-black">
           {name}
         </Tab>
       ))}

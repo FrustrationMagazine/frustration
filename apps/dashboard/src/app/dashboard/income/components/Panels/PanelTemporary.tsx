@@ -1,7 +1,6 @@
 "use client";
 
 // 🧱 Components
-import { TabPanel } from "@/ui/components/tabs";
 import TransactionsChart from "../Chart/Chart2";
 import { type Transactions } from "../../_models";
 import {
@@ -14,24 +13,29 @@ import {
 
 // 🔧 Libs
 import { inEuros } from "../../_utils";
+import { explicitDate } from "@/utils/dates";
 
 export default ({
   name,
   goal,
   begin,
   transactions,
+  totalTipeee,
 }: {
   name: string;
   begin: Date;
   goal: number;
   transactions: Transactions[];
+  totalTipeee: number;
 }) => {
   const total = transactions.reduce((acc, cv) => acc + cv.total, 0);
-  const progressRoundedFirstDecimal = Math.round((total * 100) / goal);
+  const progressRoundedFirstDecimal = Math.round(
+    ((total + totalTipeee) * 100) / goal,
+  );
 
   const differenceInTime = new Date().getTime() - begin.getTime();
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-  const meanDay = total / differenceInDays;
+  const meanDay = (total + totalTipeee) / differenceInDays;
   return (
     <>
       <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
@@ -40,7 +44,12 @@ export default ({
           <CardDescription>Indications en temps réel</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Débutée il y a */}
+          {/* Début*/}
+          <div>
+            <h5 className="text-2xl font-bold">Début</h5>
+            <p className="text-xl">{explicitDate(begin)}</p>
+          </div>
+          {/* Durée */}
           <div>
             <h5 className="text-2xl font-bold">Durée</h5>
             <p className="text-xl">{differenceInDays} jours</p>
@@ -50,10 +59,20 @@ export default ({
             <h5 className="text-2xl font-bold">Objectif</h5>
             <p className="text-xl">{inEuros(goal)} </p>
           </div>
-          {/* Total */}
+          {/* Total page*/}
           <div>
-            <h5 className="text-2xl font-bold">Total</h5>
+            <h5 className="text-2xl font-bold">Dons site</h5>
             <p className="text-xl">{inEuros(total)} </p>
+          </div>
+          {/* Tipeee */}
+          <div>
+            <h5 className="text-2xl font-bold">Tipeee</h5>
+            <p className="text-xl">{inEuros(totalTipeee)}</p>
+          </div>
+          {/* Total + Tipeee */}
+          <div>
+            <h5 className="text-2xl font-bold">Dons site + Tipeee</h5>
+            <p className="text-xl">{inEuros(total + totalTipeee)}</p>
           </div>
           {/* Progress */}
           <div>

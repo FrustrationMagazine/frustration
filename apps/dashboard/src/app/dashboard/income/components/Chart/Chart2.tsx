@@ -53,7 +53,7 @@ const TransactionsChart = ({
             name="dataType"
             id="total"
           />
-          Total
+          Par jour
         </label>
         <label className="flex cursor-pointer items-center gap-2">
           <input
@@ -63,7 +63,7 @@ const TransactionsChart = ({
             name="dataType"
             id="cumul"
           />
-          Cumul
+          En cumul
         </label>
       </div>
       <ChartContainer

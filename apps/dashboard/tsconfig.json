@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,17 +24,31 @@
       }
     ],
     "paths": {
-      "@dashboard/components/*": ["./src/app/_components/*"],
-      "@dashboard/auth": ["./src/auth/auth.ts"],
-      "@dashboard/hooks/*": ["./src/hooks/*"],
-      "@dashboard/fonts": ["./src/fonts.ts"],
+      "@dashboard/components/*": [
+        "./src/app/_components/*"
+      ],
+      "@dashboard/auth": [
+        "./src/auth/auth.ts"
+      ],
+      "@dashboard/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@dashboard/fonts": [
+        "./src/fonts.ts"
+      ],
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts", "../../packages/utils/files.ts", "../../packages/data-access/helloasso.ts", "../../packages/data-access/models/transactions.ts", "../../packages/data-access/stripe.ts",
+    ".next/types/**/*.ts",
+    "../../packages/utils/files.ts",
+    "../../packages/data-access/helloasso.ts",
+    "../../packages/data-access/models/transactions.ts",
+    "../../packages/data-access/stripe.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -18,7 +18,7 @@ export const { STRIPE_PRICE_SUBSCRIPTION_MINI, STRIPE_PRICE_SUBSCRIPTION_MEDIUM,
 /* ================== */
 
 function getTransactionType(description: string): string {
-  if (/(Subscription creation)|(Subscription update)/.test(description)) return TRANSACTION_TYPES.SUBSCRIPTION;
+  if (/^(Subscription creation)|(Subscription update)/.test(description)) return TRANSACTION_TYPES.SUBSCRIPTION;
   if (/numéro/gi.test(description)) return TRANSACTION_TYPES.SALE;
   if (/(🙏 Faire un don)|(Montant libre)|(\d+€)/.test(description)) return TRANSACTION_TYPES.DONATION;
   if (/STRIPE PAYOUT/.test(description)) return TRANSACTION_TYPES.PAYOUT;
