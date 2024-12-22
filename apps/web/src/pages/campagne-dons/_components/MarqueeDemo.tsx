@@ -38,6 +38,48 @@ const ReviewCard = ({
 
 const fallbackReviews = [
   {
+    name: "philippe",
+    date: "21 décembre 2024 à 12:03",
+    body: `Merci à vous !!`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
+    name: "Valtat Alain",
+    date: "20 décembre 2024 à 13:29",
+    body: `Bravo, Merci`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
+    name: "lune",
+    date: "20 décembre 2024 à 08:12",
+    body: `Vous êtes notre résistance concrête et visible et je vous soutiendrai du mieux possible pour qu'il y ait une pluralité d'opinions .Je le fais pour vos opposés aussi , des souverainistes .`,
+    img: "https://api.tipeee.com/img/default_avatar_2.png",
+  },
+  {
+    name: "rodrigues milhao",
+    date: "19 décembre 2024 à 21:01",
+    body: `Merci pour votre super travail <3`,
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
+    name: "Nabil Mimoun",
+    date: "19 décembre 2024 à 20:41",
+    body: `Un ENORME Merci pour tout ce que vous faite et qui est aujourd'hui d'une priorité majeure!?? Force à Vous/Nous!?????? Hasta la Victoria siempre!!!???????????❤️`,
+    img: "https://api.tipeee.com/img/default_avatar_0.png",
+  },
+  {
+    name: "Simon",
+    date: "16 décembre 2024 à 13:35",
+    body: "En vous remerciant pour votre travail indispensable.",
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
+    name: "kacmobil",
+    date: "15 décembre 2024 à 10:25",
+    body: "Bien joué...Merci à l'équipe de la dernière de vous avoir fait connaitre....",
+    img: "https://api.tipeee.com/img/default_avatar_1.png",
+  },
+  {
     name: "Franzysch",
     date: "12 décembre 2024 à 09:48",
     body: "j'ai aussi fait un petit post sur linkedin (François-Henri Perrin) pour parler de votre campagne !",
@@ -122,12 +164,13 @@ interface Review {
   img: string;
 }
 
-type Props = {
+type Props = Readonly<{
   reviews: Review[];
-};
+}>;
 
 export default function MarqueeDemo({ reviews }: Props) {
-  const reviewsToDisplay = reviews.length > 0 ? reviews : fallbackReviews;
+  const reviewsToDisplay =
+    reviews.length > 0 ? reviews : fallbackReviews.slice(0, 8);
   const firstRow = reviewsToDisplay.slice(0, reviewsToDisplay.length / 2);
   const secondRow = reviewsToDisplay.slice(reviewsToDisplay.length / 2);
 
