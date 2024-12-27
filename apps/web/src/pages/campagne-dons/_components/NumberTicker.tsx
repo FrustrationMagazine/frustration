@@ -37,13 +37,15 @@ export function NumberTicker({
   );
 
   return (
-    <span className="flex items-baseline gap-1">
+    <span className="flex flex-col items-baseline md:flex-row md:gap-2">
       <span
-        className="text-2xl font-bold"
+        className="text-xl font-bold md:text-2xl"
         ref={ref}>
         0%
       </span>
-      <span className="whitespace-nowrap text-sm font-bold">de l'objectif</span>
+      <span className="-mt-1 whitespace-nowrap text-xs font-bold md:mt-0 md:text-sm">
+        de l'objectif
+      </span>
     </span>
   );
 }
