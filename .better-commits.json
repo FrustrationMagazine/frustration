@@ -54,7 +54,7 @@
         "value": "test",
         "label": "test",
         "hint": "Adding missing tests or correcting existing tests",
-        "emoji": "🚨"
+        "emoji": "🧪"
       },
       {
         "value": "config",
@@ -87,24 +87,12 @@
     "max_items": "Infinity",
     "options": [
       {
-        "value": "dashboard",
-        "label": "dashboard"
-      },
-      {
         "value": "web",
         "label": "web"
       },
       {
-        "value": "backoffice",
-        "label": "backoffice"
-      },
-      {
-        "value": "ui",
-        "label": "ui"
-      },
-      {
-        "value": "data-access",
-        "label": "data-access"
+        "value": "dashboard",
+        "label": "dashboard"
       },
       {
         "value": "*",
