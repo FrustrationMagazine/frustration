@@ -38,6 +38,12 @@ const ReviewCard = ({
 
 const fallbackReviews = [
   {
+    name: "Fatix",
+    date: "27 décembre 2024 à 22:54",
+    body: `Merci pour tout ce que vous faites, continuez comme ça !`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
     name: "Houot",
     date: "23 décembre 2024 à 13:38",
     body: `Merci à vous. Vous faites du bien !`,
