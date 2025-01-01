@@ -53,7 +53,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className={`${inter.className} flex h-screen flex-col antialiased`}>
+      <body
+        className={`${inter.className} flex h-screen flex-col bg-black bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased`}
+      >
         {DevelopmentBadge}
         {Header}
         <main className="flex flex-grow overflow-auto">{children}</main>
