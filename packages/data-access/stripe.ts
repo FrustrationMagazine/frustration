@@ -44,7 +44,7 @@ export const formatStripeTransactions = ({ id, description, amount, net, availab
     available: convertUTCtoDate(available_on),
     amount: amount / 100,
     net: net / 100,
-    stripe_source: source || "",
+    stripe_source: source ?? null,
     source: "stripe",
     type: transactionType,
     subtype: transactionSubtype,

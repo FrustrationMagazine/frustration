@@ -93,15 +93,16 @@ model Campaign {
 // ******************
 
 model BalanceTransactions {
-  id        String                     @id
-  created   DateTime
-  available DateTime
-  amount    Float
-  net       Float
-  source    String
-  status    String
-  type      String
-  subtype   BalanceTransactionSubtype?
+  id            String                     @id
+  created       DateTime
+  available     DateTime
+  amount        Float
+  net           Float
+  stripe_source String?
+  source        String
+  status        String
+  type          String
+  subtype       BalanceTransactionSubtype?
 }
 
 // Types

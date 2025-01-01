@@ -89,6 +89,7 @@ export async function updateTransactions({
     stripeTransactions = await fetchStripeTransactions({
       afterTimestamp: unixTimestamp,
     });
+
     helloassoTransactions = isProduction
       ? await fetchHelloAssoTransactions({
           from: oneMonthBeforeLastUpdate.toISOString(),
@@ -104,7 +105,7 @@ export async function updateTransactions({
   }
 
   try {
-    const allTransactions = [...stripeTransactions, ...helloassoTransactions];
+    let allTransactions = [...stripeTransactions, ...helloassoTransactions];
 
     // 1️⃣ Insert new transactions between the last update and now
     /* --------------------------------------------------------- */

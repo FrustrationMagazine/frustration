@@ -75,6 +75,7 @@ function formatHelloAssoTransactions({ id, date, amount, items, state }: HelloAs
     net: amount / 100,
     source: "helloasso",
     type: transactionType,
+    stripe_source: null,
     subtype: null,
     status: state
   };

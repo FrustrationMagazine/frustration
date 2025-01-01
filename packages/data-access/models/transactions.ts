@@ -20,7 +20,7 @@ export interface Transaction {
   available: Date;
   amount: number;
   net: number;
-  stripe_source?: string;
+  stripe_source: string | null;
   source: string;
   type: string;
   subtype: "creation" | "update" | null;

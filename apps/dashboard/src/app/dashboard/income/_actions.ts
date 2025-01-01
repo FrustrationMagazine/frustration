@@ -88,7 +88,7 @@ export async function getTransactionsForPeriod({
     }
   } while (hasMore);
 
-  data = data.map(formatStripeTransactions) as any;
+  data = data.map(formatStripeTransactions);
   data = data.filter(
     ({ type, subtype }: { type: any; subtype: any }) =>
       type === "donation" ||
