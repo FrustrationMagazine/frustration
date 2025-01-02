@@ -2,6 +2,7 @@
 
 import { signOutAction } from "./_actions";
 import { useEffect } from "react";
+import RedirectionMessage from "@dashboard/components/RedirectionMessage";
 
 function SignOut() {
   useEffect(() => {
@@ -9,9 +10,9 @@ function SignOut() {
   }, []);
 
   return (
-    <button className="m-auto bg-black p-2 px-4 text-3xl font-bold text-frustration-yellow">
+    <RedirectionMessage href="auth/signin">
       En cours de déconnexion...
-    </button>
+    </RedirectionMessage>
   );
 }
 

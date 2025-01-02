@@ -1,13 +1,7 @@
 import { redirect } from "next/navigation";
-
-// 🖋️ Fonts
-import { bebasNeue } from "@dashboard/fonts";
-
-// 🧱 Components
-import Form from "./Form";
-
-// 🔑 Auth
 import { signedIn } from "../auth";
+import { bebasNeue } from "@dashboard/fonts";
+import Form from "./Form";
 
 export default async function SignIn() {
   const isSignedIn = await signedIn();

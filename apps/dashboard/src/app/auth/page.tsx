@@ -1,7 +1,11 @@
 import { signedIn } from "@dashboard/auth";
 import { redirect } from "next/navigation";
 
-async function Root({ children }: { readonly children: React.ReactNode }) {
+type Props = Readonly<{
+  children: React.ReactNode;
+}>;
+
+async function AuthRoot({ children }: Props) {
   const isSignedIn = await signedIn();
   if (!isSignedIn) redirect("/auth/signin");
   if (isSignedIn) redirect("/dashboard/income");
@@ -9,4 +13,4 @@ async function Root({ children }: { readonly children: React.ReactNode }) {
   return children;
 }
 
-export default Root;
+export default AuthRoot;

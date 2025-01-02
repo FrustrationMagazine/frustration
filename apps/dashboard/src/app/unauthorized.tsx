@@ -1,12 +1,9 @@
-import Link from "next/link";
+import RedirectionMessage from "@dashboard/components/RedirectionMessage";
 
 export default function Unauthorized() {
   return (
-    <Link
-      href="/auth/signin"
-      className="m-auto bg-black p-2 px-4 text-3xl font-bold text-frustration-yellow"
-    >
+    <RedirectionMessage href="/auth/signin">
       Veuillez vous authentifier pour accéder à cette page
-    </Link>
+    </RedirectionMessage>
   );
 }
