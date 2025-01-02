@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "../auth";
+import { signIn } from "@dashboard/auth";
 import { prisma } from "@/data-access/prisma";
 import { schema, type Status } from "./_models";
 

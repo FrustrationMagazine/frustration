@@ -7,7 +7,7 @@ import React from "react";
 import { Button } from "@/ui/components/button";
 
 // 🪝 Hooks
-import { useToast } from "@/ui/components/use-toast";
+import { useToast } from "@dashboard/hooks/useToast";
 
 // 🖼️ Assets
 import { ImUpload } from "react-icons/im";

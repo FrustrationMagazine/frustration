@@ -1,5 +1,5 @@
 // 🔑 Auth
-import { signedIn } from "../auth/auth";
+import { signedIn } from "@dashboard/auth";
 import { redirect } from "next/navigation";
 
 async function Dashboard({ children }: { readonly children: React.ReactNode }) {

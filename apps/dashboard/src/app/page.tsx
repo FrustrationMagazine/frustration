@@ -1,4 +1,4 @@
-import { signedIn } from "./auth/auth";
+import { signedIn } from "@dashboard/auth";
 import { redirect } from "next/navigation";
 
 async function Root({ children }: { readonly children: React.ReactNode }) {
