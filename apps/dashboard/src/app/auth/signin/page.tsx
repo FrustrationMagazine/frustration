@@ -7,11 +7,11 @@ import { bebasNeue } from "@dashboard/fonts";
 import Form from "./Form";
 
 // 🔑 Auth
-import { signedIn } from "@dashboard/auth";
+import { signedIn } from "../auth";
 
 export default async function SignIn() {
-  // 🔀 Redirect to dashboard if signed in
-  if (await signedIn()) redirect("/dashboard");
+  const isSignedIn = await signedIn();
+  if (isSignedIn) redirect("/dashboard/income");
 
   return (
     <div className={`m-auto w-[90%] max-w-[500px] shadow-lg`}>

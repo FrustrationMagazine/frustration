@@ -1,13 +1,16 @@
+// 🔑 Auth
+import { signedIn } from "../auth/auth";
+import { unauthorized } from "next/navigation";
 import Sidenav from "./Sidenav";
-import { auth } from "@dashboard/auth";
 
-async function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   readonly children: React.ReactNode;
 }) {
-  // const isSignedIn = !!(await auth())?.user;
-  // console.log("isSignedIn", isSignedIn);
+  const isSignedIn = await signedIn();
+  if (!isSignedIn) unauthorized();
+
   return (
     <>
       <Sidenav />
@@ -17,5 +20,3 @@ async function DashboardLayout({
     </>
   );
 }
-
-export default DashboardLayout;

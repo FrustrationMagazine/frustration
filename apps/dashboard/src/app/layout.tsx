@@ -1,6 +1,3 @@
-// 🔩 Base
-import React from "react";
-
 // 🧱 Components
 import { Toaster } from "@dashboard/components/toaster";
 import { Badge } from "@/ui/components/badge";
@@ -25,7 +22,7 @@ export const metadata: Metadata = {
 // 🧱 Components
 const Header = () => (
   <header className="flex h-fit w-full items-center justify-center bg-black py-2">
-    <Link href="/dashboard">
+    <Link href="/">
       <h1
         className={`text-7xl uppercase text-frustration-yellow ${bebasNeue.className}`}
       >
@@ -54,13 +51,11 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${inter.className} flex h-screen flex-col bg-black bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased`}
+        className={`${inter.className} flex h-screen flex-col bg-frustration-yellow bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased`}
       >
         {DevelopmentBadge}
         <Header />
-        <main className="flex flex-grow overflow-auto bg-frustration-yellow">
-          {children}
-        </main>
+        <main className="flex flex-grow overflow-auto">{children}</main>
         <Toaster />
         <SpeedInsights />
       </body>

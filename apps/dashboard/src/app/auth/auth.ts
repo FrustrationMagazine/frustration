@@ -10,12 +10,3 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 });
 
 export const signedIn = async () => !!(await auth())?.user;
-
-export const getAuthorizedEmails = async (): Promise<{ email: string }[]> => {
-  const authorizedEmails: { email: string }[] = await prisma.user.findMany({
-    select: {
-      email: true,
-    },
-  });
-  return authorizedEmails;
-};

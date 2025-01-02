@@ -28,7 +28,7 @@
         "./src/components/*"
       ],
       "@dashboard/auth": [
-        "./src/auth/auth.ts"
+        "src/app/auth/auth.ts"
       ],
       "@dashboard/hooks/*": [
         "./src/hooks/*"

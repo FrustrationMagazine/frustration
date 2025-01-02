@@ -42,18 +42,16 @@ export default function () {
 
   // 🍞 Toast
   const { toast } = useToast();
-  // ✅
   React.useEffect(() => {
-    toast({ title: "✅ Succès", description: state.success });
-  }, [state.success]);
-  // ❌
-  React.useEffect(() => {
-    toast({
-      title: "Erreur",
-      description: state.error,
-      variant: "destructive",
-    });
-  }, [state.error]);
+    if (state.success)
+      toast({ title: "✅ Succès", description: state.success });
+    if (state.error)
+      toast({
+        title: "Erreur",
+        description: state.error,
+        variant: "destructive",
+      });
+  }, [state]);
 
   // 📝 Form
   const form = useForm<z.infer<typeof schema>>({
@@ -73,7 +71,11 @@ export default function () {
         <FormItem>
           <FormLabel>Email</FormLabel>
           <FormControl>
-            <Input placeholder="frustration.magazine@gmail.com" {...field} />
+            <Input
+              placeholder="frustration.magazine@gmail.com"
+              disabled={pending}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

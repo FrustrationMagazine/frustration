@@ -1,7 +1,6 @@
 "use server";
 
-// 🔧 Libs
-import { signIn } from "@dashboard/auth";
+import { signIn } from "../auth";
 import { prisma } from "@/data-access/prisma";
 import { schema, type Status } from "./_models";
 
@@ -68,7 +67,7 @@ export async function sendLink(
 
   // 🔁 SIGN IN
   try {
-    await signIn("resend", { email });
+    await signIn("resend", { email, redirect: false });
     return validMail(email as string);
   } catch (e) {
     return error(e);
