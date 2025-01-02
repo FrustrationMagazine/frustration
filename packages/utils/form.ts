@@ -1,6 +1,6 @@
 export type FormSubmissionStatus = {
-  successMessage: string | null;
-  errorMessage: string | null;
+  success: string | null;
+  error: string | null;
 };
 
 export const toFormData = (data: any): FormData => {

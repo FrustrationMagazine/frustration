@@ -1,13 +1,13 @@
 import { useEffect, useActionState } from "react";
 
 type Status = {
-  successMessage: string | null;
-  errorMessage: string | null;
+  success: string | null;
+  error: string | null;
 };
 
 const initial: Status = {
-  successMessage: "",
-  errorMessage: "",
+  success: "",
+  error: "",
 };
 
 export function useFormAction(
@@ -19,10 +19,10 @@ export function useFormAction(
 
   // 🔁 Reload after success
   useEffect(() => {
-    if (state?.successMessage && reload) {
+    if (state?.success && reload) {
       setTimeout(() => window.location.reload(), 2000);
     }
-  }, [state?.successMessage, reload]);
+  }, [state?.success, reload]);
 
   return [state, formAction, pending];
 }

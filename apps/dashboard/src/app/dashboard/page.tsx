@@ -2,15 +2,11 @@
 import { signedIn } from "@dashboard/auth";
 import { redirect } from "next/navigation";
 
-type Props = Readonly<{
-  children: React.ReactNode;
-}>;
-
-async function DashboardRoot({ children }: Props) {
+async function DashboardRoot() {
   const isSignedIn = await signedIn();
   if (isSignedIn) redirect("dashboard/income");
 
-  return children;
+  return null;
 }
 
 export default DashboardRoot;

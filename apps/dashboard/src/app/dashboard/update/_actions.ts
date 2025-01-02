@@ -52,7 +52,7 @@ export async function updateDashboard(
 
   let result = null;
   result = await updateBalance();
-  if (result.errorMessage) return result;
+  if (result.error) return result;
   result = await updateTransactions({ updateMethod: parsed.data.method });
   return result;
 }
