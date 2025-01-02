@@ -1,7 +1,13 @@
-import React from "react";
 import Sidenav from "./Sidenav";
+import { auth } from "@dashboard/auth";
 
-function DashboardLayout({ children }: { children: React.ReactNode }) {
+async function DashboardLayout({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
+  // const isSignedIn = !!(await auth())?.user;
+  // console.log("isSignedIn", isSignedIn);
   return (
     <>
       <Sidenav />

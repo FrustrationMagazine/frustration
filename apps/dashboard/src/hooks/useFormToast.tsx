@@ -1,31 +1,35 @@
 import React from "react";
-import { useToast } from "@/ui/components/use-toast";
-import type { FormSubmissionStatus } from "@/utils/form";
+import { useToast } from "./useToast";
 
-export const useFormToast = (formState: FormSubmissionStatus) => {
+type Status = {
+  success: string | null;
+  error: string | null;
+};
+
+export const useFormToast = (state: Status) => {
   const { toast } = useToast();
 
   React.useEffect(
     function displayToaster() {
-      if (formState?.successMessage) {
+      if (state?.success) {
         setTimeout(() => {
           toast({
             title: "✅ Succès",
-            description: formState?.successMessage,
+            description: state?.success,
           });
         }, 0);
       }
 
-      if (formState?.errorMessage) {
+      if (state?.error) {
         setTimeout(() => {
           toast({
             title: "Une erreur s'est produite",
-            description: formState?.errorMessage,
+            description: state?.error,
             variant: "destructive",
           });
         }, 0);
       }
     },
-    [formState, toast],
+    [state, toast],
   );
 };

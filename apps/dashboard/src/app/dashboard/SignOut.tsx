@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/ui/components/button";
-import { signOutDashboard } from "./_actions";
+import { signOutDashboard } from "../_actions";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import {
   AlertDialog,
@@ -19,20 +19,22 @@ const SignOut = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant='secondary' className='flex items-center gap-2'>
+        <Button variant="secondary" className="flex items-center gap-2">
           <RiLogoutBoxLine />
           <span>Se déconnecter</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Voulez-vous vraiment vous déconnecter ?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Voulez-vous vraiment vous déconnecter ?
+          </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
           <form action={signOutDashboard}>
             <AlertDialogAction asChild>
-              <Button type='submit'>Se déconnecter</Button>
+              <Button type="submit">Se déconnecter</Button>
             </AlertDialogAction>
           </form>
         </AlertDialogFooter>

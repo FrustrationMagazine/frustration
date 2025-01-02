@@ -9,19 +9,18 @@ const DASHBOARD_INCOME_URL = `${DASHBOARD_URL}/income`;
 
 export async function middleware(request: NextRequest) {
   const atRoot = request.nextUrl.pathname === "/";
-  const isProd = process.env.NODE_ENV === "production";
+
+  const isSignedIn = !!(await auth())?.user;
+  const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
 
   /* ❌ Not signed in */
-  if (isProd) {
-    const isSignedIn = !!(await auth())?.user;
-    const atAuthPage = request.nextUrl.pathname.startsWith("/auth");
-    const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
-    if (shouldRedirectToLogin)
-      return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
-  }
+  // Redirect to the sign-in page if the user is not signed in
+  const shouldRedirectToLogin = !isSignedIn && !atAuthPage;
+  if (shouldRedirectToLogin)
+    return NextResponse.redirect(new URL(SIGN_IN_URL, request.url));
 
   /* ✅ Signed in */
-
+  // Redirect to the dashboard/income subpage if the user is signed in
   const atDashboardHomepage = request.nextUrl.pathname === DASHBOARD_URL;
   const atDashboardSubpage =
     !atDashboardHomepage && request.nextUrl.pathname.startsWith("/dashboard");

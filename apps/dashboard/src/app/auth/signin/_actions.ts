@@ -1,65 +1,76 @@
 "use server";
 
 // 🔧 Libs
-import { signIn, getAuthorizedEmails } from "@dashboard/auth";
+import { signIn } from "@dashboard/auth";
+import { prisma } from "@/data-access/prisma";
+import { schema, type Status } from "./_models";
 
-// 🖼️ Models
-import {
-  SignInFormSchema,
-  INVALID_EMAIL,
-  UNAUTHORIZED_EMAIL,
-  NO_AUTHORIZED_EMAIL,
-  generateValidEmailMessage,
-} from "./_models";
+// 💬 Form status
+const INVALID: Status = {
+  success: null,
+  error: "Adresse e-mail invalide.",
+};
 
-import { type FormSubmissionStatus } from "@/utils/form";
+const UNAUTHORIZED: Status = {
+  success: null,
+  error: "Cet e-mail n'est pas autorisé à se connecter.",
+};
 
-/* ---------------------- */
-/*    SEND MAGIC LINK     */
-/* ---------------------- */
+const NOT_FOUND: Status = {
+  success: null,
+  error: "Impossible de retrouver les adresses e-mail autorisées.",
+};
 
-export async function sendMagicLinkAction(
-  prevState: FormSubmissionStatus,
-  data: FormData,
-): Promise<FormSubmissionStatus> {
-  const isProduction = process.env.NODE_ENV === "production";
+const validMail: (email: string) => Status = (email) => ({
+  success: `Vous allez recevoir un message à ${email} contenant un lien de connexion.`,
+  error: null,
+});
 
-  // 🔎 PARSING
+const error = (error: any): Status => ({
+  success: null,
+  error: String(error),
+});
+
+// 📀 Query datatabase
+const emails: { email: string }[] = await prisma.user.findMany({
+  select: {
+    email: true,
+  },
+});
+
+function parse(data: FormData) {
   const formData = Object.fromEntries(data);
-  const parsed = SignInFormSchema.safeParse(formData);
+  const parsed = schema.safeParse(formData);
+  return parsed;
+}
 
-  // ❌ INVALID EMAIL
-  if (!parsed.success) return INVALID_EMAIL;
+/* ------------------------ */
+/*   📨 SEND MAGIC LINK     */
+/* ------------------------ */
 
-  // ❌ AUTHORIZED EMAILS NOT FOUND
-  const authorizedEmails = await getAuthorizedEmails();
-  if (authorizedEmails.length === 0) return NO_AUTHORIZED_EMAIL;
+export async function sendLink(
+  currentState: Status,
+  formData: FormData,
+): Promise<Status> {
+  // 🔎
+  const { success, data: { email } = {} } = parse(formData);
 
-  if (!isProduction) {
-    return {
-      successMessage: null,
-      errorMessage: "Magic link can only be sent in production environment.",
-    };
-  }
+  // ❌
+  // Parsing failed
+  if (!success) return INVALID;
 
-  // ❌ UNAUTHORIZED EMAIL
-  const isAuthorized = authorizedEmails.some(
-    ({ email }) => email === parsed.data.email,
-  );
-  if (!isAuthorized) return UNAUTHORIZED_EMAIL;
+  //  Emails  not found
+  if (emails.length === 0) return NOT_FOUND;
+
+  //  Unauthorized
+  const authorized = emails.map(({ email }) => email).includes(email as string);
+  if (!authorized) return UNAUTHORIZED;
 
   // 🔁 SIGN IN
   try {
-    await signIn("resend", data);
-  } catch (errorMessage) {
-    // ❌ REJECTED
-    return {
-      successMessage: null,
-      errorMessage: String(errorMessage),
-    };
-  } finally {
-    // ✅ SIGNED IN
-    const { email } = parsed.data;
-    return generateValidEmailMessage(email);
+    await signIn("resend", { email });
+    return validMail(email as string);
+  } catch (e) {
+    return error(e);
   }
 }

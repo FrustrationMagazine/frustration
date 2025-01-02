@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -25,7 +25,7 @@
     ],
     "paths": {
       "@dashboard/components/*": [
-        "./src/app/_components/*"
+        "./src/components/*"
       ],
       "@dashboard/auth": [
         "./src/auth/auth.ts"

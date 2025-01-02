@@ -1,23 +1,26 @@
-// 🖼️ Assets
-import { bebasNeue } from "@dashboard/fonts";
 import { redirect } from "next/navigation";
+
+// 🖋️ Fonts
+import { bebasNeue } from "@dashboard/fonts";
+
 // 🧱 Components
-import SignInForm from "./components/SignInForm";
+import Form from "./Form";
 
 // 🔑 Auth
-import { auth } from "@dashboard/auth";
+import { signedIn } from "@dashboard/auth";
 
 export default async function SignIn() {
-  const signedIn = !!(await auth())?.user;
-  if (signedIn) redirect("/dashboard");
-
-  const yellowOnBlack = `bg-black px-5 py-2 text-frustration-yellow ${bebasNeue.className} text-center text-3xl uppercase`;
-  const Header = <header className={yellowOnBlack}>Authentification</header>;
+  // 🔀 Redirect to dashboard if signed in
+  if (await signedIn()) redirect("/dashboard");
 
   return (
     <div className={`m-auto w-[90%] max-w-[500px] shadow-lg`}>
-      {Header}
-      <SignInForm />
+      <header
+        className={`bg-black px-5 py-2 text-frustration-yellow ${bebasNeue.className} text-center text-3xl uppercase`}
+      >
+        Authentification
+      </header>
+      <Form />
     </div>
   );
 }

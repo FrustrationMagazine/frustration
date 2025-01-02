@@ -62,8 +62,8 @@ const Sidenav = () => {
   const currentPath = usePathname();
 
   return (
-    <aside className='flex w-60 flex-col items-center justify-between bg-black pb-4'>
-      <ul className='w-full space-y-2 px-3 text-frustration-yellow'>
+    <aside className="flex w-60 flex-col items-center justify-between bg-black pb-4">
+      <ul className="w-full space-y-2 px-3 text-frustration-yellow">
         {SIDENAV_ELEMENTS.map(({ label, icon, href, key }) => {
           return (
             <React.Fragment key={key}>
@@ -78,7 +78,7 @@ const Sidenav = () => {
                   {icon} {label}
                 </Link>
               </li>
-              <Separator className='bg-frustration-yellow-hover' />
+              <Separator className="bg-frustration-yellow-hover" />
             </React.Fragment>
           );
         })}

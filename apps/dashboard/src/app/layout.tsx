@@ -2,7 +2,7 @@
 import React from "react";
 
 // 🧱 Components
-import { Toaster } from "@/ui/components/toaster";
+import { Toaster } from "@dashboard/components/toaster";
 import { Badge } from "@/ui/components/badge";
 
 // 🖼️ Assets
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 // 🧱 Components
-const Header = (
+const Header = () => (
   <header className="flex h-fit w-full items-center justify-center bg-black py-2">
     <Link href="/dashboard">
       <h1
@@ -57,8 +57,10 @@ export default async function RootLayout({
         className={`${inter.className} flex h-screen flex-col bg-black bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased`}
       >
         {DevelopmentBadge}
-        {Header}
-        <main className="flex flex-grow overflow-auto">{children}</main>
+        <Header />
+        <main className="flex flex-grow overflow-auto bg-frustration-yellow">
+          {children}
+        </main>
         <Toaster />
         <SpeedInsights />
       </body>
