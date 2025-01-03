@@ -3,11 +3,11 @@ import { signedIn } from "@dashboard/auth";
 import { unauthorized } from "next/navigation";
 import Sidenav from "./Sidenav";
 
-export default async function DashboardLayout({
-  children,
-}: {
+interface Props {
   readonly children: React.ReactNode;
-}) {
+}
+
+export default async function DashboardLayout({ children }: Props) {
   const isSignedIn = await signedIn();
   if (!isSignedIn) unauthorized();
 

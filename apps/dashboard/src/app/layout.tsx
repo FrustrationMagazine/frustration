@@ -1,10 +1,9 @@
 // 🧱 Components
-import { Toaster } from "@dashboard/components/toaster";
-import { Badge } from "@/ui/components/badge";
+import { Toaster } from "@dashboard/components/Toaster";
+import { Badge } from "@dashboard/components/Badge";
 
-// 🖼️ Assets
+// 👨‍🎨 Global style
 import "./globals.css";
-import { bebasNeue, inter } from "@dashboard/fonts";
 
 // 🔧 Libs
 import Link from "next/link";
@@ -13,6 +12,27 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+// 🖋️ Fonts
+import { Bebas_Neue, Poppins, Inter } from "next/font/google";
+
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bebas",
+});
+
+const poppins = Poppins({
+  weight: ["300", "400", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+});
+
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 // 💽 Data
 export const metadata: Metadata = {
   title: "Frustration — Dashboard",
@@ -20,40 +40,42 @@ export const metadata: Metadata = {
 };
 
 // 🧱 Components
+const DevelopmentBadge =
+  process.env.NODE_ENV === "development" ? (
+    <Badge
+      variant="secondary"
+      className="absolute right-3 top-3 text-xl font-bold"
+    >
+      🚧 Dev mode 🚧
+    </Badge>
+  ) : null;
+
 const Header = () => (
   <header className="flex h-fit w-full items-center justify-center bg-black py-2">
     <Link href="/">
-      <h1
-        className={`text-7xl uppercase text-frustration-yellow ${bebasNeue.className}`}
-      >
+      <h1 className="font-bebas text-7xl uppercase text-frustration-yellow">
         Dashboard
       </h1>
     </Link>
+    {DevelopmentBadge}
   </header>
 );
 
-const isDevelopmentEnvironment = process.env.NODE_ENV === "development";
-const DevelopmentBadge = isDevelopmentEnvironment ? (
-  <Badge variant="secondary" className="absolute right-3 top-3 font-bold">
-    🚧 Dev mode
-  </Badge>
-) : null;
-
 /* ======================= */
-/*         📄 UI           */
+/*         🚀 UI           */
 /* ======================= */
 
-export default async function RootLayout({
-  children,
-}: {
-  readonly children: React.ReactNode;
-}) {
+type Props = Readonly<{
+  children: React.ReactNode;
+}>;
+
+export default async function RootLayout({ children }: Props) {
   return (
-    <html lang="fr">
-      <body
-        className={`${inter.className} flex h-screen flex-col bg-frustration-yellow bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased`}
-      >
-        {DevelopmentBadge}
+    <html
+      lang="fr"
+      className={`${inter.variable} ${bebasNeue.variable} ${poppins.variable}`}
+    >
+      <body className="font-inter flex h-screen flex-col bg-frustration-yellow bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased">
         <Header />
         <main className="flex flex-grow overflow-auto">{children}</main>
         <Toaster />

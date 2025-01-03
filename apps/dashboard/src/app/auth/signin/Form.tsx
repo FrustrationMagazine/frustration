@@ -25,7 +25,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // 🪝 Hooks
-import { useForm } from "react-hook-form";
+import { useForm, type Control } from "react-hook-form";
 import { useToast } from "@dashboard/hooks/useToast";
 
 const initial: Status = {
@@ -65,7 +65,7 @@ export default function () {
   /* -- */
   const Email = (
     <FormField
-      control={form.control}
+      control={form.control as any}
       name="email"
       render={({ field }) => (
         <FormItem>

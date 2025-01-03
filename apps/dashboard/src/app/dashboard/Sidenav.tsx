@@ -4,7 +4,7 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/ui";
+import { cn } from "@dashboard/utils/style";
 
 // 🖼️ Icons
 import { FaCreditCard } from "react-icons/fa";
@@ -13,11 +13,8 @@ import { IoIosPeople } from "react-icons/io";
 import { FaYoutube } from "react-icons/fa6";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
-// ℹ️ Font../../fonts
-import { poppins } from "../../fonts";
-
 // 🧱 Components
-import { Separator } from "@/ui/components/separator";
+import { Separator } from "@dashboard/components/Separator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,15 +24,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/ui/components/alert-dialog";
-import { Button } from "@/ui/components/button";
+} from "@dashboard/components/AlertDialog";
+import { Button } from "@dashboard/components/Button";
 
-type Link = {
+interface Link {
   label: string;
   icon: ReactNode;
   href: string;
   key: string;
-};
+}
 
 const LINKS: Link[] = [
   {
@@ -112,7 +109,7 @@ const Sidenav = () => {
                 <Link
                   href={href}
                   className={cn(
-                    `flex items-center gap-4 px-5 py-2 text-lg ${poppins.className} whitespace-nowrap rounded-md transition duration-500`,
+                    "font-poppins flex items-center gap-4 whitespace-nowrap rounded-md px-5 py-2 text-lg transition duration-500",
                     href === currentPath && "bg-frustration-yellow-hover",
                   )}
                 >

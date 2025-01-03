@@ -18,7 +18,7 @@ const config: Config = {
       },
     },
     extend: {
-      backgroundImage: {},
+      // 🎨 Colors
       colors: {
         "frustration-yellow": YELLOW_FRUSTRATION,
         "frustration-yellow-hover": YELLOW_HOVER_FRUSTRATION,
@@ -57,11 +57,19 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      // 🖋️ Fonts
+      fontFamily: {
+        poppins: ["var(--font-poppins)"],
+        bebas: ["var(--font-bebas)"],
+        inter: ["var(--font-inter)"],
+      },
+      // ⚫ Border radius
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      // 🤡 Animations
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

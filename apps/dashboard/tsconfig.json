@@ -36,6 +36,9 @@
       "@dashboard/fonts": [
         "./src/fonts.ts"
       ],
+      "@dashboard/utils/*": [
+        "./src/utils/*"
+      ],
     }
   },
   "include": [

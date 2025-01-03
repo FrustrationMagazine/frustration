@@ -2,7 +2,7 @@
 import { type YoutubeResourceType } from "@/data-access/youtube";
 
 // Card resources
-interface CardType {
+interface Card {
   title: string;
   type: YoutubeResourceType;
   key: string;
@@ -24,7 +24,7 @@ interface CardType {
   };
 }
 
-export const CardsDescription: CardType[] = [
+export const CardsDescription: Card[] = [
   // Channels
   {
     title: "Chaînes",

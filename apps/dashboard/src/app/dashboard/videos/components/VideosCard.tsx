@@ -18,9 +18,6 @@ import SuperBallsLoader from "@/ui/loaders/loader-super-balls";
 
 import VideoPreview from "./VideoPreview";
 
-// 🖼️ Assets
-import { bakbakOne } from "../../../../fonts";
-
 // 🔧 Libs
 import {
   YoutubeResourceType,
@@ -61,7 +58,7 @@ export default function VideosCard({
 
   /* Title */
   /* ===== */
-  const Title = <h3 className={`text-4xl ${bakbakOne.className}`}>{title}</h3>;
+  const Title = <h3 className="font-bebas text-4xl">{title}</h3>;
 
   /* Subtitle */
   /* ======== */

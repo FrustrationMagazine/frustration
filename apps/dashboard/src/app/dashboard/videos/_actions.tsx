@@ -16,9 +16,6 @@ import { prisma, createRecord, deleteRecord } from "@/data-access/prisma";
 import { typesTranslations } from "./_models";
 
 /* --------------------------- */
-/* 🐝 API Youtube transactions */
-/* --------------------------- */
-
 /* Fetch youtube suggestions   */
 /* --------------------------- */
 
@@ -55,6 +52,7 @@ export async function fetchSuggestions(
   }
 
   let token = null;
+
   // 🔁 🐝 Fetch by type
   switch (params.type) {
     case "channel": {
@@ -377,7 +375,7 @@ export async function refreshMediasInDatabase() {
 }
 
 /* ------------------------ */
-/* 🪝 Deployent hooks       */
+/* 🪝 Deployment hooks      */
 /* ------------------------ */
 
 export async function redeploy() {
