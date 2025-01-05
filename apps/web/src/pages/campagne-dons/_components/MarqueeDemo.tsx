@@ -38,6 +38,60 @@ const ReviewCard = ({
 
 const fallbackReviews = [
   {
+    name: "Sonia",
+    date: "3 janvier 2025 à 10:17",
+    body: `Une information indépendante et basées sur des faits est vitale pour préserver nos systèmes de santé, d'éducation, de travail et prendre soins des personnes vieillissante.`,
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
+    name: "SaRo",
+    date: "1 janvier 2025 à 11:06",
+    body: `Merci à vous`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
+    name: "Latifa",
+    date: "31 décembre 2024 à 17:48",
+    body: `Bravo à la qualité et professionnalisme de vos écrits, cela fait du bien de lire des points de vue réalistes, non truqués et sans influence extérieure.`,
+    img: "https://api.tipeee.com/img/default_avatar_7.png",
+  },
+  {
+    name: "Murbuje",
+    date: "31 décembre 2024 à 17:28",
+    body: `Force ?❤️`,
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
+    name: "Guillaume C",
+    date: "31 décembre 2024 à 08:53",
+    body: `un grand merci à tous`,
+    img: "https://api.tipeee.com/img/default_avatar_7.png",
+  },
+  {
+    name: "José Da Cunha",
+    date: "30 décembre 2024 à 17:56",
+    body: `Ne lâchez rien`,
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
+    name: "Pierre Arnoult",
+    date: "30 décembre 2024 à 17:45",
+    body: `On les aura!..... Amitiés antifascistes`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
+    name: "Sylvie",
+    date: "30 décembre 2024 à 12:07",
+    body: `Grand merci à vous d'exister !`,
+    img: "https://api.tipeee.com/img/default_avatar_5.png",
+  },
+  {
+    name: "Friedrich35",
+    date: "30 décembre 2024 à 10:104",
+    body: `Merci de nous faire partager votre lucidité`,
+    img: "https://api.tipeee.com/img/default_avatar_3.png",
+  },
+  {
     name: "Fatix",
     date: "27 décembre 2024 à 22:54",
     body: `Merci pour tout ce que vous faites, continuez comme ça !`,
