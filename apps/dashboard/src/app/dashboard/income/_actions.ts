@@ -9,9 +9,9 @@ import { stripe, formatStripeTransactions } from "@/data-access/stripe";
 // 🗿 Models
 import { type Transactions } from "./_models";
 
-/* ---------------------------- */
-/*    Transactions by month     */
-/* ---------------------------- */
+/* ---------------- */
+/*    Permanent     */
+/* ---------------- */
 export async function getTransactions({
   period,
 }: {
@@ -38,16 +38,19 @@ export async function getTransactions({
   return transactions;
 }
 
-/* ------------------- */
-/*    Transactions     */
-/* ------------------- */
+/* ---------------- */
+/*    Temporary     */
+/* ---------------- */
 export async function getTransactionsForPeriod({
   begin,
   end = null,
 }: {
-  begin: Date;
+  begin: Date | null;
   end: Date | null;
 }): Promise<any[]> {
+  // ❌ Early return if no begin date provided
+  if (!begin) return [];
+
   const PAGE_SIZE = 100;
   let data: any = [];
   let hasMore = true;

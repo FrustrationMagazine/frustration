@@ -10,14 +10,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/ui/components/chart";
-import { Area, AreaChart, XAxis, Legend } from "recharts";
+import { Area, AreaChart, XAxis } from "recharts";
 
 // 🔧 Libs
-import { inEuros } from "../../_utils";
+import { inEuros } from "../_utils";
 import { formatExplicitDay } from "@/utils/dates";
 
 // 🗿 Models
-import { Transactions } from "../../_models";
+import { Transactions } from "../_models";
 
 const chartConfig = {
   income: {
@@ -42,30 +42,38 @@ const TransactionsChart = ({
     };
   });
 
+  const TotalOrCumul = (
+    <div className="absolute left-3 top-3 z-10 flex gap-3 rounded-sm px-3 py-2 text-lg font-semibold text-black/90 accent-black/90">
+      <label className="flex cursor-pointer items-center gap-2">
+        <input
+          onChange={() => setDataType("total")}
+          type="radio"
+          checked={dataType === "total"}
+          name="dataType"
+          id="total"
+        />
+        Par jour
+      </label>
+      <label className="flex cursor-pointer items-center gap-2">
+        <input
+          onChange={() => setDataType("cumul")}
+          checked={dataType === "cumul"}
+          type="radio"
+          name="dataType"
+          id="cumul"
+        />
+        Cumulé
+      </label>
+    </div>
+  );
+
+  /* ************** */
+  /*     🚀 UI      */
+  /* ************** */
+
   return (
     <section className="relative w-full rounded-md">
-      <div className="absolute left-3 top-3 z-10 flex gap-3 rounded-sm px-3 py-2 text-lg font-semibold text-black/90 accent-black/90">
-        <label className="flex cursor-pointer items-center gap-2">
-          <input
-            onChange={() => setDataType("total")}
-            type="radio"
-            checked={dataType === "total"}
-            name="dataType"
-            id="total"
-          />
-          Par jour
-        </label>
-        <label className="flex cursor-pointer items-center gap-2">
-          <input
-            onChange={() => setDataType("cumul")}
-            checked={dataType === "cumul"}
-            type="radio"
-            name="dataType"
-            id="cumul"
-          />
-          En cumul
-        </label>
-      </div>
+      {TotalOrCumul}
       <ChartContainer
         config={chartConfig}
         className="h-full w-full rounded-md bg-black/5 p-6 backdrop-blur-md [&_.recharts-cartesian-axis-tick_text]:fill-primary [&_.recharts-cartesian-axis-tick_text]:font-bold [&_.recharts-cartesian-axis-tick_text]:opacity-70"

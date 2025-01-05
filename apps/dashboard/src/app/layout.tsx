@@ -44,7 +44,7 @@ const DevelopmentBadge =
   process.env.NODE_ENV === "development" ? (
     <Badge
       variant="secondary"
-      className="absolute right-3 top-3 text-xl font-bold"
+      className="absolute right-3 top-3 text-lg font-bold"
     >
       🚧 Dev mode 🚧
     </Badge>

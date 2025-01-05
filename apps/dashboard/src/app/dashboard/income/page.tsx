@@ -1,121 +1,51 @@
-// 💥 Fetch
-import { getTransactions, getTransactionsForPeriod } from "./_actions";
-
 // 🧱 Components
-import { TabGroup, TabPanels, TabPanel } from "@/ui/components/tabs";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@dashboard/components/Tabs";
 
-import TransactionTypeTabs from "./components/Tabs/TransactionTypeTabs";
-import CampaignTabs from "./components/Tabs/CampaignTabs";
-import PanelPermanent from "./components/Panels/PanelPermanent";
-import PanelTemporary from "./components/Panels/PanelTemporary";
-import NoData from "./components/NoData";
-
-// 🔧 Libs
-import { processPermanent, processTemporary } from "./_utils";
-
-// 🗿 Models
-import { CAMPAIGNS, TRANSACTIONS_TABS, type TabTransactions } from "./_models";
+import Permanent from "./Permanent";
+import Temporary from "./Temporary";
 
 // 🧰 Config
 export const dynamic = "force-dynamic";
 
-let totalTipeee = 10478;
+const CampaignTab = ({
+  value,
+  children,
+}: {
+  value: string;
+  children: string;
+}) => (
+  <TabsTrigger
+    className="font-bebas bg-black py-2 text-4xl font-bold uppercase leading-tight text-frustration-yellow data-[state=inactive]:opacity-30"
+    value={value}
+  >
+    {children}
+  </TabsTrigger>
+);
 
-/* ============================================= */
-/*              🚀 Component                     */
-/* ============================================= */
-export default async () => {
-  let transactionsByMonth = await getTransactions({ period: "month" });
+/* ************** */
+/*     🚀 UI      */
+/* ************** */
+const IncomePage = () => (
+  <Tabs
+    defaultValue="permanent"
+    className="flex h-full w-full flex-col overflow-auto"
+  >
+    <TabsList className="mx-auto mb-3 grid h-fit w-[400px] grid-cols-2 gap-2 bg-transparent">
+      <CampaignTab value="permanent">Global</CampaignTab>
+      <CampaignTab value="temporary">Campagne</CampaignTab>
+    </TabsList>
+    <TabsContent className="grow overflow-auto" value="permanent">
+      <Permanent />
+    </TabsContent>
+    <TabsContent className="grow overflow-auto" value="temporary">
+      <Temporary />
+    </TabsContent>
+  </Tabs>
+);
 
-  // ❌ Early return if no data
-  if (transactionsByMonth.length === 0) return NoData;
-
-  return (
-    // Level 1️⃣ - Choose campaign
-    <TabGroup className="flex h-full w-full flex-col">
-      <CampaignTabs campaigns={CAMPAIGNS} />
-      <TabPanels className="overflow-auto">
-        {TRANSACTIONS_TABS.map((tabs, index) => (
-          <TabPanel key={index} className="h-full w-full">
-            {/* Level 2️⃣ - Choose transaction type (subscription and/or donation) */}
-            <TabGroup className="flex h-full w-full flex-col items-center">
-              {/* TabList */}
-              <TransactionTypeTabs tabs={tabs} />
-              <TabPanels className="w-full grow overflow-auto">
-                {tabs.map(
-                  async ({
-                    name,
-                    transactionsTypes,
-                    campaignType,
-                    goal,
-                    begin,
-                    tag,
-                  }: TabTransactions) => {
-                    let TabContent = null;
-
-                    /* 📅 PERMANENT */
-                    /* ============= */
-                    if (campaignType === "permanent") {
-                      // ❌ Early return if no transactions by month
-                      if (transactionsByMonth.length === 0) return NoData;
-                      let transactions = processPermanent(
-                        transactionsByMonth,
-                        transactionsTypes,
-                      );
-
-                      TabContent = (
-                        <PanelPermanent
-                          key={name}
-                          name={name}
-                          transactions={transactions}
-                        />
-                      );
-                    }
-
-                    /* ⌛ TEMPORARY */
-                    /* ============ */
-                    if (campaignType === "temporary") {
-                      // 🐝 Fetch from Stripe API
-                      // let transactionsCampaign: any[] =
-                      //   await getTransactionsForCampaign(begin.getTime(), tag);
-
-                      let transactionsCampaign: any[] =
-                        await getTransactionsForPeriod({
-                          begin,
-                          end: null,
-                        });
-
-                      // ❌ Early return if no transactions by month
-                      if (transactionsCampaign.length === 0) return NoData;
-                      const transactions = processTemporary(
-                        transactionsCampaign,
-                        transactionsTypes,
-                      );
-
-                      TabContent = (
-                        <PanelTemporary
-                          key={name}
-                          begin={begin}
-                          goal={goal}
-                          transactions={transactions}
-                          totalTipeee={totalTipeee}
-                        />
-                      );
-                    }
-
-                    if (!TabContent) return null;
-                    return (
-                      <TabPanel key={name} className="flex h-full gap-6">
-                        {TabContent}
-                      </TabPanel>
-                    );
-                  },
-                )}
-              </TabPanels>
-            </TabGroup>
-          </TabPanel>
-        ))}
-      </TabPanels>
-    </TabGroup>
-  );
-};
+export default IncomePage;
