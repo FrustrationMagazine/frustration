@@ -1,14 +1,13 @@
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-
 
 /** @type {import("prettier").Config} */
 // https://astro.build/config
 export default defineConfig({
-  output: "hybrid",
-  site: 'https://frustration-magazine.vercel.app',
+  output: "static",
+  site: "https://frustration-magazine.vercel.app",
   prefetch: true,
   adapter: vercel({
     webAnalytics: { enabled: true },
@@ -21,10 +20,10 @@ export default defineConfig({
   plugins: ["prettier-plugin-astro"],
   overrides: [
     {
-      "files": "*.astro",
-      "options": {
-        "parser": "astro"
-      }
-    }
-  ]
+      files: "*.astro",
+      options: {
+        parser: "astro",
+      },
+    },
+  ],
 });

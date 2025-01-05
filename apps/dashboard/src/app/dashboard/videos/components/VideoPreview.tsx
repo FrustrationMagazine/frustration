@@ -7,7 +7,7 @@ import React from "react";
 import { createYoutubeUrlFromIdAndType } from "@/data-access/youtube";
 
 // 🧱 Components
-import { Button } from "@/ui/components/button";
+import { Button } from "@dashboard/components/Button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -104,7 +104,7 @@ export default function ({
   /* =========== */
   const Description = (
     <p
-      className="overflow-auto whitespace-break-spaces text-sm text-gray-600"
+      className="overflow-hidden whitespace-break-spaces text-sm text-gray-600"
       style={{ overflowWrap: "anywhere" }}
     >
       {description}

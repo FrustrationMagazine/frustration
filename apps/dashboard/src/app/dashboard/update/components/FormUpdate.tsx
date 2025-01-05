@@ -8,8 +8,13 @@ import { TfiReload } from "react-icons/tfi";
 // 🧱 Components
 import TooltipUpdate from "./TooltipUpdate";
 
-import { Form, FormControl, FormField, FormItem } from "@/ui/components/form";
-import { Button } from "@/ui/components/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from "@dashboard/components/Form";
+import { Button } from "@dashboard/components/Button";
 import {
   Select,
   SelectContent,

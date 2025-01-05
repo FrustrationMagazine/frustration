@@ -1,7 +1,7 @@
 "use client";
 
 // 🧱 Components
-import { Button } from "@/ui/components/button";
+import { Button } from "@dashboard/components/Button";
 import { IoIosDownload } from "react-icons/io";
 
 // 🔧 Libs

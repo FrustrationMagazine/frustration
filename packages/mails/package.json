@@ -10,8 +10,8 @@
   "author": "Thibaut Izard <thibaut.izard@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "resend": "^4.0.1",
-    "stripe": "^17.4.0"
+    "stripe": "^17.5.0"
   }
 }

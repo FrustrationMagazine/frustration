@@ -4,7 +4,7 @@
 import React from "react";
 
 // 🧱 Components
-import { Button } from "@/ui/components/button";
+import { Button } from "@dashboard/components/Button";
 
 // 🪝 Hooks
 import { useToast } from "@dashboard/hooks/useToast";

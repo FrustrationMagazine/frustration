@@ -4,7 +4,7 @@
 import React from "react";
 
 // 🧱 Components
-import { Button } from "@/ui/components/button";
+import { Button } from "@dashboard/components/Button";
 import {
   Dialog,
   DialogContent,
@@ -143,6 +143,7 @@ export default function VideosCard({
         {medias.map((media: any) => (
           <VideoPreview
             {...media}
+            key={media.id}
             type={type}
             texts={texts}
             iconType="remove"

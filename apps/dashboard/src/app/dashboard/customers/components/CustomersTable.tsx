@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui/components/table";
-import { Button } from "@/ui/components/button";
+import { Button } from "@dashboard/components/Button";
 
 // 🔧 Utils
 import { prettifyName } from "@/utils/strings";
