@@ -15,8 +15,10 @@ const nextConfig = {
   experimental: {
     authInterrupts: true,
   },
+  // 🔗 Allow fetching images from external sources
   images: {
     remotePatterns: [
+      // Youtube
       {
         protocol: "https",
         hostname: "yt3.ggpht.com",
