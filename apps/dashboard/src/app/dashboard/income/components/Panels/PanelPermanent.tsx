@@ -4,7 +4,6 @@
 import { useState } from "react";
 
 // 🧱 Components
-import { TabPanel } from "@/ui/components/tabs";
 import CardMonths from "../Card/CardMonths";
 import TransactionsChart from "../Chart/Chart";
 import { type Transactions } from "../../_models";

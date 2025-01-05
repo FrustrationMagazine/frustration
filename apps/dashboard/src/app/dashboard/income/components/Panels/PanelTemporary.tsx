@@ -15,28 +15,30 @@ import {
 import { inEuros } from "../../_utils";
 import { explicitDate } from "@/utils/dates";
 
+const Entry = ({ title, value }: { title: string; value: string | number }) => (
+  <div>
+    <h5 className="text-2xl font-bold">{title}</h5>
+    <p className="text-xl">{value}</p>
+  </div>
+);
+
 export default ({
-  name,
   goal,
   begin,
   transactions,
   totalTipeee,
 }: {
-  name: string;
   begin: Date;
   goal: number;
   transactions: Transactions[];
   totalTipeee: number;
 }) => {
   const total = transactions.reduce((acc, cv) => acc + cv.total, 0);
-  const progressRoundedFirstDecimal = Math.round(
-    ((total + (totalTipeee === 0 ? 10478 : totalTipeee)) * 100) / goal,
-  );
+  const progress = Math.round(((total + totalTipeee) * 100) / goal);
 
   const differenceInTime = new Date().getTime() - begin.getTime();
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-  const meanDay =
-    (total + (totalTipeee === 0 ? 10478 : totalTipeee)) / differenceInDays;
+  const meanDay = (total + totalTipeee) / differenceInDays;
   return (
     <>
       <Card className="min-w-[350px] overflow-scroll border-none bg-black/90 text-white shadow-lg backdrop-blur-md">
@@ -45,50 +47,14 @@ export default ({
           <CardDescription>Indications en temps réel</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Début*/}
-          <div>
-            <h5 className="text-2xl font-bold">Début</h5>
-            <p className="text-xl">{explicitDate(begin)}</p>
-          </div>
-          {/* Durée */}
-          <div>
-            <h5 className="text-2xl font-bold">Durée</h5>
-            <p className="text-xl">{differenceInDays} jours</p>
-          </div>
-          {/* Objectif */}
-          <div>
-            <h5 className="text-2xl font-bold">Objectif</h5>
-            <p className="text-xl">{inEuros(goal)} </p>
-          </div>
-          {/* Total page*/}
-          <div>
-            <h5 className="text-2xl font-bold">Dons site</h5>
-            <p className="text-xl">{inEuros(total)} </p>
-          </div>
-          {/* Tipeee */}
-          <div>
-            <h5 className="text-2xl font-bold">Tipeee</h5>
-            <p className="text-xl">
-              {inEuros(totalTipeee === 0 ? 10478 : totalTipeee)}
-            </p>
-          </div>
-          {/* Total + Tipeee */}
-          <div>
-            <h5 className="text-2xl font-bold">Dons site + Tipeee</h5>
-            <p className="text-xl">
-              {inEuros(total + (totalTipeee === 0 ? 10478 : totalTipeee))}
-            </p>
-          </div>
-          {/* Progress */}
-          <div>
-            <h5 className="text-2xl font-bold">Progression</h5>
-            <p className="text-xl">{progressRoundedFirstDecimal}%</p>
-          </div>
-          {/* Moyenne journalière */}
-          <div>
-            <h5 className="text-2xl font-bold">Moyenne journalière</h5>
-            <p className="text-xl">{inEuros(meanDay)}</p>
-          </div>
+          <Entry title="Début" value={explicitDate(begin)} />
+          <Entry title="Durée" value={differenceInDays} />
+          <Entry title="Objectif" value={inEuros(goal)} />
+          <Entry title="Stripe" value={inEuros(total)} />
+          <Entry title="Tipeee" value={inEuros(totalTipeee)} />
+          <Entry title="Stripe" value={inEuros(total + totalTipeee)} />
+          <Entry title="Progression" value={`${progress}%`} />
+          <Entry title="Moyenne journalière" value={inEuros(meanDay)} />
         </CardContent>
       </Card>
       <TransactionsChart transactions={transactions} />

@@ -19,7 +19,7 @@ import { CAMPAIGNS, TRANSACTIONS_TABS, type TabTransactions } from "./_models";
 // 🧰 Config
 export const dynamic = "force-dynamic";
 
-let totalTipeee = 0;
+let totalTipeee = 10478;
 
 /* ============================================= */
 /*              🚀 Component                     */
@@ -95,7 +95,6 @@ export default async () => {
                       TabContent = (
                         <PanelTemporary
                           key={name}
-                          name={name}
                           begin={begin}
                           goal={goal}
                           transactions={transactions}
@@ -104,14 +103,12 @@ export default async () => {
                       );
                     }
 
-                    if (TabContent)
-                      return (
-                        <TabPanel className="flex h-full gap-6">
-                          {TabContent}
-                        </TabPanel>
-                      );
-
-                    return null;
+                    if (!TabContent) return null;
+                    return (
+                      <TabPanel key={name} className="flex h-full gap-6">
+                        {TabContent}
+                      </TabPanel>
+                    );
                   },
                 )}
               </TabPanels>
