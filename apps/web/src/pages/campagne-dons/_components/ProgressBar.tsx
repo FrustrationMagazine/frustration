@@ -53,10 +53,19 @@ const ProgressBar = React.forwardRef<
       </ProgressPrimitive.Indicator>
       <div className="absolute left-0 top-0 aspect-[4/1] h-full animate-slideProgress rounded-full bg-white blur-xl"></div>
       <div
-        className="absolute -right-3 top-1/2 -translate-y-1/2 translate-x-full text-2xl font-bold text-black"
-        style={{ right: `calc(${100 - (counter || 0)}% - 10px)` }}>
+        className={cn(
+          "absolute top-1/2 -translate-y-1/2 text-2xl font-bold text-black",
+          {
+            "translate-x-full": value && value < 70,
+          },
+        )}
+        style={{
+          right:
+            value && value < 70 ? `calc(${100 - (counter || 0)}% - 10px)` : "0",
+          left: value && value > 70 ? "20px" : "0",
+        }}>
         <NumberTicker
-          value={value || 0}
+          value={value ?? 0}
           delay={delayInSeconds}
         />
       </div>

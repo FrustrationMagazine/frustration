@@ -7,13 +7,13 @@ export function NumberTicker({
   delay = 0,
   className,
   decimalPlaces = 0,
-}: {
+}: Readonly<{
   value: number;
   direction?: "up" | "down";
   className?: string;
   delay?: number; // delay in s
   decimalPlaces?: number;
-}) {
+}>) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === "down" ? value : 0);
   const springValue = useSpring(motionValue, {
@@ -30,7 +30,7 @@ export function NumberTicker({
     () =>
       springValue.on("change", (latest) => {
         if (ref.current) {
-          ref.current.textContent = `${Math.round(latest)}%`;
+          ref.current.textContent = `🔥 ${Math.round(latest)}%`;
         }
       }),
     [springValue, decimalPlaces],
@@ -41,7 +41,7 @@ export function NumberTicker({
       <span
         className="text-xl font-bold md:text-2xl"
         ref={ref}>
-        0%
+        🔥 0%
       </span>
       <span className="-mt-1 whitespace-nowrap text-xs font-bold md:mt-0 md:text-sm">
         de l'objectif
