@@ -46,6 +46,15 @@ To create an optimized production build:
 npm run build
 ```
 
+## Jobs
+
+There are currently two jobs running each morning :
+
+- Update transactions | Retrieve the last transactions made on Stripe or HelloAsso and upadte the registered ones within the past month.
+- Update videos | Refresh information about videos that must be displayed on the homepage if the preview image or metadata has changed.
+
+You can find more details about how these jobs are configured in `vercel.json`.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.

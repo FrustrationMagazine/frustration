@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: Props) {
       lang="fr"
       className={`${inter.variable} ${bebasNeue.variable} ${poppins.variable}`}
     >
-      <body className="font-inter flex h-screen flex-col bg-frustration-yellow bg-[url('/dashboard-background.svg')] bg-cover bg-fixed antialiased">
+      <body className="font-inter flex h-screen flex-col bg-frustration-yellow bg-[url('/static/background.svg')] bg-cover bg-fixed antialiased">
         <Header />
         <main className="flex flex-grow overflow-auto">{children}</main>
         <Toaster />

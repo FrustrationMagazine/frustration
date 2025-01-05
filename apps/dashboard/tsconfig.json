@@ -24,18 +24,23 @@
       }
     ],
     "paths": {
+      // 🧱 Components
       "@dashboard/components/*": [
         "./src/components/*"
       ],
+      // 🔑 Auth
       "@dashboard/auth": [
         "./src/app/auth/auth.ts"
       ],
+      // 🪝 Hooks
       "@dashboard/hooks/*": [
         "./src/hooks/*"
       ],
+      // 🖋️ Fonts
       "@dashboard/fonts": [
         "./src/fonts.ts"
       ],
+      // 🔧 Utils
       "@dashboard/utils/*": [
         "./src/utils/*"
       ],
