@@ -1,2 +1,8 @@
-.next
-node_modules
+# Ignore node_modules
+node_modules/
+
+# Ignore build output
+.next/
+
+# Ignore static files
+public/static/
