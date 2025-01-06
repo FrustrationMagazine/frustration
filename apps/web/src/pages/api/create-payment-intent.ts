@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { stripe } from "@/data-access/stripe";
 
-export const prerender = "false";
+export const prerender = false;
 
 export const POST: APIRoute = async ({ request }: { request: any }) => {
   const paymentIntentInformations = await request.json();
