@@ -10,12 +10,17 @@ const hasGifts = searchParams.has("has_gifts");
 export const prerender = false;
 ---
 
+<script>
+  import { balloons } from "balloons-js";
+  console.log("balloons", balloons);
+  balloons();
+</script>
 <BaseLayout
   title="Merci pour votre soutien !"
   displayBanner={false}>
   <PageLayout>
     <!-- 🅰️ Titles -->
-    <h2 class="font-bakbak text-center text-6xl font-bold mb-8">
+    <h2 class="font-bakbak text-balance text-center text-6xl font-bold mb-8">
       Merci pour votre soutien !
     </h2>
     <!-- 🔠 Content -->
