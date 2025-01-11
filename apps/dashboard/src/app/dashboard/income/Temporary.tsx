@@ -43,13 +43,13 @@ const Transactions = ({
 /* ************** */
 const Temporary = () => {
   return (
-    <Tabs defaultValue="all">
+    <Tabs defaultValue="all" className="flex h-full flex-col">
       <TabsList className="mx-auto mb-6 grid h-auto w-[600px] grid-cols-3">
         <Transactions value="all">Tout</Transactions>
         <Transactions value="subscriptions">Abonnements</Transactions>
         <Transactions value="donations">Dons</Transactions>
       </TabsList>
-      <TabsContent value="all">
+      <TabsContent className="grow overflow-auto" value="all">
         <PanelTemporary
           goal={goal}
           begin={begin}
@@ -60,7 +60,7 @@ const Temporary = () => {
           totalTipeee={totalTipeee}
         />
       </TabsContent>
-      <TabsContent value="subscriptions">
+      <TabsContent className="grow overflow-auto" value="subscriptions">
         <PanelTemporary
           goal={goal}
           begin={begin}
@@ -68,7 +68,7 @@ const Temporary = () => {
           totalTipeee={totalTipeee}
         />
       </TabsContent>
-      <TabsContent value="donations">
+      <TabsContent className="grow overflow-auto" value="donations">
         <PanelTemporary
           goal={goal}
           begin={begin}
