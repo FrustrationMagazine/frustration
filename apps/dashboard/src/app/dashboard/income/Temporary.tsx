@@ -15,7 +15,7 @@ import { processTemporary } from "./_utils";
 
 const goal = 40000;
 const begin = new Date("2024-11-07");
-const totalTipeee = 11561;
+const totalTipeee = 11751;
 
 // 🐝 Fetch
 const transactions = await getTransactionsForPeriod({
