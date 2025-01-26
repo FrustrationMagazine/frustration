@@ -11,7 +11,7 @@ import {
 import { Check } from "lucide-react";
 
 // 🗿 Models
-import { type Formula } from "../_models";
+import { type Formula } from "../../_models";
 
 const FormulaCard = ({
   id,

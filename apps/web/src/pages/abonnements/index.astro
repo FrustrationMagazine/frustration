@@ -1,7 +1,7 @@
 ---
 // 🧱 Components
-import SubscriptionCard from "./_components/SubscriptionCard.astro";
-import CheckoutFormWrapper from "./_components/CheckoutFormWrapper";
+import SubscriptionCard from "./_components/Description/SubscriptionCard.astro";
+import CheckoutFormWrapper from "./_components/Form/CheckoutFormWrapper";
 
 // 🎨 Assets
 import { Image } from "astro:assets";
@@ -84,69 +84,69 @@ const { mini, maxi, medium } = SUBSCRIPTIONS;
       class="mt-14 mb-4 text-4xl sm:text-5xl md:text-5xl md:mb-8 lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak">
       Nos formules de soutien
     </h3>
-  </PageLayout>
+    <!-- 🃏 CARDS -->
+    <div
+      class="relative w-[1100px] max-w-[90vw] left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <!-- 🤏 MINI -->
+      <SubscriptionCard {...mini}>
+        <p>
+          ✊ Notre <b>newsletter</b> régulière
+        </p>
+      </SubscriptionCard>
+      <!-- 💪 MEDIUM -->
+      <SubscriptionCard
+        {...medium}
+        additionalClass="lg:-translate-y-10">
+        <p>
+          ✊ Notre <b>newsletter</b> régulière
+        </p>
+        <p>
+          🗞️ <b>Numéro papier 2025</b>
+        </p>
+        <div class="w-full flex justify-center mt-auto">
+          <Image
+            class="drop-shadow-lg"
+            width="110"
+            height="110"
+            src={Numero2025}
+            alt="Couverture du numéro papier Frustration 2025"
+          />
+        </div>
+      </SubscriptionCard>
+      <!-- 💥 MAXI -->
+      <SubscriptionCard {...maxi}>
+        <p>
+          ✊ Notre <b>newsletter</b> régulière
+        </p>
+        <p>
+          🗞️ <b>Numéro papier 2025</b>
+        </p>
+        <p>
+          📖 1 exemplaire de <b><i>Parasites</i></b>
+        </p>
+        <div class="w-full mx-auto flex justify-center items-center gap-4">
+          <Image
+            class="drop-shadow-lg"
+            width="110"
+            height="110"
+            src={Numero2025}
+            alt="Couverture du numéro papier Frustration 2025"
+          />
+          <span class="text-xl lg:text-3xl">+</span>
+          <Image
+            class="drop-shadow-lg"
+            width="100"
+            height="100"
+            src={ParasitesCover}
+            alt="Couverture de Parasites"
+          />
+        </div>
+      </SubscriptionCard>
+    </div>
 
-  <!-- 🃏 CARDS -->
-  <div
-    class="relative w-[1100px] max-w-[90vw] left-1/2 -translate-x-1/2 grid grid-cols-1 gap-6 lg:grid-cols-3">
-    <!-- 🤏 MINI -->
-    <SubscriptionCard {...mini}>
-      <p>
-        ✊ Notre <b>newsletter</b> régulière
-      </p>
-    </SubscriptionCard>
-    <!-- 💪 MEDIUM -->
-    <SubscriptionCard
-      {...medium}
-      additionalClass="-translate-y-10">
-      <p>
-        ✊ Notre <b>newsletter</b> régulière
-      </p>
-      <p>
-        🗞️ <b>Numéro papier 2025</b>
-      </p>
-      <div class="w-full flex justify-center mt-auto">
-        <Image
-          class="drop-shadow-lg"
-          width="110"
-          height="110"
-          src={Numero2025}
-          alt="Couverture du numéro papier Frustration 2025"
-        />
-      </div>
-    </SubscriptionCard>
-    <!-- 💥 MAXI -->
-    <SubscriptionCard {...maxi}>
-      <p>
-        ✊ Notre <b>newsletter</b> régulière
-      </p>
-      <p>
-        🗞️ <b>Numéro papier 2025</b>
-      </p>
-      <p>
-        📖 1 exemplaire de <b><i>Parasites</i></b>
-      </p>
-      <div class="w-full mx-auto flex justify-center items-center gap-4">
-        <Image
-          class="drop-shadow-lg"
-          width="110"
-          height="110"
-          src={Numero2025}
-          alt="Couverture du numéro papier Frustration 2025"
-        />
-        <span class="text-xl lg:text-3xl">+</span>
-        <Image
-          class="drop-shadow-lg"
-          width="100"
-          height="100"
-          src={ParasitesCover}
-          alt="Couverture de Parasites"
-        />
-      </div>
-    </SubscriptionCard>
-  </div>
-  <!-- 📝 💰 FORM 💰 -->
-  <div class="mt-6 md:mt-12 mb-6 md:mb-12">
-    <CheckoutFormWrapper client:load />
-  </div>
+    <!-- 📝 💰 FORM 💰 -->
+    <div class="mt-6 md:mt-12 mb-6 md:mb-12">
+      <CheckoutFormWrapper client:load />
+    </div>
+  </PageLayout>
 </BaseLayout>

@@ -3,7 +3,7 @@
 import React, { useMemo, useRef } from "react";
 
 import { cn } from "@/utils/tailwind";
-import useDimensions from "../_hooks/use-debounced-dimensions";
+import useDimensions from "../../_hooks/use-debounced-dimensions";
 
 interface AnimatedGradientProps {
   colors: string[];

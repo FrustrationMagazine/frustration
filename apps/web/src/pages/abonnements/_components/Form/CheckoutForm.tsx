@@ -269,7 +269,8 @@ export default function StripeForm({
   return (
     <form
       id="payment-form"
-      onSubmit={handleSubmit}>
+      onSubmit={handleSubmit}
+      className="mb-12">
       {/* 2️⃣ CONTACT INFO */}
       <h3
         className={`mb-6 flex flex-col items-center justify-center text-center font-montserrat text-2xl lg:flex-row lg:justify-start lg:gap-2 lg:text-left`}>
