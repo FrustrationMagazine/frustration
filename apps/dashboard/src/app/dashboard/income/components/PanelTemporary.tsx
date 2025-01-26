@@ -32,10 +32,12 @@ const Entry = ({ title, value }: { title: string; value: string | number }) => (
 const PanelTemporary = ({
   goal,
   begin,
+  end,
   transactions,
   totalTipeee,
 }: {
   begin: Date;
+  end?: Date;
   goal: number;
   transactions: Transactions[];
   totalTipeee: number;
@@ -57,6 +59,7 @@ const PanelTemporary = ({
         </CardHeader>
         <CardContent className="space-y-4">
           <Entry title="Début" value={explicitDate(begin)} />
+          {end && <Entry title="Fin" value={explicitDate(end)} />}
           <Entry title="Durée" value={`${differenceInDays} jours`} />
           <Entry title="Objectif" value={inEuros(goal)} />
           <Entry title="Progression" value={`${progress}%`} />

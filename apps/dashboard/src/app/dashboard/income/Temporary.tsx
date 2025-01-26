@@ -15,12 +15,13 @@ import { processTemporary } from "./_utils";
 
 const goal = 40000;
 const begin = new Date("2024-11-07");
+const end = new Date("2025-01-26");
 const totalTipeee = 11906;
 
 // 🐝 Fetch
 const transactions = await getTransactionsForPeriod({
   begin,
-  end: null,
+  end,
 });
 
 const Transactions = ({
@@ -53,6 +54,7 @@ const Temporary = () => {
         <PanelTemporary
           goal={goal}
           begin={begin}
+          end={end}
           transactions={processTemporary(transactions, [
             "subscription",
             "donation",
@@ -64,6 +66,7 @@ const Temporary = () => {
         <PanelTemporary
           goal={goal}
           begin={begin}
+          end={end}
           transactions={processTemporary(transactions, ["subscription"])}
           totalTipeee={totalTipeee}
         />
@@ -72,6 +75,7 @@ const Temporary = () => {
         <PanelTemporary
           goal={goal}
           begin={begin}
+          end={end}
           transactions={processTemporary(transactions, ["donation"])}
           totalTipeee={totalTipeee}
         />

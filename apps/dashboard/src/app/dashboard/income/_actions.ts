@@ -66,7 +66,10 @@ export async function getTransactionsForPeriod({
       // List options
       listOptions = {
         ...listOptions,
-        created: { gt: begin.getTime() / 1000 },
+        created: {
+          gt: begin.getTime() / 1000,
+          ...(end ? { lt: end.getTime() / 1000 } : {}),
+        },
       };
 
       const { data: stripeData, has_more } =
