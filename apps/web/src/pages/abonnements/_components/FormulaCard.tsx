@@ -11,24 +11,22 @@ import {
 import { Check } from "lucide-react";
 
 // 🗿 Models
-import { type FormulaType } from "../_models";
+import { type Formula } from "../_models";
 
 const FormulaCard = ({
   id,
   name,
   amount,
   items,
-  priceId,
-  selectedPriceId,
-  setSelectedPriceId,
+  selectedAmount,
+  select,
 }: {
-  id: FormulaType | "";
+  id: Formula | "";
   name: string;
   amount: number;
   items: string[];
-  priceId: string;
-  selectedPriceId: string;
-  setSelectedPriceId: React.Dispatch<React.SetStateAction<string>>;
+  selectedAmount: number;
+  select: () => void;
 }) => (
   <li
     data-formula={id}
@@ -37,17 +35,17 @@ const FormulaCard = ({
       id={id}
       type="radio"
       name="subscription"
-      value={amount}
+      value={amount / 100}
       className="group peer hidden appearance-none"
-      checked={selectedPriceId === priceId}
-      onChange={() => setSelectedPriceId(priceId)}
+      checked={amount === selectedAmount}
+      onChange={select}
     />
     <label
       htmlFor={id}
       className="peer-checked block cursor-pointer rounded-lg peer-checked:bg-black peer-checked:text-yellow">
       <Card className="rounded-lg">
-        <CardHeader className="mb-2 mt-4 px-5 py-0 font-montserrat text-2xl font-bold uppercase">
-          <CardTitle>{name}</CardTitle>
+        <CardHeader className="relative mb-2 mt-4 px-5 py-0 font-bakbak text-2xl uppercase">
+          <CardTitle className="!font-normal">{name}</CardTitle>
         </CardHeader>
         <CardContent className="space-between flex items-center px-5 py-0">
           <ul className="flex-grow -space-y-1 text-base">
@@ -59,7 +57,7 @@ const FormulaCard = ({
         </CardContent>
         <CardFooter className="mb-4 mt-2 px-5 py-0">
           <p>
-            <span className="mr-1.5 text-3xl font-bold">{amount}€</span>
+            <span className="mr-1.5 text-3xl font-bold">{amount / 100}€</span>
             <span className="text-sm">tous les mois</span>
           </p>
         </CardFooter>

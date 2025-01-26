@@ -8,6 +8,9 @@ const mode = searchParams.get("mode");
 const hasGifts = searchParams.has("has_gifts");
 
 export const prerender = false;
+
+const SITE_URL = "/";
+const MAIL = "redaction@frustrationmagazine.fr";
 ---
 
 <script>
@@ -37,8 +40,8 @@ export const prerender = false;
               nous contacter à{" "}
               <a
                 class="text-blue underline"
-                href="mailto:redaction@frustrationmagazine.fr">
-                redaction@frustrationmagazine.fr
+                href={`mailto:${MAIL}`}>
+                {MAIL}
               </a>
             </b>
             si vous avez des questions.
@@ -47,7 +50,7 @@ export const prerender = false;
             En attendant, vous pouvez continuer{" "}
             <a
               class="text-blue underline"
-              href="https://www.frustrationmagazine.fr/">
+              href={SITE_URL}>
               à naviguer sur notre site
             </a>{" "}
             pour découvrir nos derniers articles et vidéos 😉
@@ -55,7 +58,9 @@ export const prerender = false;
         </>
       ) : mode === "subscription" ? (
         <>
-          <p class="mb-3">Votre abonnement est bien activé ! 🎉</p>
+          <p class="mb-5 text-2xl font-bold text-center">
+            Votre abonnement est bien activé ! 🎉
+          </p>
           {hasGifts ? (
             <>
               <p class="mb-3">
@@ -66,8 +71,8 @@ export const prerender = false;
                   nous contacter à{" "}
                   <a
                     class="text-blue underline"
-                    href="mailto:redaction@frustrationmagazine.fr">
-                    redaction@frustrationmagazine.fr
+                    href={`mailto:${MAIL}`}>
+                    {MAIL}
                   </a>
                 </b>
                 si vous avez des questions ou besoin d'effectuer une
@@ -81,8 +86,8 @@ export const prerender = false;
                 nous contacter à{" "}
                 <a
                   class="text-blue underline"
-                  href="mailto:redaction@frustrationmagazine.fr">
-                  redaction@frustrationmagazine.fr
+                  href={`mailto:${MAIL}`}>
+                  {MAIL}
                 </a>
               </b>
               si vous avez des questions.
@@ -92,7 +97,7 @@ export const prerender = false;
             En attendant, vous pouvez continuer
             <a
               class="text-blue underline"
-              href="https://www.frustrationmagazine.fr/">
+              href={SITE_URL}>
               à naviguer sur notre site
             </a>{" "}
             pour découvrir nos derniers articles et vidéos 😉

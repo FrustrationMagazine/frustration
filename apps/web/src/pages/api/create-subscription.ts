@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request }: { request: any }) => {
         (price) => price.unit_amount === amount && price.currency === "eur",
       );
     } catch (error) {
-      console.error("Error creating price for subscription:", error);
+      console.error("Error retrieving price for subscription:", error);
       generateResponseError({
         errorMessage: "Failed to look for a price for subscription",
       });

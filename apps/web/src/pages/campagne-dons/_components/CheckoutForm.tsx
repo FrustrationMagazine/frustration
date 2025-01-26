@@ -34,14 +34,16 @@ const paymentElementOptions: StripePaymentElementOptions = {
   paymentMethodOrder: ["card", "sepa_debit", "paypal"],
 };
 
+const { MODE, SITE, PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION } = import.meta.env;
+
+// 🔄 Redirection
+
+const CAMPAIGN_TAG = "dons-fin-2024";
+
 const CREATE_CUSTOMER_ENDPOINT = "/api/create-customer";
 const CREATE_PAYMENT_INTENT_ENDPOINT = "/api/create-payment-intent";
 const UPDATE_PAYMENT_INTENT_ENDPOINT = "/api/update-payment-intent";
 const CREATE_SUBSCRIPTION_ENDPOINT = "/api/create-subscription";
-
-const CAMPAIGN_TAG = "dons-fin-2024";
-
-const { MODE, SITE, PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION } = import.meta.env;
 
 const SUCCESS_PAGE = "paiement-termine";
 const REDIRECT_URL_BASE =
@@ -49,19 +51,26 @@ const REDIRECT_URL_BASE =
     ? `${SITE}/${SUCCESS_PAGE}`
     : `http://localhost:4321/${SUCCESS_PAGE}`;
 
+// ============== //
+//      UI 🚀     //
+// ============== //
+
+// 🗿 Props
+type Props = {
+  frequency: FREQUENCY;
+  setFrequency: (frequency: FREQUENCY) => void;
+  amount: number;
+  hasGifts?: boolean;
+  wantsNewsletter: boolean;
+};
+
 const CheckoutForm = ({
   frequency,
   setFrequency,
   amount,
   hasGifts = false,
   wantsNewsletter = false,
-}: {
-  frequency: FREQUENCY;
-  setFrequency: (frequency: FREQUENCY) => void;
-  amount: number;
-  hasGifts?: boolean;
-  wantsNewsletter: boolean;
-}) => {
+}: Props) => {
   // Params
   const queryParams = new URLSearchParams(window.location.search);
   const defaultPaymentMethod = queryParams.get("payment_method");
@@ -94,7 +103,7 @@ const CheckoutForm = ({
     // 🔁 Check everything is loaded
     if (!stripe || !elements) return;
 
-    // 📝 Check form is valid
+    // 1️⃣ Check form is valid
     const { error: submitError } = await elements.submit();
     if (submitError) return;
 

@@ -27,6 +27,8 @@ export default {
         spadesSeparation: `
           url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 800 400" x="0px" y="0px" fill="black"><polygon points="400,400 800,33.299 0,33.299 "></polygon></svg>')
         `,
+        "gradient-conic":
+          "conic-gradient(var(--conic-position, from 45deg), var(--tw-gradient-stops))",
       },
       animation: {
         sliding: "sliding 60s linear infinite",
@@ -39,6 +41,8 @@ export default {
         meteor: "meteor 5s linear infinite",
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+        "background-gradient":
+          "background-gradient var(--background-gradient-speed, 15s) cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite",
       },
       keyframes: {
         sliding: {
@@ -87,6 +91,28 @@ export default {
           "100%": {
             transform: "rotate(215deg) translateX(-500px)",
             opacity: 0,
+          },
+        },
+        "background-gradient": {
+          "0%, 100%": {
+            transform: "translate(0, 0)",
+            animationDelay: "var(--background-gradient-delay, 0s)",
+          },
+          "20%": {
+            transform:
+              "translate(calc(100% * var(--tx-1, 1)), calc(100% * var(--ty-1, 1)))",
+          },
+          "40%": {
+            transform:
+              "translate(calc(100% * var(--tx-2, -1)), calc(100% * var(--ty-2, 1)))",
+          },
+          "60%": {
+            transform:
+              "translate(calc(100% * var(--tx-3, 1)), calc(100% * var(--ty-3, -1)))",
+          },
+          "80%": {
+            transform:
+              "translate(calc(100% * var(--tx-4, -1)), calc(100% * var(--ty-4, -1)))",
           },
         },
       },
