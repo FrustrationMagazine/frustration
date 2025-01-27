@@ -4,8 +4,8 @@ import frustrationLogo from "./logo-frustration.webp";
 import Banner from "./banners/BannerSubscriptionsCampagne.astro";
 
 // 🧱 Components
-// import { GiHamburgerMenu } from "react-icons/gi";
-// import { FaMagnifyingGlass } from "react-icons/fa6";
+import { GiHamburgerMenu } from "react-icons/gi";
+import SearchOverlay from "./_components/SearchOverlay";
 
 const { displayBanner = true } = Astro.props;
 ---
@@ -23,22 +23,17 @@ const { displayBanner = true } = Astro.props;
         alt="Logo de Frustration"
       />
     </a>
-    <!-- <div class="flex gap-2 md:gap-3 xl:gap-4">
-      <button
-        type="button"
-        title="Recherche"
-        class="w-4 md:w-5 xl:w-6"
-        aria-label="Recherche">
-        <FaMagnifyingGlass size="100%" />
-      </button>
-      <button
+    <div class="flex gap-2 md:gap-3 xl:gap-4">
+      <SearchOverlay client:load />
+    </div>
+    <!-- <button
         type="button"
         title="Menu"
         class="w-4 md:w-5 xl:w-6"
         aria-label="Menu">
         <GiHamburgerMenu size="100%" />
-      </button>
-    </div> -->
+      </button> -->
   </nav>
 </header>
+
 <!-- {displayBanner ? <Banner /> : null} -->
