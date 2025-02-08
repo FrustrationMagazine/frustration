@@ -5,6 +5,7 @@ import CheckoutFormWrapper from "./_components/Form/CheckoutFormWrapper";
 
 // 🎨 Assets
 import { Image } from "astro:assets";
+import Tipeee from "./_assets/tipeee.png";
 import ParasitesCover from "./_assets/parasites.webp";
 import Numero2025 from "./_assets/numero_2025.webp";
 
@@ -28,7 +29,7 @@ const { mini, maxi, medium } = SUBSCRIPTIONS;
       Frustration a besoin de vous !
     </h2>
     <h3
-      class="text-2xl lg:text-5xl text-pretty text-center font-light uppercase font-bakbak">
+      class="text-2xl lg:text-4xl text-pretty text-center font-light uppercase font-bakbak">
       Faites-nous grandir d'un coup 🌱
     </h3>
     <!-- 🔠 Text -->
@@ -81,7 +82,7 @@ const { mini, maxi, medium } = SUBSCRIPTIONS;
       </p>
     </article>
     <h3
-      class="mt-14 mb-6 text-4xl sm:text-5xl md:text-5xl md:mb-8 lg:text-7xl lg:mb-20 text-pretty text-center font-bold uppercase font-bakbak">
+      class="mt-14 mb-6 text-4xl sm:text-5xl md:text-5xl md:mb-8 lg:text-6xl lg:mb-20 text-pretty text-center font-bold uppercase font-bakbak">
       Nos formules de soutien
     </h3>
     <!-- 🃏 CARDS -->
@@ -143,6 +144,27 @@ const { mini, maxi, medium } = SUBSCRIPTIONS;
         </div>
       </SubscriptionCard>
     </div>
+
+    <a
+      class="mt-24 mb-8 block text-center"
+      href="https://fr.tipeee.com/frustration-magazine"
+      target="_blank">
+      <h5
+        class="font-montserrat text-balance font-bold text-2xl md:text-3xl mb-4">
+        Vous pouvez aussi nous soutenir sur notre Tipeee 😃 <br />
+        👇
+      </h5>
+      <Image
+        src={Tipeee}
+        class="mx-auto"
+        width="200"
+        alt="Logo de la plateforme de finance participatif Tipeee"
+      />
+    </a>
+    <!-- <MarqueeDemo
+      client:load
+      reviews={reviews}
+    /> -->
 
     <!-- 📝 💰 FORM 💰 -->
     <div class="mt-6 md:mt-12 mb-6 md:mb-12">

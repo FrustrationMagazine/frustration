@@ -45,15 +45,12 @@ export async function wpquery({ query, variables = {} }: WPGraphqlParams) {
 
 // TYPES =================================
 
-type ArticleTitleRaw = string;
-type ArticleSlugRaw = string;
 type ArticleAuthorRaw = {
   node: {
     firstName: string;
     lastName: string;
   };
 };
-type ArticleDateRaw = string;
 type ArticleCategoryRaw = {
   name: string;
   parent: {
@@ -72,18 +69,16 @@ type ArticleFeaturedImageRaw = {
     sourceUrl: string;
   };
 };
-type ArticleContentRaw = string;
-type ArticleExcerptRaw = string;
 
 export type ArticleRaw = {
-  title?: ArticleTitleRaw;
-  slug?: ArticleSlugRaw;
+  title?: string;
+  slug?: string;
   author?: ArticleAuthorRaw;
-  date?: ArticleDateRaw;
+  date?: string;
   categories?: ArticleCategoriesRaw;
   featuredImage?: ArticleFeaturedImageRaw;
-  content?: ArticleContentRaw;
-  excerpt?: ArticleExcerptRaw;
+  content?: string;
+  excerpt?: string;
 };
 type ArticleQueryField = "title" | "slug" | "author" | "date" | "categories" | "image" | "content" | "excerpt";
 
@@ -292,6 +287,7 @@ export async function getLastArticles() {
                     name
                   }
                 }
+              id
               }
             }
             author {
@@ -305,14 +301,14 @@ export async function getLastArticles() {
     }
   `);
 
-  posts = posts.nodes.map(({ title, slug, excerpt, featuredImage: { node: image }, date, categories: { nodes: categories }, author: { node: author } }) => ({
+  posts = posts.nodes.map(({ title, slug, excerpt, featuredImage: { node: image }, date, categories: { nodes: categories }, author: { node: name } }) => ({
     title,
-    author: `${author.firstName ?? ""} ${author.lastName ?? ""}`,
+    author: name,
     slug,
     excerpt,
     image,
     date: convertDifferenceOfDays(getNumberOfDaysFromNow(new Date(date))),
-    categories: categories.map((category) => (category.parent ? category.parent.node.name : category.name))
+    categories: categories.map((category: any) => (category.parent ? category.parent.node.name : category.name))
   }));
 
   return posts;
@@ -348,4 +344,81 @@ export async function getInterviews() {
   }));
 
   return interviews;
+}
+
+export function formatSearchPosts(posts: any) {
+  const { pageInfo } = posts;
+  posts = posts.nodes.map(
+    ({
+      title,
+      slug,
+      excerpt,
+      featuredImage: { node: image },
+      date,
+      categories: { nodes: categories },
+      author: {
+        node: { name }
+      }
+    }) => ({
+      title,
+      author: name,
+      slug,
+      excerpt,
+      image,
+      date: convertDifferenceOfDays(getNumberOfDaysFromNow(new Date(date))),
+      categories: categories.map((category: any) => ({ id: category.id, category: category.parent ? category.parent.node.name : category.name }))
+    })
+  );
+
+  return { posts, pageInfo };
+}
+
+export async function searchArticles(term: string, after?: string) {
+  let {
+    data: { posts }
+  } = await fetchAPI(`
+    query searchArticles {
+      posts(
+        first: 6
+        ${after ? `after: "${after}"` : ""}
+        where: { search: "${term}", orderby: { field: DATE, order: DESC } }
+      ) {
+        nodes {
+          title(format: RENDERED)
+          slug
+          date
+          categories {
+            nodes {
+              name
+              id
+              parent {
+                node {
+                  name
+                }
+              }
+            }
+          }
+          featuredImage {
+            node {
+              title(format: RENDERED)
+              altText
+              sourceUrl
+            }
+          }
+          excerpt(format: RENDERED)
+          author {
+            node {
+              name
+            }
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  `);
+
+  return formatSearchPosts(posts);
 }

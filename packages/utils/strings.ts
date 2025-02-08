@@ -71,11 +71,17 @@ export function convertCountryInitials(initials: string): string {
   const countries: { [key: string]: string } = {
     FR: "France",
     BE: "Belgique",
+    CA: "Canada",
+    GB: "United Kingdom",
+    MF: "Saint-Martin",
+    NL: "Pays-Bas",
     US: "United States",
     DE: "Germany",
     ES: "Spain",
-    IT: "Italy"
+    IT: "Italy",
+    LU: "Luxembourg",
+    CH: "Suisse"
   };
 
-  return countries[initials?.toUpperCase()] || initials || "❓";
+  return countries[initials?.toUpperCase()] || initials || "";
 }
