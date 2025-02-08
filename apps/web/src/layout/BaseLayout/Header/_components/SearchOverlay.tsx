@@ -6,18 +6,15 @@ import { IoCloseSharp } from "react-icons/io5";
 
 import { cn } from "@/utils/tailwind";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-function SearchOverlay({ children }: Props) {
+function SearchOverlay() {
   const [search, setSearch] = React.useState("");
   const [opened, setOpened] = React.useState(false);
 
   const redirectPageResults = () => {
-    console.log("redirectPageResults", search);
+    window.location.href = `/results?term=${encodeURIComponent(search)}`;
     setSearch("");
   };
+
   return (
     <>
       <button

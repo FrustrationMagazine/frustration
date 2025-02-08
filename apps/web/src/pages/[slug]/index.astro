@@ -33,23 +33,6 @@ Astro.response.headers.set(
   "Cache-Control",
   "public, max-age=300, s-maxage=31536000",
 );
-
-// Cache strategy and ISR
-// https://developers.netlify.com/guides/how-to-do-advanced-caching-and-isr-with-astro/
-
-// Static for first posts
-// export const getStaticPaths = async () => {
-//   const ARTICLES_TO_DISPLAY = 9;
-//   const articles: ArticleRaw[] = (await fetchArticle(
-//     { first: ARTICLES_TO_DISPLAY },
-//     ["title", "slug", "author", "date", "categories", "image", "content"],
-//   )) as ArticleRaw[];
-//   const paths = articles.map((article: ArticleRaw) => ({
-//     params: { slug: article.slug },
-//     props: { article },
-//   }));
-//   return paths;
-// };
 ---
 
 <BaseLayout title={formatTitle(article)}>
