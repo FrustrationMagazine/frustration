@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import frustrationLogo from "./logo-frustration.webp";
-import Banner from "./banners/BannerSubscriptionsCampagne.astro";
+import Banner from "./banners/Banner.astro";
 
 // 🧱 Components
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -10,7 +10,7 @@ import SearchOverlay from "./_components/SearchOverlay";
 const { displayBanner = true } = Astro.props;
 ---
 
-<header class="sticky top-0 z-20">
+<header class="sticky top-0 z-20 @container">
   <nav
     class="flex items-center bg-black p-1.5 text-yellow md:p-3 lg:px-4 lg:py-3">
     <a
@@ -34,6 +34,7 @@ const { displayBanner = true } = Astro.props;
         <GiHamburgerMenu size="100%" />
       </button> -->
   </nav>
+  <Banner />
 </header>
 
 <!-- {displayBanner ? <Banner /> : null} -->
