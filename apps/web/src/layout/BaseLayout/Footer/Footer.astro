@@ -154,7 +154,7 @@ const links = [
     <!-- 📸 Social medias -->
     <div
       class="mt-10 flex min-h-[100px] flex-grow basis-[47%] flex-col justify-between">
-      <div class="">
+      <div class="mb-5">
         <h5 class="mb-3 font-bakbak text-3xl leading-[80%]">
           Nos réseaux sociaux
         </h5>
@@ -199,7 +199,7 @@ const links = [
       links.map(({ name, url }) => (
         <a
           href={url}
-          class="useful-link  relative before:absolute before:bottom-0 before:left-1/2 before:block before:h-[2px] before:w-[0] before:translate-x-[-50%] before:bg-yellow before:transition-all before:content-[''] before:hover:w-full">
+          class="useful-link text-xs md:text-lg relative before:absolute before:bottom-0 before:left-1/2 before:block before:h-[2px] before:w-[0] before:translate-x-[-50%] before:bg-yellow before:transition-all before:content-[''] before:hover:w-full">
           <li>{name}</li>
         </a>
       ))
