@@ -5,7 +5,11 @@ import React from "react";
 import { cn } from "@/utils/tailwind";
 import { createIdAnchor } from "@/utils/strings";
 
-function ArticleSummary({ className }: { className?: string }) {
+type Props = {
+  readonly className?: string;
+};
+
+function ArticleSummary({ className }: Props) {
   const [titles, setTitles] = React.useState<string[]>([]);
   const summaryRef = React.useRef<HTMLDivElement>(null);
 
@@ -41,15 +45,15 @@ function ArticleSummary({ className }: { className?: string }) {
   /* ******************** */
   React.useEffect(function observeTitlesNodes() {
     // 1️⃣ We collect all titles from current post and set a unique id for each
-    const titlesNodes = Array.from(
-      document.querySelectorAll(TITLE_SELECTOR),
-    ) as HTMLElement[];
+    const titlesNodes = Array.from(document.querySelectorAll(TITLE_SELECTOR));
 
-    titlesNodes.forEach((title: HTMLElement, index: number) => {
-      const titleId = createIdAnchor(title.textContent as string);
-      title.id = titleId;
-      if (`#${titleId}` === window.location.hash) title.scrollIntoView();
-    });
+    (titlesNodes as HTMLElement[]).forEach(
+      (title: HTMLElement, index: number) => {
+        const titleId = createIdAnchor(title.textContent as string);
+        title.id = titleId;
+        if (`#${titleId}` === window.location.hash) title.scrollIntoView();
+      },
+    );
 
     // 2️⃣ We create an intersection observer for each title
     const observer = new IntersectionObserver(intersectionObserverCallback, {
@@ -61,15 +65,15 @@ function ArticleSummary({ className }: { className?: string }) {
     const titles = titlesNodes.map((node) => node.textContent) as string[];
     setTitles(titles);
   }, []);
-
+  console.log("titles", titles);
   /* ❌ Early return if no titles */
-  if (titles.length === 0) return null;
+  if (titles.length === 1) return null;
 
   return (
     <div
       className={cn(className, "border-box")}
       ref={summaryRef}>
-      <h3 className="font-bakbak mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow text-2xl lg:text-3xl">
+      <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bakbak text-2xl lg:text-3xl">
         Sommaire
       </h3>
       <ul className="space-y-1">

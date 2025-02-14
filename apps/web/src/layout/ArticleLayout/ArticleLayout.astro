@@ -37,11 +37,6 @@ const { title, author, date, categories, image } = Astro.props;
         </div>
       </div>
     </div>
-    <!-- 🔖 Summary (mobile only) -->
-    <ArticleSummary
-      className="article-summary article-summary_mobile mb-[30px]"
-      client:load
-    />
     <!-- 🖼️ Featured image -->
     <Image
       class="mb-[25px] w-full object-cover"
@@ -57,13 +52,13 @@ const { title, author, date, categories, image } = Astro.props;
     </div>
 
     <!-- 🤓 Author -->
-    <footer>
+    <!-- <footer>
       <AuthorPicture
         author={author}
         size={175}
       />
       <p>{author}</p>
-    </footer>
+    </footer> -->
   </article>
   <!-- 🔖 Summary (desktop only) -->
   <ArticleSummary

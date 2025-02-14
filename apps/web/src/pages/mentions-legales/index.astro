@@ -3,25 +3,24 @@
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
+// 🧱 Components
+import H2 from "@components/H2";
+import H3 from "@components/H3";
+
 // 🧰 Config
 const currentYear = new Date().getFullYear();
 
 // 🎨 Styles
-const titleStyle = "text-3xl font-bold mb-2";
 const linkStyle = "text-blue underline";
 ---
 
 <BaseLayout title="Mentions légales">
   <PageLayout>
-    <h2
-      class="text-4xl sm:text-5xl md:text-5xl mb-2 md:zs-8 lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak">
-      Mentions légales
-    </h2>
-
+    <H2 className="mb-12"> Mentions légales </H2>
     <div class="space-y-10">
       <!-- Données personnelles -->
       <div class="space-y-2">
-        <h3 class={titleStyle}>Données personnelles</h3>
+        <H3>Données personnelles</H3>
         <p>
           <b>Politique de confidentialité</b>
           Nous collectons et traitons vos données personnelles conformément à la
@@ -48,17 +47,19 @@ const linkStyle = "text-blue underline";
           >
         </p>
       </div>
+
       <!-- Cookies -->
       <div class="space-y-2">
-        <h3 class={titleStyle}>Cookies</h3>
+        <H3>Cookies</H3>
         <p>
           <b>Information sur l'utilisation des cookies</b>
           Frustration Magazine n'utilise pas de cookies.
         </p>
       </div>
+
       <!-- Identité de l'éditeur du site -->
       <div class="space-y-2">
-        <h3 class={titleStyle}>Identité de l'éditeur du site</h3>
+        <H3>Identité de l'éditeur du site</H3>
         <p>
           <b>Directeur de la publication</b> Nicolas Framont
         </p>
@@ -77,9 +78,10 @@ const linkStyle = "text-blue underline";
           <b>ISSN</b> 2272-4478
         </p>
       </div>
+
       <!-- Hébergeur du site -->
       <div class="space-y-2">
-        <h3 class={titleStyle}>Hébergeur du site</h3>
+        <H3>Hébergeur du site</H3>
         <p>
           <b>Nom de l'hébergeur</b> Vercel
         </p>
@@ -92,9 +94,10 @@ const linkStyle = "text-blue underline";
           >
         </p>
       </div>
+
       <!-- Conditions générales d'utilisation (CGU)-->
       <div class="space-y-2">
-        <h3 class={titleStyle}>Conditions générales d'utilisation (CGU)</h3>
+        <H3>Conditions générales d'utilisation (CGU)</H3>
         <p>
           <b>Conditions d'accès et d'utilisation du site</b>
           <span>

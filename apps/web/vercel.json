@@ -1,0 +1,14 @@
+{
+ "redirects": [
+    {
+      "source": "/abonnement",
+      "destination": "/abonnements",
+      "permanent": true
+    },
+    {
+      "source": "/campagne-abonnements",
+      "destination": "/abonnements",
+      "permanent": true
+    }
+  ]
+}
