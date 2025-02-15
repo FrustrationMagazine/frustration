@@ -1,43 +1,45 @@
 ---
+// 🖼️ Assets
 import { Image } from "astro:assets";
 import { TbSend } from "react-icons/tb";
 
-const currentYear = new Date().getFullYear();
+const CURRENT_YEAR = new Date().getFullYear();
 
 // 📦 Data
 
-const loadNetworkIcon = async (iconName: string) =>
+const loadIcon = async (iconName: string) =>
   (await import(`./icons/${iconName}.svg`)).default;
+
 const networks = [
   {
     name: "Twitter",
     url: "https://twitter.com/Frustration_web",
-    iconName: await loadNetworkIcon("X"),
+    iconName: await loadIcon("X"),
   },
   {
     name: "Facebook",
     url: "https://www.facebook.com/FrustrationMag",
-    iconName: await loadNetworkIcon("facebook"),
+    iconName: await loadIcon("facebook"),
   },
   {
     name: "Youtube",
     url: "https://www.youtube.com/channel/UCHCwlzgXqqjrNxfVOmLsU5w",
-    iconName: await loadNetworkIcon("youtube"),
+    iconName: await loadIcon("youtube"),
   },
   {
     name: "TikTok",
     url: "https://www.tiktok.com/@frustrationmag",
-    iconName: await loadNetworkIcon("tiktok"),
+    iconName: await loadIcon("tiktok"),
   },
   {
     name: "Instagram",
     url: "https://www.instagram.com/frustrationmag/",
-    iconName: await loadNetworkIcon("instagram"),
+    iconName: await loadIcon("instagram"),
   },
   {
     name: "Flux RSS",
     url: "https://www.frustrationmagazine.fr/feed",
-    iconName: await loadNetworkIcon("rss"),
+    iconName: await loadIcon("rss"),
   },
 ];
 
@@ -81,7 +83,7 @@ const links = [
         Le média de la lutte des classes
       </h4>
       <p class="font-open-sans text-sm">
-        © Frustration Magazine – {currentYear}
+        © Frustration Magazine – {CURRENT_YEAR}
       </p>
     </div>
     <!-- 📤 Newsletter -->

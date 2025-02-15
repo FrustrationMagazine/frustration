@@ -7,7 +7,7 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   output: "static",
-  site: "https://frustration-magazine.vercel.app",
+  site: "https://frustrationmagazine.fr/",
   prefetch: true,
   adapter: vercel({
     webAnalytics: { enabled: true },

@@ -37,6 +37,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@libs/*": [
+        "src/libs/*"
+      ],
     },
   },
   "exclude": [

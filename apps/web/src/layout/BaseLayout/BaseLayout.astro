@@ -26,7 +26,7 @@ import "@web/styles/reset.css";
 import "@web/styles/global.css";
 
 // 🧰 Config
-const DEFAULT_IMAGE = "/img/default.png";
+const DEFAULT_IMAGE = "/img/default.jpg";
 const DEFAULT_DESCRIPTION =
   "Frustration Magazine, média indépendant et offensif.";
 
@@ -52,7 +52,7 @@ const {
   <Head
     title={title}
     description={description}
-    ogImage="https://www.frustrationmagazine.fr/wp-content/uploads/2024/11/preview_small_rs.jpg"
+    ogImage="https://adminfrustrationmagazine.fr/wp-content/uploads/2024/11/preview_small_rs.jpg"
   />
 
   <meta charset="UTF-8" />
@@ -85,10 +85,7 @@ const {
   <ViewTransitions />
 
   <body class="min-h-screen bg-white flex flex-col">
-    <Header
-      displayBanner={displayBanner}
-      transition:persist
-    />
+    <Header transition:persist />
     <main class="flex-grow flex flex-col">
       <slot transition:animate={fade({ duration: "0.4s" })} />
     </main>

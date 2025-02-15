@@ -1,40 +1,43 @@
 ---
+// 🖼️ Assets
 import { Image } from "astro:assets";
-import frustrationLogo from "./logo-frustration.webp";
-import Banner from "./banners/Banner.astro";
+import frustrationLogo from "./frustration-yellow.webp";
+// import { GiHamburgerMenu } from "react-icons/gi";
 
 // 🧱 Components
-import { GiHamburgerMenu } from "react-icons/gi";
+import Banner from "./banners/Banner.astro";
 import SearchOverlay from "./_components/SearchOverlay";
 
-const { displayBanner = true } = Astro.props;
+import { cn } from "@libs/tailwind";
 ---
 
-<header class="sticky top-0 z-20 @container">
-  <nav
-    class="flex items-center bg-black p-1.5 text-yellow md:p-3 lg:px-4 lg:py-3">
-    <a
-      aria-label="Accueil"
-      href="https://www.frustrationmagazine.fr/"
-      class="mr-auto w-32 md:w-36 lg:w-48">
-      <Image
-        src={frustrationLogo}
-        width="300"
-        alt="Logo de Frustration"
-      />
-    </a>
-    <div class="flex gap-2 md:gap-3 xl:gap-4">
-      <SearchOverlay client:load />
-    </div>
+<header
+  class={cn(
+    "flex justify-between bg-black text-yellow sticky top-0 z-20 @container",
+    "p-1.5",
+    "xs:p-2",
+    "lg:px-4 lg:py-3",
+  )}>
+  <a
+    aria-label="Page d'accueil"
+    title="Page d'accueil"
+    href="/"
+    class={cn("w-32", "xs:w-36", "lg:w-48")}>
+    <Image
+      src={frustrationLogo}
+      width="300"
+      alt="Logo de Frustration"
+    />
+  </a>
+  <div class={cn("flex", "gap-2", "md:gap-3", "xl:gap-4")}>
+    <SearchOverlay client:load />
     <!-- <button
-        type="button"
-        title="Menu"
-        class="w-4 md:w-5 xl:w-6"
-        aria-label="Menu">
-        <GiHamburgerMenu size="100%" />
-      </button> -->
-  </nav>
+            type="button"
+            title="Menu"
+            class="w-4 md:w-5 xl:w-6"
+            aria-label="Menu">
+            <GiHamburgerMenu size="100%" />
+          </button> -->
+  </div>
 </header>
 <Banner />
-
-<!-- {displayBanner ? <Banner /> : null} -->

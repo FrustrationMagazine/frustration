@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
-import ArticleLayout from "@web/layout/ArticleLayout/ArticleLayout.astro";
+import PostLayout from "@web/layout/PostLayout/PostLayout.astro";
 import {
   type ArticleRaw,
   fetchArticle,
@@ -36,7 +36,7 @@ Astro.response.headers.set(
 ---
 
 <BaseLayout title={formatTitle(article)}>
-  <ArticleLayout
+  <PostLayout
     title={formatTitle(article)}
     author={formatAuthor(article)}
     date={formatDate(article, { explicit: false })}
@@ -46,5 +46,5 @@ Astro.response.headers.set(
       slot="article-content"
       set:html={formatContent(article)}
     />
-  </ArticleLayout>
+  </PostLayout>
 </BaseLayout>
