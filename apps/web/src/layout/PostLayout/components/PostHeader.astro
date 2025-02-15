@@ -1,0 +1,58 @@
+---
+import { Image } from "astro:assets";
+import AuthorPicture from "./AuthorPicture.astro";
+import TagIcon from "../assets/icons/tag.svg?raw";
+import { cn } from "@libs/tailwind";
+const { title, author, date, categories, image } = Astro.props;
+console.log("categories", categories);
+---
+
+<div class="mb-[30px]">
+  <h1
+    class={cn(
+      "pb-2 font-bakbak text-balance uppercase break-words leading-[90%]",
+      "border-black border-b-[5px] text-[2.5rem] leading-none mb-3",
+      "xs:border-b-[5px] xs:text-5xl mb-4",
+      "sm:border-b-[5px] sm:text-6xl",
+      "md:border-b-[8px] md:text-7xl",
+    )}>
+    {title}
+  </h1>
+  <div
+    class={cn(
+      "text-sm gap-1 flex flex-col",
+      "md:text-base md:flex-row md:justify-between",
+    )}>
+    <div class="flex items-center">
+      <div class={cn("w-5 mr-2")}>
+        <AuthorPicture
+          author={author}
+          size={50}
+        />
+      </div>
+      <span class={cn("space-x-0.5", "text-base", "md:text-xl")}>
+        <span class="font-bold">{author}</span>
+        <span>|</span>
+        <span>{date}</span>
+      </span>
+    </div>
+    <div class="categories flex items-center gap-2">
+      {
+        categories.map((category: any) => (
+          <div class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">
+            <Fragment set:html={TagIcon} />
+            <span>{category}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+<Image
+  class="mb-[25px] w-full object-cover"
+  title={image.title}
+  src={image.sourceUrl}
+  alt={image.altText}
+  width="1000"
+  height="600"
+/>

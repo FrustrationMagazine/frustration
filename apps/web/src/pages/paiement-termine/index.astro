@@ -18,10 +18,9 @@ const MAIL = "redaction@frustrationmagazine.fr";
   console.log("balloons", balloons);
   balloons();
 </script>
-<BaseLayout
-  title="Merci pour votre soutien !"
-  displayBanner={false}>
-  <PageLayout>
+
+<PageLayout title="Merci pour votre soutien !">
+  <article slot="content">
     <!-- 🅰️ Titles -->
     <h2 class="font-bakbak text-balance text-center text-6xl font-bold mb-8">
       Merci pour votre soutien !
@@ -105,5 +104,5 @@ const MAIL = "redaction@frustrationmagazine.fr";
         </>
       ) : null
     }
-  </PageLayout>
-</BaseLayout>
+  </article>
+</PageLayout>

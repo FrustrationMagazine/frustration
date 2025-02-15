@@ -35,16 +35,14 @@ Astro.response.headers.set(
 );
 ---
 
-<BaseLayout title={formatTitle(article)}>
-  <PostLayout
-    title={formatTitle(article)}
-    author={formatAuthor(article)}
-    date={formatDate(article, { explicit: false })}
-    categories={formatCategories(article)}
-    image={formatImage(article)}>
-    <Fragment
-      slot="article-content"
-      set:html={formatContent(article)}
-    />
-  </PostLayout>
-</BaseLayout>
+<PostLayout
+  title={formatTitle(article)}
+  author={formatAuthor(article)}
+  date={formatDate(article, { explicit: false })}
+  categories={formatCategories(article)}
+  image={formatImage(article)}>
+  <Fragment
+    slot="content"
+    set:html={formatContent(article)}
+  />
+</PostLayout>

@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getAuthor } from "../../../libs/data-access/authors";
 import { FcCalendar } from "react-icons/fc";
+import { cn } from "@libs/tailwind";
 
 const { title, authorName, excerpt, image, date, categories, slug } =
   Astro.props;
@@ -32,17 +33,22 @@ if (author) picture = author.data.picture;
     </div>
     <!-- 🗒️ Content -->
     <div class="grow p-4">
-      <header class="space-y-0.5">
+      <header class="space-y-3">
         <!-- Title -->
         <h5
           class="text-pretty uppercase xl:w-[70%] font-bakbak text-2xl xs:text-3xl !leading-none text-yellow">
           {title}
         </h5>
         <!-- Categories -->
-        <div class="flex gap-1">
+        <div class="flex flex-wrap gap-1">
           {
             categories.map((category: string) => (
-              <span class="bg-yellow px-2 pt-[1.5px] font-bakbak text-xs uppercase text-black lg:text-base">
+              <span
+                class={cn(
+                  "bg-yellow text-black font-bakbak uppercase",
+                  "px-2 pt-[1.5px] text-xs",
+                  "lg:text-sm",
+                )}>
                 {category}
               </span>
             ))

@@ -1,242 +1,33 @@
 ---
-import { Image } from "astro:assets";
-import AuthorPicture from "./components/AuthorPicture.astro";
-import TagIcon from "./assets/icons/tag.svg?raw";
-import ArticleSummary from "./components/ArticleSummary";
-const { title, author, date, categories, image } = Astro.props;
+import PostHeader from "./components/PostHeader.astro";
+import PostSummary from "./components/PostSummary";
+import PageLayout from "../PageLayout/PageLayout.astro";
+import ScrollWatcher from "./components/ScrollWatcher.astro";
+import "./wordpress.css";
+import { cn } from "@libs/tailwind";
+const { title } = Astro.props;
 ---
 
-<div class="article-layout bg-white">
-  <!-- 📶 Scroll watcher -->
-  <div class="scroll-watcher sticky top-0 h-[2vw] max-h-[15px] w-0 bg-yellow">
-  </div>
-  <article class="post m-auto w-[75ch] mt-6 max-w-[90vw]">
-    <!-- 🔠 Titles and metadata -->
-    <div class="mb-[30px]">
-      <h1
-        class="mb-2 pb-3 text-balance uppercase border-b-[5px] md:border-b-[6px] border-black font-bakbak text-4xl xs:text-5xl sm:text-6xl md:text-7xl leading-[90%]">
-        {title}
-      </h1>
-      <div class="flex items-center text-sm md:text-base">
-        <AuthorPicture
-          author={author}
-          size={20}
-        />
-        <span>{author}</span>
-        <span class="mx-1">|</span>
-        {date}
-        <div class="categories ml-auto flex items-center gap-2">
-          {
-            categories.map((category: any) => (
-              <div class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[15px]">
-                <Fragment set:html={TagIcon} />
-                <span>{category}</span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-    <!-- 🖼️ Featured image -->
-    <Image
-      class="mb-[25px] w-full object-cover"
-      title={image.title}
-      src={image.sourceUrl}
-      alt={image.altText}
-      width="1000"
-      height="600"
-    />
+<PageLayout title={title}>
+  <ScrollWatcher slot="header" />
+  <article slot="content">
+    <!-- 🆎🖼️ Header -->
+    <PostHeader {...Astro.props} />
     <!-- 🗞️ Content -->
-    <div class="article-content">
-      <slot name="article-content" />
-    </div>
+    <section class="content">
+      <slot name="content" />
+    </section>
 
-    <!-- 🤓 Author -->
-    <!-- <footer>
-      <AuthorPicture
-        author={author}
-        size={175}
-      />
-      <p>{author}</p>
-    </footer> -->
+    <!-- ⬜ Footer -->
   </article>
-  <!-- 🔖 Summary (desktop only) -->
-  <ArticleSummary
-    className="article-summary article-summary_desktop px-12"
-    client:load
-  />
-</div>
-<script>
-  // 🚧 Dynamically adjust scroll watcher position
-  function adjustScrollWatcherPosition() {
-    const scrollWatcher = document.querySelector(".scroll-watcher");
-    const header = document.querySelector("header");
-    if (header && scrollWatcher) {
-      const headerHeight = header.offsetHeight;
-      (scrollWatcher as HTMLElement).style.top = `${headerHeight}px`;
-    }
-  }
-
-  window.addEventListener("load", adjustScrollWatcherPosition);
-  window.addEventListener("resize", adjustScrollWatcherPosition);
-</script>
-<style is:global>
-  .article-layout {
-    scroll-behavior: smooth;
-    width: minmax(200px, 75ch);
-  }
-
-  .article-layout .article-summary_desktop {
-    display: none;
-  }
-  .article-layout .article-summary_mobile {
-    display: block;
-  }
-
-  @media (min-width: 1280px) {
-    .article-layout {
-      display: grid;
-      grid-template-columns: 1fr minmax(200px, 75ch) 1fr;
-      grid-template-areas:
-        "scrollwatcher scrollwatcher scrollwatcher"
-        ". article sidenav";
-    }
-    .article-layout .scrollwatcher {
-      grid-area: scrollwatcher;
-    }
-    .article-layout article {
-      grid-area: article;
-    }
-
-    .article-layout .article-summary_desktop {
-      display: block;
-      grid-area: sidenav;
-      overflow: auto;
-      container-type: inline-size;
-      height: fit-content;
-      position: sticky;
-      top: 80px;
-    }
-    .article-layout .article-summary_mobile {
-      display: none;
-    }
-
-    .article-layout footer {
-      grid-column: 1 / -1;
-      margin-top: 50px;
-    }
-  }
-
-  @keyframes scroll-watcher {
-    to {
-      width: 100%;
-    }
-  }
-
-  .scroll-watcher {
-    animation: scroll-watcher linear;
-    animation-timeline: scroll();
-    position: sticky;
-    top: 45px;
-    grid-area: scrollwatcher;
-  }
-
-  article.post .article-content iframe {
-    width: 100%;
-    height: 500px;
-  }
-
-  article.post .article-content h2 {
-    color: #fff200;
-    background: black;
-    font-size: clamp(30px, 7vw, 50px);
-    line-height: 120%;
-    width: fitarticle-content;
-    text-transform: uppercase;
-    font-family: "Bebas Neue";
-    padding: 12px 15px 10px 15px;
-    margin-top: 45px;
-    margin-bottom: 25px;
-  }
-
-  article.post .article-content a {
-    text-decoration: underline;
-    color: blue;
-  }
-
-  article.post .article-content p {
-    margin-bottom: 15px;
-    font-family: "Open Sans", Arial, sans-serif;
-    font-size: 16px;
-    line-height: 30px;
-    font-weight: 400;
-  }
-
-  article.post .article-content blockquote {
-    border-left: 5px solid #fff200;
-    margin: 0 0 1.75em;
-    padding-left: 1em;
-  }
-
-  article.post .article-content blockquote p {
-    font-weight: 600;
-    font-size: 20px;
-  }
-  article.post .article-content strong {
-    font-weight: 900;
-  }
-
-  article.post .article-content figure {
-    margin: 30px 0;
-  }
-
-  article.post .article-content figure > * {
-    margin: auto;
-  }
-
-  article.post .article-content a img {
-    margin: auto;
-  }
-
-  article.post .article-content figcaption {
-    margin-top: 5px;
-    padding: 0 10ch;
-    font-weight: 100;
-    color: #4b5563;
-    font-size: 14px;
-  }
-
-  article.post .article-content br {
-    display: none;
-  }
-
-  article.post .article-content p:has(img) {
-    line-height: 110%;
-    font-weight: 900;
-    font-size: 14px;
-    margin: 40px 0;
-  }
-
-  article.post .article-content p img {
-    width: 100%;
-    margin-bottom: 5px;
-  }
-
-  article.post .article-content iframe:not([src^="https://www.youtube.com"])
-  {
-    display: none;
-  }
-
-  article.post .article-content .twitter-tweet {
-    margin: 20px auto;
-  }
-
-  /* Don't display old manually made articles footer */
-
-  /* article.post article-content hr {
-    display: none;
-  }
-  article.post .article-content hr ~ * {
-    display: none;
-  } */
-</style>
+  <div
+    slot="right"
+    class={cn(
+      "sticky top-[75px] mx-12",
+      "hidden",
+      "xl:max-w-[300px] xl:block",
+      "2xl:max-w-[600px] ",
+    )}>
+    <PostSummary client:load />
+  </div>
+</PageLayout>

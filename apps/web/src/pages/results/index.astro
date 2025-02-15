@@ -2,10 +2,8 @@
 // 🖼️ Layout
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
-import { Astro } from "astro";
 import Results from "./_components/Results";
 
-const { searchParams } = Astro.url;
 const term = searchParams.get("term");
 
 import { searchArticles } from "@/data-access/wordpress";
@@ -13,8 +11,8 @@ const { posts: results, pageInfo } = await searchArticles(term);
 export const prerender = false;
 ---
 
-<BaseLayout title=`Résultats pour ${term}`>
-  <PageLayout>
+<PageLayout title=`Résultats pour ${term}`>
+  <article slot="content">
     <h2 class="font-bakbak text-center text-6xl font-bold mb-8">Résultats</h2>
     <Results
       client:load
@@ -22,5 +20,5 @@ export const prerender = false;
       pageInfo={pageInfo}
       term={term}
     />
-  </PageLayout>
-</BaseLayout>
+  </article>
+</PageLayout>

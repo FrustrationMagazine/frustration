@@ -1,20 +1,13 @@
-// 🔩 Base
-import React from "react";
-
-// 🔧 Libs
-import { cn } from "@/utils/tailwind";
+import { useState, useRef, useEffect } from "react";
 import { createIdAnchor } from "@/utils/strings";
+import { cn } from "@libs/tailwind";
 
-type Props = {
-  readonly className?: string;
-};
+function PostSummary() {
+  const [titles, setTitles] = useState<string[]>([]);
+  const summaryRef = useRef<HTMLDivElement>(null);
 
-function ArticleSummary({ className }: Props) {
-  const [titles, setTitles] = React.useState<string[]>([]);
-  const summaryRef = React.useRef<HTMLDivElement>(null);
-
-  const MAIN_TITLE = "h1";
-  const TITLE_SELECTOR = `:is(${MAIN_TITLE}, h2.wp-block-heading)`;
+  // const MAIN_TITLE = "h1";
+  const TITLE_SELECTOR = "h2.wp-block-heading";
 
   // Intersection observer
   /* ******************** */
@@ -43,7 +36,7 @@ function ArticleSummary({ className }: Props) {
 
   // Place observer
   /* ******************** */
-  React.useEffect(function observeTitlesNodes() {
+  useEffect(() => {
     // 1️⃣ We collect all titles from current post and set a unique id for each
     const titlesNodes = Array.from(document.querySelectorAll(TITLE_SELECTOR));
 
@@ -57,7 +50,7 @@ function ArticleSummary({ className }: Props) {
 
     // 2️⃣ We create an intersection observer for each title
     const observer = new IntersectionObserver(intersectionObserverCallback, {
-      rootMargin: "-100px",
+      rootMargin: "-20px",
       threshold: 1,
     });
     titlesNodes.forEach((title) => observer.observe(title));
@@ -65,30 +58,33 @@ function ArticleSummary({ className }: Props) {
     const titles = titlesNodes.map((node) => node.textContent) as string[];
     setTitles(titles);
   }, []);
-  console.log("titles", titles);
+
   /* ❌ Early return if no titles */
-  if (titles.length === 1) return null;
+  if (titles.length === 0) return null;
 
   return (
-    <div
-      className={cn(className, "border-box")}
-      ref={summaryRef}>
-      <h3 className="mb-3 flex w-fit items-center gap-2 border-b-[6px] border-b-yellow font-bakbak text-2xl lg:text-3xl">
+    <div ref={summaryRef}>
+      <h3
+        onClick={() => window.scrollTo({ top: 0 })}
+        className={cn(
+          "mb-4 w-fit cursor-pointer border-b-[6px] border-b-yellow font-bakbak",
+          "text-2xl",
+          "lg:text-3xl",
+        )}>
         Sommaire
       </h3>
       <ul className="space-y-1">
-        {titles.map((title, index) => {
+        {titles.map((title) => {
           const titleId = createIdAnchor(title);
-          const formattedTitle = index === 0 ? "Intro" : title;
           return (
             <li
               key={titleId}
-              className="overflow-hidden text-ellipsis whitespace-nowrap text-sm md:text-base">
+              className={cn("overflow-hidden text-ellipsis whitespace-nowrap")}>
               <a
-                title={formattedTitle}
+                title={title}
                 data-title={titleId}
                 href={`#${titleId}`}>
-                {formattedTitle}
+                {title}
               </a>
             </li>
           );
@@ -98,4 +94,4 @@ function ArticleSummary({ className }: Props) {
   );
 }
 
-export default ArticleSummary;
+export default PostSummary;

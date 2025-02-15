@@ -9,8 +9,6 @@ import Tipeee from "./_assets/tipeee.png";
 import ParasitesCover from "./_assets/parasites.webp";
 import Numero2025 from "./_assets/numero_2025.webp";
 
-// 🖼️ Layout
-import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
 // 💽 Data
@@ -19,10 +17,8 @@ import { SUBSCRIPTIONS } from "./_models";
 const { mini, maxi, medium } = SUBSCRIPTIONS;
 ---
 
-<BaseLayout
-  title="Abonnements"
-  displayBanner={false}>
-  <PageLayout>
+<PageLayout title="Abonnements">
+  <article slot="content">
     <!-- 🅰️ Titles -->
     <h2
       class="text-4xl sm:text-5xl md:text-5xl mb-2 md:zs-8 lg:text-7xl text-pretty text-center font-bold uppercase font-bakbak">
@@ -162,13 +158,13 @@ const { mini, maxi, medium } = SUBSCRIPTIONS;
       />
     </a>
     <!-- <MarqueeDemo
-      client:load
-      reviews={reviews}
-    /> -->
+        client:load
+        reviews={reviews}
+      /> -->
 
     <!-- 📝 💰 FORM 💰 -->
     <div class="mt-6 md:mt-12 mb-6 md:mb-12">
       <CheckoutFormWrapper client:load />
     </div>
-  </PageLayout>
-</BaseLayout>
+  </article>
+</PageLayout>

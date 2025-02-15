@@ -1,0 +1,31 @@
+<div class="scroll-watcher sticky top-0 h-[2vw] max-h-[15px] w-0 bg-yellow">
+</div>
+<script>
+  // 🚧 Dynamically adjust scroll watcher position
+  function adjustScrollWatcherPosition() {
+    const scrollWatcher = document.querySelector(".scroll-watcher");
+    const header = document.querySelector("header");
+    if (header && scrollWatcher) {
+      const headerHeight = header.offsetHeight;
+      (scrollWatcher as HTMLElement).style.top = `${headerHeight}px`;
+    }
+  }
+
+  window.addEventListener("load", adjustScrollWatcherPosition);
+  window.addEventListener("resize", adjustScrollWatcherPosition);
+</script>
+<style is:global>
+  @keyframes scroll-watcher {
+    to {
+      width: 100%;
+    }
+  }
+
+  .scroll-watcher {
+    animation: scroll-watcher linear;
+    animation-timeline: scroll();
+    position: sticky;
+    top: 45px;
+    grid-area: scrollwatcher;
+  }
+</style>

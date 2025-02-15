@@ -1,5 +1,28 @@
-<div class="bg-white flex-grow">
-  <div class="m-auto w-[75ch] max-w-[90vw] py-8 md:py-12 lg:py-16">
-    <slot />
+---
+import BaseLayout from "../BaseLayout/BaseLayout.astro";
+import { cn } from "@libs/tailwind";
+const { title } = Astro.props;
+---
+
+<BaseLayout title={title}>
+  <div class="bg-white flex-grow relative">
+    <slot name="header" />
+    <div
+      class={cn(
+        "grid grid-cols-[1fr_min(75ch,_90vw)_1fr]",
+        "py-8",
+        "md:py-10",
+        "xl:py-16",
+        "2xl:py-16",
+        "3xl:py-18",
+      )}>
+      <div>
+        <slot name="left" />
+      </div>
+      <slot name="content" />
+      <div>
+        <slot name="right" />
+      </div>
+    </div>
   </div>
-</div>
+</BaseLayout>

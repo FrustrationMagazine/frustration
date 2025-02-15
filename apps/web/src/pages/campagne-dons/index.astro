@@ -8,7 +8,6 @@ import MarqueeDemo from "./_components/MarqueeDemo";
 import { Image } from "astro:assets";
 
 // 🖼️ Layout
-import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 
 // 🔧 Libs
@@ -108,10 +107,8 @@ const progressInPercent = Math.max(
 );
 ---
 
-<BaseLayout
-  title="Aidez Frustration Magazine à grandir !"
-  displayBanner={false}>
-  <PageLayout>
+<PageLayout title="Aidez Frustration Magazine à grandir !">
+  <article slot="content">
     <!-- 🖼️ Cover -->
     <Image
       src={CoverCampaign}
@@ -489,111 +486,111 @@ const progressInPercent = Math.max(
       width="800"
       alt="Une rangée de travailleuses et travailleurs"
     />
-  </PageLayout>
+  </article>
+</PageLayout>
 
-  <script>
-    import { annotate } from "rough-notation";
-    const titlesToHighlight = Array.from(
-      document.querySelectorAll(".title-to-highlight"),
-    ) as HTMLElement[];
+<script>
+  import { annotate } from "rough-notation";
+  const titlesToHighlight = Array.from(
+    document.querySelectorAll(".title-to-highlight"),
+  ) as HTMLElement[];
 
-    titlesToHighlight.forEach((title) => {
-      const annotation = annotate(title, {
-        type: "highlight",
-        animationDuration: 2000,
-        color: "#FFF200",
-      });
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setTimeout(() => {
-                annotation.show();
-                observer.disconnect();
-              }, 1000);
-            }
-          });
-        },
-        { threshold: 0.1 },
-      );
-      observer.observe(title);
+  titlesToHighlight.forEach((title) => {
+    const annotation = annotate(title, {
+      type: "highlight",
+      animationDuration: 2000,
+      color: "#FFF200",
     });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              annotation.show();
+              observer.disconnect();
+            }, 1000);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(title);
+  });
 
-    const titlesToUnderline = Array.from(
-      document.querySelectorAll(".title-to-underline"),
-    ) as HTMLElement[];
+  const titlesToUnderline = Array.from(
+    document.querySelectorAll(".title-to-underline"),
+  ) as HTMLElement[];
 
-    titlesToUnderline.forEach((title) => {
-      const annotation = annotate(title, {
-        type: "underline",
-        iterations: 3,
-        strokeWidth: 3,
-        animationDuration: 2000,
-        color: "black",
-      });
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setTimeout(() => {
-                annotation.show();
-                observer.disconnect();
-              }, 1000);
-            }
-          });
-        },
-        { threshold: 0.1 },
-      );
-      observer.observe(title);
+  titlesToUnderline.forEach((title) => {
+    const annotation = annotate(title, {
+      type: "underline",
+      iterations: 3,
+      strokeWidth: 3,
+      animationDuration: 2000,
+      color: "black",
     });
-  </script>
-  <style>
-    @counter-style results-counter {
-      system: cyclic;
-      symbols: "✌️" "📈" "📨" "👩‍🎤";
-      suffix: "  ";
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              annotation.show();
+              observer.disconnect();
+            }, 1000);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(title);
+  });
+</script>
+<style>
+  @counter-style results-counter {
+    system: cyclic;
+    symbols: "✌️" "📈" "📨" "👩‍🎤";
+    suffix: "  ";
+  }
 
-    @counter-style achievements-counter {
-      system: cyclic;
-      symbols: "🖋️" "🎥" "#️⃣" "🤝" "🧛" "🗯️" "🙅‍♂️" "👊";
-      suffix: "  ";
-    }
+  @counter-style achievements-counter {
+    system: cyclic;
+    symbols: "🖋️" "🎥" "#️⃣" "🤝" "🧛" "🗯️" "🙅‍♂️" "👊";
+    suffix: "  ";
+  }
 
-    @counter-style projects-counter {
-      system: cyclic;
-      symbols: "🎨" "👯" "🌍" "🎤" "🐶";
-      suffix: "  ";
+  @counter-style projects-counter {
+    system: cyclic;
+    symbols: "🎨" "👯" "🌍" "🎤" "🐶";
+    suffix: "  ";
+  }
+  @keyframes pendular {
+    0%,
+    100% {
+      transform: translateY(0);
     }
-    @keyframes pendular {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
+    50% {
+      transform: translateY(-10px);
     }
+  }
 
-    em {
-      font-weight: bold;
-      font-style: normal;
-    }
+  em {
+    font-weight: bold;
+    font-style: normal;
+  }
 
-    .emoji-pendular {
-      animation: pendular 2s ease-in-out infinite;
-    }
+  .emoji-pendular {
+    animation: pendular 2s ease-in-out infinite;
+  }
 
-    .list-achievements {
-      list-style: achievements-counter;
-    }
+  .list-achievements {
+    list-style: achievements-counter;
+  }
 
-    .list-results {
-      list-style: results-counter;
-    }
+  .list-results {
+    list-style: results-counter;
+  }
 
-    .list-projects {
-      list-style: projects-counter;
-    }
-  </style>
-</BaseLayout>
+  .list-projects {
+    list-style: projects-counter;
+  }
+</style>

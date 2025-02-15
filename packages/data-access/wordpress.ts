@@ -84,7 +84,7 @@ type ArticleQueryField = "title" | "slug" | "author" | "date" | "categories" | "
 
 // QUERIES =================================
 
-const createFetchArticleQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]): string => {
+const articleQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]): string => {
   const titleIfWanted = fields.includes("title") ? "title(format: RENDERED)" : "";
   const slugIfWanted = fields.includes("slug") ? "slug" : "";
   const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName } }` : "";
@@ -108,7 +108,7 @@ const createFetchArticleQuery = (wpSearchOptions: WPSearchOptions, fields: Artic
   let filterOptions: string = filterOptionsArray.join(", ");
   const postsOrPost = wpSearchOptions.first ? "posts" : "post";
 
-  return `query fetchArticle {
+  const query = `query fetchArticle {
   ${postsOrPost}(${filterOptions}) {
     ${postsOrPost === "posts" ? "nodes {" : ""}
     ${titleIfWanted}
@@ -123,13 +123,14 @@ const createFetchArticleQuery = (wpSearchOptions: WPSearchOptions, fields: Artic
   }
 }
   `;
+  return query;
 };
 
 export const fetchArticle = async (
   wpSearchOptions: WPSearchOptions,
   fields: ArticleQueryField[] = ["title", "author", "date", "categories", "image", "content"]
 ): Promise<ArticleRaw | ArticleRaw[]> => {
-  const query = createFetchArticleQuery(wpSearchOptions, fields);
+  const query = articleQuery(wpSearchOptions, fields);
   const { data: nestedData } = await wpquery({ query });
   const postsOrPost = wpSearchOptions.first ? "posts" : "post";
   const data = postsOrPost === "posts" ? nestedData[postsOrPost].nodes : nestedData[postsOrPost];
@@ -177,10 +178,12 @@ export const formatDate = (article: ArticleRaw, options: { explicit: boolean } =
 };
 
 export const formatCategories = (article: ArticleRaw): string[] => {
-  if (article?.categories) {
-    article?.categories.nodes.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
-  }
-  return [];
+  if (!article.categories) return [];
+  const {
+    categories: { nodes: categories }
+  } = article;
+  const f_categories = categories.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
+  return f_categories;
 };
 
 export const formatContent = (article: ArticleRaw): string => {
