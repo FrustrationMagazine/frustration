@@ -177,12 +177,16 @@ export const formatDate = (article: ArticleRaw, options: { explicit: boolean } =
   return "";
 };
 
-export const formatCategories = (article: ArticleRaw): string[] => {
+export const formatCategories = (article: ArticleRaw, onlyParents: boolean): string[] => {
   if (!article.categories) return [];
   const {
     categories: { nodes: categories }
   } = article;
-  const f_categories = categories.map((category: ArticleCategoryRaw) => (category.parent ? category.parent.node.name : category.name));
+  let f_categories = categories.map((category: ArticleCategoryRaw) => {
+    if (category.parent && onlyParents) return category.parent.node.name;
+    return category.name;
+  });
+  f_categories = [...new Set(f_categories)];
   return f_categories;
 };
 

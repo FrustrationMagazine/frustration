@@ -20,7 +20,7 @@ console.log("categories", categories);
   </h1>
   <div
     class={cn(
-      "text-sm gap-1 flex flex-col",
+      "text-sm gap-1 flex flex-col flex-wrap",
       "md:text-base md:flex-row md:justify-between",
     )}>
     <div class="flex items-center">
@@ -36,7 +36,7 @@ console.log("categories", categories);
         <span>{date}</span>
       </span>
     </div>
-    <div class="categories flex items-center gap-2">
+    <div class="categories flex items-center flex-wrap gap-y-0 gap-x-2">
       {
         categories.map((category: any) => (
           <div class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">

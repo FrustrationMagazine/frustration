@@ -5,6 +5,7 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "target": "es2015",
     "moduleResolution": "node",
     "plugins": [
       {

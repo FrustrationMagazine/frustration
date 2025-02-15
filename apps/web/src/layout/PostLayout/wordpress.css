@@ -22,6 +22,10 @@
       color: blue;
     }
 
+    a[href^='https://frustrationmagazine.fr'] {
+      color:red;
+    }
+
     p {
       margin-bottom: 15px;
       font-family: "Open Sans", Arial, sans-serif;
