@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+import H5 from "./H5.astro";
+
+const SOCIAL_NETWORKS = [
+  {
+    name: "Twitter",
+    url: "https://twitter.com/Frustration_web",
+    iconName: "X",
+  },
+  {
+    name: "Facebook",
+    url: "https://www.facebook.com/FrustrationMag",
+    iconName: "facebook",
+  },
+  {
+    name: "Youtube",
+    url: "https://www.youtube.com/channel/UCHCwlzgXqqjrNxfVOmLsU5w",
+    iconName: "youtube",
+  },
+  {
+    name: "TikTok",
+    url: "https://www.tiktok.com/@frustrationmag",
+    iconName: "tiktok",
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/frustrationmag/",
+    iconName: "instagram",
+  },
+  {
+    name: "Flux RSS",
+    url: "https://www.frustrationmagazine.fr/feed",
+    iconName: "rss",
+  },
+];
+const loadIcon = async (iconName: string) =>
+  (await import(`../icons/${iconName}.svg`)).default;
+---
+
+<div class="mb-5">
+  <H5>Nos réseaux sociaux</H5>
+  <ul class="flex items-center gap-3 mt-4">
+    {
+      SOCIAL_NETWORKS.map(({ name, url, iconName }) => (
+        <li>
+          <a
+            aria-label={name}
+            href={url}
+            target="_blank">
+            <Image
+              src={loadIcon(iconName)}
+              width="25"
+              height="25"
+              alt={name}
+              title={`Accéder à notre ${name}`}
+            />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

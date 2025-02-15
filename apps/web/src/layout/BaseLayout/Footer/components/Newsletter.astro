@@ -1,0 +1,80 @@
+---
+import { TbSend } from "react-icons/tb";
+import { cn } from "@libs/tailwind";
+import H5 from "./H5.astro";
+---
+
+<div>
+  <H5>
+    Nous suivre <span
+      class={cn("hidden", "xs:inline-block font-open-sans text-sm ml-0.5")}
+      >(jusqu'à la révolution)</span
+    >
+  </H5>
+  <p class={cn("mb-4 font-open-sans leading-tight", "text-sm", "sm:text-base")}>
+    Recevez régulièrement une sélection de nos derniers articles !
+  </p>
+  <form
+    data-form="newsletter-footer"
+    class="flex flex-col gap-3 w-full max-w-[400px]">
+    <input
+      class="px-5 py-2"
+      required
+      name="email"
+      placeholder="Email"
+      type="email"
+      title="Merci de renseigner votre email"
+      alt="Merci de renseigner votre email"
+    />
+    <button
+      type="submit"
+      class={cn(
+        "bg-black py-2 font-open-sans justify-center font-bold text-yellow flex items-center gap-2",
+        "text-base",
+        "md:text-lg",
+      )}>
+      <TbSend />
+      <span>S'inscrire à la newsletter</span>
+    </button>
+  </form>
+  <script>
+    import { actions } from "astro:actions";
+    const form = document.querySelector(
+      "[data-form=newsletter-footer]",
+    ) as HTMLFormElement;
+
+    if (form) {
+      const subscribeNewsletter = async (e: any) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const { error } = await actions.addSubscriber(formData);
+
+        if (error) {
+          console.error("Error while creating a new subscriber contact", error);
+          return;
+        }
+        const mailInput = form.querySelector(
+          "input[type=email]",
+        ) as HTMLInputElement;
+
+        const submitButton = form.querySelector(
+          "button[type=submit]",
+        ) as HTMLButtonElement;
+
+        // Hide input
+        mailInput.disabled = true;
+        mailInput.placeholder = "";
+
+        // Change submit button style
+        submitButton.disabled = true;
+        submitButton.style.backgroundImage = "none";
+        submitButton.textContent =
+          "🎉 Vous êtes bien inscrit.e à notre newsletter !";
+
+        // Reset form
+        form.reset();
+      };
+      form.addEventListener("submit", subscribeNewsletter);
+    }
+  </script>
+</div>
