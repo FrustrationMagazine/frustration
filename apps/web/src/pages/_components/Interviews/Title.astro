@@ -1,4 +1,16 @@
+---
+import { cn } from "@libs/tailwind";
+---
+
 <h2
-  class="title relative m-auto mb-2 w-fit font-bakbak uppercase text-white text-4xl sm:text-5xl md:text-9xl lg:mb-8 lg:text-[152px] xl:text-[200px]">
+  class={cn(
+    "title relative m-auto  w-fit font-bakbak uppercase text-white",
+    "text-4xl mb-2",
+    "xs:text-5xl mb-3",
+    "sm:text-6xl sm:mb-8",
+    "md:text-7xl md:mb-12",
+    "lg:text-9xl lg:mb-16",
+    "xl:text-12xl xl:mb-24",
+  )}>
   <slot />
 </h2>
