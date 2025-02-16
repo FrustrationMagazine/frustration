@@ -5,7 +5,7 @@
     }
 
     h2 {
-      color: #fff200;
+      color: #FFF200;
       background: black;
       font-size: clamp(30px, 7vw, 50px);
       line-height: 120%;
@@ -29,13 +29,13 @@
     p {
       margin-bottom: 15px;
       font-family: "Open Sans", Arial, sans-serif;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 30px;
       font-weight: 400;
     }
 
     blockquote {
-      border-left: 5px solid #fff200;
+      border-left: 5px solid #FFF200;
       margin: 0 0 1.75em;
       padding-left: 1em;
     }

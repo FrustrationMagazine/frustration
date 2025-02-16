@@ -1,10 +1,18 @@
 ---
-import { fetchArticle } from "@/data-access/wordpress";
-import type { ArticleRaw } from "@/data-access/wordpress";
+import { fetchPosts } from "@/data-access/wordpress";
+import type { Post } from "@/data-access/wordpress";
 import ArrowButtons from "./ArrowButtons.astro";
 import Slide from "./Slide.astro";
 
-const articles = (await fetchArticle({ first: 6 }, ["title", "author", "slug", "excerpt", "date", "categories", "image"])) as ArticleRaw[];
+const articles = (await fetchPosts({ first: 6 }, [
+  "title",
+  "author",
+  "slug",
+  "excerpt",
+  "date",
+  "categories",
+  "image",
+])) as Post[];
 ---
 
 <div class="splide splide-main-carrousel bg-transparent h-screen">

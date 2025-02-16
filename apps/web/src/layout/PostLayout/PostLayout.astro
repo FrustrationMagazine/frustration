@@ -3,6 +3,7 @@ import PostHeader from "./components/PostHeader.astro";
 import PostSummary from "./components/PostSummary";
 import PageLayout from "../PageLayout/PageLayout.astro";
 import ScrollWatcher from "./components/ScrollWatcher.astro";
+import MoreArticles from "./components/MoreArticles";
 import "./wordpress.css";
 import { cn } from "@libs/tailwind";
 const { title } = Astro.props;
@@ -17,7 +18,7 @@ const { title } = Astro.props;
     <section class="content">
       <slot name="content" />
     </section>
-
+    <MoreArticles client:idle />
     <!-- ⬜ Footer -->
   </article>
   <div

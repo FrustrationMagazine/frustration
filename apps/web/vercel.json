@@ -9,6 +9,11 @@
       "source": "/campagne-abonnements",
       "destination": "/abonnements",
       "permanent": true
+    },
+    {
+      "source": "/campagne-dons",
+      "destination": "/abonnements",
+      "permanent": true
     }
   ]
 }

@@ -2,8 +2,8 @@
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PostLayout from "@web/layout/PostLayout/PostLayout.astro";
 import {
-  type ArticleRaw,
-  fetchArticle,
+  type Post,
+  fetchPosts,
   formatTitle,
   formatAuthor,
   formatDate,
@@ -16,7 +16,7 @@ import {
 export const prerender = false;
 
 const { slug } = Astro.params;
-const article: ArticleRaw = (await fetchArticle({ slug }, [
+const article: Post = (await fetchPosts({ slug }, [
   "title",
   "slug",
   "author",
@@ -24,7 +24,7 @@ const article: ArticleRaw = (await fetchArticle({ slug }, [
   "categories",
   "image",
   "content",
-])) as ArticleRaw;
+])) as Post;
 
 if (!article) return Astro.rewrite("/404");
 

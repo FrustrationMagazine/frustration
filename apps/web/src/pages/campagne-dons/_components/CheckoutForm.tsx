@@ -392,7 +392,7 @@ const CheckoutForm = ({
             type="submit"
             id="submit">
             {isLoading ? (
-              <CircleLoader color="#FFF200" />
+              <CircleLoader color="##FFF200" />
             ) : (
               <span className="text-xl font-bold text-yellow lg:text-2xl">
                 💝 Soutenir Frustration

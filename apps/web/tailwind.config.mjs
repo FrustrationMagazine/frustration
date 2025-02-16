@@ -120,7 +120,7 @@ export default {
     // 🎨 Colors
     colors: {
       ...colors,
-      yellow: "#fff200",
+      yellow: "#FFF200",
       paleYellow: "#F2EC80",
       red: "#700002",
       black: "#000",
@@ -128,7 +128,7 @@ export default {
       purple: "#5c5db7",
       palePurple: "#7C76B0",
       blue: "#1e40af",
-      primary: "#fff200",
+      primary: "#FFF200",
       "color-rainbow-1": "hsl(var(--color-rainbow-1))",
       "color-rainbow-2": "hsl(var(--color-rainbow-2))",
       "color-rainbow-3": "hsl(var(--color-rainbow-3))",

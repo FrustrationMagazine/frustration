@@ -70,7 +70,7 @@ type ArticleFeaturedImageRaw = {
   };
 };
 
-export type ArticleRaw = {
+export type Post = {
   title?: string;
   slug?: string;
   author?: ArticleAuthorRaw;
@@ -84,7 +84,7 @@ type ArticleQueryField = "title" | "slug" | "author" | "date" | "categories" | "
 
 // QUERIES =================================
 
-const articleQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]): string => {
+const postQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]): string => {
   const titleIfWanted = fields.includes("title") ? "title(format: RENDERED)" : "";
   const slugIfWanted = fields.includes("slug") ? "slug" : "";
   const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName } }` : "";
@@ -108,7 +108,7 @@ const articleQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryFiel
   let filterOptions: string = filterOptionsArray.join(", ");
   const postsOrPost = wpSearchOptions.first ? "posts" : "post";
 
-  const query = `query fetchArticle {
+  const query = `query fetchPosts {
   ${postsOrPost}(${filterOptions}) {
     ${postsOrPost === "posts" ? "nodes {" : ""}
     ${titleIfWanted}
@@ -126,11 +126,8 @@ const articleQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryFiel
   return query;
 };
 
-export const fetchArticle = async (
-  wpSearchOptions: WPSearchOptions,
-  fields: ArticleQueryField[] = ["title", "author", "date", "categories", "image", "content"]
-): Promise<ArticleRaw | ArticleRaw[]> => {
-  const query = articleQuery(wpSearchOptions, fields);
+export const fetchPosts = async (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[] = ["title", "author", "date", "categories", "image", "content"]): Promise<Post | Post[]> => {
+  const query = postQuery(wpSearchOptions, fields);
   const { data: nestedData } = await wpquery({ query });
   const postsOrPost = wpSearchOptions.first ? "posts" : "post";
   const data = postsOrPost === "posts" ? nestedData[postsOrPost].nodes : nestedData[postsOrPost];
@@ -148,17 +145,17 @@ const DEFAULT_ARTICLE_IMAGE_METADATA = {
   sourceUrl: "https://www.frustrationmagazine.fr/wp-content/uploads/2021/11/LOGO-SLOGAN-3.png"
 };
 
-export const formatSlug = (article: ArticleRaw): string => article?.slug ?? "";
-export const formatTitle = (article: ArticleRaw): string => article?.title ?? UNKNOWN_TITLE;
+export const formatSlug = (article: Post): string => article?.slug ?? "";
+export const formatTitle = (article: Post): string => article?.title ?? UNKNOWN_TITLE;
 
-export const formatAuthor = (article: ArticleRaw) => {
+export const formatAuthor = (article: Post) => {
   if (article?.author?.node?.firstName || article?.author?.node?.lastName) {
     return `${article?.author.node.firstName ?? ""} ${article?.author.node.lastName ?? ""}`;
   }
   return UNKNOWN_AUTHOR;
 };
 
-export const formatImage = (article: ArticleRaw): { title: string; altText: string; sourceUrl: string } => {
+export const formatImage = (article: Post): { title: string; altText: string; sourceUrl: string } => {
   if (article?.featuredImage?.node) {
     return article?.featuredImage.node;
   }
@@ -166,7 +163,7 @@ export const formatImage = (article: ArticleRaw): { title: string; altText: stri
   return DEFAULT_ARTICLE_IMAGE_METADATA;
 };
 
-export const formatDate = (article: ArticleRaw, options: { explicit: boolean } = { explicit: false }): Date | string => {
+export const formatDate = (article: Post, options: { explicit: boolean } = { explicit: false }): Date | string => {
   if (article?.date) {
     const intlOptions: Intl.DateTimeFormatOptions | undefined = options.explicit ? { weekday: "long", year: "numeric", month: "long", day: "numeric" } : undefined;
     let date = new Date(article?.date).toLocaleDateString("fr-FR", intlOptions);
@@ -177,7 +174,7 @@ export const formatDate = (article: ArticleRaw, options: { explicit: boolean } =
   return "";
 };
 
-export const formatCategories = (article: ArticleRaw, onlyParents: boolean): string[] => {
+export const formatCategories = (article: Post, onlyParents: boolean): string[] => {
   if (!article.categories) return [];
   const {
     categories: { nodes: categories }
@@ -190,7 +187,7 @@ export const formatCategories = (article: ArticleRaw, onlyParents: boolean): str
   return f_categories;
 };
 
-export const formatContent = (article: ArticleRaw): string => {
+export const formatContent = (article: Post): string => {
   if (article?.content) {
     return article?.content;
   }
@@ -198,25 +195,52 @@ export const formatContent = (article: ArticleRaw): string => {
   return "";
 };
 
-export const formatExcerpt = (article: ArticleRaw): string => article?.excerpt ?? "";
+export const formatExcerpt = (article: Post): string => article?.excerpt ?? "";
 
 // ===================================================================================================
 
 async function fetchAPI(query: string) {
   try {
-    const res = await fetch(process.env.WP_URL ?? "", {
+    const res = await fetch("https://adminfrustrationmagazine.fr/graphql", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query })
     });
+    if (!res.ok) throw new Error("Failed to fetch wordpress API");
     const json = await res.json();
-    if (json.errors) {
-      throw new Error("Failed to fetch wordpress API");
-    }
+    if (json.errors) throw new Error("Failed to parse wordpress API response");
     return json;
   } catch (e) {
     console.error(e);
   }
+}
+
+export async function fetchLinkPreview(link: string) {
+  let {
+    data: { post }
+  } = await fetchAPI(`
+   query fetchLinkPreview {
+      post(id: "${link}", idType: URI) {
+        title(format: RENDERED)
+        slug
+        featuredImage {
+          node {
+            title(format: RENDERED)
+            altText
+            sourceUrl
+          }
+        }
+        author {
+          node {
+            name
+          }
+        }
+        excerpt
+      }
+    }
+  `);
+
+  return post;
 }
 
 export async function getLastPosts() {
