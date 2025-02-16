@@ -28,20 +28,10 @@ import "@web/styles/global.css";
 // 🧰 Config
 const DEFAULT_IMAGE = "/img/default.jpg";
 const DEFAULT_DESCRIPTION =
-  "Frustration Magazine, média indépendant et offensif.";
+  "Frustration Magazine, média indépendant et offensif qui relate la guerre des classes.";
 
-interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  displayBanner?: boolean;
-}
-
-const {
-  title,
-  description = DEFAULT_DESCRIPTION,
-  image = DEFAULT_IMAGE,
-} = Astro.props;
+const { title, description = DEFAULT_DESCRIPTION, image } = Astro.props;
+const ogImage = image?.sourceUrl ?? DEFAULT_IMAGE;
 ---
 
 <!doctype html>
@@ -51,38 +41,11 @@ const {
   <Head
     title={title}
     description={description}
-    ogImage="https://adminfrustrationmagazine.fr/wp-content/uploads/2024/11/preview_small_rs.jpg"
+    ogImageUrl={ogImage}
   />
 
-  <meta charset="UTF-8" />
-  <link
-    rel="icon"
-    type="image/x-icon"
-    href="/img/favicon_light.png"
-  />
-  <meta
-    name="viewport"
-    content="width=device-width"
-  />
-  <meta
-    name="generator"
-    content={Astro.generator}
-  />
-  <meta
-    name="description"
-    content={description}
-  />
-  <meta
-    property="og:title"
-    content={`Frustration Magazine - ${title}`}
-  />
-  <meta
-    property="og:image"
-    content={image}
-  />
   <title>Frustration Magazine - {title}</title>
   <ViewTransitions />
-
   <body class="min-h-screen bg-white flex flex-col">
     <Header transition:persist />
     <main class="flex-grow flex flex-col">

@@ -2,11 +2,10 @@
 interface Props {
   title: string;
   description: string;
-  ogImage: string;
+  ogImageUrl: string;
 }
-const { title, description, ogImage } = Astro.props as Props;
+const { title, description, ogImageUrl } = Astro.props;
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
-const ogImageURL = new URL(ogImage, Astro.site).href;
 ---
 
 <head>
@@ -22,8 +21,21 @@ const ogImageURL = new URL(ogImage, Astro.site).href;
     name="description"
     content={description}
   />
+  <meta
+    name="viewport"
+    content="width=device-width"
+  />
 
-  <!-- The rest of your head content -->
+  <meta
+    name="generator"
+    content={Astro.generator}
+  />
+
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="/img/favicon_light.png"
+  />
 
   <!-- Open Graph / Facebook -->
   <meta
@@ -44,29 +56,29 @@ const ogImageURL = new URL(ogImage, Astro.site).href;
   />
   <meta
     property="og:image"
-    content={ogImageURL}
+    content={ogImageUrl}
   />
 
-  <!-- Twitter -->
+  <!-- X -->
   <meta
-    property="twitter:card"
+    name="twitter:card"
     content="summary_large_image"
   />
   <meta
-    property="twitter:url"
+    name="twitter:url"
     content={permalink}
   />
   <meta
-    property="twitter:title"
+    name="twitter:title"
     content={title}
   />
   <meta
-    property="twitter:description"
+    name="twitter:description"
     content={description}
   />
   <meta
-    property="twitter:image"
-    content={ogImageURL}
+    name="twitter:image"
+    content={ogImageUrl}
   />
   <meta
     name="twitter:creator"

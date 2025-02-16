@@ -1,5 +1,4 @@
 ---
-import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
 import PostLayout from "@web/layout/PostLayout/PostLayout.astro";
 import {
   type Post,
@@ -8,7 +7,6 @@ import {
   formatAuthor,
   formatDate,
   formatCategories,
-  formatImage,
   formatContent,
 } from "@/data-access/wordpress";
 
@@ -27,6 +25,8 @@ const article: Post = (await fetchPosts({ slug }, [
 ])) as Post;
 
 if (!article) return Astro.rewrite("/404");
+console.log(article.featuredImage);
+const image = article?.featuredImage?.node ?? null;
 
 // This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
 Astro.response.headers.set(
@@ -40,7 +40,7 @@ Astro.response.headers.set(
   author={formatAuthor(article)}
   date={formatDate(article, { explicit: false })}
   categories={formatCategories(article)}
-  image={formatImage(article)}>
+  image={image}>
   <Fragment
     slot="content"
     set:html={formatContent(article)}

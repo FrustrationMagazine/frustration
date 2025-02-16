@@ -1,10 +1,9 @@
 ---
 import BaseLayout from "../BaseLayout/BaseLayout.astro";
 import { cn } from "@libs/tailwind";
-const { title } = Astro.props;
 ---
 
-<BaseLayout title={title}>
+<BaseLayout {...Astro.props}>
   <div class="bg-white flex-grow relative">
     <slot name="header" />
     <div

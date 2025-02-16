@@ -6,10 +6,9 @@ import ScrollWatcher from "./components/ScrollWatcher.astro";
 import MoreArticles from "./components/MoreArticles";
 import "./wordpress.css";
 import { cn } from "@libs/tailwind";
-const { title } = Astro.props;
 ---
 
-<PageLayout title={title}>
+<PageLayout {...Astro.props}>
   <ScrollWatcher slot="header" />
   <article slot="content">
     <!-- 🆎🖼️ Header -->

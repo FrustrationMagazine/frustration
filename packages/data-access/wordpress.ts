@@ -140,11 +140,6 @@ export const fetchPosts = async (wpSearchOptions: WPSearchOptions, fields: Artic
 const UNKNOWN_TITLE = "Article sans titre";
 const UNKNOWN_AUTHOR = "Invité.e";
 const DEFAULT_ARTICLE_IMAGE_METADATA_PATH = "DEFAULT_ARTICLE_IMAGE";
-const DEFAULT_ARTICLE_IMAGE_METADATA = {
-  title: "Image de couverture de l'article",
-  altText: "Image de couverture par défaut de l'article",
-  sourceUrl: "https://www.frustrationmagazine.fr/wp-content/uploads/2021/11/LOGO-SLOGAN-3.png"
-};
 
 export const formatSlug = (article: Post): string => article?.slug ?? "";
 export const formatTitle = (article: Post): string => article?.title ?? UNKNOWN_TITLE;
@@ -156,12 +151,9 @@ export const formatAuthor = (article: Post) => {
   return UNKNOWN_AUTHOR;
 };
 
-export const formatImage = (article: Post): { title: string; altText: string; sourceUrl: string } => {
-  if (article?.featuredImage?.node) {
-    return article?.featuredImage.node;
-  }
-
-  return DEFAULT_ARTICLE_IMAGE_METADATA;
+export const formatImage = (article: Post): { title: string; altText: string; sourceUrl: string } | null => {
+  if (!article?.featuredImage?.node) return null;
+  return article?.featuredImage.node;
 };
 
 export const formatDate = (article: Post, options: { explicit: boolean } = { explicit: false }): Date | string => {
@@ -423,7 +415,6 @@ export async function searchPosts({ term, category, after }: { term: string; cat
       }
     }
   `;
-  console.log("query", query);
   let {
     data: {
       posts: { nodes: posts, pageInfo }
