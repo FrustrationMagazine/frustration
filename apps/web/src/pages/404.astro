@@ -1,9 +1,15 @@
 ---
 import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
+export const prerender = false;
 ---
 
 <BaseLayout title="Page inexistante">
-  <p class="h-[700px] grid place-items-center text-3xl text-center">
-    La page que vous recherchez n'existe pas 😭
-  </p>
+  <div class="h-[700px] flex gap-3 justify-center flex-col text-center">
+    <p class="text-3xl">La page que vous recherchez n'existe pas 😭</p>
+    <a
+      href="/"
+      class="font-bold underline text-xl text-blue"
+      >Retour à la page d'accueil</a
+    >
+  </div>
 </BaseLayout>

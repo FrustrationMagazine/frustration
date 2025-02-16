@@ -4,7 +4,6 @@ import AuthorPicture from "./AuthorPicture.astro";
 import TagIcon from "../assets/icons/tag.svg?raw";
 import { cn } from "@libs/tailwind";
 const { title, author, date, categories, image } = Astro.props;
-console.log("categories", categories);
 ---
 
 <div class="mb-[30px]">
@@ -39,10 +38,12 @@ console.log("categories", categories);
     <div class="categories flex items-center flex-wrap gap-y-0 gap-x-2">
       {
         categories.map((category: any) => (
-          <div class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">
+          <a
+            href={`/posts?category=${category.slug}`}
+            class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">
             <Fragment set:html={TagIcon} />
-            <span>{category}</span>
-          </div>
+            <span>{category.name}</span>
+          </a>
         ))
       }
     </div>

@@ -57,14 +57,11 @@ const {
   </div>
 </aside>
 <script define:vars={{ id }}>
-  console.log("id", `button[data-button=${id}]`);
   const buttonEl = document.querySelector(`button[data-button=${id}]`);
-  console.log("buttonEl", buttonEl);
   buttonEl.addEventListener("click", () => {
     const formulaCardLabelEl = document.querySelector(
       `[data-formula=${id}] label`,
     );
-    console.log("formulaCardLabelEl", formulaCardLabelEl);
     formulaCardLabelEl.scrollIntoView({ behavior: "smooth" });
     formulaCardLabelEl.click();
   });

@@ -1,0 +1,39 @@
+---
+// 🖼️ Layout
+import BaseLayout from "@web/layout/BaseLayout/BaseLayout.astro";
+import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
+import Results from "./_components/Results";
+import { searchPosts } from "@/data-access/wordpress";
+import H2 from "@components/H2";
+
+const url = new URL(Astro.request.url);
+const searchParams = new URLSearchParams(url.searchParams);
+
+let term = "";
+let category: string | null = null;
+if (searchParams) {
+  term = searchParams.get("term") ?? "";
+  category = searchParams.get("category") || null;
+}
+
+const { posts: initialPosts, pageInfo: initialPageInfo } = await searchPosts({
+  term,
+  category,
+});
+export const prerender = false;
+---
+
+<PageLayout title={term ? `Résultats pour "${term}"` : "Tous les articles"}>
+  <article slot="content">
+    <H2 className="mb-12">
+      {term ? `Résultats pour "${term}"` : "Tous les articles"}
+    </H2>
+    <Results
+      client:load
+      initialPosts={initialPosts}
+      initialPageInfo={initialPageInfo}
+      term={term}
+      category={category}
+    />
+  </article>
+</PageLayout>

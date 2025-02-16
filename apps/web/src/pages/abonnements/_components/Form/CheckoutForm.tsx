@@ -20,10 +20,6 @@ const paymentElementOptions: StripePaymentElementOptions = {
 };
 
 const { MODE, SITE, PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION } = import.meta.env;
-console.log(
-  "PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION",
-  PUBLIC_STRIPE_PRODUCT_SUBSCRIPTION,
-);
 
 // 🔄 Redirection
 
@@ -176,7 +172,6 @@ export default function StripeForm({
       // 2️⃣ Subscription
       let subscription;
       if (customer) {
-        console.log("customer");
         const resSubscriptionCreation = await fetch(
           CREATE_SUBSCRIPTION_ENDPOINT,
           {
@@ -198,7 +193,6 @@ export default function StripeForm({
         // 3️⃣ Payment intent
         if (resSubscriptionCreation?.subscription) {
           subscription = resSubscriptionCreation.subscription;
-          console.log("subscription", subscription);
           const paymentIntent = subscription?.latest_invoice?.payment_intent;
           const resUpdatedPaymentIntent = await fetch(
             UPDATE_PAYMENT_INTENT_ENDPOINT,

@@ -53,6 +53,7 @@ type ArticleAuthorRaw = {
 };
 type ArticleCategoryRaw = {
   name: string;
+  slug: string;
   parent: {
     node: {
       name: string;
@@ -89,7 +90,7 @@ const postQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]
   const slugIfWanted = fields.includes("slug") ? "slug" : "";
   const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName } }` : "";
   const dateIfWanted = fields.includes("date") ? "date" : "";
-  const categoriesIfWanted = fields.includes("categories") ? `categories { nodes { name parent { node { name } } } }` : "";
+  const categoriesIfWanted = fields.includes("categories") ? `categories { nodes { slug name parent { node { name } } } }` : "";
   const imageIfWanted = fields.includes("image") ? `featuredImage { node { title(format: RENDERED) altText sourceUrl } }` : "";
   const contentIfWanted = fields.includes("content") ? "content(format: RENDERED)" : "";
   const excerptIfWanted = fields.includes("excerpt") ? "excerpt(format: RENDERED)" : "";
@@ -174,16 +175,17 @@ export const formatDate = (article: Post, options: { explicit: boolean } = { exp
   return "";
 };
 
-export const formatCategories = (article: Post, onlyParents: boolean): string[] => {
+export const formatCategories = (article: Post, onlyParents: boolean): any => {
   if (!article.categories) return [];
   const {
     categories: { nodes: categories }
   } = article;
   let f_categories = categories.map((category: ArticleCategoryRaw) => {
-    if (category.parent && onlyParents) return category.parent.node.name;
-    return category.name;
+    if (category.parent && onlyParents) return { name: category.parent.node.name, slug: category.slug };
+    return { name: category.name, slug: category.slug };
   });
-  f_categories = [...new Set(f_categories)];
+  f_categories = f_categories.filter((obj, index, self) => index === self.findIndex((t) => t.name === obj.name));
+
   return f_categories;
 };
 
@@ -377,42 +379,13 @@ export async function getInterviews() {
   return interviews;
 }
 
-export function formatSearchPosts(posts: any) {
-  const { pageInfo } = posts;
-  posts = posts.nodes.map(
-    ({
-      title,
-      slug,
-      excerpt,
-      featuredImage: { node: image },
-      date,
-      categories: { nodes: categories },
-      author: {
-        node: { name }
-      }
-    }) => ({
-      title,
-      author: name,
-      slug,
-      excerpt,
-      image,
-      date: convertDifferenceOfDays(getNumberOfDaysFromNow(new Date(date))),
-      categories: categories.map((category: any) => ({ id: category.id, category: category.parent ? category.parent.node.name : category.name }))
-    })
-  );
-
-  return { posts, pageInfo };
-}
-
-export async function searchArticles(term: string, after?: string) {
-  let {
-    data: { posts }
-  } = await fetchAPI(`
-    query searchArticles {
+export async function searchPosts({ term, category, after }: { term: string; category?: string; after?: string }) {
+  const query = `
+    query searchPosts {
       posts(
         first: 6
         ${after ? `after: "${after}"` : ""}
-        where: { search: "${term}", orderby: { field: DATE, order: DESC } }
+        where: { search: "${term}", ${category ? `categoryName:"${category}",` : ""} orderby: { field: DATE, order: DESC } }
       ) {
         nodes {
           title(format: RENDERED)
@@ -449,7 +422,12 @@ export async function searchArticles(term: string, after?: string) {
         }
       }
     }
-  `);
-
-  return formatSearchPosts(posts);
+  `;
+  console.log("query", query);
+  let {
+    data: {
+      posts: { nodes: posts, pageInfo }
+    }
+  } = await fetchAPI(query);
+  return { posts, pageInfo };
 }
