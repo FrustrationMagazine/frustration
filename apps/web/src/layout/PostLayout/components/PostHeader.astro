@@ -49,11 +49,15 @@ const { title, author, date, categories, image } = Astro.props;
     </div>
   </div>
 </div>
-<Image
-  class="mb-[25px] w-full object-cover"
-  title={image.title}
-  src={image.sourceUrl}
-  alt={image.altText}
-  width="1000"
-  height="600"
-/>
+{
+  image ? (
+    <Image
+      class="mb-[25px] w-full object-cover"
+      title={image.title}
+      src={image.sourceUrl}
+      alt={image.altText}
+      width="1000"
+      height="600"
+    />
+  ) : null
+}
