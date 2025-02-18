@@ -1,10 +1,15 @@
 ---
 interface Props {
   title: string;
+  author: string;
   description: string;
   ogImageUrl: string;
+  width?: number;
+  height?: number;
+  mimeType?: string;
 }
-const { title, description, ogImageUrl } = Astro.props;
+const { title, author, description, ogImageUrl, width, height, mimeType } =
+  Astro.props;
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -12,10 +17,18 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
   <!-- Primary Meta Tags -->
   <title>{title}</title>
   <meta charset="UTF-8" />
+  <link
+    rel="sitemap"
+    href="/sitemap-index.xml"
+  />
 
   <meta
     name="title"
     content={title}
+  />
+  <meta
+    name="author"
+    content={author}
   />
   <meta
     name="description"
@@ -25,7 +38,6 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
     name="viewport"
     content="width=device-width"
   />
-
   <meta
     name="generator"
     content={Astro.generator}
@@ -57,6 +69,30 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
   <meta
     property="og:image"
     content={ogImageUrl}
+  />
+  <meta
+    property="og:locale"
+    content="fr_FR"
+  />
+  <meta
+    property="og:type"
+    content="article"
+  />
+  <meta
+    property="og:image:width"
+    content={width}
+  />
+  <meta
+    property="og:image:height"
+    content={height}
+  />
+  <meta
+    property="og:image:type"
+    content={mimeType}
+  />
+  <meta
+    property="og:site_name"
+    content="Frustration Magazine"
   />
 
   <!-- X -->

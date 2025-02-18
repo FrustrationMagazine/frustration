@@ -30,8 +30,15 @@ const DEFAULT_IMAGE = "/img/default.jpg";
 const DEFAULT_DESCRIPTION =
   "Frustration Magazine, média indépendant et offensif qui relate la guerre des classes.";
 
-const { title, description = DEFAULT_DESCRIPTION, image } = Astro.props;
+const { title, description = DEFAULT_DESCRIPTION, image, author } = Astro.props;
 const ogImage = image?.sourceUrl ?? DEFAULT_IMAGE;
+
+let width, height, mimeType;
+if (image?.mediaDetails) {
+  width = image?.mediaDetails?.width;
+  height = image?.mediaDetails?.height;
+  mimeType = image?.mimeType;
+}
 ---
 
 <!doctype html>
@@ -40,8 +47,12 @@ const ogImage = image?.sourceUrl ?? DEFAULT_IMAGE;
   class="bg-black">
   <Head
     title={title}
+    author={author}
     description={description}
     ogImageUrl={ogImage}
+    {...width ? { width } : null}
+    {...height ? { height } : null}
+    {...mimeType ? { mimeType } : null}
   />
 
   <title>Frustration Magazine - {title}</title>

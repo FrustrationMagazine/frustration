@@ -91,7 +91,7 @@ const postQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]
   const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName } }` : "";
   const dateIfWanted = fields.includes("date") ? "date" : "";
   const categoriesIfWanted = fields.includes("categories") ? `categories { nodes { slug name parent { node { name } } } }` : "";
-  const imageIfWanted = fields.includes("image") ? `featuredImage { node { title(format: RENDERED) altText sourceUrl } }` : "";
+  const imageIfWanted = fields.includes("image") ? `featuredImage { node { title(format: RENDERED) altText sourceUrl mediaDetails { height width } mimeType } }` : "";
   const contentIfWanted = fields.includes("content") ? "content(format: RENDERED)" : "";
   const excerptIfWanted = fields.includes("excerpt") ? "excerpt(format: RENDERED)" : "";
 

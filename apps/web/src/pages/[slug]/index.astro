@@ -25,7 +25,6 @@ const article: Post = (await fetchPosts({ slug }, [
 ])) as Post;
 
 if (!article) return Astro.rewrite("/404");
-console.log(article.featuredImage);
 const image = article?.featuredImage?.node ?? null;
 
 // This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
@@ -37,6 +36,7 @@ Astro.response.headers.set(
 
 <PostLayout
   title={formatTitle(article)}
+  description={formatTitle(article)}
   author={formatAuthor(article)}
   date={formatDate(article, { explicit: false })}
   categories={formatCategories(article)}
