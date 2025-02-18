@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 /*  READ  */
 /* ------ */
 
-export async function readRecords({ table, where, orderBy, success }: { table: string; where: any; orderBy: any; success: any }): Promise<any> {
+export async function readRecords({ table, where, orderBy, take, success }: { table: string; where: any; take?: number; orderBy: any; success: any }): Promise<any> {
   let status = {
     success: null,
     error: null
@@ -20,7 +20,7 @@ export async function readRecords({ table, where, orderBy, success }: { table: s
 
   // 🔁 Read
   try {
-    data = await (prisma as any)[table].findMany({ where, orderBy });
+    data = await (prisma as any)[table].findMany({ where, orderBy, take });
     status.success = success;
   } catch (e) {
     // ❌ Error | P202

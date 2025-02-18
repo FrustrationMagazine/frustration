@@ -5,7 +5,8 @@ import Section from "../Section.astro";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Image } from "astro:assets";
-import { cn } from '@/utils/tailwind';
+import { cn } from '@libs/tailwind';
+import { LuExternalLink } from "react-icons/lu";
 import SidePanel from "./SidePanel.astro";
 
 /* ----------- */
@@ -16,6 +17,7 @@ import SidePanel from "./SidePanel.astro";
 const { data: records } : { data: any[] } = await readRecords({
   table: "media_video",
   where: {},
+  take: 6,
   orderBy: { publishedAt: "desc" },
   success: "Videos read !",
 });
@@ -104,10 +106,17 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
                 data-splide-youtube={`https://www.youtube.com/watch?v=${video.id}`}>
                 <Image
                   src={`https://i.ytimg.com/vi/${video.id}/hq720.jpg`}
-                  alt=""
+                  alt="Illustration vidéo"
                   width="1280"
                   height="720"
                 />
+                <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" class={cn("max-md:hidden", "absolute z-10 bottom-2 flex items-center gap-2  bg-black text-white font-montserrat px-3 rounded-lg font-semibold py-1 right-2")}>
+                  <img src="img/favicon_yt.png" width="21"/>
+                  <span>
+                    Regarder sur Youtube
+                  </span>
+                  <LuExternalLink size={14}/>
+                </a>
               </li>
             ))
           }
@@ -123,12 +132,12 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
           {
             records.map((video) => (
               <li
-                class="splide__slide"
+                class="splide__slide rounded-lg"
                 data-id={video.id}
                 data-splide-youtube={`https://www.youtube.com/watch?v=${video.id}`}>
                 <Image
                   src={video.thumbnailMaxResolution}
-                  alt=""
+                  alt="Illustration vidéo"
                   width="1280"
                   height="720"
                 />
@@ -180,6 +189,12 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
 
   /* SPLIDE CUSTOMIZATION */
 
+  .splide__track--nav {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
+    cursor: auto;
+    will-change: auto;
+  }
+
   /* PLAY ICON */
   .splide-videos .splide__video__play {
     height: clamp(50px, 7vw, 125px);
@@ -211,8 +226,12 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     background: #000;
     width: 3.5em;
     height: 3.5em;
-    opacity: 1;
+    opacity: 0;
     transition: opacity 0.3s;
+  }
+
+  .splide-videos:hover .splide__arrow {
+    opacity:1;
   }
 
   .splide-videos.is-playing .splide__arrow {
@@ -247,6 +266,10 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     border: none !important;
     cursor: pointer;
     transition: opacity 0.3s;
+
+    &:hover {
+      opacity: 1 !important;
+    }
   }
 
   .splide-videos-thumbnails
