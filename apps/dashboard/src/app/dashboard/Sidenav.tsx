@@ -101,7 +101,7 @@ const Sidenav = () => {
 
   return (
     <aside className="flex w-60 flex-col items-center justify-between bg-black pb-4">
-      <ul className="w-full space-y-2 px-3 text-frustration-yellow">
+      <ul className="text-yellow w-full space-y-2 px-3">
         {LINKS.map(({ label, icon, href, key }) => {
           return (
             <React.Fragment key={key}>
@@ -109,14 +109,14 @@ const Sidenav = () => {
                 <Link
                   href={href}
                   className={cn(
-                    "font-poppins flex items-center gap-4 whitespace-nowrap rounded-md px-5 py-2 text-lg transition duration-500",
-                    href === currentPath && "bg-frustration-yellow-hover",
+                    "flex items-center gap-4 whitespace-nowrap rounded-md px-5 py-2 font-poppins text-lg transition duration-500",
+                    href === currentPath && "bg-yellow-hover",
                   )}
                 >
                   {icon} {label}
                 </Link>
               </li>
-              <Separator className="bg-frustration-yellow-hover" />
+              <Separator className="bg-yellow-hover" />
             </React.Fragment>
           );
         })}

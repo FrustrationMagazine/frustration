@@ -12,15 +12,9 @@ import Temporary from "./Temporary";
 // 🧰 Config
 export const dynamic = "force-dynamic";
 
-const CampaignTab = ({
-  value,
-  children,
-}: {
-  value: string;
-  children: string;
-}) => (
+const Tab = ({ value, children }: { value: string; children: string }) => (
   <TabsTrigger
-    className="font-bebas bg-black py-2 text-4xl font-bold uppercase leading-tight text-frustration-yellow data-[state=inactive]:opacity-30"
+    className="text-yellow bg-black py-2 font-bebas text-4xl font-bold uppercase leading-tight data-[state=inactive]:opacity-30"
     value={value}
   >
     {children}
@@ -36,8 +30,8 @@ const IncomePage = () => (
     className="flex h-full w-full flex-col overflow-auto"
   >
     <TabsList className="mx-auto mb-3 grid h-fit w-[400px] grid-cols-2 gap-2 bg-transparent">
-      <CampaignTab value="permanent">Global</CampaignTab>
-      <CampaignTab value="temporary">Campagne</CampaignTab>
+      <Tab value="permanent">Global</Tab>
+      <Tab value="temporary">Campagne</Tab>
     </TabsList>
     <TabsContent className="grow overflow-auto" value="permanent">
       <Permanent />

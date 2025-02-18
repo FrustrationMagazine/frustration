@@ -19,7 +19,7 @@ export default function ({
   };
 }) {
   const yellowOnBlack =
-    "bg-black px-4 py-1 text-center text-2xl font-bold w-fit text-accent-foreground text-frustration-yellow";
+    "bg-black px-4 py-1 text-center text-2xl font-bold w-fit text-accent-foreground text-yellow";
 
   return rangeDate?.from && rangeDate?.to ? (
     <h2 className={yellowOnBlack}>

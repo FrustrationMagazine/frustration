@@ -9,7 +9,7 @@ function RedirectionMessage({ href, children }: Props) {
   return (
     <Link
       href={href}
-      className="m-auto bg-black p-2 px-4 text-3xl font-bold text-frustration-yellow"
+      className="text-yellow m-auto bg-black p-2 px-4 text-3xl font-bold"
     >
       {children}
     </Link>

@@ -20,8 +20,8 @@ const config: Config = {
     extend: {
       // 🎨 Colors
       colors: {
-        "frustration-yellow": YELLOW_FRUSTRATION,
-        "frustration-yellow-hover": YELLOW_HOVER_FRUSTRATION,
+        "yellow": YELLOW_FRUSTRATION,
+        "yellow-hover": YELLOW_HOVER_FRUSTRATION,
 
         "border": "hsl(var(--border))",
         "input": "hsl(var(--input))",

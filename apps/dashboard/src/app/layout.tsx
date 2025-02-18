@@ -53,9 +53,7 @@ const DevelopmentBadge =
 const Header = () => (
   <header className="flex h-fit w-full items-center justify-center bg-black py-2">
     <Link href="/">
-      <h1 className="font-bebas text-7xl uppercase text-frustration-yellow">
-        Dashboard
-      </h1>
+      <h1 className="text-yellow font-bebas text-7xl uppercase">Dashboard</h1>
     </Link>
     {DevelopmentBadge}
   </header>
@@ -75,7 +73,7 @@ export default async function RootLayout({ children }: Props) {
       lang="fr"
       className={`${inter.variable} ${bebasNeue.variable} ${poppins.variable}`}
     >
-      <body className="font-inter flex h-screen flex-col bg-frustration-yellow bg-[url('/static/background.svg')] bg-cover bg-fixed antialiased">
+      <body className="bg-yellow flex h-screen flex-col bg-[url('/static/background.svg')] bg-cover bg-fixed font-inter antialiased">
         <Header />
         <main className="flex flex-grow overflow-auto">{children}</main>
         <Toaster />
