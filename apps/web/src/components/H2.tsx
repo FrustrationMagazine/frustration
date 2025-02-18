@@ -7,17 +7,17 @@ type Props = {
 
 function H2({ className, children }: Props) {
   return (
-    <div
+    <h2
       className={cn(
-        "mb-2 text-balance text-center font-bakbak font-bold uppercase",
-        "text-4xl",
-        "sm:text-5xl",
-        "md:zs-8 md:text-5xl",
-        "lg:text-7xl",
+        "text-balance text-center font-bakbak font-bold uppercase",
+        "mb-6 text-4xl",
+        "sm:mb-6 sm:text-5xl",
+        "md:zs-8 md:mb-8 md:text-5xl",
+        "lg:mb-10 lg:text-6xl",
         className,
       )}>
       {children}
-    </div>
+    </h2>
   );
 }
 

@@ -1,38 +1,65 @@
-import React from "react";
-import { Image } from "astro:assets";
-import H3 from "@components/H2";
+import { useState } from "react";
 import { cn } from "@libs/tailwind";
 import { Button } from "@/ui/components/button";
 import { CgArrowTopRight } from "react-icons/cg";
 
-// 🐝 Wordpress API
-import {
-  // Format functions
-  formatImage,
-} from "@/data-access/wordpress";
-
 type Props = {
-  term: string;
-  category: string;
-  initialPosts: any;
-  initialPageInfo: any;
+  readonly term: string;
+  readonly category: string | null;
+  readonly initialPosts: any;
+  readonly initialPageInfo: any;
+};
+
+type Post = {
+  readonly title: string;
+  readonly excerpt: string;
+  readonly slug: string;
 };
 
 const { PUBLIC_WP_URL } = import.meta.env;
 
+const NoResults = (
+  <p className="flex justify-center gap-2 text-center text-xl">
+    <span>🕵️‍♂️</span>
+    <span>Aucun article ne correspond à votre recherche...</span>
+  </p>
+);
+
+const Title = ({ children: title }: { readonly children: string }) => (
+  <h3
+    className={cn(
+      "font-bakbak font-bold !leading-[1]",
+      "text-2xl",
+      "md:text-3xl",
+    )}>
+    {title}
+  </h3>
+);
+
+const Excerpt = ({ children: excerpt }: { children: string }) => (
+  <p
+    className="mt-4"
+    dangerouslySetInnerHTML={{ __html: excerpt }}></p>
+);
+
+const Read = () => (
+  <Button className="flex items-center gap-1 rounded-none font-bakbak text-lg uppercase">
+    <span>Lire</span>
+    <CgArrowTopRight size={20} />
+  </Button>
+);
+
+/* =============== */
+/* ||||||||||||||| */
+/* =============== */
+
 function Results({ term, category, initialPosts, initialPageInfo }: Props) {
-  const [posts, setPosts] = React.useState(initialPosts);
-  const [loadingPosts, setLoadingPosts] = React.useState(false);
-  const [pageInfo, setPageInfo] = React.useState(initialPageInfo);
+  const [posts, setPosts] = useState(initialPosts);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [pageInfo, setPageInfo] = useState(initialPageInfo);
 
   if (!posts || !pageInfo) return null;
-  if (posts.length === 0)
-    return (
-      <p className="flex justify-center gap-2 text-center text-xl">
-        <span>🕵️‍♂️</span>
-        <span>Aucun article ne correspond à votre recherche...</span>
-      </p>
-    );
+  if (posts.length === 0) return NoResults;
 
   const handleMoreArticles = async () => {
     setLoadingPosts(true);
@@ -46,31 +73,7 @@ function Results({ term, category, initialPosts, initialPageInfo }: Props) {
         nodes {
           title(format: RENDERED)
           slug
-          date
-          categories {
-            nodes {
-              name
-              id
-              parent {
-                node {
-                  name
-                }
-              }
-            }
-          }
-          featuredImage {
-            node {
-              title(format: RENDERED)
-              altText
-              sourceUrl
-            }
-          }
           excerpt(format: RENDERED)
-          author {
-            node {
-              name
-            }
-          }
         }
         pageInfo {
           endCursor
@@ -81,14 +84,11 @@ function Results({ term, category, initialPosts, initialPageInfo }: Props) {
     `;
 
     try {
-      const res = await fetch(
-        PUBLIC_WP_URL ?? "https://adminfrustrationmagazine.fr/graphql",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
-        },
-      );
+      const res = await fetch(PUBLIC_WP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
       const json = await res.json();
       if (json.errors) {
         throw new Error("Failed to fetch wordpress API");
@@ -108,52 +108,27 @@ function Results({ term, category, initialPosts, initialPageInfo }: Props) {
 
   return (
     <div className="flex flex-col items-center gap-8">
-      {posts.map(({ title, excerpt, slug }) => (
+      {posts.map(({ title, excerpt, slug }: Post) => (
         <a
           href={`/${slug}`}
           key={slug}
-          className="space-y-3">
-          <h3
-            className={cn(
-              "font-bakbak font-bold !leading-[1]",
-              "text-2xl",
-              "md:text-3xl",
-            )}>
-            {title}
-          </h3>
-          {/* <div className="flex gap-2">
-              <span>Écrit par {author}</span>
-              <span>•</span>
-              <span>Il y a {date}</span>
-            </div> */}
-          {/* <ul className="flex gap-4">
-              {categories.map(({ category, id }: any) => (
-                <li key={id}>{category}</li>
-              ))}
-            </ul> */}
-          {/* <Image
-              class="h-full w-full object-cover"
-              title={formatImage(image).title}
-              src={formatImage(image).sourceUrl}
-              alt={formatImage(image).altText}
-              width="500"
-              height="300"
-            /> */}
-          <p
-            className="mt-4"
-            dangerouslySetInnerHTML={{ __html: excerpt }}></p>
-          <Button className="flex items-center gap-1 rounded-none font-bakbak text-lg uppercase">
-            <span>Lire</span>
-            <CgArrowTopRight size={20} />
-          </Button>
+          className="space-y-3 border p-6 shadow-md">
+          <Title>{title}</Title>
+          <Excerpt>{excerpt}</Excerpt>
+          <Read />
         </a>
       ))}
-      <Button
-        className="mt-12 bg-black p-6 font-bebas text-2xl text-yellow hover:bg-black hover:text-yellow"
-        onClick={handleMoreArticles}
-        type="button">
-        {loadingPosts ? "Chargement..." : "Voir plus d'articles"}
-      </Button>
+      {pageInfo.hasNextPage ? (
+        <Button
+          className={cn(
+            "mt-12 box-content bg-black px-5 py-2 font-bebas text-2xl text-yellow hover:bg-black hover:text-yellow",
+            "md:px-6 md:py-3 md:text-3xl",
+          )}
+          onClick={handleMoreArticles}
+          type="button">
+          {loadingPosts ? "Chargement..." : "Voir plus d'articles"}
+        </Button>
+      ) : null}
     </div>
   );
 }

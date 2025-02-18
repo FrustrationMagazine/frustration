@@ -371,7 +371,7 @@ export async function getInterviews() {
   return interviews;
 }
 
-export async function searchPosts({ term, category, after }: { term: string; category?: string; after?: string }) {
+export async function searchPosts({ term, category, after }: { term: string; category?: string | null; after?: string }) {
   const query = `
     query searchPosts {
       posts(

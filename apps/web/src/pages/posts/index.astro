@@ -5,35 +5,46 @@ import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
 import Results from "./_components/Results";
 import { searchPosts } from "@/data-access/wordpress";
 import H2 from "@components/H2";
+import { cn } from "@libs/tailwind";
 
 const url = new URL(Astro.request.url);
 const searchParams = new URLSearchParams(url.searchParams);
 
 let term = "";
-let category: string | null = null;
+let category = null;
+let author = null;
 if (searchParams) {
   term = searchParams.get("term") ?? "";
-  category = searchParams.get("category") || null;
+  category = searchParams.get("category") ?? null;
+  author = searchParams.get("author") ?? null;
 }
 
-const { posts: initialPosts, pageInfo: initialPageInfo } = await searchPosts({
+const { posts, pageInfo } = await searchPosts({
   term,
   category,
 });
+
+console.log("category", category);
+
+// prettier-ignore
+const title = term     ? `Résultats pour "${term}"` :
+              category ? `Catégorie "${category.replaceAll('_', ' ')}"` :
+              "Tous les articles";
+
 export const prerender = false;
 ---
 
-<PageLayout title={term ? `Résultats pour "${term}"` : "Tous les articles"}>
+<PageLayout title={title}>
   <article slot="content">
-    <H2 className="mb-12">
-      {term ? `Résultats pour "${term}"` : "Tous les articles"}
+    <H2>
+      {title}
     </H2>
     <Results
-      client:load
-      initialPosts={initialPosts}
-      initialPageInfo={initialPageInfo}
+      client:idle
       term={term}
       category={category}
+      initialPosts={posts}
+      initialPageInfo={pageInfo}
     />
   </article>
 </PageLayout>
