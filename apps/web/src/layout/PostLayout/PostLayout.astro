@@ -37,7 +37,9 @@ const author =
   <article slot="content">
     <!-- Header -->
     <div class="mb-[30px]">
-      <Title>{title}</Title>
+      <Title>
+        <Fragment set:html={title} />
+      </Title>
       <Metadata
         author={author}
         date={date}
