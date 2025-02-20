@@ -1,0 +1,43 @@
+---
+import { cn } from "@libs/tailwind";
+import { Image } from "astro:assets";
+const { author } = Astro.props;
+---
+
+<div
+  class={cn(
+    "shadow-md bg-card-author rounded-xl text-white",
+    "p-3 my-3",
+    "sm:p-6 sm:my-5 ",
+  )}>
+  <div class={cn("flex items-center", "gap-4", "sm:gap-6")}>
+    <div class={cn("size-11", "sm:size-14", "lg:size-16")}>
+      <Image
+        title={author.full_name}
+        alt={author.full_name}
+        width={100}
+        height={100}
+        src={author.picture}
+        class="inline rounded-full w-full h-full"
+      />
+    </div>
+
+    <div>
+      <h5 class={cn("font-bebas", "text-3xl", "sm:text-5xl")}>
+        {author.full_name}
+      </h5>
+      {
+        author.role ? (
+          <h6 class={cn("-mt-2 font-bebas", "text-lg", "sm:text-xl")}>
+            {author.role}
+          </h6>
+        ) : null
+      }
+      <!-- <a
+        class="text-xl font-semibold underline"
+        href="/"
+        >Tous les articles</a
+      > -->
+    </div>
+  </div>
+</div>

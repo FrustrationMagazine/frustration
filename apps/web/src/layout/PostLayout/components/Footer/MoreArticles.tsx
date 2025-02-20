@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // 🐝 Wordpress API
 import { fetchLinkPreview } from "@/data-access/wordpress";
 import { cn } from "@libs/tailwind";
-import LogoSquare from "../assets/logo_square.png";
+import LogoSquare from "../../assets/logo_square.png";
 
 const EMBED_INTERNAL_LINK_SELECTOR =
   "figure.wp-block-embed:not(.is-type-video):has(.wp-block-embed__wrapper)";
@@ -63,19 +63,19 @@ function MoreArticles() {
               className={cn(
                 "flex rounded-md border shadow-md",
                 "flex-col items-center gap-4 p-4",
-                "xs:flex-row xs:items-start xs:gap-6 xs:p-6",
+                "sm:flex-row sm:items-start sm:gap-6 sm:p-6",
               )}>
               <img
                 src={LogoSquare.src}
                 alt="Logo Square"
-                className={cn("h-10 w-10", "xs:h-12 xs:w-12")}
+                className={cn("h-12 w-12")}
               />
               <div>
                 <h5
                   className={cn(
                     "font-bakbak font-bold !leading-none",
                     "mb-2 text-xl",
-                    "xs:mb-2 xs:text-2xl",
+                    "sm:mb-2 sm:text-2xl",
                   )}>
                   {linkPreview.title}
                 </h5>

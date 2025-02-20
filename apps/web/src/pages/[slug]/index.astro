@@ -14,7 +14,7 @@ import {
 export const prerender = false;
 
 const { slug } = Astro.params;
-const article: Post = (await fetchPosts({ slug }, [
+const post: Post = (await fetchPosts({ slug }, [
   "title",
   "slug",
   "author",
@@ -24,8 +24,7 @@ const article: Post = (await fetchPosts({ slug }, [
   "content",
 ])) as Post;
 
-if (!article) return Astro.rewrite("/404");
-const image = article?.featuredImage?.node ?? null;
+if (!post) return Astro.rewrite("/404");
 
 // This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
 Astro.response.headers.set(
@@ -34,15 +33,9 @@ Astro.response.headers.set(
 );
 ---
 
-<PostLayout
-  title={formatTitle(article)}
-  description={formatTitle(article)}
-  author={formatAuthor(article)}
-  date={formatDate(article, { explicit: false })}
-  categories={formatCategories(article)}
-  image={image}>
+<PostLayout {...post}>
   <Fragment
     slot="content"
-    set:html={formatContent(article)}
+    set:html={formatContent(post)}
   />
 </PostLayout>

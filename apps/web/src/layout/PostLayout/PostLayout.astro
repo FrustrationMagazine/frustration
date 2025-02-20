@@ -1,25 +1,63 @@
 ---
-import PostHeader from "./components/PostHeader.astro";
-import PostSummary from "./components/PostSummary";
 import PageLayout from "../PageLayout/PageLayout.astro";
-import ScrollWatcher from "./components/ScrollWatcher.astro";
-import MoreArticles from "./components/MoreArticles";
-import "./wordpress.css";
 import { cn } from "@libs/tailwind";
+import { getEntry, getCollection } from "astro:content";
+
+import Title from "./components/Header/Title.astro";
+import Metadata from "./components/Header/Metadata.astro";
+import FeaturedImage from "./components/Header/FeaturedImage.astro";
+
+import "./wordpress.css";
+
+import CardAuthor from "./components/Footer/CardAuthor.astro";
+import Banner from "./components/Footer/Banner.astro";
+import PostSummary from "./components/PostSummary";
+
+import ScrollWatcher from "./components/ScrollWatcher.astro";
+import MoreArticles from "./components/Footer/MoreArticles";
+
+const {
+  title,
+  author: {
+    node: { userId },
+  },
+  categories: { nodes: categories },
+  date,
+  featuredImage: { node: featuredImage },
+} = Astro.props;
+
+const authors = await getCollection("authors");
+const DEFAULT = await getEntry("authors", "default");
+const author =
+  authors.find(({ data: { id } }) => id === userId)?.data ?? DEFAULT?.data;
 ---
 
 <PageLayout {...Astro.props}>
   <ScrollWatcher slot="header" />
   <article slot="content">
-    <!-- 🆎🖼️ Header -->
-    <PostHeader {...Astro.props} />
-    <!-- 🗞️ Content -->
+    <!-- Header -->
+    <div class="mb-[30px]">
+      <Title>{title}</Title>
+      <Metadata
+        author={author}
+        date={date}
+        categories={categories}
+      />
+    </div>
+    <FeaturedImage featuredImage={featuredImage} />
+
+    <!-- Text -->
     <section class="content">
       <slot name="content" />
     </section>
+
+    <!-- Footer -->
+    <CardAuthor author={author} />
+    <Banner />
     <MoreArticles client:idle />
-    <!-- ⬜ Footer -->
   </article>
+
+  <!-- Summary -->
   <div
     slot="right"
     class={cn(

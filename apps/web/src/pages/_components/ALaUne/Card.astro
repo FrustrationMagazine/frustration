@@ -1,15 +1,41 @@
 ---
 import { Image } from "astro:assets";
-import { getAuthor } from "../../../libs/data-access/authors";
 import { FcCalendar } from "react-icons/fc";
 import { cn } from "@libs/tailwind";
+import { getEntry, getCollection } from "astro:content";
 
-const { title, authorName, excerpt, image, date, categories, slug } =
-  Astro.props;
+const {
+  title,
+  author: {
+    node: { userId },
+  },
+  excerpt,
+  featuredImage: { node: featuredImage },
+  date,
+  categories: { nodes: categories },
+  slug,
+} = Astro.props;
 
-const author = await getAuthor(authorName);
-let picture;
-if (author) picture = author.data.picture;
+// Author
+const authors = await getCollection("authors");
+const DEFAULT = await getEntry("authors", "default");
+const author =
+  authors.find(({ data: { id } }) => id === userId)?.data ?? DEFAULT?.data;
+
+// Categories
+let mainCategories = categories.map(({ name, parent, slug }: any) =>
+  parent ? { name: parent.node.name, slug } : { name, slug },
+);
+mainCategories = mainCategories.filter(
+  (obj: any, index: any, self: any) =>
+    index === self.findIndex((t: any) => t.name === obj.name),
+);
+
+let DD_MM_YYYY = new Date(date).toLocaleDateString("fr-FR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
 ---
 
 <post-card
@@ -23,9 +49,9 @@ if (author) picture = author.data.picture;
     <div class="h-[300px] overflow-hidden">
       <Image
         class="w-full object-cover h-full"
-        title={image.title}
-        src={image.sourceUrl}
-        alt={image.altText}
+        title={featuredImage.title}
+        src={featuredImage.sourceUrl}
+        alt={featuredImage.altText}
         data-thumbnail
         width="500"
         height="300"
@@ -42,7 +68,7 @@ if (author) picture = author.data.picture;
         <!-- Categories -->
         <div class="flex flex-wrap gap-1">
           {
-            categories.map((category: any) => (
+            mainCategories.map((category: any) => (
               <span
                 class={cn(
                   "bg-yellow text-black font-bakbak uppercase",
@@ -58,21 +84,21 @@ if (author) picture = author.data.picture;
         <div
           class="hidden text-xs md:text-sm lg:text-base xs:flex items-center gap-1 font-open-sans text-white">
           {
-            picture ? (
+            author?.picture ? (
               <Image
                 title="Profile picture"
                 alt="alt"
                 width="100"
                 height="100"
-                src={picture}
+                src={author.picture}
                 class="mr-1 inline w-[13px] rounded-full"
               />
             ) : null
           }
-          <span class="author">{authorName}</span>
+          <span class="author">{author?.full_name}</span>
           <span>|</span>
           <FcCalendar />
-          <date class="date">{date}</date>
+          <date class="date">{DD_MM_YYYY}</date>
         </div>
       </header>
     </div>

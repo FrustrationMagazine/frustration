@@ -24,8 +24,6 @@ const { posts, pageInfo } = await searchPosts({
   category,
 });
 
-console.log("category", category);
-
 // prettier-ignore
 const title = term     ? `Résultats pour "${term}"` :
               category ? `Catégorie "${category.replaceAll('_', ' ')}"` :

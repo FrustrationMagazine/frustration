@@ -88,7 +88,7 @@ type ArticleQueryField = "title" | "slug" | "author" | "date" | "categories" | "
 const postQuery = (wpSearchOptions: WPSearchOptions, fields: ArticleQueryField[]): string => {
   const titleIfWanted = fields.includes("title") ? "title(format: RENDERED)" : "";
   const slugIfWanted = fields.includes("slug") ? "slug" : "";
-  const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName } }` : "";
+  const authorIfWanted = fields.includes("author") ? `author { node { firstName lastName userId } }` : "";
   const dateIfWanted = fields.includes("date") ? "date" : "";
   const categoriesIfWanted = fields.includes("categories") ? `categories { nodes { slug name parent { node { name } } } }` : "";
   const imageIfWanted = fields.includes("image") ? `featuredImage { node { title(format: RENDERED) altText sourceUrl mediaDetails { height width } mimeType } }` : "";
@@ -138,18 +138,7 @@ export const fetchPosts = async (wpSearchOptions: WPSearchOptions, fields: Artic
 // FORMATTERS =================================
 
 const UNKNOWN_TITLE = "Article sans titre";
-const UNKNOWN_AUTHOR = "Invité.e";
 const DEFAULT_ARTICLE_IMAGE_METADATA_PATH = "DEFAULT_ARTICLE_IMAGE";
-
-export const formatSlug = (article: Post): string => article?.slug ?? "";
-export const formatTitle = (article: Post): string => article?.title ?? UNKNOWN_TITLE;
-
-export const formatAuthor = (article: Post) => {
-  if (article?.author?.node?.firstName || article?.author?.node?.lastName) {
-    return `${article?.author.node.firstName ?? ""} ${article?.author.node.lastName ?? ""}`;
-  }
-  return UNKNOWN_AUTHOR;
-};
 
 export const formatImage = (article: Post): { title: string; altText: string; sourceUrl: string } | null => {
   if (!article?.featuredImage?.node) return null;
@@ -188,8 +177,6 @@ export const formatContent = (article: Post): string => {
 
   return "";
 };
-
-export const formatExcerpt = (article: Post): string => article?.excerpt ?? "";
 
 // ===================================================================================================
 

@@ -29,6 +29,10 @@ export default {
         `,
         "gradient-conic":
           "conic-gradient(var(--conic-position, from 45deg), var(--tw-gradient-stops))",
+        "card-author": `
+          url('/textures/wall-4-light.png'),
+          linear-gradient(#8955E0, #8955E0)
+        `,
       },
       animation: {
         sliding: "sliding 60s linear infinite",
@@ -125,7 +129,7 @@ export default {
       red: "#700002",
       black: "#000",
       white: "#fff",
-      purple: "#5c5db7",
+      purple: "#8955E0",
       palePurple: "#7C76B0",
       blue: "#1e40af",
       primary: "#FFF200",

@@ -19,7 +19,7 @@ const articles = (await fetchPosts({ first: 6 }, [
   <ArrowButtons />
   <div class="splide__track h-full">
     <ul class="splide__list">
-      {articles.map((article) => <Slide article={article} />)}
+      {articles.map((article) => <Slide {...article} />)}
     </ul>
   </div>
 </div>

@@ -1,7 +1,9 @@
 {
+  "id": 76,
   "first_name": "Farton",
   "last_name": "Bink",
   "full_name": "Farton Bink",
+  "email": "lea_hamadi@me.com",
   "role": "Photographe et monteuse vidéo",
   "picture": "./farton_bink.png",
   "punchline": "Photoshop tout ce qui bouge",

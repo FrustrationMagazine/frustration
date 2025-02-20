@@ -1,7 +1,9 @@
 {
+  "id": 67,
   "first_name": "Rob",
   "last_name": "Grams",
   "full_name": "Rob Grams",
+  "email": "robgrams595@gmail.com",
   "role": "Rédacteur chef",
   "picture": "./rob_grams.png",
   "punchline": "S’est fait voler son pain au chocolat par un socdem en 2004",

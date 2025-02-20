@@ -16,7 +16,6 @@ export function middleware(req: NextRequest) {
   // if (!token && isProtectedPath) {
   //   return NextResponse.redirect(new URL("/auth/signin", req.url));
   // }
-  console.log("req", req);
   return NextResponse.next();
 }
 

@@ -1,7 +1,9 @@
 {
+  "id": 64,
   "first_name": "Thibaut",
   "last_name": "Izard",
   "full_name": "Thibaut Izard",
+  "email": "thibaut.izard@gmail.com",
   "role": "Développeur web",
   "picture": "./thibaut_izard.png",
   "punchline": "Voit des erreurs 404 la nuit",
