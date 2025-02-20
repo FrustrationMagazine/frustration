@@ -7,7 +7,7 @@ import {
 } from "@dashboard/components/Tabs";
 
 import Permanent from "./Permanent";
-import Temporary from "./Temporary";
+// import Temporary from "./Temporary";
 
 // 🧰 Config
 export const dynamic = "force-dynamic";
@@ -29,16 +29,16 @@ const IncomePage = () => (
     defaultValue="permanent"
     className="flex h-full w-full flex-col overflow-auto"
   >
-    <TabsList className="mx-auto mb-3 grid h-fit w-[400px] grid-cols-2 gap-2 bg-transparent">
+    <TabsList className="mx-auto mb-3 grid h-fit w-[400px] grid-cols-1 gap-2 bg-transparent">
       <Tab value="permanent">Global</Tab>
-      <Tab value="temporary">Campagne</Tab>
+      {/* <Tab value="temporary">Campagne</Tab> */}
     </TabsList>
     <TabsContent className="grow overflow-auto" value="permanent">
       <Permanent />
     </TabsContent>
-    <TabsContent className="grow overflow-auto" value="temporary">
+    {/* <TabsContent className="grow overflow-auto" value="temporary">
       <Temporary />
-    </TabsContent>
+    </TabsContent> */}
   </Tabs>
 );
 

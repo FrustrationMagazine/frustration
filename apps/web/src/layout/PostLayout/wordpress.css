@@ -1,95 +1,88 @@
- .content {
-    iframe {
-      width: 100%;
-      height: 500px;
-    }
+.content iframe {
+  width: 100%;
+  height: 500px;
+}
 
-    h2 {
-      color: #FFF200;
-      background: black;
-      font-size: clamp(30px, 7vw, 50px);
-      line-height: 120%;
-      width: fitcontent;
-      text-transform: uppercase;
-      font-family: "Bebas Neue", sans-serif;
-      padding: 12px 15px 10px 15px;
-      margin-top: 45px;
-      margin-bottom: 25px;
-    }
+.content h2 {
+  color: #fff200;
+  background: black;
+  font-size: clamp(30px, 7vw, 50px);
+  line-height: 120%;
+  width: fitcontent;
+  text-transform: uppercase;
+  font-family: "Bebas Neue", sans-serif;
+  padding: 12px 15px 10px 15px;
+  margin-top: 45px;
+  margin-bottom: 25px;
+}
 
-    a {
-      text-decoration: underline;
-      color: blue;
-    }
+.content a {
+  text-decoration: underline;
+  color: blue;
+}
+.content p {
+  margin-bottom: 15px;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 30px;
+  font-weight: 400;
+}
 
-    /* a[href^='https://frustrationmagazine.fr'] {
-      color:red;
-    } */
+.content blockquote {
+  border-left: 5px solid #fff200;
+  margin: 0 0 1.75em;
+  padding-left: 1em;
+}
 
-    p {
-      margin-bottom: 15px;
-      font-family: "Open Sans", Arial, sans-serif;
-      font-size: 18px;
-      line-height: 30px;
-      font-weight: 400;
-    }
+.content blockquote p {
+  font-weight: 600;
+  font-size: 20px;
+}
+.content strong {
+  font-weight: 900;
+}
 
-    blockquote {
-      border-left: 5px solid #FFF200;
-      margin: 0 0 1.75em;
-      padding-left: 1em;
-    }
+.content figure {
+  margin: 30px 0;
+}
 
-    blockquote p {
-      font-weight: 600;
-      font-size: 20px;
-    }
-    strong {
-      font-weight: 900;
-    }
+.content figure > * {
+  margin: auto;
+}
 
-    figure {
-      margin: 30px 0;
-    }
+.content a img {
+  margin: auto;
+}
 
-    figure > * {
-      margin: auto;
-    }
+.content figcaption {
+  margin-top: 5px;
+  padding: 0 10ch;
+  font-weight: 100;
+  color: #4b5563;
+  font-size: 14px;
+}
 
-    a img {
-      margin: auto;
-    }
+.content br {
+  display: none;
+}
 
-    figcaption {
-      margin-top: 5px;
-      padding: 0 10ch;
-      font-weight: 100;
-      color: #4b5563;
-      font-size: 14px;
-    }
+.content p:has(img) {
+  line-height: 110%;
+  font-weight: 900;
+  font-size: 14px;
+  margin: 40px 0;
+}
 
-    br {
-      display: none;
-    }
+.content p img {
+  width: 100%;
+  margin-bottom: 5px;
+}
 
-    p:has(img) {
-      line-height: 110%;
-      font-weight: 900;
-      font-size: 14px;
-      margin: 40px 0;
-    }
+.content iframe:not([src^="https://www.youtube.com"])
+{
+  display: none;
+}
 
-    p img {
-      width: 100%;
-      margin-bottom: 5px;
-    }
-
-    iframe:not([src^="https://www.youtube.com"])
-    {
-      display: none;
-    }
-
-    .twitter-tweet {
-      margin: 20px auto;
-    }
-  }
+.content .twitter-tweet {
+  margin: 20px auto;
+}

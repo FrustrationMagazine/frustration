@@ -1,10 +1,10 @@
-import { signedIn } from "@dashboard/auth";
+import { signedIn } from "@auth";
 import { redirect } from "next/navigation";
 
 async function AuthRoot() {
-  const isSignedIn = await signedIn();
-  if (!isSignedIn) redirect("/auth/signin");
-  if (isSignedIn) redirect("/dashboard/income");
+  const signed = await signedIn();
+  if (!signed) redirect("/auth/signin");
+  if (signed) redirect("/dashboard/income");
 
   return null;
 }

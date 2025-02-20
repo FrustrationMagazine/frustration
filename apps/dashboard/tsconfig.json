@@ -28,8 +28,17 @@
       "@dashboard/components/*": [
         "./src/components/*"
       ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@libs/*": [
+        "./src/libs/*"
+      ],
       // 🔑 Auth
       "@dashboard/auth": [
+        "./src/app/auth/auth.ts"
+      ],
+      "@auth": [
         "./src/app/auth/auth.ts"
       ],
       // 🪝 Hooks

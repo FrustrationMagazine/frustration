@@ -1,6 +1,7 @@
 // 🧱 Components
-import { Toaster } from "@dashboard/components/Toaster";
-import { Badge } from "@dashboard/components/Badge";
+import { Toaster } from "@components/Toaster";
+import { Badge } from "@components/Badge";
+import { cn } from "@libs/tailwind";
 
 // 👨‍🎨 Global style
 import "./globals.css";
@@ -10,7 +11,6 @@ import Link from "next/link";
 
 // 🧰 Config
 import type { Metadata } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // 🖋️ Fonts
 import { Bebas_Neue, Poppins, Inter } from "next/font/google";
@@ -59,6 +59,10 @@ const Header = () => (
   </header>
 );
 
+const Main = ({ children }: { children: React.ReactNode }) => (
+  <main className="flex flex-grow overflow-auto">{children}</main>
+);
+
 /* ======================= */
 /*         🚀 UI           */
 /* ======================= */
@@ -73,11 +77,15 @@ export default async function RootLayout({ children }: Props) {
       lang="fr"
       className={`${inter.variable} ${bebasNeue.variable} ${poppins.variable}`}
     >
-      <body className="bg-yellow flex h-screen flex-col bg-[url('/static/background.svg')] bg-cover bg-fixed font-inter antialiased">
+      <body
+        className={cn(
+          "flex h-screen flex-col font-inter antialiased",
+          "bg-yellow bg-[url('/static/background.svg')] bg-cover bg-fixed",
+        )}
+      >
         <Header />
-        <main className="flex flex-grow overflow-auto">{children}</main>
+        <Main>{children}</Main>
         <Toaster />
-        <SpeedInsights />
       </body>
     </html>
   );
