@@ -12,7 +12,6 @@ const scanEmbedArticles = () => {
 };
 const SEPARATORS_SELECTOR = ".wp-block-separator";
 const scanSeparators = () => document.querySelectorAll(SEPARATORS_SELECTOR);
-
 const mapToLinks = (embedArticles: any) =>
   Array.from(embedArticles)
     .map((node: any) => {
@@ -33,10 +32,13 @@ function MoreArticles() {
   useEffect(() => {
     const embedArticles = scanEmbedArticles();
     const links = mapToLinks(embedArticles);
+    console.log("embedArticles", embedArticles);
+    console.log("links", links);
 
     // Fetch articles
     const linksPreviewPromises = links.map(fetchLinkPreview);
     Promise.all(linksPreviewPromises).then((values) => {
+      console.log("values", values);
       setLinkPreviews(values);
       const title = embedArticles[0].previousElementSibling;
       const separators = scanSeparators();
@@ -59,7 +61,7 @@ function MoreArticles() {
         {linkPreviews.map((linkPreview: any) => (
           <li key={linkPreview.slug}>
             <a
-              href={linkPreview.slug}
+              href={`/${linkPreview.slug}`}
               className={cn(
                 "flex rounded-md border shadow-md",
                 "flex-col items-center gap-4 p-4",
