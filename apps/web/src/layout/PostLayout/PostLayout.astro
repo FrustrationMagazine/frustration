@@ -23,8 +23,9 @@ const {
   },
   categories: { nodes: categories },
   date,
-  featuredImage: { node: featuredImage },
 } = Astro.props;
+
+const featuredImage = Astro.props?.featuredImage?.node;
 
 const authors = await getCollection("authors");
 const DEFAULT = await getEntry("authors", "default");
@@ -46,7 +47,7 @@ const author =
         categories={categories}
       />
     </div>
-    <FeaturedImage featuredImage={featuredImage} />
+    {featuredImage ? <FeaturedImage featuredImage={featuredImage} /> : null}
 
     <!-- Text -->
     <section class="content">
