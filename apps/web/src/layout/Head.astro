@@ -1,127 +1,141 @@
 ---
 interface Props {
-  title: string;
-  author: string;
-  description: string;
-  ogImageUrl: string;
-  width?: number;
-  height?: number;
-  mimeType?: string;
+	title: string;
+	author: any;
+	description: string;
+	ogImageUrl: string;
+	width?: number;
+	height?: number;
+	mimeType?: string;
 }
-const { title, author, description, ogImageUrl, width, height, mimeType } =
-  Astro.props;
+const { title, description, ogImageUrl, width, height, mimeType } = Astro.props;
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
+const author = Astro.props.author?.node;
+const authorFullname = `${author?.firstName} ${author?.lastName}`;
+
 ---
 
 <head>
-  <!-- Primary Meta Tags -->
-  <title>{title}</title>
-  <meta charset="UTF-8" />
-  <link
-    rel="sitemap"
-    href="/sitemap-index.xml"
-  />
+	<!-- Primary Meta Tags -->
+	<title>{title}</title>
+	<meta charset="UTF-8" />
+	<meta
+		name="robots"
+		content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+	/>
+	<link
+		rel="sitemap"
+		href="/sitemap-index.xml"
+	/>
 
-  <meta
-    name="title"
-    content={title}
-  />
-  <meta
-    name="author"
-    content={author}
-  />
-  <meta
-    name="description"
-    content={description}
-  />
-  <meta
-    name="viewport"
-    content="width=device-width"
-  />
-  <meta
-    name="generator"
-    content={Astro.generator}
-  />
+	<meta
+		name="title"
+		content={title}
+	/>
+	{
+		author ? (
+			<meta
+				name="author"
+				content={authorFullname}
+			/>
+      <meta name="twitter:label1" content="Écrit par"/>
+      <meta name="twitter:data1" content={authorFullname}/>
+      <meta name="twitter:label2" content="Durée de lecture estimée"/>
+      <meta name="twitter:data2" content="Quelques minutes"/>
+		) : null
+	}
+	<meta
+		name="description"
+		content={description}
+	/>
+	<meta
+		name="viewport"
+		content="width=device-width"
+	/>
+	<meta
+		name="generator"
+		content={Astro.generator}
+	/>
 
-  <link
-    rel="icon"
-    type="image/x-icon"
-    href="/img/favicon_light.png"
-  />
+	<link
+		rel="icon"
+		type="image/x-icon"
+		href="/img/favicon_light.png"
+	/>
 
-  <!-- Open Graph / Facebook -->
-  <meta
-    property="og:type"
-    content="website"
-  />
-  <meta
-    property="og:url"
-    content={permalink}
-  />
-  <meta
-    property="og:title"
-    content={title}
-  />
-  <meta
-    property="og:description"
-    content={description}
-  />
-  <meta
-    property="og:image"
-    content={ogImageUrl}
-  />
-  <meta
-    property="og:locale"
-    content="fr_FR"
-  />
-  <meta
-    property="og:type"
-    content="article"
-  />
-  <meta
-    property="og:image:width"
-    content={width}
-  />
-  <meta
-    property="og:image:height"
-    content={height}
-  />
-  <meta
-    property="og:image:type"
-    content={mimeType}
-  />
-  <meta
-    property="og:site_name"
-    content="Frustration Magazine"
-  />
+	<!-- Open Graph / Facebook -->
+	<meta
+		property="og:type"
+		content="website"
+	/>
+	<meta
+		property="og:url"
+		content={permalink}
+	/>
+	<meta
+		property="og:title"
+		content={title}
+	/>
+	<meta
+		property="og:description"
+		content={description}
+	/>
+	<meta
+		property="og:image"
+		content={ogImageUrl}
+	/>
+	<meta
+		property="og:locale"
+		content="fr_FR"
+	/>
+	<meta
+		property="og:type"
+		content="article"
+	/>
+	<meta
+		property="og:image:width"
+		content={width}
+	/>
+	<meta
+		property="og:image:height"
+		content={height}
+	/>
+	<meta
+		property="og:image:type"
+		content={mimeType}
+	/>
+	<meta
+		property="og:site_name"
+		content="Frustration Magazine"
+	/>
 
-  <!-- X -->
-  <meta
-    name="twitter:card"
-    content="summary_large_image"
-  />
-  <meta
-    name="twitter:url"
-    content={permalink}
-  />
-  <meta
-    name="twitter:title"
-    content={title}
-  />
-  <meta
-    name="twitter:description"
-    content={description}
-  />
-  <meta
-    name="twitter:image"
-    content={ogImageUrl}
-  />
-  <meta
-    name="twitter:creator"
-    content="@Frustration_web"
-  />
-  <meta
-    name="twitter:site"
-    content="@Frustration_web"
-  />
+	<!-- X -->
+	<meta
+		name="twitter:card"
+		content="summary_large_image"
+	/>
+	<meta
+		name="twitter:url"
+		content={permalink}
+	/>
+	<meta
+		name="twitter:title"
+		content={title}
+	/>
+	<meta
+		name="twitter:description"
+		content={description}
+	/>
+	<meta
+		name="twitter:image"
+		content={ogImageUrl}
+	/>
+	<meta
+		name="twitter:creator"
+		content="@Frustration_web"
+	/>
+	<meta
+		name="twitter:site"
+		content="@Frustration_web"
+	/>
 </head>

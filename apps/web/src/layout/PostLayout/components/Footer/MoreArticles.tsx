@@ -32,13 +32,10 @@ function MoreArticles() {
   useEffect(() => {
     const embedArticles = scanEmbedArticles();
     const links = mapToLinks(embedArticles);
-    console.log("embedArticles", embedArticles);
-    console.log("links", links);
 
     // Fetch articles
     const linksPreviewPromises = links.map(fetchLinkPreview);
     Promise.all(linksPreviewPromises).then((values) => {
-      console.log("values", values);
       setLinkPreviews(values);
       const title = embedArticles[0].previousElementSibling;
       const separators = scanSeparators();
