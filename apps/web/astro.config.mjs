@@ -16,8 +16,8 @@ export default defineConfig({
   }),
   integrations: [react(), tailwind(), sitemap()],
   image: {
-    // To download external wordpress images
-    domains: ["i0.wp.com"],
+    // To optimize external wordpress images
+    domains: ["adminfrustrationmagazine.fr"],
   },
   plugins: ["prettier-plugin-astro"],
   overrides: [
