@@ -64,7 +64,7 @@ function Results({ term, category, initialPosts, initialPageInfo }: Props) {
   const handleMoreArticles = async () => {
     setLoadingPosts(true);
     const query = `
-     query searchPosts {
+     query fetchSearchPosts {
       posts(
         first: 6
         ${pageInfo?.endCursor ? `after: "${pageInfo.endCursor}"` : ""}

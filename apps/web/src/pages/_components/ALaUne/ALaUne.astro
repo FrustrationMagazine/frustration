@@ -1,24 +1,10 @@
 ---
 // 🧱 Components
-import Section from "../Section.astro";
 import SectionTitle from "../SectionTitle.astro";
 import Card from "./Card.astro";
 import { cn } from "@libs/tailwind";
 
-// 🐝 Wordpress API
-import { type Post, fetchPosts } from "@/data-access/wordpress";
-
-// 📦 Data
-const MAX_ARTICLES = 9;
-const articles = (await fetchPosts({ first: MAX_ARTICLES }, [
-  "title",
-  "author",
-  "slug",
-  "excerpt",
-  "date",
-  "categories",
-  "image",
-])) as Post[];
+const { posts } = Astro.props;
 ---
 
 <style>
@@ -39,7 +25,7 @@ const articles = (await fetchPosts({ first: MAX_ARTICLES }, [
   <SectionTitle>À la une</SectionTitle>
   {/* Thumbnails */}
   <div class="wrapper w-full gap-4">
-    {articles.map((article: Post) => <Card {...article} />)}
+    {posts.map((post: any) => <Card {...post} />)}
   </div>
   {/* ⬜ Tous les articles */}
   <a

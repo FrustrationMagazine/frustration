@@ -17,7 +17,7 @@ export default defineConfig({
   integrations: [react(), tailwind(), sitemap()],
   image: {
     // To optimize external wordpress images
-    domains: ["adminfrustrationmagazine.fr"],
+    domains: ["adminfrustrationmagazine.fr", "i.ytimg.com"],
   },
   plugins: ["prettier-plugin-astro"],
   overrides: [

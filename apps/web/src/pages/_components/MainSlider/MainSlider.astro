@@ -1,25 +1,14 @@
 ---
-import { fetchPosts } from "@/data-access/wordpress";
-import type { Post } from "@/data-access/wordpress";
 import ArrowButtons from "./ArrowButtons.astro";
 import Slide from "./Slide.astro";
-
-const articles = (await fetchPosts({ first: 6 }, [
-  "title",
-  "author",
-  "slug",
-  "excerpt",
-  "date",
-  "categories",
-  "image",
-])) as Post[];
+const { posts } = Astro.props;
 ---
 
 <div class="splide splide-main-carrousel bg-transparent h-screen">
   <ArrowButtons />
   <div class="splide__track h-full">
     <ul class="splide__list">
-      {articles.map((article) => <Slide {...article} />)}
+      {posts.map((post: any) => <Slide {...post} />)}
     </ul>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // 🐝 Wordpress API
-import { fetchLinkPreview } from "@/data-access/wordpress";
+import { fetchLinkPreview } from "@libs/wordpress";
 import { cn } from "@libs/tailwind";
 import LogoSquare from "../../assets/logo_square.png";
 

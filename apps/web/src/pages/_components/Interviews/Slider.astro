@@ -1,7 +1,8 @@
 ---
-import { getInterviews } from "@/data-access/wordpress";
-const interviews = await getInterviews();
-import Card from "./Card.astro";
+import { fetchInterviews } from "@libs/wordpress";
+const NB_INTERVIEWS = 6;
+const interviews = await fetchInterviews({ first: NB_INTERVIEWS });
+import Interview from "./Card.astro";
 ---
 
 <section
@@ -10,28 +11,11 @@ import Card from "./Card.astro";
   <div class="splide__track max-w-full py-12">
     <ul class="splide__list max-w-full">
       {
-        interviews.map(
-          ({
-            title,
-            image,
-            link,
-            slug,
-          }: {
-            title: string;
-            image: { title: string; sourceUrl: string; altText: string };
-            link: string;
-            slug: string;
-          }) => (
-            <li class="splide__slide group pb-8 transition-all hover:scale-105">
-              <Card
-                title={title}
-                image={image}
-                link={link}
-                slug={slug}
-              />
-            </li>
-          ),
-        )
+        interviews.map((interview: any) => (
+          <li class="splide__slide group pb-8 transition-all hover:scale-105">
+            <Interview {...interview} />
+          </li>
+        ))
       }
     </ul>
   </div>
