@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { Newspaper } from "lucide-react";
-
+import { cn } from "@libs/tailwind";
 const {
   title,
   slug,
@@ -17,7 +17,15 @@ const IMAGE_SIZE = 1200;
     <div
       class="font-bakbak absolute left-[50%] top-[50%] w-[90%] max-w-[1000px] translate-x-[-50%] translate-y-[-50%]">
       <h3
-        class="mb-4 uppercase leading-1 text-balance bg-black px-10 py-4 text-center font-bakbak text-3xl font-bold text-yellow md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+        class={cn(
+          "mb-4 uppercase leading-1 text-balance bg-black px-10 py-4 text-center font-bakbak font-bold text-yellow",
+          "text-2xl",
+          "sm:text-3xl",
+          "md:text-4xl",
+          "lg:text-4xl",
+          "xl:text-5xl",
+          "3xl:text-6xl",
+        )}>
         {title}
       </h3>
       <div

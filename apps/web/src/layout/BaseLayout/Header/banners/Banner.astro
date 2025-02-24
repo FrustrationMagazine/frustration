@@ -12,19 +12,12 @@ const backgroundUrl = `url(${BannerBackground.src})`;
   <Image
     src={Banner2025}
     width="500"
-    class="banner-image"
+    class="max-h-[15vh] max-w-[80vw] w-auto h-auto m-auto"
     alt="Une bannière pour mener à la page d'abonnement de Frustration"
   />
 </a>
 <style define:vars={{ backgroundUrl }}>
-  .banner-image {
-    width: min(80vw, 600px);
-    height: auto;
-    margin: auto;
-  }
-
   .banner-container {
-    display: block;
     background-image: var(--backgroundUrl);
     background-repeat: round;
   }
