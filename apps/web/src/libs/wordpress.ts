@@ -58,6 +58,31 @@ export async function fetchLastPosts({ first = 6 }: any) {
   return posts;
 }
 
+export async function fetchRSSItems({ first = 6 }: any) {
+  const query = `
+   query fetchLastPosts {
+        posts(first: ${first}) {
+          nodes {
+            title(format: RENDERED)
+            slug
+            date
+            content(format: RENDERED)
+            author { node { name } }
+            categories { nodes { name } }
+            excerpt(format: RENDERED)
+          }
+        }
+    }`;
+
+  let {
+    data: {
+      posts: { nodes: posts },
+    },
+  } = await fetchWordpress({ query });
+
+  return posts;
+}
+
 export async function fetchInterviews({ first = 6 }: any) {
   const query = `
    query fetchInterviews {
