@@ -14,6 +14,11 @@
       "source": "/campagne-dons",
       "destination": "/abonnements",
       "permanent": true
+    },
+    {
+      "source": "/campagne-de-dons",
+      "destination": "/abonnements",
+      "permanent": true
     }
   ]
 }
