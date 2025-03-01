@@ -53,9 +53,9 @@ const loadIcon = async (iconName: string) =>
   (await import(`../icons/${iconName}.svg`)).default;
 ---
 
-<div class="mb-5">
+<div class="mb-5 col-[-2_/_-1]">
   <H5>Nos réseaux sociaux</H5>
-  <ul class="flex items-center gap-3 mt-4">
+  <ul class="flex items-center gap-3 mt-4 justify-center sm:justify-start">
     {
       SOCIAL_NETWORKS.map(({ name, url, iconName }) => (
         <li>

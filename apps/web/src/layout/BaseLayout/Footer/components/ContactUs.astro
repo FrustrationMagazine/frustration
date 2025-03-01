@@ -1,0 +1,28 @@
+---
+import { HiOutlineMailOpen } from "react-icons/hi";
+import { cn } from "@libs/tailwind";
+import H5 from "./H5.astro";
+---
+
+<div class="text-center sm:text-left col-span-full">
+  <H5> Nous contacter </H5>
+  <p
+    class={cn(
+      "mb-2 w-full mt-2 max-w-[400px] font-open-sans leading-none mx-auto",
+      "text-sm sm:mx-0",
+    )}>
+    Une question à nous poser ? Une information à nous communiquer ? Un article
+    à nous proposer ?
+    <b>N'hésitez pas à nous contacter !</b>
+  </p>
+  <a
+    href="mailto:redaction@frustrationmagazine.fr"
+    class={cn(
+      "w-full font-open-sans leading-tight underline flex gap-1 font-bold items-center",
+      "text-sm justify-center",
+      "sm:text-base sm:justify-start",
+    )}>
+    <HiOutlineMailOpen />
+    redaction@frustrationmagazine.fr
+  </a>
+</div>

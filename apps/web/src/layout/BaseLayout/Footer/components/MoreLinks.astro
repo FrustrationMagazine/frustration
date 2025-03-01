@@ -14,15 +14,22 @@ const MORE_LINKS = [
 
 <ul
   class={cn(
-    "flex items-center justify-center px-8 gap-4 text-center leading-none font-bakbak bg-black py-2 text-yellow",
-    "text-base",
-    "lg:py-2  lg:text-lg",
+    "flex items-center justify-center text-center leading-none font-bakbak bg-black text-yellow",
+    "py-2 px-8 gap-2 flex-col",
+    "sm:flex-row sm:gap-4",
+    "lg:py-2 lg:text-lg",
   )}>
   {
     MORE_LINKS.map(({ name, url }) => (
       <a
         href={url}
-        class="useful-link text-xs md:text-lg relative before:absolute before:bottom-0 before:left-1/2 before:block before:h-[2px] before:w-[0] before:translate-x-[-50%] before:bg-yellow before:transition-all before:content-[''] before:hover:w-full">
+        class={cn(
+          "relative",
+          "text-sm",
+          "sm:text-base",
+          "md:text-lg",
+          "before:absolute before:bottom-0 before:left-1/2 before:block before:h-[2px] before:w-[0] before:translate-x-[-50%] before:bg-yellow before:transition-all before:content-[''] before:hover:w-full",
+        )}>
         <li>{name}</li>
       </a>
     ))
