@@ -1,6 +1,8 @@
 ---
 import { cn } from "@libs/tailwind";
 import { Image } from "astro:assets";
+import { GrArticle } from "react-icons/gr";
+
 const { author } = Astro.props;
 ---
 
@@ -11,7 +13,7 @@ const { author } = Astro.props;
     "sm:p-6 sm:my-5 ",
   )}>
   <div class={cn("flex items-center", "gap-4", "sm:gap-6")}>
-    <div class={cn("size-11", "sm:size-14", "lg:size-16")}>
+    <div class={cn("shrink-0 size-11", "sm:size-14", "lg:size-16")}>
       <Image
         title={author.full_name}
         alt={author.full_name}
@@ -28,16 +30,21 @@ const { author } = Astro.props;
       </h5>
       {
         author.role ? (
-          <h6 class={cn("-mt-2 font-bebas", "text-lg", "sm:text-xl")}>
+          <h6 class={cn("font-bebas !leading-none", "text-lg", "sm:text-xl")}>
             {author.role}
           </h6>
         ) : null
       }
-      <!-- <a
-        class="text-xl font-semibold underline"
-        href="/"
-        >Tous les articles</a
-      > -->
+      <a
+        class={cn(
+          "mt-1 font-open-sans font-semibold flex items-center gap-1.5",
+          "text-xs",
+          "sm:text-sm ",
+        )}
+        href={`/posts?author=${author.slug}`}>
+        <GrArticle />
+        <span> Tous les articles </span>
+      </a>
     </div>
   </div>
 </div>

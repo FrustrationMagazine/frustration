@@ -5,40 +5,46 @@ import { Image } from "astro:assets";
 const { author, date, categories } = Astro.props;
 
 let DD_MM_YYYY = new Date(date).toLocaleDateString("fr-FR", {
-	day: "2-digit",
-	month: "2-digit",
-	year: "numeric",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
 });
 ---
 
-<div class={cn("text-sm gap-1 flex flex-col flex-wrap", "md:text-base md:flex-row md:justify-between")}>
-	<div class="flex items-center">
-		<div class={cn("w-5 mr-2 grid place-items-center")}>
-			<Image
-				title={author.full_name}
-				alt={author.full_name}
-				width={50}
-				height={50}
-				src={author.picture}
-				class="inline rounded-full"
-			/>
-		</div>
-		<span class={cn("space-x-0.5", "text-base", "md:text-xl")}>
-			<span class="font-bold">{author.full_name}</span>
-			<span>|</span>
-			<span>{DD_MM_YYYY}</span>
-		</span>
-	</div>
-	<div class="categories flex items-center flex-wrap gap-y-0 gap-x-2">
-		{
-			categories.map((category: any) => (
-				<a
-					href={`/posts?category=${category.slug}`}
-					class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">
-					<Fragment set:html={TagIcon} />
-					<span>{category.name}</span>
-				</a>
-			))
-		}
-	</div>
+<div
+  class={cn(
+    "text-sm gap-1 flex flex-col flex-wrap",
+    "md:text-base md:flex-row md:justify-between",
+  )}>
+  <a
+    href={`/posts?author=${author.slug}`}
+    class="flex items-center">
+    <div class={cn("w-5 mr-2 grid place-items-center")}>
+      <Image
+        title={author.full_name}
+        alt={author.full_name}
+        width={50}
+        height={50}
+        src={author.picture}
+        class="inline rounded-full"
+      />
+    </div>
+    <span class={cn("space-x-0.5", "text-base", "md:text-xl")}>
+      <span class="font-bold">{author.full_name}</span>
+      <span>|</span>
+      <span>{DD_MM_YYYY}</span>
+    </span>
+  </a>
+  <div class="categories flex items-center flex-wrap gap-y-0 gap-x-2">
+    {
+      categories.map((category: any) => (
+        <a
+          href={`/posts?category=${category.slug}`}
+          class="flex items-center [&>svg]:mr-1.5 [&>svg]:w-[13px]">
+          <Fragment set:html={TagIcon} />
+          <span>{category.name}</span>
+        </a>
+      ))
+    }
+  </div>
 </div>

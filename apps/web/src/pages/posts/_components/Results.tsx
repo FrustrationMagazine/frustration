@@ -6,6 +6,7 @@ import { CgArrowTopRight } from "react-icons/cg";
 type Props = {
   readonly term: string;
   readonly category: string | null;
+  readonly author: string | null;
   readonly initialPosts: any;
   readonly initialPageInfo: any;
 };
@@ -53,7 +54,13 @@ const Read = () => (
 /* ||||||||||||||| */
 /* =============== */
 
-function Results({ term, category, initialPosts, initialPageInfo }: Props) {
+function Results({
+  term,
+  category,
+  author,
+  initialPosts,
+  initialPageInfo,
+}: Props) {
   const [posts, setPosts] = useState(initialPosts);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [pageInfo, setPageInfo] = useState(initialPageInfo);
@@ -68,7 +75,7 @@ function Results({ term, category, initialPosts, initialPageInfo }: Props) {
       posts(
         first: 6
         ${pageInfo?.endCursor ? `after: "${pageInfo.endCursor}"` : ""}
-        where: { search: "${term}", ${category ? `categoryName: "${category}",` : ""} orderby: { field: DATE, order: DESC } }
+        where: { search: "${term}", ${category ? `categoryName: "${category}",` : ""} ${author ? `authorName:"${author}",` : ""} orderby: { field: DATE, order: DESC } }
       ) {
         nodes {
           title(format: RENDERED)

@@ -19,12 +19,11 @@ import MoreArticles from "./components/Footer/MoreArticles";
 const {
   title,
   author: {
-    node: { userId },
+    node: { userId, slug },
   },
   categories: { nodes: categories },
   date,
 } = Astro.props;
-
 const featuredImage = Astro.props?.featuredImage?.node;
 
 const authors = await getCollection("authors");
@@ -42,7 +41,7 @@ const author =
         <Fragment set:html={title} />
       </Title>
       <Metadata
-        author={author}
+        author={{ ...author, slug }}
         date={date}
         categories={categories}
       />
@@ -55,7 +54,7 @@ const author =
     </section>
 
     <!-- Footer -->
-    <CardAuthor author={author} />
+    <CardAuthor author={{ ...author, slug }} />
     <Banner />
     <MoreArticles client:idle />
   </article>

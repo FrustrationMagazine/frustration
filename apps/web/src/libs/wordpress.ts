@@ -5,7 +5,7 @@ export async function fetchPostBySlug({ slug }: any) {
           title(format: RENDERED)
           slug
           date
-          author { node { firstName lastName userId } }
+          author { node { firstName lastName userId slug } }
           categories { nodes { slug name parent { node { name } } } }
           content(format: RENDERED)
           featuredImage {
@@ -121,13 +121,13 @@ export async function fetchInterviews({ first = 6 }: any) {
   return interviews;
 }
 
-export async function fetchSearchPosts({ term, category, after }: any) {
+export async function fetchSearchPosts({ term, category, author, after }: any) {
   const query = `
     query fetchSearchPosts {
       posts(
         first: 6
         ${after ? `after: "${after}"` : ""}
-        where: { search: "${term}", ${category ? `categoryName:"${category}",` : ""} orderby: { field: DATE, order: DESC } }
+        where: { search: "${term}", ${category ? `categoryName:"${category}",` : ""} ${author ? `authorName:"${author}",` : ""} orderby: { field: DATE, order: DESC } }
       ) {
         nodes {
           title(format: RENDERED)
