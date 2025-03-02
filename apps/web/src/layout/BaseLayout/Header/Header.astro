@@ -7,8 +7,13 @@ import frustrationLogo from "./frustration-yellow.webp";
 // 🧱 Components
 import Banner from "./banners/Banner.astro";
 import SearchOverlay from "./_components/SearchOverlay";
+import MenuOverlay from "./_components/MenuOverlay";
 
 import { cn } from "@libs/tailwind";
+
+import { fetchCategories } from "@libs/wordpress";
+
+const categories = await fetchCategories();
 ---
 
 <header
@@ -31,6 +36,10 @@ import { cn } from "@libs/tailwind";
   </a>
   <div class={cn("flex", "gap-2", "md:gap-3", "xl:gap-4")}>
     <SearchOverlay client:load />
+    <MenuOverlay
+      categories={categories}
+      client:load
+    />
     <!-- <button
             type="button"
             title="Menu"

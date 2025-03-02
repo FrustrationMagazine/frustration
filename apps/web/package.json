@@ -75,6 +75,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "stripe": "^17.6.0",
     "tailwind-merge": "^2.6.0",
+    "tailwind-scrollbar": "^4.0.1",
     "typescript": "^5.7.3"
   }
 }
