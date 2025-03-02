@@ -50,6 +50,7 @@ function SearchOverlay() {
         "md:text-2xl",
         "xl:text-3xl",
       )}
+      aria-label="Rechercher"
     />
   );
 
