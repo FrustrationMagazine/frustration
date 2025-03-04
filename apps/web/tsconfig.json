@@ -7,6 +7,10 @@
     "jsxImportSource": "react",
     "target": "es2015",
     "moduleResolution": "node",
+    "lib": [
+      "es2023",
+      "dom"
+    ], // include other libraries as needed
     "plugins": [
       {
         "name": "@astrojs/ts-plugin",

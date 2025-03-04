@@ -7,7 +7,7 @@ import frustrationLogo from "./frustration-yellow.webp";
 // 🧱 Components
 import Banner from "./banners/Banner.astro";
 import SearchOverlay from "./_components/SearchOverlay";
-import MenuOverlay from "./_components/MenuOverlay";
+import CategoriesOverlay from "./_components/CategoriesOverlay";
 
 import { cn } from "@libs/tailwind";
 
@@ -36,7 +36,7 @@ const categories = await fetchCategories();
   </a>
   <div class={cn("flex", "gap-2", "md:gap-3", "xl:gap-4")}>
     <SearchOverlay client:load />
-    <MenuOverlay
+    <CategoriesOverlay
       categories={categories}
       client:load
     />

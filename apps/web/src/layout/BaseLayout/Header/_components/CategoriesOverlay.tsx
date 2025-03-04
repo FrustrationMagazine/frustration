@@ -7,13 +7,17 @@ import { IoIosMail } from "react-icons/io";
 
 import { cn } from "@libs/tailwind";
 
+const CATEGORIES_TO_FILTER_OUT = [
+  "chronique-de-nos-coeurs-mouvementes",
+  "socialcast",
+];
+
 type Props = {
   readonly categories: any[];
 };
 
-function MenuOverlay({ categories }: Props) {
+function CategoriesOverlay({ categories }: Props) {
   const [opened, setOpened] = React.useState(false);
-
   const standaloneCategories = categories.filter(
     (category) => !category.parent && category.children.nodes.length === 0,
   );
@@ -73,19 +77,11 @@ function MenuOverlay({ categories }: Props) {
         {MailButton}
         <ul
           className={cn(
-            "scrollbar scrollbar-thumb-yellow scrollbar-track-yellow flex h-full flex-col overflow-y-scroll py-[15dvh] text-center font-bakbak uppercase",
+            "flex h-full flex-col overflow-y-scroll py-[15dvh] text-center font-bakbak uppercase scrollbar scrollbar-track-yellow scrollbar-thumb-yellow",
             "gap-2 text-xl",
             "sm:gap-3 sm:text-2xl",
             "md:gap-3 md:text-3xl",
           )}>
-          {standaloneCategories.map((category) => (
-            <a
-              className="mb-1"
-              href={`/posts?category=${category.slug}`}
-              key={category.slug}>
-              {category.name}
-            </a>
-          ))}
           {categoriesWithChildren.map((category) => (
             <details key={category.slug}>
               <summary className="mb-2 cursor-pointer">{category.name}</summary>
@@ -101,10 +97,23 @@ function MenuOverlay({ categories }: Props) {
               </ul>
             </details>
           ))}
+          {standaloneCategories
+            .filter(
+              (category) => !CATEGORIES_TO_FILTER_OUT.includes(category.slug),
+            )
+            .toSorted((a, b) => b.count - a.count)
+            .map((category) => (
+              <a
+                className="mb-1"
+                href={`/posts?category=${category.slug}`}
+                key={category.slug}>
+                {category.name}
+              </a>
+            ))}
         </ul>
       </div>
     </>
   );
 }
 
-export default MenuOverlay;
+export default CategoriesOverlay;

@@ -224,6 +224,7 @@ export async function fetchCategories() {
               slug
             }
           }
+          count
         }
       }
     }
