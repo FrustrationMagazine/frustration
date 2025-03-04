@@ -15,7 +15,7 @@ const scanSeparators = () => document.querySelectorAll(SEPARATORS_SELECTOR);
 const mapToLinks = (embedArticles: any) =>
   Array.from(embedArticles)
     .map((node: any) => {
-      const REGEX_HTTPS = /^https?:\/\//;
+      const REGEX_HTTPS = /^https?:\/\/frustrationmagazine.fr/;
       const potentialLink = node?.textContent.trim();
       if (!potentialLink || !REGEX_HTTPS.test(potentialLink)) return null;
       return potentialLink.replace(REGEX_HTTPS, "");
@@ -37,9 +37,7 @@ function MoreArticles() {
     const linksPreviewPromises = links.map(fetchLinkPreview);
     Promise.all(linksPreviewPromises).then((values) => {
       setLinkPreviews(values);
-      const title = embedArticles[0].previousElementSibling;
       const separators = scanSeparators();
-      if (title) title.remove();
       embedArticles.forEach((node) => node.remove());
       separators.forEach((node) => node.remove());
     });
