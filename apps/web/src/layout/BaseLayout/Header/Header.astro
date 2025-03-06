@@ -9,9 +9,9 @@ import Banner from "./banners/Banner.astro";
 import SearchOverlay from "./_components/SearchOverlay";
 import CategoriesOverlay from "./_components/CategoriesOverlay";
 
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
-import { fetchCategories } from "@libs/wordpress";
+import { fetchCategories } from "@/libs/wordpress";
 
 const categories = await fetchCategories();
 ---

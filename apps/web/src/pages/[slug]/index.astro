@@ -1,6 +1,6 @@
 ---
-import PostLayout from "@web/layout/PostLayout/PostLayout.astro";
-import { fetchPostBySlug } from "@libs/wordpress";
+import PostLayout from "@/layout/PostLayout/PostLayout.astro";
+import { fetchPostBySlug } from "@/libs/wordpress";
 export const prerender = false;
 
 const { slug } = Astro.params;

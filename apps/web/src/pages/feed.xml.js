@@ -1,5 +1,5 @@
 import rss from "@astrojs/rss";
-import { fetchRSSItems } from "@libs/wordpress";
+import { fetchRSSItems } from "@/libs/wordpress";
 
 export async function GET(context) {
   const lastPosts = await fetchRSSItems({ first: 25 });

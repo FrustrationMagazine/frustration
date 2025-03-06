@@ -17,17 +17,19 @@ import "@fontsource/open-sans/400.css";
 import "@fontsource/open-sans/700.css";
 import "@fontsource/bebas-neue";
 import "@fontsource/bakbak-one";
+import "@fontsource/parisienne";
 import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/600.css";
 import "@fontsource/roboto";
 
 // 🎨 Styles
-import "@web/styles/reset.css";
-import "@web/styles/global.css";
+import "@/styles/reset.css";
+import "@/styles/global.css";
 
 // 🧰 Config
 const DEFAULT_IMAGE = "/img/default.jpg";
-const DEFAULT_DESCRIPTION = "Frustration Magazine, média indépendant et offensif qui relate la guerre des classes.";
+const DEFAULT_DESCRIPTION =
+  "Frustration Magazine, média indépendant et offensif qui relate la guerre des classes.";
 
 const { title, description = DEFAULT_DESCRIPTION, author } = Astro.props;
 const featuredImage = Astro.props?.featuredImage?.node;
@@ -35,33 +37,33 @@ const ogImage = featuredImage?.sourceUrl ?? DEFAULT_IMAGE;
 
 let width, height, mimeType;
 if (featuredImage?.mediaDetails) {
-	width = featuredImage?.mediaDetails?.width;
-	height = featuredImage?.mediaDetails?.height;
-	mimeType = featuredImage?.mimeType;
+  width = featuredImage?.mediaDetails?.width;
+  height = featuredImage?.mediaDetails?.height;
+  mimeType = featuredImage?.mimeType;
 }
 ---
 
 <!doctype html>
 <html
-	lang="fr"
-	class="bg-black">
-	<Head
-		title={title}
-		author={author}
-		description={description}
-		ogImageUrl={ogImage}
-		{...width ? { width } : null}
-		{...height ? { height } : null}
-		{...mimeType ? { mimeType } : null}
-	/>
-	<title>Frustration Magazine - {title}</title>
-	<ViewTransitions />
-	<body class="min-h-screen bg-white flex flex-col">
-		<Header transition:persist />
-		<main class="flex-grow flex flex-col">
-			<slot transition:animate={fade({ duration: "0.4s" })} />
-		</main>
-		<Footer transition:persist />
-		<!-- <SpeedInsights /> -->
-	</body>
+  lang="fr"
+  class="bg-black">
+  <Head
+    title={title}
+    author={author}
+    description={description}
+    ogImageUrl={ogImage}
+    {...width ? { width } : null}
+    {...height ? { height } : null}
+    {...mimeType ? { mimeType } : null}
+  />
+  <title>Frustration Magazine - {title}</title>
+  <ViewTransitions />
+  <body class="min-h-screen bg-white flex flex-col">
+    <Header transition:persist />
+    <main class="flex-grow flex flex-col">
+      <slot transition:animate={fade({ duration: "0.4s" })} />
+    </main>
+    <Footer transition:persist />
+    <!-- <SpeedInsights /> -->
+  </body>
 </html>

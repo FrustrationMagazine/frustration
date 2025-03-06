@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,

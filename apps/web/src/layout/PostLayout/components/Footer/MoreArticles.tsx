@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // 🐝 Wordpress API
-import { fetchLinkPreview } from "@libs/wordpress";
-import { cn } from "@libs/tailwind";
+import { fetchLinkPreview } from "@/libs/wordpress";
+import { cn } from "@/libs/tailwind";
 import LogoSquare from "../../assets/logo_square.png";
 
 const EMBED_INTERNAL_LINK_SELECTOR =
@@ -11,7 +11,6 @@ const scanEmbedInternalLinks = () => {
   return nodeList;
 };
 
-const SEPARATORS_SELECTOR = ".wp-block-separator";
 const mapToLinks = (embedArticles: any) =>
   Array.from(embedArticles)
     .map((node: any) => {

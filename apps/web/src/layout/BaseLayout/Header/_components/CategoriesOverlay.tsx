@@ -5,7 +5,7 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
 
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 const CATEGORIES_TO_FILTER_OUT = [
   "chronique-de-nos-coeurs-mouvementes",
@@ -53,7 +53,7 @@ function CategoriesOverlay({ categories }: Props) {
 
   const MailButton = (
     <a
-      href="/chere-frustration"
+      href="/contact"
       type="button"
       title="Nous contacter"
       className={cn(

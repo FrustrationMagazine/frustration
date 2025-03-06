@@ -144,7 +144,7 @@ export default {
       roboto: "Roboto",
       bebas: "Bebas Neue",
       bakbak: "Bakbak One",
-      parisienne: "parisienne",
+      parisienne: "Parisienne",
       arca: "'Arca Majora 3'",
       "open-sans": "Open Sans",
     },

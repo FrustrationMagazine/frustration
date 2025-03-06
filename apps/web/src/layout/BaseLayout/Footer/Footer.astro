@@ -1,5 +1,5 @@
 ---
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 import Titles from "./components/Titles.astro";
 import ContactUs from "./components/ContactUs.astro";
@@ -9,13 +9,18 @@ import MoreLinks from "./components/MoreLinks.astro";
 ---
 
 <footer class="bg-yellow-with-tiles pt-10">
-	<div class="mx-auto max-w-[1700px] space-y-8 px-6 py-12">
-		<Titles />
-		<div class={cn("gap-8", "flex flex-col", "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))]")}>
-			<ContactUs />
-			<Newsletter />
-			<SocialNetworks />
-		</div>
-	</div>
-	<MoreLinks />
+  <div class="mx-auto max-w-[1700px] space-y-8 px-6 py-12">
+    <Titles />
+    <div
+      class={cn(
+        "gap-8",
+        "flex flex-col",
+        "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))]",
+      )}>
+      <ContactUs />
+      <Newsletter />
+      <SocialNetworks />
+    </div>
+  </div>
+  <MoreLinks />
 </footer>

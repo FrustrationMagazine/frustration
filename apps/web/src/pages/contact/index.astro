@@ -1,9 +1,9 @@
 ---
-import PageLayout from "@web/layout/PageLayout/PageLayout.astro";
-import { Input } from "@components/ui/input";
-import { Textarea } from "@components/ui/textarea";
-import { Button } from "@components/ui/button";
-import { cn } from "@libs/tailwind";
+import PageLayout from "@/layout/PageLayout/PageLayout.astro";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/libs/tailwind";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -99,7 +99,7 @@ export const prerender = false;
       N'hésitez pas à nous écrire !
     </p>
     <form
-      id="chere-frustration"
+      id="contact"
       method="POST"
       class="flex flex-col gap-4 font-open-sans">
       <Input

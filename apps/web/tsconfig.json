@@ -30,19 +30,19 @@
       "@/utils/*": [
         "../../packages/utils/*"
       ],
-      "@web/layout/*": [
+      "@/layout/*": [
         "src/layout/*"
       ],
-      "@web/styles/*": [
+      "@/styles/*": [
         "src/styles/*"
       ],
-      "@web/utils": [
+      "@/utils": [
         "src/utils.ts"
       ],
-      "@components/*": [
+      "@/components/*": [
         "src/components/*"
       ],
-      "@libs/*": [
+      "@/libs/*": [
         "src/libs/*"
       ],
     },

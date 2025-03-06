@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createIdAnchor } from "@/utils/strings";
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 function PostSummary() {
   const [titles, setTitles] = useState<string[]>([]);
