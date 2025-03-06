@@ -6,12 +6,12 @@ import LogoSquare from "../../assets/logo_square.png";
 
 const EMBED_INTERNAL_LINK_SELECTOR =
   "figure.wp-block-embed:not(.is-type-video):has(.wp-block-embed__wrapper)";
-const scanEmbedArticles = () => {
-  let nodes = document.querySelectorAll(EMBED_INTERNAL_LINK_SELECTOR);
-  return nodes;
+const scanEmbedInternalLinks = () => {
+  let nodeList = document.querySelectorAll(EMBED_INTERNAL_LINK_SELECTOR);
+  return nodeList;
 };
+
 const SEPARATORS_SELECTOR = ".wp-block-separator";
-const scanSeparators = () => document.querySelectorAll(SEPARATORS_SELECTOR);
 const mapToLinks = (embedArticles: any) =>
   Array.from(embedArticles)
     .map((node: any) => {
@@ -30,16 +30,16 @@ function MoreArticles() {
   const [linkPreviews, setLinkPreviews] = useState<any>([]);
 
   useEffect(() => {
-    const embedArticles = scanEmbedArticles();
+    const embedArticles = scanEmbedInternalLinks();
     const links = mapToLinks(embedArticles);
 
     // Fetch articles
     const linksPreviewPromises = links.map(fetchLinkPreview);
     Promise.all(linksPreviewPromises).then((values) => {
       setLinkPreviews(values);
-      const separators = scanSeparators();
-      embedArticles.forEach((node) => node.remove());
-      separators.forEach((node) => node.remove());
+      embedArticles.forEach((node) => {
+        if (node?.textContent?.match("frustrationmagazine.fr")) node.remove();
+      });
     });
   }, []);
 
