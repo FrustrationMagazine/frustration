@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { Newspaper } from "lucide-react";
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 const {
   title,
   slug,
@@ -29,7 +29,7 @@ const IMAGE_SIZE = 1200;
         {title}
       </h3>
       <div
-        class="hidden xl:block [&>p]:inline [&>p]:text-balance [&>p]:bg-yellow [&>p]:text-center [&>p]:text-xl [&>p]:font-bold [&>p]:leading-snug [&>p]:text-black"
+        class="hidden xl:block [&>p]:inline [&>p]:text-balance [&>p]:bg-yellow [&>p]:text-center [&>p]:text-xl [&>p]:font-bold [&>p]:leading-snug [&>p]:font-normal [&>p]:text-black"
         set:html={excerpt}
       />
       <div

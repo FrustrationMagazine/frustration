@@ -19,6 +19,11 @@
       "source": "/campagne-de-dons",
       "destination": "/abonnements",
       "permanent": true
+    },
+    {
+      "source": "/chere-frustration",
+      "destination": "/contact",
+      "permanent": true
     }
   ]
 }

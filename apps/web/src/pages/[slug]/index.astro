@@ -1,12 +1,13 @@
 ---
-import PostLayout from "@web/layout/PostLayout/PostLayout.astro";
-import { fetchPostBySlug } from "@libs/wordpress";
+import PostLayout from "@/layout/PostLayout/PostLayout.astro";
+import { fetchPostBySlug } from "@/libs/wordpress";
 export const prerender = false;
 
 const { slug } = Astro.params;
 const post = await fetchPostBySlug({ slug });
 
 if (!post) return Astro.rewrite("/404");
+const htmlContent = post.content;
 
 // This will cache the content of any page for 5 minutes in user browser and 1 week in CDN (every page is invalidated on every deploy)
 Astro.response.headers.set(
@@ -18,6 +19,6 @@ Astro.response.headers.set(
 <PostLayout {...post}>
   <Fragment
     slot="content"
-    set:html={post?.content}
+    set:html={htmlContent}
   />
 </PostLayout>

@@ -5,7 +5,7 @@ import Section from "../Section.astro";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Image } from "astro:assets";
-import { cn } from '@libs/tailwind';
+import { cn } from '@/libs/tailwind';
 import { LuExternalLink } from "react-icons/lu";
 import SidePanel from "./SidePanel.astro";
 
@@ -42,7 +42,7 @@ const arrowSizesLg="[&>button>svg]:lg:!h-[70px] [&>button>svg]:lg:!w-[30px] [&>b
     <!--     PANELS        -->
     <!--                   -->
     <div class="video-informations-container relative">
-      <div class="absolute h-full w-full overflow-scroll text-white">
+      <div class="absolute h-full w-full text-white">
         {
           records.map(
             ({

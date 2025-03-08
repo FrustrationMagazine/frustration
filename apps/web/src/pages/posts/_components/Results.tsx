@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 import { Button } from "@/ui/components/button";
 import { CgArrowTopRight } from "react-icons/cg";
 

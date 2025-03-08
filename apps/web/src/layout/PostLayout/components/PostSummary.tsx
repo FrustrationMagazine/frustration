@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createIdAnchor } from "@/utils/strings";
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 function PostSummary() {
   const [titles, setTitles] = useState<string[]>([]);
@@ -25,10 +25,10 @@ function PostSummary() {
           // Remove bold from all titles
           const allTitlesSummary = summaryRef.current.querySelectorAll("li a");
           allTitlesSummary.forEach((titleSummary) =>
-            titleSummary.classList.remove("font-bold"),
+            titleSummary.classList.remove("underline"),
           );
           // Add bold to the targeted title
-          titleSummaryTargeted.classList.add("font-bold");
+          titleSummaryTargeted.classList.add("underline");
         }
       }
     });

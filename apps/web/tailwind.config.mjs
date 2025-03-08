@@ -9,6 +9,7 @@ export default {
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),
+    require("tailwind-scrollbar"),
   ],
   theme: {
     extend: {
@@ -126,7 +127,6 @@ export default {
       ...colors,
       yellow: "#FFF200",
       paleYellow: "#F2EC80",
-      red: "#700002",
       black: "#000",
       white: "#fff",
       purple: "#8955E0",
@@ -144,6 +144,7 @@ export default {
       roboto: "Roboto",
       bebas: "Bebas Neue",
       bakbak: "Bakbak One",
+      parisienne: "Parisienne",
       arca: "'Arca Majora 3'",
       "open-sans": "Open Sans",
     },

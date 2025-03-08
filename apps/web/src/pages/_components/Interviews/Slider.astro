@@ -1,5 +1,5 @@
 ---
-import { fetchInterviews } from "@libs/wordpress";
+import { fetchInterviews } from "@/libs/wordpress";
 const NB_INTERVIEWS = 6;
 const interviews = await fetchInterviews({ first: NB_INTERVIEWS });
 import Interview from "./Card.astro";

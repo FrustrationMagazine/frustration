@@ -7,6 +7,10 @@
     "jsxImportSource": "react",
     "target": "es2015",
     "moduleResolution": "node",
+    "lib": [
+      "es2023",
+      "dom"
+    ], // include other libraries as needed
     "plugins": [
       {
         "name": "@astrojs/ts-plugin",
@@ -26,19 +30,19 @@
       "@/utils/*": [
         "../../packages/utils/*"
       ],
-      "@web/layout/*": [
+      "@/layout/*": [
         "src/layout/*"
       ],
-      "@web/styles/*": [
+      "@/styles/*": [
         "src/styles/*"
       ],
-      "@web/utils": [
+      "@/utils": [
         "src/utils.ts"
       ],
-      "@components/*": [
+      "@/components/*": [
         "src/components/*"
       ],
-      "@libs/*": [
+      "@/libs/*": [
         "src/libs/*"
       ],
     },

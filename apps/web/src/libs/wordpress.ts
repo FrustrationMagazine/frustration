@@ -205,6 +205,40 @@ export async function fetchLinkPreview(link: string) {
   return post;
 }
 
+export async function fetchCategories() {
+  const query = `
+    query GetDraftPosts {
+      categories(first: 30) {
+        nodes {
+          slug
+          name
+          parent {
+            node {
+              name
+              slug
+            }
+          }
+          children {
+            nodes {
+              name
+              slug
+            }
+          }
+          count
+        }
+      }
+    }
+  `;
+
+  let {
+    data: {
+      categories: { nodes: categories },
+    },
+  } = await fetchWordpress({ query });
+
+  return categories;
+}
+
 /* ========================================================= */
 /* ========================================================= */
 

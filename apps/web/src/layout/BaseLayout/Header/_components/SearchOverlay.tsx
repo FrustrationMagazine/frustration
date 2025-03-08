@@ -4,7 +4,7 @@ import React from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 
-import { cn } from "@libs/tailwind";
+import { cn } from "@/libs/tailwind";
 
 function SearchOverlay() {
   const [search, setSearch] = React.useState("");
