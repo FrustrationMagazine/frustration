@@ -82,10 +82,6 @@
   font-size: 14px;
 }
 
-.content br {
-  display: none;
-}
-
 .content p:has(img) {
   line-height: 110%;
   font-weight: 900;
